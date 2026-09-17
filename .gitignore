@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+.next/
+out/
+coverage/
+
+# environment & secrets — NEVER commit real values
+.env
+.env.*
+!.env.example
+
+# data & experiments raw output (lives on D:)
+experiments/results/
+*.sqlite
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log

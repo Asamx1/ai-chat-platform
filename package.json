@@ -1,0 +1,21 @@
+{
+  "name": "ai-chat-platform",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "engines": {
+    "node": "24.16.0",
+    "pnpm": "10.34.5"
+  },
+  "packageManager": "pnpm@10.34.5",
+  "scripts": {
+    "lint": "echo 'lint: not configured yet (M1)'",
+    "typecheck": "echo 'typecheck: not configured yet (M1)'",
+    "test": "echo 'test: not configured yet (M0 fake-provider slice)'",
+    "test:integration": "echo 'integration: not configured yet (M2)'",
+    "test:e2e": "echo 'e2e: not configured yet (M1)'",
+    "build": "echo 'build: not configured yet (M1)'",
+    "compose:up": "docker compose -f infra/compose.yaml --env-file .env up -d",
+    "compose:down": "docker compose -f infra/compose.yaml --env-file .env down"
+  }
+}
