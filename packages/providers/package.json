@@ -1,0 +1,19 @@
+{
+  "name": "@aichat/providers",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aichat/contracts": "workspace:*",
+    "zod": "4.1.5"
+  },
+  "devDependencies": {
+    "vitest": "3.2.4"
+  }
+}

@@ -17,7 +17,7 @@
   "scripts": {
     "lint": "echo 'lint: not configured yet (M1)'",
     "typecheck": "echo 'typecheck: not configured yet (M1)'",
-    "test": "echo 'test: not configured yet (M0 fake-provider slice)'",
+    "test": "vitest run",
     "test:integration": "echo 'integration: not configured yet (M2)'",
     "test:e2e": "echo 'e2e: not configured yet (M1)'",
     "build": "echo 'build: not configured yet (M1)'",
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "dotenv": "^17.4.2",
+    "vitest": "3.2.4",
     "prisma": "7.0.0",
     "tsx": "^4.23.13"
   }
