@@ -12,9 +12,12 @@
     "db:migrate": "prisma migrate dev"
   },
   "dependencies": {
-    "@prisma/client": "7.0.0"
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "7.0.0",
+    "pg": "^8.23.0"
   },
   "devDependencies": {
+    "@types/pg": "^8.23.1",
     "prisma": "7.0.0",
     "typescript": "^5"
   }

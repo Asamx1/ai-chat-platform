@@ -8,6 +8,12 @@
     "pnpm": "10.34.5"
   },
   "packageManager": "pnpm@10.34.5",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "prisma"
+    ]
+  },
   "scripts": {
     "lint": "echo 'lint: not configured yet (M1)'",
     "typecheck": "echo 'typecheck: not configured yet (M1)'",
@@ -17,5 +23,10 @@
     "build": "echo 'build: not configured yet (M1)'",
     "compose:up": "docker compose -f infra/compose.yaml --env-file .env up -d",
     "compose:down": "docker compose -f infra/compose.yaml --env-file .env down"
+  },
+  "devDependencies": {
+    "dotenv": "^17.4.2",
+    "prisma": "7.0.0",
+    "tsx": "^4.23.13"
   }
 }
