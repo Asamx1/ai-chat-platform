@@ -38,7 +38,7 @@ services:
       retries: 12
 
   minio:
-    image: minio/minio:latest
+    image: quay.io/minio/minio:latest  # docker.io 的 minio/minio 被本机网络拦截，走 quay 官方镜像
     container_name: aichat-minio
     restart: unless-stopped
     command: ["server", "/data", "--console-address", ":9001"]
