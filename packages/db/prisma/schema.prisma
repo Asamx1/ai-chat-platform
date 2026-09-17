@@ -1,0 +1,242 @@
+// ai-chat-platform database schema (M0)
+// Money is stored as BigInt micro-US dollars; tokens as Int; structured data as Json.
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum ConversationType {
+  SINGLE
+  GROUP
+  CONSENSUS
+  DEBATE
+}
+
+enum MessageStatus {
+  PENDING
+  STREAMING
+  COMPLETE
+  FAILED
+  CANCELLED
+}
+
+enum RunStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum RunPhase {
+  PLANNING
+  ROUND
+  JUDGING
+  SYNTHESIZING
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  passwordHash String
+  role         Role           @default(USER)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  conversations Conversation[]
+  runs         OrchestrationRun[]
+  usageLogs    UsageLog[]
+  apiKeys      ApiKey[]
+}
+
+model Provider {
+  id        String   @id @default(cuid())
+  kind      String // ollama | openai-compatible | fake
+  baseUrl   String
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  models    ModelRegistry[]
+  apiKeys   ApiKey[]
+}
+
+model ModelRegistry {
+  id             String   @id @default(cuid())
+  providerId     String
+  provider       Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  modelKey       String
+  capabilities   Json
+  pricingVersion String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  participants   Participant[]
+
+  @@unique([providerId, modelKey])
+}
+
+model Conversation {
+  id         String           @id @default(cuid())
+  ownerId    String
+  owner      User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  title      String
+  type       ConversationType
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  participants Participant[]
+  messages   Message[]
+  runs       OrchestrationRun[]
+  shareLinks ShareLink[]
+
+  @@index([ownerId, updatedAt])
+}
+
+model Participant {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  modelId        String
+  model          ModelRegistry @relation(fields: [modelId], references: [id])
+  role           String
+  config         Json
+  createdAt      DateTime     @default(now())
+  messages       Message[]
+}
+
+model Message {
+  id             String        @id @default(cuid())
+  conversationId String
+  conversation   Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  parentId       String?
+  parent         Message?      @relation("MessageThread", fields: [parentId], references: [id], onDelete: NoAction)
+  children       Message[]     @relation("MessageThread")
+  participantId  String?
+  participant    Participant?  @relation(fields: [participantId], references: [id], onDelete: SetNull)
+  content        String        @db.Text
+  status         MessageStatus
+  createdAt      DateTime      @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+model OrchestrationRun {
+  id                   String   @id @default(cuid())
+  conversationId       String
+  conversation         Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  ownerId              String
+  owner                User     @relation(fields: [ownerId], references: [id])
+  status               RunStatus @default(PENDING)
+  phase                RunPhase?
+  attempt              Int      @default(0)
+  idempotencyKey       String
+  degraded             Boolean  @default(false)
+  degradationReasons   Json?
+  configSnapshot       Json
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  participantSnapshots RunParticipantSnapshot[]
+  checkpoints          RunCheckpoint[]
+  events               RunEvent[]
+  providerCalls        ProviderCall[]
+  usageLogs            UsageLog[]
+
+  @@unique([ownerId, idempotencyKey])
+}
+
+model RunParticipantSnapshot {
+  id                   String           @id @default(cuid())
+  runId                String
+  run                  OrchestrationRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
+  seatId               String
+  providerKey          String
+  modelKey             String
+  systemPrompt         String           @db.Text
+  params               Json
+  pricingVersion       String
+  providerCalls        ProviderCall[]
+}
+
+model RunCheckpoint {
+  id         String          @id @default(cuid())
+  runId      String
+  run        OrchestrationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  version    Int
+  stateJson  Json
+  createdAt  DateTime        @default(now())
+
+  @@unique([runId, version])
+}
+
+model RunEvent {
+  id        String          @id @default(cuid())
+  runId     String
+  run       OrchestrationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  seq       Int
+  type      String
+  payload   Json
+  createdAt DateTime        @default(now())
+
+  @@unique([runId, seq])
+}
+
+model ProviderCall {
+  id                   String               @id @default(cuid())
+  runId                String
+  run                  OrchestrationRun     @relation(fields: [runId], references: [id], onDelete: Cascade)
+  participantSnapshotId String?
+  participantSnapshot  RunParticipantSnapshot? @relation(fields: [participantSnapshotId], references: [id], onDelete: SetNull)
+  attempt              Int
+  requestHash          String               @unique
+  usage                Json?
+  error                String?
+  startedAt            DateTime             @default(now())
+  endedAt              DateTime?
+  usageLog             UsageLog?
+}
+
+model UsageLog {
+  id         String        @id @default(cuid())
+  userId     String
+  user       User          @relation(fields: [userId], references: [id])
+  runId      String
+  run        OrchestrationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  callId     String        @unique
+  call       ProviderCall  @relation(fields: [callId], references: [id])
+  tokens     Int
+  costMicros BigInt
+  createdAt  DateTime      @default(now())
+}
+
+model ApiKey {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  providerId String
+  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  ciphertext String
+  iv         String
+  authTag    String
+  keyVersion Int      @default(1)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, providerId])
+}
+
+model ShareLink {
+  id              String       @id @default(cuid())
+  conversationId  String
+  conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  tokenHash       String       @unique
+  expiresAt       DateTime
+  snapshotVersion Int?
+  createdAt       DateTime     @default(now())
+}
