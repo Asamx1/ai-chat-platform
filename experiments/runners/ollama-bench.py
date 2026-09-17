@@ -73,10 +73,13 @@ def bench(model):
 
 
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    argv = list(sys.argv[1:])
     out = None
-    if "--out" in sys.argv:
-        out = sys.argv[sys.argv.index("--out") + 1]
+    if "--out" in argv:
+        i = argv.index("--out")
+        out = argv[i + 1]
+        del argv[i:i + 2]
+    args = argv
     results = []
     for m in args:
         print(f"[bench] {m} ...", flush=True)
