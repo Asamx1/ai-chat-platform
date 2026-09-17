@@ -10,7 +10,7 @@ import sys
 import time
 import urllib.request
 
-OLLAMA = "http://localhost:11434"
+OLLAMA = "http://127.0.0.1:11434"  # 必须 127.0.0.1：本机 ::1 上有个空模型库的神秘实例，localhost 会解析错
 PROMPT = "用三句话解释什么是数据库的事务隔离级别。"
 
 
