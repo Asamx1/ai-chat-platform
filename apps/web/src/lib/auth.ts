@@ -1,5 +1,5 @@
 import { betterAuth } from 'better-auth';
-import type { Adapter, BetterAuthOptions } from 'better-auth';
+import type { DBAdapter } from 'better-auth';
 import { prisma } from '@aichat/db';
 
 /**
@@ -200,7 +200,7 @@ export const prismaAdapter = {
     const m = model as LogicalModel;
     return delegate(m).deleteMany({ where: toPrismaWhere(m, where) });
   },
-} as unknown as Adapter;
+} as unknown as DBAdapter;
 
 export const auth = betterAuth({
   // better-auth 契约：database 必须是「收到 options、返回 adapter」的函数；
@@ -230,4 +230,4 @@ export const auth = betterAuth({
 export type Session = typeof auth.$Infer.Session;
 export type AuthUser = Session['user'];
 
-export type { BetterAuthOptions };
+
