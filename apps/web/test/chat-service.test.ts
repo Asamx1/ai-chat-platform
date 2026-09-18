@@ -39,7 +39,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  // 级联清理：删 user 即删 conversations/runs/events/messages。
+  // OrchestrationRun.ownerId 外键无级联，须先删 runs 再删 user。
+  await prisma.orchestrationRun.deleteMany({ where: { ownerId: { in: [userId, otherUserId] } } });
   await prisma.user.deleteMany({ where: { id: { in: [userId, otherUserId] } } });
   await prisma.$disconnect();
 });
