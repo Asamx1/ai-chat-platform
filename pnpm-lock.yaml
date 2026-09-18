@@ -92,6 +92,12 @@ importers:
         specifier: ^5
         version: 5.9.3
 
+  packages/gpu-scheduler:
+    devDependencies:
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/node@24.13.5)(jiti@2.7.0)(tsx@4.23.13)
+
   packages/providers:
     dependencies:
       '@aichat/contracts':
