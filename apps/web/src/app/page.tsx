@@ -48,10 +48,31 @@ export default function HomePage() {
     }
   }, []);
 
-  // 切换会话：读 sessionStorage 缓存（M1.5 补历史接口后改为拉服务端历史）
+  // 切换会话：先显示本地缓存，再拉服务端历史覆盖（M1.5 已接历史接口）
   useEffect(() => {
-    if (activeId) setMessages(loadCache(activeId));
-    else setMessages([]);
+    if (!activeId) {
+      setMessages([]);
+      return;
+    }
+    setMessages(loadCache(activeId));
+    let cancelled = false;
+    fetch(`/api/conversations/${activeId}/messages?limit=100`, { credentials: 'include' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (cancelled || !data?.items) return;
+        setMessages(
+          data.items.map((m: { id: string; role: 'user' | 'assistant'; content: string; status?: string }) => ({
+            id: m.id,
+            role: m.role,
+            content: m.content,
+            status: (m.status?.toLowerCase() ?? 'succeeded') as MessageStatus,
+          })),
+        );
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
   }, [activeId]);
 
   // 组件卸载时关流
