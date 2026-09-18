@@ -48,8 +48,9 @@ function mapKeys(
 ): unknown {
   if (Array.isArray(value)) return value.map((v) => mapKeys(model, v, map));
   if (value !== null && typeof value === 'object' && !(value instanceof Date)) {
-    const out: Record<string, unknown> = {};
+    const out: Record<string, unknown> = Object.create(null);
     for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      if (k === '__proto__' || k === 'constructor' || k === 'prototype') continue;
       out[map(model, k)] = mapKeys(model, v, map);
     }
     return out;
@@ -100,20 +101,33 @@ function buildClause(col: string, value: unknown, operator?: string): Record<str
   }
 }
 
+/** 剔除 user 对象中的 passwordHash（顶层与嵌套联查都要走这里）。 */
+function sanitizeUser(u: Record<string, unknown>): Record<string, unknown> {
+  const out = { ...u };
+  delete out.passwordHash;
+  return out;
+}
+
 /** Prisma 行 → better-auth 字段名（反向映射）。 */
 function fromPrismaRow(model: LogicalModel, row: unknown): unknown {
-  if (model !== 'user' || row === null || typeof row !== 'object') return row;
+  if (row === null || typeof row !== 'object') return row;
   const r = row as Record<string, unknown>;
-  const out: Record<string, unknown> = { ...r };
-  // 密码校验走 Account(providerId='credential') 的 password 列；
-  // user 行的 passwordHash 就地剔除，绝不能进入 better-auth 返回体（防哈希泄漏）。
-  delete out.passwordHash;
-  // better-auth 期望联查结果里叫 account（单数）；Prisma 关系字段是 accounts。
-  if ('accounts' in r && Array.isArray(r.accounts)) {
-    out.account = r.accounts;
-    delete out.accounts;
+  if (model === 'user') {
+    const out = sanitizeUser(r);
+    // better-auth 期望联查结果里叫 account（单数）；Prisma 关系字段是 accounts。
+    if ('accounts' in r && Array.isArray(r.accounts)) {
+      out.account = r.accounts;
+      delete out.accounts;
+    }
+    return out;
   }
-  return out;
+  if (model === 'session') {
+    // session join user：嵌套 user 同样必须脱敏（P9 审查发现的泄漏路径）。
+    if (r.user && typeof r.user === 'object') {
+      return { ...r, user: sanitizeUser(r.user as Record<string, unknown>) };
+    }
+  }
+  return r;
 }
 
 // Prisma delegate：user 真实存在；session/account/verification 在 M0 schema
