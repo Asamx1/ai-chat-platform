@@ -140,6 +140,9 @@ model OrchestrationRun {
   owner                User                     @relation(fields: [ownerId], references: [id])
   status               RunStatus                @default(PENDING)
   phase                RunPhase?
+  leaseOwner           String?
+  leaseExpiresAt       DateTime?
+  cancelRequested      Boolean                 @default(false)
   attempt              Int                      @default(0)
   idempotencyKey       String
   degraded             Boolean                  @default(false)

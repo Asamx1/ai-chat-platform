@@ -64,6 +64,13 @@ describe('sendChat', () => {
     expect(res.messageId).toBeTruthy();
     expect(res.runId).toBeTruthy();
 
+    // M2 outbox：执行异步化，轮询等终态（上限 5s）。
+    for (let i = 0; i < 250; i++) {
+      const r = await prisma.orchestrationRun.findUnique({ where: { id: res.runId } });
+      if (r && ['SUCCEEDED', 'FAILED', 'CANCELLED'].includes(r.status)) break;
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    }
+
     const events = await prisma.runEvent.findMany({
       where: { runId: res.runId },
       orderBy: { seq: 'asc' },
@@ -145,7 +152,7 @@ describe('sendChat', () => {
         where: { ownerId: userId, idempotencyKey: { startsWith: 'itest-stop-' } },
         orderBy: { createdAt: 'desc' },
       });
-      const running = runs.find((r) => r.status === 'RUNNING');
+      const running = runs.find((r) => r.status === 'RUNNING' || r.status === 'PENDING');
       if (running) {
         runId = running.id;
         break;
@@ -161,6 +168,13 @@ describe('sendChat', () => {
 
     const res = await sendPromise;
     expect(res.runId).toBe(runId);
+
+    // 取消异步落库：轮询等终态（上限 5s）。
+    for (let i = 0; i < 250; i++) {
+      const r = await prisma.orchestrationRun.findUnique({ where: { id: runId } });
+      if (r && ['SUCCEEDED', 'FAILED', 'CANCELLED'].includes(r.status)) break;
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    }
 
     const run = await prisma.orchestrationRun.findUnique({ where: { id: runId } });
     expect(run?.status).toBe('CANCELLED');

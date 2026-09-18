@@ -40,6 +40,9 @@ export type OrchestrationRunMinAggregateOutputType = {
   ownerId: string | null
   status: $Enums.RunStatus | null
   phase: $Enums.RunPhase | null
+  leaseOwner: string | null
+  leaseExpiresAt: Date | null
+  cancelRequested: boolean | null
   attempt: number | null
   idempotencyKey: string | null
   degraded: boolean | null
@@ -53,6 +56,9 @@ export type OrchestrationRunMaxAggregateOutputType = {
   ownerId: string | null
   status: $Enums.RunStatus | null
   phase: $Enums.RunPhase | null
+  leaseOwner: string | null
+  leaseExpiresAt: Date | null
+  cancelRequested: boolean | null
   attempt: number | null
   idempotencyKey: string | null
   degraded: boolean | null
@@ -66,6 +72,9 @@ export type OrchestrationRunCountAggregateOutputType = {
   ownerId: number
   status: number
   phase: number
+  leaseOwner: number
+  leaseExpiresAt: number
+  cancelRequested: number
   attempt: number
   idempotencyKey: number
   degraded: number
@@ -91,6 +100,9 @@ export type OrchestrationRunMinAggregateInputType = {
   ownerId?: true
   status?: true
   phase?: true
+  leaseOwner?: true
+  leaseExpiresAt?: true
+  cancelRequested?: true
   attempt?: true
   idempotencyKey?: true
   degraded?: true
@@ -104,6 +116,9 @@ export type OrchestrationRunMaxAggregateInputType = {
   ownerId?: true
   status?: true
   phase?: true
+  leaseOwner?: true
+  leaseExpiresAt?: true
+  cancelRequested?: true
   attempt?: true
   idempotencyKey?: true
   degraded?: true
@@ -117,6 +132,9 @@ export type OrchestrationRunCountAggregateInputType = {
   ownerId?: true
   status?: true
   phase?: true
+  leaseOwner?: true
+  leaseExpiresAt?: true
+  cancelRequested?: true
   attempt?: true
   idempotencyKey?: true
   degraded?: true
@@ -219,6 +237,9 @@ export type OrchestrationRunGroupByOutputType = {
   ownerId: string
   status: $Enums.RunStatus
   phase: $Enums.RunPhase | null
+  leaseOwner: string | null
+  leaseExpiresAt: Date | null
+  cancelRequested: boolean
   attempt: number
   idempotencyKey: string
   degraded: boolean
@@ -257,6 +278,9 @@ export type OrchestrationRunWhereInput = {
   ownerId?: Prisma.StringFilter<"OrchestrationRun"> | string
   status?: Prisma.EnumRunStatusFilter<"OrchestrationRun"> | $Enums.RunStatus
   phase?: Prisma.EnumRunPhaseNullableFilter<"OrchestrationRun"> | $Enums.RunPhase | null
+  leaseOwner?: Prisma.StringNullableFilter<"OrchestrationRun"> | string | null
+  leaseExpiresAt?: Prisma.DateTimeNullableFilter<"OrchestrationRun"> | Date | string | null
+  cancelRequested?: Prisma.BoolFilter<"OrchestrationRun"> | boolean
   attempt?: Prisma.IntFilter<"OrchestrationRun"> | number
   idempotencyKey?: Prisma.StringFilter<"OrchestrationRun"> | string
   degraded?: Prisma.BoolFilter<"OrchestrationRun"> | boolean
@@ -279,6 +303,9 @@ export type OrchestrationRunOrderByWithRelationInput = {
   ownerId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   phase?: Prisma.SortOrderInput | Prisma.SortOrder
+  leaseOwner?: Prisma.SortOrderInput | Prisma.SortOrder
+  leaseExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelRequested?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrder
   degraded?: Prisma.SortOrder
@@ -305,6 +332,9 @@ export type OrchestrationRunWhereUniqueInput = Prisma.AtLeast<{
   ownerId?: Prisma.StringFilter<"OrchestrationRun"> | string
   status?: Prisma.EnumRunStatusFilter<"OrchestrationRun"> | $Enums.RunStatus
   phase?: Prisma.EnumRunPhaseNullableFilter<"OrchestrationRun"> | $Enums.RunPhase | null
+  leaseOwner?: Prisma.StringNullableFilter<"OrchestrationRun"> | string | null
+  leaseExpiresAt?: Prisma.DateTimeNullableFilter<"OrchestrationRun"> | Date | string | null
+  cancelRequested?: Prisma.BoolFilter<"OrchestrationRun"> | boolean
   attempt?: Prisma.IntFilter<"OrchestrationRun"> | number
   idempotencyKey?: Prisma.StringFilter<"OrchestrationRun"> | string
   degraded?: Prisma.BoolFilter<"OrchestrationRun"> | boolean
@@ -327,6 +357,9 @@ export type OrchestrationRunOrderByWithAggregationInput = {
   ownerId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   phase?: Prisma.SortOrderInput | Prisma.SortOrder
+  leaseOwner?: Prisma.SortOrderInput | Prisma.SortOrder
+  leaseExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelRequested?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrder
   degraded?: Prisma.SortOrder
@@ -350,6 +383,9 @@ export type OrchestrationRunScalarWhereWithAggregatesInput = {
   ownerId?: Prisma.StringWithAggregatesFilter<"OrchestrationRun"> | string
   status?: Prisma.EnumRunStatusWithAggregatesFilter<"OrchestrationRun"> | $Enums.RunStatus
   phase?: Prisma.EnumRunPhaseNullableWithAggregatesFilter<"OrchestrationRun"> | $Enums.RunPhase | null
+  leaseOwner?: Prisma.StringNullableWithAggregatesFilter<"OrchestrationRun"> | string | null
+  leaseExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OrchestrationRun"> | Date | string | null
+  cancelRequested?: Prisma.BoolWithAggregatesFilter<"OrchestrationRun"> | boolean
   attempt?: Prisma.IntWithAggregatesFilter<"OrchestrationRun"> | number
   idempotencyKey?: Prisma.StringWithAggregatesFilter<"OrchestrationRun"> | string
   degraded?: Prisma.BoolWithAggregatesFilter<"OrchestrationRun"> | boolean
@@ -363,6 +399,9 @@ export type OrchestrationRunCreateInput = {
   id?: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -385,6 +424,9 @@ export type OrchestrationRunUncheckedCreateInput = {
   ownerId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -403,6 +445,9 @@ export type OrchestrationRunUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -425,6 +470,9 @@ export type OrchestrationRunUncheckedUpdateInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -445,6 +493,9 @@ export type OrchestrationRunCreateManyInput = {
   ownerId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -458,6 +509,9 @@ export type OrchestrationRunUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -473,6 +527,9 @@ export type OrchestrationRunUncheckedUpdateManyInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -503,6 +560,9 @@ export type OrchestrationRunCountOrderByAggregateInput = {
   ownerId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   phase?: Prisma.SortOrder
+  leaseOwner?: Prisma.SortOrder
+  leaseExpiresAt?: Prisma.SortOrder
+  cancelRequested?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrder
   degraded?: Prisma.SortOrder
@@ -522,6 +582,9 @@ export type OrchestrationRunMaxOrderByAggregateInput = {
   ownerId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   phase?: Prisma.SortOrder
+  leaseOwner?: Prisma.SortOrder
+  leaseExpiresAt?: Prisma.SortOrder
+  cancelRequested?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrder
   degraded?: Prisma.SortOrder
@@ -535,6 +598,9 @@ export type OrchestrationRunMinOrderByAggregateInput = {
   ownerId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   phase?: Prisma.SortOrder
+  leaseOwner?: Prisma.SortOrder
+  leaseExpiresAt?: Prisma.SortOrder
+  cancelRequested?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrder
   degraded?: Prisma.SortOrder
@@ -643,6 +709,10 @@ export type NullableEnumRunPhaseFieldUpdateOperationsInput = {
   set?: $Enums.RunPhase | null
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -725,6 +795,9 @@ export type OrchestrationRunCreateWithoutOwnerInput = {
   id?: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -745,6 +818,9 @@ export type OrchestrationRunUncheckedCreateWithoutOwnerInput = {
   conversationId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -794,6 +870,9 @@ export type OrchestrationRunScalarWhereInput = {
   ownerId?: Prisma.StringFilter<"OrchestrationRun"> | string
   status?: Prisma.EnumRunStatusFilter<"OrchestrationRun"> | $Enums.RunStatus
   phase?: Prisma.EnumRunPhaseNullableFilter<"OrchestrationRun"> | $Enums.RunPhase | null
+  leaseOwner?: Prisma.StringNullableFilter<"OrchestrationRun"> | string | null
+  leaseExpiresAt?: Prisma.DateTimeNullableFilter<"OrchestrationRun"> | Date | string | null
+  cancelRequested?: Prisma.BoolFilter<"OrchestrationRun"> | boolean
   attempt?: Prisma.IntFilter<"OrchestrationRun"> | number
   idempotencyKey?: Prisma.StringFilter<"OrchestrationRun"> | string
   degraded?: Prisma.BoolFilter<"OrchestrationRun"> | boolean
@@ -807,6 +886,9 @@ export type OrchestrationRunCreateWithoutConversationInput = {
   id?: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -827,6 +909,9 @@ export type OrchestrationRunUncheckedCreateWithoutConversationInput = {
   ownerId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -871,6 +956,9 @@ export type OrchestrationRunCreateWithoutParticipantSnapshotsInput = {
   id?: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -892,6 +980,9 @@ export type OrchestrationRunUncheckedCreateWithoutParticipantSnapshotsInput = {
   ownerId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -925,6 +1016,9 @@ export type OrchestrationRunUpdateWithoutParticipantSnapshotsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -946,6 +1040,9 @@ export type OrchestrationRunUncheckedUpdateWithoutParticipantSnapshotsInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -963,6 +1060,9 @@ export type OrchestrationRunCreateWithoutCheckpointsInput = {
   id?: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -984,6 +1084,9 @@ export type OrchestrationRunUncheckedCreateWithoutCheckpointsInput = {
   ownerId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -1017,6 +1120,9 @@ export type OrchestrationRunUpdateWithoutCheckpointsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1038,6 +1144,9 @@ export type OrchestrationRunUncheckedUpdateWithoutCheckpointsInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1055,6 +1164,9 @@ export type OrchestrationRunCreateWithoutEventsInput = {
   id?: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -1076,6 +1188,9 @@ export type OrchestrationRunUncheckedCreateWithoutEventsInput = {
   ownerId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -1109,6 +1224,9 @@ export type OrchestrationRunUpdateWithoutEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1130,6 +1248,9 @@ export type OrchestrationRunUncheckedUpdateWithoutEventsInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1147,6 +1268,9 @@ export type OrchestrationRunCreateWithoutProviderCallsInput = {
   id?: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -1168,6 +1292,9 @@ export type OrchestrationRunUncheckedCreateWithoutProviderCallsInput = {
   ownerId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -1201,6 +1328,9 @@ export type OrchestrationRunUpdateWithoutProviderCallsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1222,6 +1352,9 @@ export type OrchestrationRunUncheckedUpdateWithoutProviderCallsInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1239,6 +1372,9 @@ export type OrchestrationRunCreateWithoutUsageLogsInput = {
   id?: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -1260,6 +1396,9 @@ export type OrchestrationRunUncheckedCreateWithoutUsageLogsInput = {
   ownerId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -1293,6 +1432,9 @@ export type OrchestrationRunUpdateWithoutUsageLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1314,6 +1456,9 @@ export type OrchestrationRunUncheckedUpdateWithoutUsageLogsInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1332,6 +1477,9 @@ export type OrchestrationRunCreateManyOwnerInput = {
   conversationId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -1345,6 +1493,9 @@ export type OrchestrationRunUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1365,6 +1516,9 @@ export type OrchestrationRunUncheckedUpdateWithoutOwnerInput = {
   conversationId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1384,6 +1538,9 @@ export type OrchestrationRunUncheckedUpdateManyWithoutOwnerInput = {
   conversationId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1398,6 +1555,9 @@ export type OrchestrationRunCreateManyConversationInput = {
   ownerId: string
   status?: $Enums.RunStatus
   phase?: $Enums.RunPhase | null
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  cancelRequested?: boolean
   attempt?: number
   idempotencyKey: string
   degraded?: boolean
@@ -1411,6 +1571,9 @@ export type OrchestrationRunUpdateWithoutConversationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1431,6 +1594,9 @@ export type OrchestrationRunUncheckedUpdateWithoutConversationInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1450,6 +1616,9 @@ export type OrchestrationRunUncheckedUpdateManyWithoutConversationInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRunStatusFieldUpdateOperationsInput | $Enums.RunStatus
   phase?: Prisma.NullableEnumRunPhaseFieldUpdateOperationsInput | $Enums.RunPhase | null
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelRequested?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   degraded?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1532,6 +1701,9 @@ export type OrchestrationRunSelect<ExtArgs extends runtime.Types.Extensions.Inte
   ownerId?: boolean
   status?: boolean
   phase?: boolean
+  leaseOwner?: boolean
+  leaseExpiresAt?: boolean
+  cancelRequested?: boolean
   attempt?: boolean
   idempotencyKey?: boolean
   degraded?: boolean
@@ -1555,6 +1727,9 @@ export type OrchestrationRunSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   ownerId?: boolean
   status?: boolean
   phase?: boolean
+  leaseOwner?: boolean
+  leaseExpiresAt?: boolean
+  cancelRequested?: boolean
   attempt?: boolean
   idempotencyKey?: boolean
   degraded?: boolean
@@ -1572,6 +1747,9 @@ export type OrchestrationRunSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   ownerId?: boolean
   status?: boolean
   phase?: boolean
+  leaseOwner?: boolean
+  leaseExpiresAt?: boolean
+  cancelRequested?: boolean
   attempt?: boolean
   idempotencyKey?: boolean
   degraded?: boolean
@@ -1589,6 +1767,9 @@ export type OrchestrationRunSelectScalar = {
   ownerId?: boolean
   status?: boolean
   phase?: boolean
+  leaseOwner?: boolean
+  leaseExpiresAt?: boolean
+  cancelRequested?: boolean
   attempt?: boolean
   idempotencyKey?: boolean
   degraded?: boolean
@@ -1598,7 +1779,7 @@ export type OrchestrationRunSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrchestrationRunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "conversationId" | "ownerId" | "status" | "phase" | "attempt" | "idempotencyKey" | "degraded" | "degradationReasons" | "configSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["orchestrationRun"]>
+export type OrchestrationRunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "conversationId" | "ownerId" | "status" | "phase" | "leaseOwner" | "leaseExpiresAt" | "cancelRequested" | "attempt" | "idempotencyKey" | "degraded" | "degradationReasons" | "configSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["orchestrationRun"]>
 export type OrchestrationRunInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1635,6 +1816,9 @@ export type $OrchestrationRunPayload<ExtArgs extends runtime.Types.Extensions.In
     ownerId: string
     status: $Enums.RunStatus
     phase: $Enums.RunPhase | null
+    leaseOwner: string | null
+    leaseExpiresAt: Date | null
+    cancelRequested: boolean
     attempt: number
     idempotencyKey: string
     degraded: boolean
@@ -2077,6 +2261,9 @@ export interface OrchestrationRunFieldRefs {
   readonly ownerId: Prisma.FieldRef<"OrchestrationRun", 'String'>
   readonly status: Prisma.FieldRef<"OrchestrationRun", 'RunStatus'>
   readonly phase: Prisma.FieldRef<"OrchestrationRun", 'RunPhase'>
+  readonly leaseOwner: Prisma.FieldRef<"OrchestrationRun", 'String'>
+  readonly leaseExpiresAt: Prisma.FieldRef<"OrchestrationRun", 'DateTime'>
+  readonly cancelRequested: Prisma.FieldRef<"OrchestrationRun", 'Boolean'>
   readonly attempt: Prisma.FieldRef<"OrchestrationRun", 'Int'>
   readonly idempotencyKey: Prisma.FieldRef<"OrchestrationRun", 'String'>
   readonly degraded: Prisma.FieldRef<"OrchestrationRun", 'Boolean'>

@@ -541,10 +541,6 @@ export type ProviderCallUncheckedUpdateManyWithoutParticipantSnapshotNestedInput
   deleteMany?: Prisma.ProviderCallScalarWhereInput | Prisma.ProviderCallScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type ProviderCallCreateNestedOneWithoutUsageLogInput = {
   create?: Prisma.XOR<Prisma.ProviderCallCreateWithoutUsageLogInput, Prisma.ProviderCallUncheckedCreateWithoutUsageLogInput>
   connectOrCreate?: Prisma.ProviderCallCreateOrConnectWithoutUsageLogInput

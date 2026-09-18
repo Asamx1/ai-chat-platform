@@ -64,6 +64,25 @@ importers:
         specifier: ^5
         version: 5.9.3
 
+  apps/worker:
+    dependencies:
+      '@aichat/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@aichat/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@aichat/providers':
+        specifier: workspace:*
+        version: link:../../packages/providers
+    devDependencies:
+      typescript:
+        specifier: ^5
+        version: 5.9.3
+      vitest:
+        specifier: ^3
+        version: 3.2.4(@types/node@24.13.5)(jiti@2.7.0)(tsx@4.23.13)
+
   packages/contracts:
     dependencies:
       zod:

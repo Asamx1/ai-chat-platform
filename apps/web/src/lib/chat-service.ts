@@ -139,10 +139,34 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
   }
   const runId = run.id;
 
+  // M2 outbox 模式：API 只写命令（run=PENDING），执行交给 worker。
+  // 过渡期：EXECUTION_MODE!=worker 时 setImmediate 内联执行保持 M1 行为。
+  if (process.env.EXECUTION_MODE !== 'worker') {
+    setImmediate(() => {
+      executeRunInline(runId, conversationId, content, modelKey).catch(() => {});
+    });
+  }
+  return { conversationId, messageId: userMessage.id, runId };
+}
+
+/** M1 兼容的内联执行（worker 就绪后由 apps/worker 的 processRun 接管）。 */
+async function executeRunInline(
+  runId: string,
+  conversationId: string,
+  content: string,
+  modelKey: string,
+): Promise<void> {
   const controller = new AbortController();
   abortControllers.set(runId, controller);
 
   try {
+    // stop 可能先于启动到达（PENDING 窗口）：cancelRequested 已置位则直接取消。
+    const early = await prisma.orchestrationRun.findUnique({
+      where: { id: runId },
+      select: { cancelRequested: true },
+    });
+    if (early?.cancelRequested) throw new AbortedError();
+
     await appendEvent(runId, 'run.started', { modelKey });
 
     const provider = providerFactory(modelKey);
@@ -155,6 +179,13 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
       if (ev.type === 'text-delta') {
         text += ev.delta;
         await appendEvent(runId, 'provider.delta', { delta: ev.delta });
+        if (text.length % 5 === 0) {
+          const row = await prisma.orchestrationRun.findUnique({
+            where: { id: runId },
+            select: { cancelRequested: true },
+          });
+          if (row?.cancelRequested) controller.abort();
+        }
       } else if (ev.type === 'error') {
         throw new Error(ev.error);
       } else if (ev.type === 'done') {
@@ -193,8 +224,6 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
     abortControllers.delete(runId);
     seqCounters.delete(runId);
   }
-
-  return { conversationId, messageId: userMessage.id, runId };
 }
 
 class AbortedError extends Error {
@@ -220,5 +249,9 @@ export async function stopChat(params: { userId: string; runId: string }): Promi
     throw new ChatNotFoundError('run not found');
   }
   abortControllers.get(params.runId)?.abort();
+  await prisma.orchestrationRun.update({
+    where: { id: params.runId },
+    data: { cancelRequested: true },
+  }).catch(() => {});
   return { ok: true };
 }

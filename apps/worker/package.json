@@ -1,0 +1,20 @@
+{
+  "name": "@aichat/worker",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/main.ts",
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aichat/contracts": "workspace:*",
+    "@aichat/db": "workspace:*",
+    "@aichat/providers": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "vitest": "^3"
+  }
+}
