@@ -1,5 +1,5 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "./generated/client.js";
+import { PrismaClient } from "./generated/client";
 
 // Prisma 7：client 必须显式持有 driver adapter（无 Rust 引擎直连连串模式）。
 const connectionString = process.env.DATABASE_URL;

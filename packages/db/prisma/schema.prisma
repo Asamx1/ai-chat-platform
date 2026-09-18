@@ -46,68 +46,73 @@ enum RunPhase {
 }
 
 model User {
-  id           String         @id @default(cuid())
-  email        String         @unique
-  passwordHash String
-  role         Role           @default(USER)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id            String             @id @default(cuid())
+  email         String             @unique
+  passwordHash  String
+  role          Role               @default(USER)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  name          String?
+  emailVerified Boolean            @default(false)
+  image         String?
+  sessions      Session[]
+  accounts      Account[]
   conversations Conversation[]
-  runs         OrchestrationRun[]
-  usageLogs    UsageLog[]
-  apiKeys      ApiKey[]
+  runs          OrchestrationRun[]
+  usageLogs     UsageLog[]
+  apiKeys       ApiKey[]
 }
 
 model Provider {
-  id        String   @id @default(cuid())
+  id        String          @id @default(cuid())
   kind      String // ollama | openai-compatible | fake
   baseUrl   String
-  enabled   Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  enabled   Boolean         @default(true)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
   models    ModelRegistry[]
   apiKeys   ApiKey[]
 }
 
 model ModelRegistry {
-  id             String   @id @default(cuid())
+  id             String        @id @default(cuid())
   providerId     String
-  provider       Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  provider       Provider      @relation(fields: [providerId], references: [id], onDelete: Cascade)
   modelKey       String
   capabilities   Json
   pricingVersion String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
   participants   Participant[]
 
   @@unique([providerId, modelKey])
 }
 
 model Conversation {
-  id         String           @id @default(cuid())
-  ownerId    String
-  owner      User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  title      String
-  type       ConversationType
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
+  id           String             @id @default(cuid())
+  ownerId      String
+  owner        User               @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  title        String
+  type         ConversationType
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
   participants Participant[]
-  messages   Message[]
-  runs       OrchestrationRun[]
-  shareLinks ShareLink[]
+  messages     Message[]
+  runs         OrchestrationRun[]
+  shareLinks   ShareLink[]
 
   @@index([ownerId, updatedAt])
 }
 
 model Participant {
-  id             String       @id @default(cuid())
+  id             String        @id @default(cuid())
   conversationId String
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversation   Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   modelId        String
   model          ModelRegistry @relation(fields: [modelId], references: [id])
   role           String
   config         Json
-  createdAt      DateTime     @default(now())
+  createdAt      DateTime      @default(now())
   messages       Message[]
 }
 
@@ -128,20 +133,20 @@ model Message {
 }
 
 model OrchestrationRun {
-  id                   String   @id @default(cuid())
+  id                   String                   @id @default(cuid())
   conversationId       String
-  conversation         Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversation         Conversation             @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   ownerId              String
-  owner                User     @relation(fields: [ownerId], references: [id])
-  status               RunStatus @default(PENDING)
+  owner                User                     @relation(fields: [ownerId], references: [id])
+  status               RunStatus                @default(PENDING)
   phase                RunPhase?
-  attempt              Int      @default(0)
+  attempt              Int                      @default(0)
   idempotencyKey       String
-  degraded             Boolean  @default(false)
+  degraded             Boolean                  @default(false)
   degradationReasons   Json?
   configSnapshot       Json
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
   participantSnapshots RunParticipantSnapshot[]
   checkpoints          RunCheckpoint[]
   events               RunEvent[]
@@ -152,67 +157,67 @@ model OrchestrationRun {
 }
 
 model RunParticipantSnapshot {
-  id                   String           @id @default(cuid())
-  runId                String
-  run                  OrchestrationRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
-  seatId               String
-  providerKey          String
-  modelKey             String
-  systemPrompt         String           @db.Text
-  params               Json
-  pricingVersion       String
-  providerCalls        ProviderCall[]
+  id             String           @id @default(cuid())
+  runId          String
+  run            OrchestrationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  seatId         String
+  providerKey    String
+  modelKey       String
+  systemPrompt   String           @db.Text
+  params         Json
+  pricingVersion String
+  providerCalls  ProviderCall[]
 }
 
 model RunCheckpoint {
-  id         String          @id @default(cuid())
-  runId      String
-  run        OrchestrationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
-  version    Int
-  stateJson  Json
-  createdAt  DateTime        @default(now())
+  id        String           @id @default(cuid())
+  runId     String
+  run       OrchestrationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  version   Int
+  stateJson Json
+  createdAt DateTime         @default(now())
 
   @@unique([runId, version])
 }
 
 model RunEvent {
-  id        String          @id @default(cuid())
+  id        String           @id @default(cuid())
   runId     String
   run       OrchestrationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
   seq       Int
   type      String
   payload   Json
-  createdAt DateTime        @default(now())
+  createdAt DateTime         @default(now())
 
   @@unique([runId, seq])
 }
 
 model ProviderCall {
-  id                   String               @id @default(cuid())
-  runId                String
-  run                  OrchestrationRun     @relation(fields: [runId], references: [id], onDelete: Cascade)
+  id                    String                  @id @default(cuid())
+  runId                 String
+  run                   OrchestrationRun        @relation(fields: [runId], references: [id], onDelete: Cascade)
   participantSnapshotId String?
-  participantSnapshot  RunParticipantSnapshot? @relation(fields: [participantSnapshotId], references: [id], onDelete: SetNull)
-  attempt              Int
-  requestHash          String               @unique
-  usage                Json?
-  error                String?
-  startedAt            DateTime             @default(now())
-  endedAt              DateTime?
-  usageLog             UsageLog?
+  participantSnapshot   RunParticipantSnapshot? @relation(fields: [participantSnapshotId], references: [id], onDelete: SetNull)
+  attempt               Int
+  requestHash           String                  @unique
+  usage                 Json?
+  error                 String?
+  startedAt             DateTime                @default(now())
+  endedAt               DateTime?
+  usageLog              UsageLog?
 }
 
 model UsageLog {
-  id         String        @id @default(cuid())
+  id         String           @id @default(cuid())
   userId     String
-  user       User          @relation(fields: [userId], references: [id])
+  user       User             @relation(fields: [userId], references: [id])
   runId      String
   run        OrchestrationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
-  callId     String        @unique
-  call       ProviderCall  @relation(fields: [callId], references: [id])
+  callId     String           @unique
+  call       ProviderCall     @relation(fields: [callId], references: [id])
   tokens     Int
   costMicros BigInt
-  createdAt  DateTime      @default(now())
+  createdAt  DateTime         @default(now())
 }
 
 model ApiKey {
@@ -238,4 +243,48 @@ model ShareLink {
   expiresAt       DateTime
   snapshotVersion Int?
   createdAt       DateTime     @default(now())
+}
+
+// ── Better Auth 支撑表（M1）─────────────────────────────
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId             String
+  providerId            String
+  issuer                String?
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([providerId, accountId])
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
 }

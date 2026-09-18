@@ -105,9 +105,13 @@ function fromPrismaRow(model: LogicalModel, row: unknown): unknown {
   if (model !== 'user' || row === null || typeof row !== 'object') return row;
   const r = row as Record<string, unknown>;
   const out: Record<string, unknown> = { ...r };
-  if ('passwordHash' in r) {
-    out.password = r.passwordHash;
-    delete out.passwordHash;
+  // 密码校验走 Account(providerId='credential') 的 password 列；
+  // user 行的 passwordHash 就地剔除，绝不能进入 better-auth 返回体（防哈希泄漏）。
+  delete out.passwordHash;
+  // better-auth 期望联查结果里叫 account（单数）；Prisma 关系字段是 accounts。
+  if ('accounts' in r && Array.isArray(r.accounts)) {
+    out.account = r.accounts;
+    delete out.accounts;
   }
   return out;
 }
@@ -118,16 +122,50 @@ function delegate(model: LogicalModel): any {
   return (prisma as any)[modelMap[model]];
 }
 
+/** 单一等值条件折叠：{AND:[{id:x}]} → {id:x}，供 update/delete 用（Prisma 单行操作需唯一形状）。 */
+function collapseWhere(w: Record<string, unknown>): Record<string, unknown> {
+  const and = w.AND as Array<Record<string, unknown>> | undefined;
+  if (and && and.length === 1 && Object.keys(w).length === 1) return { ...and[0] };
+  return w;
+}
+
+/** better-auth 的 join → Prisma include：登录联查 account，get-session 联查 user。 */
+function joinToInclude(m: LogicalModel, join?: Record<string, boolean>): Record<string, boolean> | undefined {
+  if (!join) return undefined;
+  const inc: Record<string, boolean> = {};
+  if (m === 'user' && join.account) inc.accounts = true;
+  if (m === 'session' && join.user) inc.user = true;
+  return Object.keys(inc).length ? inc : undefined;
+}
+
+/** cuid2 风格 id（better-auth 期望 adapter 生成主键）。 */
+function generateId(): string {
+  const c = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let out = '';
+  for (let i = 0; i < 24; i++) out += c[Math.floor(Math.random() * c.length)];
+  return out;
+}
+
 export const prismaAdapter = {
   async create({ model, data }: { model: string; data: Record<string, unknown> }) {
     const m = model as LogicalModel;
     const mapped = mapKeys(m, data, toColumn) as Record<string, unknown>;
+    // better-auth 不传 id（期望 adapter 侧生成）；Prisma @default(cuid()) 只在
+    // client 层生效且该字段无 DDL 默认值，所以这里显式补 cuid 风格 id。
+    if (!mapped.id) {
+      mapped.id = generateId();
+    }
     const row = await delegate(m).create({ data: mapped });
     return fromPrismaRow(m, row);
   },
-  async findOne({ model, where }: { model: string; where: unknown }) {
+  async findOne({ model, where, join }: { model: string; where: unknown; join?: Record<string, boolean> }) {
     const m = model as LogicalModel;
-    const row = await delegate(m).findUnique({ where: toPrismaWhere(m, where) });
+    // findFirst 而非 findUnique：better-auth 传任意 where 形状（含 AND 组合），
+    // findUnique 只认唯一索引形状会直接抛错（初始化探测就挂在这）。
+    const row = await delegate(m).findFirst({
+      where: toPrismaWhere(m, where),
+      include: joinToInclude(m, join),
+    });
     return fromPrismaRow(m, row);
   },
   async findMany({ model, where, limit, sortBy }: { model: string; where?: unknown; limit?: number; sortBy?: { field: string; direction: 'asc' | 'desc' } }) {
@@ -142,7 +180,7 @@ export const prismaAdapter = {
   async update({ model, where, update }: { model: string; where: unknown; update: Record<string, unknown> }) {
     const m = model as LogicalModel;
     const row = await delegate(m).update({
-      where: toPrismaWhere(m, where),
+      where: collapseWhere(toPrismaWhere(m, where)),
       data: mapKeys(m, update, toColumn),
     });
     return fromPrismaRow(m, row);
@@ -165,19 +203,17 @@ export const prismaAdapter = {
 } as unknown as Adapter;
 
 export const auth = betterAuth({
-  database: prismaAdapter,
-  // better-auth 逻辑表名映射到 Prisma model 名（User 大写等场景）
+  // better-auth 契约：database 必须是「收到 options、返回 adapter」的函数；
+  // 传普通对象会被当成 DB 连接配置走 kysely 路径然后炸掉。
+  database: () => prismaAdapter,
+  trustedOrigins: ['http://localhost:3000', 'http://127.0.0.1:3000',
+                   'http://localhost:3100', 'http://127.0.0.1:3100'],
+  // 逻辑表名用 better-auth 默认小写（user/session/account/verification），
+  // 与 Prisma delegate 名（prisma.user 等）一致；不要设 modelName 覆盖。
   user: {
-    modelName: 'User',
     additionalFields: {
       role: { type: 'string', input: false },
     },
-  },
-  account: {
-    modelName: 'Account',
-  },
-  verification: {
-    modelName: 'Verification',
   },
   emailAndPassword: {
     enabled: true,

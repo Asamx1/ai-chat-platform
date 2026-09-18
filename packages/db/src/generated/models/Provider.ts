@@ -346,10 +346,6 @@ export type ProviderScalarRelationFilter = {
   isNot?: Prisma.ProviderWhereInput
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type ProviderCreateNestedOneWithoutModelsInput = {
   create?: Prisma.XOR<Prisma.ProviderCreateWithoutModelsInput, Prisma.ProviderUncheckedCreateWithoutModelsInput>
   connectOrCreate?: Prisma.ProviderCreateOrConnectWithoutModelsInput
