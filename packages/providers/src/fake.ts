@@ -5,7 +5,7 @@ import type {
   ProviderCapabilities,
   ProviderStreamEvent,
   StreamChatOptions,
-} from './ports.js';
+} from './ports';
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 

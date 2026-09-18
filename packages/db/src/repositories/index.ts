@@ -1,3 +1,3 @@
-export * from './user.js';
-export * from './conversation.js';
-export * from './message.js';
+export * from './user';
+export * from './conversation';
+export * from './message';

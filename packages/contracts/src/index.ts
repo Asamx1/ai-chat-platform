@@ -1,3 +1,3 @@
-export * from './events.js';
-export * from './usage.js';
-export * from './api.js';
+export * from './events';
+export * from './usage';
+export * from './api';

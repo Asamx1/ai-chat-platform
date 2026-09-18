@@ -5,7 +5,7 @@ import type {
   ProviderCapabilities,
   ProviderStreamEvent,
   StreamChatOptions,
-} from './ports.js';
+} from './ports';
 
 const OVERALL_DEADLINE_MS = 240_000;
 

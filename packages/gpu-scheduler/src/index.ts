@@ -4,10 +4,10 @@ export {
   getRunning,
   probe,
   estimateVram,
-} from './ollama-client.js';
+} from './ollama-client';
 export type {
   OllamaModelInfo,
   OllamaRunningModel,
   OllamaProbeResult,
   VramEstimate,
-} from './ollama-client.js';
+} from './ollama-client';

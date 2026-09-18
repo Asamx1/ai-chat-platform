@@ -5,7 +5,7 @@ import type {
   ProviderCapabilities,
   ProviderStreamEvent,
   StreamChatOptions,
-} from './ports.js';
+} from './ports';
 
 /** Overall hard deadline for a single streamChat call. */
 const OVERALL_DEADLINE_MS = 240_000;

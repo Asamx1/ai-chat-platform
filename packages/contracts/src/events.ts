@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { UsageSchema } from './usage.js';
+import { UsageSchema } from './usage';
 
 export const RUN_EVENT_TYPES = [
   'run.started',
