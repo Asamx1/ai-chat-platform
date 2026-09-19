@@ -65,6 +65,27 @@ afterAll(async () => {
 
 describe('GPU queue: 20 concurrent claims, single worker drain', () => {
   it('all 20 runs reach terminal state, no dup claims, exactly-once accounting', async () => {
+    // 造数挪进用例：先 drain 全局队列，再建 20 个（消除与上一文件 afterAll drain 的时序耦合）
+    await prisma.$executeRawUnsafe(
+      `UPDATE "OrchestrationRun" SET status='CANCELLED', "leaseOwner"=NULL WHERE status IN ('PENDING','FAILED') OR (status='RUNNING' AND ("leaseExpiresAt" IS NULL OR "leaseExpiresAt" < now() + interval '5 seconds'))`,
+    );
+    runIds.length = 0;
+    for (let i = 0; i < N; i++) {
+      const m = await prisma.message.create({
+        data: { conversationId: convId, content: `stress-${Date.now()}-${i}`, status: 'PENDING' },
+      });
+      const r = await prisma.orchestrationRun.create({
+        data: {
+          conversationId: convId,
+          ownerId: userId,
+          status: 'PENDING',
+          idempotencyKey: `stress-${Date.now()}-${i}`,
+          configSnapshot: { modelKey: 'fake-stress', content: `stress-${i}`, userMessageId: m.id },
+        },
+      });
+      runIds.push(r.id);
+    }
+
     // 并发领取（多 worker 抢）+ 单 worker 逐个执行（模拟 GPU 串行约束）
     const claimed = new Set<string>();
     const execute = async (workerId: string) => {
