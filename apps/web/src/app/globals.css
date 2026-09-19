@@ -242,3 +242,193 @@ body {
   justify-content: center;
   color: var(--text-dim);
 }
+/* ── 运行时间线（M5 RunTimeline，Tailwind 等效原生 CSS）── */
+.tl-shell {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.tl-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tl-btn {
+  background: var(--bubble);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.tl-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.tl-toggle {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px;
+}
+
+.tl-error {
+  color: #f87171;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+/* 成本条 */
+.tl-costbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.tl-cost-total {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.tl-cost-seat {
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  padding: 2px 8px;
+}
+
+/* 席位泳道 */
+.tl-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tl-lane {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.tl-lane-id {
+  width: 80px;
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.tl-lane-track {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.tl-lane-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--accent);
+  width: 40%;
+  flex-shrink: 0;
+}
+
+.tl-lane-meta {
+  color: var(--text-dim);
+}
+
+/* 事件流 */
+.tl-stream {
+  display: flex;
+  flex-direction: column;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.tl-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.tl-row-subst {
+  background: rgba(168, 85, 247, 0.12);
+}
+
+.tl-seq {
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  width: 48px;
+  flex-shrink: 0;
+}
+
+.tl-badge {
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.tl-badge-run {
+  background: rgba(59, 130, 246, 0.18);
+  color: #93c5fd;
+}
+
+.tl-badge-collab {
+  background: rgba(168, 85, 247, 0.18);
+  color: #d8b4fe;
+}
+
+.tl-badge-provider {
+  background: rgba(115, 115, 115, 0.18);
+  color: var(--text-dim);
+}
+
+.tl-summary {
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tl-time {
+  margin-left: auto;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.tl-empty {
+  padding: 12px;
+  color: var(--text-dim);
+  font-size: 12px;
+}

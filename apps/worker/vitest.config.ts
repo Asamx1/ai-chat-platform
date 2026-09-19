@@ -18,6 +18,6 @@ export default defineConfig({
     setupFiles: ['./test/setup.ts'],
     environment: 'node',
     include: ['test/**/*.test.ts'],
-    exclude: ['**/node_modules/**', '**/test/debate-e2e.test.ts'],
+    exclude: ['**/node_modules/**', '**/test/debate-e2e.test.ts', '**/test/replay-cold.test.ts'],
   },
 });

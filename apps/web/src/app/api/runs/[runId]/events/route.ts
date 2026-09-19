@@ -48,6 +48,23 @@ export async function GET(request: Request, ctx: RouteContext): Promise<Response
   let after = Number(rawAfter ?? 0);
   if (!Number.isFinite(after) || after < 0) after = 0;
 
+  // ?format=json：一次性返回全量事件（时间线 UI 等非 SSE 消费方），after 语义与 SSE 一致。
+  if (new URL(request.url).searchParams.get('format') === 'json') {
+    const events = await prisma.runEvent.findMany({
+      where: { runId, seq: { gt: after } },
+      orderBy: { seq: 'asc' },
+    });
+    return Response.json({
+      events: events.map((ev) => ({
+        runId,
+        seq: ev.seq,
+        type: ev.type,
+        time: ev.createdAt.toISOString(),
+        payload: ev.payload,
+      })),
+    });
+  }
+
   const encoder = new TextEncoder();
   const signal = request.signal;
 
