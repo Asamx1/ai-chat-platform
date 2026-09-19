@@ -78,12 +78,16 @@ export async function getRunning(
       expires_at?: string;
     }>
   }>(baseUrl, '/api/ps');
-  return (data.models ?? []).map((m) => ({
-    name: m.name ?? '',
-    sizeBytes: m.size_vram ?? m.size ?? 0,
-    processor: m.processor ?? '',
-    expiresAt: m.expires_at ?? '',
-  }));
+  return (data.models ?? [])
+    .filter((m) => typeof m?.name === 'string' && m.name.length > 0)
+    .map((m) => ({
+      name: m.name as string,
+      sizeBytes: Number.isFinite(m.size_vram) ? (m.size_vram as number) : Number.isFinite(m.size) ? (m.size as number) : 0,
+      // E9 审查修复：processor 形如 '100% GPU'/'6%/94% CPU/GPU'，异型值归一为空串
+      processor: typeof m.processor === 'string' ? m.processor : '',
+      // expires_at 是时间戳字符串；非法值归空（调用方只做展示）
+      expiresAt: typeof m.expires_at === 'string' && !Number.isNaN(Date.parse(m.expires_at)) ? m.expires_at : '',
+    }));
 }
 
 /** Aggregate probe: reachability + models + running, with measured latency. */
@@ -107,7 +111,15 @@ export async function probe(
  * Returns null when no `<n>b` suffix is found (e.g. 'qwen3.6').
  */
 export function estimateVram(modelName: string): VramEstimate | null {
-  const match = /(\d+(?:\.\d+)?)b\b/i.exec(modelName);
+  // E9 审查修复：只认「冒号后的量化 tag」里的参数量（'qwen3:0.6b'、'llama3:8b'），
+  // 避免 '8x7b' 取 7、'mixtral-8x22b' 取 22 这类误取；MoE（x 记法）按总参保守估。
+  const tag = modelName.includes(':') ? modelName.split(':').slice(1).join(':') : modelName;
+  const moe = /(\d+)x(\d+(?:\.\d+)?)b/i.exec(tag);
+  if (moe) {
+    const totalB = Number(moe[1]) * Number(moe[2]);
+    return { paramsB: totalB, estimatedGB: Number((totalB * 0.55 + 1).toFixed(2)), moe: true };
+  }
+  const match = /(\d+(?:\.\d+)?)b\b/i.exec(tag);
   if (!match) return null;
   const paramsB = Number(match[1]);
   if (!Number.isFinite(paramsB) || paramsB <= 0) return null;
