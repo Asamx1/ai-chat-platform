@@ -7,6 +7,7 @@ import Composer from '@/components/chat/Composer';
 import ModelPicker, { getStoredModel } from '@/components/chat/ModelPicker';
 import CollabLauncher from '@/components/collab/CollabLauncher';
 import SeatStatus from '@/components/collab/SeatStatus';
+import RunTimeline from '@/components/runs/RunTimeline';
 import type { ChatMessage, MessageStatus } from '@/components/chat/types';
 
 /** SSE data JSON 事件（与冻结契约对应） */
@@ -253,7 +254,10 @@ export default function HomePage() {
         />
       </div>
       {collabRunId && (
-        <SeatStatus runId={collabRunId} onClose={() => setCollabRunId(null)} />
+        <div className="collab-side">
+          <SeatStatus runId={collabRunId} onClose={() => setCollabRunId(null)} />
+          <RunTimeline runId={collabRunId} collapsed />
+        </div>
       )}
     </div>
   );
