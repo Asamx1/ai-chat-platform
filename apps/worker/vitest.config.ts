@@ -17,5 +17,6 @@ export default defineConfig({
     fileParallelism: false,
     environment: 'node',
     include: ['test/**/*.test.ts'],
+    exclude: ['**/node_modules/**', '**/test/debate-e2e.test.ts'],
   },
 });

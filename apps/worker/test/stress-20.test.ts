@@ -55,6 +55,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await prisma.$executeRawUnsafe(`UPDATE "OrchestrationRun" SET status='CANCELLED', "leaseOwner"=NULL WHERE status IN ('PENDING','FAILED') OR (status='RUNNING' AND ("leaseExpiresAt" IS NULL OR "leaseExpiresAt" < now() + interval '5 seconds'))`);
+  // afterAllDrain
   await prisma.orchestrationRun.deleteMany({ where: { ownerId: userId } });
   await prisma.conversation.deleteMany({ where: { id: convId } });
   await prisma.user.deleteMany({ where: { id: userId } });

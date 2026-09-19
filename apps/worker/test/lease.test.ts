@@ -34,6 +34,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await drainQueue(); // afterAllDrain: 清理本文件遗留，防跨文件队列污染
   await prisma.orchestrationRun.deleteMany({ where: { ownerId: userId } });
   await prisma.conversation.deleteMany({ where: { ownerId: userId } });
   await prisma.user.delete({ where: { id: userId } });
