@@ -105,9 +105,10 @@ export async function recordUsage(opts: {
   content: string;
   tokens: number;
   usage: Prisma.InputJsonValue | null;
+  seatId?: string;
 }): Promise<void> {
   const requestHash = createHash('sha256')
-    .update(`${opts.modelKey}\n${opts.content}\n${opts.runId}`)
+    .update(`${opts.modelKey}\n${opts.content}\n${opts.runId}\n${opts.seatId ?? 'default'}`)
     .digest('hex');
   const existing = await prisma.providerCall.findUnique({
     where: { requestHash },

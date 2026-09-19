@@ -174,7 +174,7 @@ export async function processCollabRun(
       },
     });
     // 逐席幂等记账（recordUsage 以 requestHash 去重，崩溃重放不双计）。
-    for (const u of seatUsage.values()) {
+    for (const [sid, u] of seatUsage.entries()) {
       await recordUsage({
         runId,
         ownerId: run.ownerId,
@@ -183,6 +183,7 @@ export async function processCollabRun(
         content: u.prompt,
         tokens: u.tokens,
         usage: u.usage,
+        seatId: sid,
       });
     }
     await appendEvent(runId, 'run.succeeded', { messageId: assistant.id });
