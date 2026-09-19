@@ -184,6 +184,16 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
     return;
   }
 
+  // 幂等守卫：终态 run 不再执行（防重复 processRun 产生第二个 succeeded/failed）。
+  if (run.status === 'SUCCEEDED' || run.status === 'CANCELLED') {
+    await releaseLease(runId, workerId);
+    return;
+  }
+  if (run.status === 'FAILED' && run.attempt >= 3) {
+    await releaseLease(runId, workerId);
+    return;
+  }
+
   // 心跳：后台定时续租；丢租（返回 0）时中止 provider 流。
   const abort = new AbortController();
   let lostLease = false;
