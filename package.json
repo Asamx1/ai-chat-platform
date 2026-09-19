@@ -22,7 +22,10 @@
     "test:e2e": "echo 'e2e: not configured yet (M1)'",
     "build": "echo 'build: not configured yet (M1)'",
     "compose:up": "docker compose -f infra/compose.yaml --env-file .env up -d",
-    "compose:down": "docker compose -f infra/compose.yaml --env-file .env down"
+    "compose:down": "docker compose -f infra/compose.yaml --env-file .env down",
+    "dev:web": "pnpm --filter @aichat/web dev",
+    "dev:worker": "pnpm --filter @aichat/worker dev",
+    "dev:all": "node scripts/dev-all.mjs"
   },
   "devDependencies": {
     "dotenv": "^17.4.2",

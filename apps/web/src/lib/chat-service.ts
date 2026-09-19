@@ -156,6 +156,13 @@ async function executeRunInline(
   content: string,
   modelKey: string,
 ): Promise<void> {
+  // 保险：若 worker 已抢先领走该 run（leaseOwner 非空），inline 路径直接退出，避免双执行。
+  const leased = await prisma.orchestrationRun.findUnique({
+    where: { id: runId },
+    select: { leaseOwner: true },
+  });
+  if (leased?.leaseOwner) return;
+
   const controller = new AbortController();
   abortControllers.set(runId, controller);
 
@@ -206,19 +213,16 @@ async function executeRunInline(
     });
   } catch (err) {
     const aborted = controller.signal.aborted;
+    const status = aborted ? 'CANCELLED' : 'FAILED';
+    // 先落终态再写事件：若事件写入失败，run 也不会滞留 RUNNING。
+    await prisma.orchestrationRun
+      .update({ where: { id: runId }, data: { status } })
+      .catch(() => {});
     if (aborted) {
-      await appendEvent(runId, 'run.cancelled', {});
-      await prisma.orchestrationRun.update({
-        where: { id: runId },
-        data: { status: 'CANCELLED' },
-      });
+      await appendEvent(runId, 'run.cancelled', {}).catch(() => {});
     } else {
       const message = err instanceof Error ? err.message : String(err);
-      await appendEvent(runId, 'run.failed', { error: message });
-      await prisma.orchestrationRun.update({
-        where: { id: runId },
-        data: { status: 'FAILED' },
-      });
+      await appendEvent(runId, 'run.failed', { error: message }).catch(() => {});
     }
   } finally {
     abortControllers.delete(runId);

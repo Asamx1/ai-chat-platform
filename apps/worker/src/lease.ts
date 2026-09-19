@@ -21,7 +21,10 @@ export async function claimNextRun(workerId: string): Promise<string | null> {
            "attempt" = "attempt" + 1
      WHERE id = (
        SELECT id FROM "OrchestrationRun"
-        WHERE ("status" = 'PENDING' OR ("status" = 'RUNNING' AND "leaseExpiresAt" < now()))
+        WHERE ("status" = 'PENDING'
+               OR ("status" IN ('RUNNING', 'FAILED')
+                   AND ("leaseExpiresAt" IS NULL OR "leaseExpiresAt" < now())
+                   AND "attempt" < 3))
           AND "cancelRequested" = false
         ORDER BY "createdAt"
         LIMIT 1

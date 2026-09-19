@@ -1,0 +1,13 @@
+{
+  "inline": {
+    "eps": 9.33,
+    "total_s": 3
+  },
+  "worker": {
+    "eps": 3.33,
+    "total_s": 6
+  },
+  "extra_latency_s": 3,
+  "impact": "需优化",
+  "reason": "Worker模式引入的轮询与调度开销导致吞吐量下降约64%，显著增加首字延迟，影响实时对话体验。"
+}
