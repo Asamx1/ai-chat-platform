@@ -11,7 +11,8 @@
   "dependencies": {
     "@aichat/contracts": "workspace:*",
     "@aichat/db": "workspace:*",
-    "@aichat/providers": "workspace:*"
+    "@aichat/providers": "workspace:*",
+    "@aichat/orchestrator": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5",

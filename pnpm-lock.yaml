@@ -72,6 +72,9 @@ importers:
       '@aichat/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@aichat/orchestrator':
+        specifier: workspace:*
+        version: link:../../packages/orchestrator
       '@aichat/providers':
         specifier: workspace:*
         version: link:../../packages/providers

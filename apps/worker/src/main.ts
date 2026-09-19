@@ -1,6 +1,6 @@
 import os from 'node:os';
 import { claimNextRun } from './lease';
-import { processRun } from './runner';
+import { processCollabRun } from './collab-runner';
 
 const WORKER_ID = process.env.WORKER_ID || `${os.hostname()}:${process.pid}`;
 const WORKER_ONCE = process.env.WORKER_ONCE === '1';
@@ -17,7 +17,8 @@ async function main(): Promise<void> {
   while (!shuttingDown) {
     const runId = await claimNextRun(WORKER_ID);
     if (runId) {
-      await processRun(runId, WORKER_ID);
+      // 分流：processCollabRun 内部按 configSnapshot.mode 有无/席数回落 processRun。
+      await processCollabRun(runId, WORKER_ID);
       if (WORKER_ONCE) break;
       continue;
     }
