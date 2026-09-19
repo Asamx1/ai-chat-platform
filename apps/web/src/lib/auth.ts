@@ -218,8 +218,12 @@ export const prismaAdapter = {
 
 // 本地 HTTP 冒烟（next start + 127.0.0.1）下 secure cookie 不会被浏览器回传 → 显式关闭。
 // 生产（HTTPS）不受影响；显式设 AICHAT_SECURE_COOKIES=1 可强制开。
-const useSecureCookies =
-  process.env.AICHAT_SECURE_COOKIES === '1' || process.env.NODE_ENV === 'production' && !process.env.AICHAT_LOCAL_SMOKE;
+// 运行时判定（避免生产构建静态内联）：显式开关优先
+const useSecureCookies = process.env.AICHAT_SECURE_COOKIES === '1'
+  ? true
+  : process.env.AICHAT_LOCAL_SMOKE === '1'
+    ? false
+    : process.env.NODE_ENV === 'production';
 
 export const auth = betterAuth({
   // better-auth 契约：database 必须是「收到 options、返回 adapter」的函数；

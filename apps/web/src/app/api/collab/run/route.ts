@@ -58,7 +58,20 @@ export async function POST(req: Request) {
 
   // 先写 user Message（content 非空时），run 的 configSnapshot 引用其 id。
   let userMessageId: string | null = null;
-  if (input.content && input.content.length > 0) {
+  let effectiveContent = input.content ?? '';
+  if (!effectiveContent) {
+    // 未显式传 content：取会话内最新一条用户消息作为议题（API 调用者的自然预期）
+    const lastUserMsg = await prisma.message.findFirst({
+      where: { conversationId: input.conversationId, participantId: null },  // 用户消息 = 无席位
+      orderBy: { createdAt: 'desc' },
+      select: { id: true, content: true },
+    });
+    if (lastUserMsg) {
+      effectiveContent = lastUserMsg.content;
+      userMessageId = lastUserMsg.id;
+    }
+  }
+  if (effectiveContent && !userMessageId && input.content && input.content.length > 0) {
     const msg = await prisma.message.create({
       data: {
         conversationId: input.conversationId,
@@ -79,7 +92,7 @@ export async function POST(req: Request) {
         configSnapshot: {
           mode: input.mode,
           seats: input.seats,
-          content: input.content ?? '',
+          content: effectiveContent,
           userMessageId,
         },
         participantSnapshots: {
