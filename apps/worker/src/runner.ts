@@ -23,7 +23,7 @@ export interface RunnerDeps {
   cancelPollIntervalMs?: number;
 }
 
-const DEFAULT_PROVIDER_FACTORY: WorkerProviderFactory = (modelKey) => {
+export const DEFAULT_PROVIDER_FACTORY: WorkerProviderFactory = (modelKey) => {
   // 故障注入测试通道：SLOWMO=1 且 modelKey 以 slowmo 开头 → 慢速 Fake（每 token 100ms）。
   if (process.env.SLOWMO === '1' && modelKey.startsWith('slowmo')) {
     return new FakeProvider(
@@ -43,7 +43,7 @@ const CHECKPOINT_EVERY_MS = 2_000;
  * 追加 RunEvent。seq 用单条 SQL 内的子查询 MAX(seq)+1 计算，
  * 配合 (runId, seq) 唯一约束，多进程并发追加不会写出重复 seq。
  */
-async function appendEvent(
+export async function appendEvent(
   runId: string,
   type: string,
   payload: Record<string, unknown>,
@@ -97,7 +97,7 @@ async function saveCheckpoint(runId: string, state: RunState, version: number): 
 }
 
 /** 幂等记账：requestHash 已存在则跳过（崩溃重放不会双计）。 */
-async function recordUsage(opts: {
+export async function recordUsage(opts: {
   runId: string;
   ownerId: string;
   attempt: number;

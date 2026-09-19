@@ -4,3 +4,4 @@ export * from './strategies/group';
 export * from './strategies/consensus';
 export * from './context-builder';
 export * from './budget';
+export * from './collab';

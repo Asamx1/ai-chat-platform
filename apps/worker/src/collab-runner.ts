@@ -138,7 +138,8 @@ export async function processCollabRun(
       tokens: (prev?.tokens ?? 0) + tokens,
       usage: usageJson ?? prev?.usage ?? null,
     });
-    return { text, tokens, usage: usageJson };
+    // E1 契约：CallModel 返回 string（usage 走 seatUsage 旁路收集）。
+    return text;
   };
 
   try {
