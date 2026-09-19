@@ -120,6 +120,16 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.13.5)(jiti@2.7.0)(tsx@4.23.13)
 
+  packages/orchestrator:
+    dependencies:
+      '@aichat/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/node@24.13.5)(jiti@2.7.0)(tsx@4.23.13)
+
   packages/providers:
     dependencies:
       '@aichat/contracts':

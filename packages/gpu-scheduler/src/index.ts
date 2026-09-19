@@ -11,3 +11,12 @@ export type {
   OllamaProbeResult,
   VramEstimate,
 } from './ollama-client';
+export { decide, estimateRequiredBytes } from './admission';
+export type {
+  AdmissionRequest,
+  AdmissionDecision,
+  AdmissionReason,
+  RunningModelSnapshot,
+  VramSnapshot,
+} from './admission';
+export { RunQueue, waitTimeEstimate } from './queue';
