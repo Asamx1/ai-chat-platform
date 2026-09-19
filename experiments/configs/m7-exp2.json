@@ -1,0 +1,19 @@
+{
+  "id": "m7-exp2",
+  "name": "M7 exp2: ablation — seat composition / self-consistency / debate anti-trap",
+  "createdAt": "2026-09-26T00:00:00.000Z",
+  "conditions": [
+    { "id": "c-cons-strong", "kind": "CONSENSUS", "params": { "seats": ["qwen3:0.6b", "qwen2.5:7b", "qwen2.5:7b"], "judgeModel": "qwen2.5:7b" } },
+    { "id": "c-selfcons", "kind": "SELF_CONSISTENCY_K", "params": { "model": "qwen2.5:7b", "k": 3 } },
+    { "id": "c-debate", "kind": "DEBATE", "params": { "pro": "qwen2.5:7b", "con": "qwen3:0.6b", "judge": "qwen2.5:7b", "rounds": 1 } }
+  ],
+  "dataset": { "path": "datasets/m7-exp1-v1.jsonl", "hash": "2a7119204493e712" },
+  "budget": { "maxTokensPerRun": 8192, "maxTotalUsdMicros": 0 },
+  "repeats": 3,
+  "seed": 43,
+  "models": [
+    { "key": "qwen3:0.6b", "provider": "ollama", "version": "local" },
+    { "key": "qwen2.5:7b", "provider": "ollama", "version": "local" }
+  ],
+  "meta": { "purpose": "RQ2-ablation", "notes": "exp1 baseline reuse: c-single-06b/c-single-7b/c-consensus from m7-exp1.jsonl" }
+}
