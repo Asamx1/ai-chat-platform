@@ -1,0 +1,36 @@
+{
+  "id": "exp-m6-example-001",
+  "name": "M6 example: single vs consensus vs debate",
+  "createdAt": "2026-09-19T00:00:00.000Z",
+  "conditions": [
+    {
+      "id": "c-single",
+      "kind": "SINGLE",
+      "params": { "model": "qwen3:8b", "temperature": 0.7 }
+    },
+    {
+      "id": "c-consensus",
+      "kind": "CONSENSUS",
+      "params": { "seats": 3, "model": "qwen3:8b", "temperature": 0.7 }
+    },
+    {
+      "id": "c-debate",
+      "kind": "DEBATE",
+      "params": { "rounds": 2, "model": "qwen3:8b" }
+    }
+  ],
+  "dataset": {
+    "path": "experiments/datasets/mmlu-sample.jsonl",
+    "hash": "0123456789abcdef0123456789abcdef"
+  },
+  "budget": {
+    "maxTokensPerRun": 100000,
+    "maxTotalUsdMicros": 5000000
+  },
+  "repeats": 3,
+  "seed": 42,
+  "models": [
+    { "key": "qwen3:8b", "provider": "ollama", "version": "qwen3:8b-2025-07" }
+  ],
+  "meta": { "notes": "example manifest for M6 day 1" }
+}

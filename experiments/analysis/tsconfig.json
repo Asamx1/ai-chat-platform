@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "noEmit": true,
+    "strict": true,
+    "types": ["vitest/globals"]
+  },
+  "include": ["./**/*.ts"]
+}
