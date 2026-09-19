@@ -26,13 +26,49 @@ Next.js 16.3 · React 19 · TypeScript 5 strict · tRPC 11 · Prisma 7 · Postgr
 | `infra/` | compose、Caddy、备份/恢复/健康脚本 |
 | `docs/` | ADR、协议、实验、运维、里程碑报告 |
 
-## 快速开始
+## 快速开始（空白环境完整路径）
+
+前置：Windows 11 + Docker Desktop（WSL2 backend）+ Node.js 24 LTS + pnpm 10 + Ollama（含 qwen3:0.6b / qwen3:8b / qwen2.5:7b）+ D 盘 ≥100GB。
 
 ```powershell
+# 1) 依赖
 pnpm install --frozen-lockfile
-Copy-Item .env.example .env   # 填入本地值
-pnpm compose:up               # postgres + redis + minio（卷在 D:\ai-chat-data）
-pnpm --filter @aichat/db prisma migrate dev
+
+# 2) 环境变量
+Copy-Item .env.example .env
+# 编辑 .env：DATABASE_URL/REDIS_URL/BETTER_AUTH_SECRET（必填）、SEED_ADMIN_EMAIL/PASSWORD（可选）
+
+# 3) 基础设施（postgres 17 + redis 7 + minio；卷在 D:\ai-chat-data）
+pnpm compose:up
+
+# 4) 数据库迁移 + 种子（管理员账号）
+pnpm --filter @aichat/db prisma migrate deploy
+pnpm --filter @aichat/web seed
+
+# 5) 构建 + 启动
+pnpm --filter @aichat/web exec next build
+pnpm --filter @aichat/web exec next start -p 3000   # Web/API
+pnpm --filter @aichat/worker exec tsx src/main.ts    # durable worker（另开终端）
+
+# 6) 验证
+curl http://127.0.0.1:3000/                          # 登录页 200
+node tests/smoke-db.mjs                               # DB 连通
+node tests/m1-acceptance.mjs 10                       # SSE/隔离黄金路径
+```
+
+## 演示路径（答辩 5 分钟）
+
+1. 登录 → 单聊（流式/停止/刷新续传）
+2. 发起三席协作（CONSENSUS 或 DEBATE）→ SeatStatus 泳道 + RunTimeline 时间线
+3. 停止运行 → 2 秒 cancelling；重启 worker → 60 秒内恢复
+4. 运行导出（/api/runs/[id]/export，含 configHash）+ 回放（Redis 清空后 DB 冷启动仍可回放）
+5. 实验表格（docs/experiments/m7-exp1-results.md、m7-exp2-results.md）
+
+## 备份与恢复
+
+```powershell
+powershell -File infra/scripts/backup.ps1                       # → E:\ai-chat-data\backups\backup-*.sql.gz + manifest
+powershell -File infra/scripts/restore.ps1 -BackupFile <path>   # → 恢复到 aichat_restore 验证库并核验计数
 ```
 
 ## 边界规则
