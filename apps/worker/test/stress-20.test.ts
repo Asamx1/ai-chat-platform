@@ -105,6 +105,19 @@ describe('GPU queue: 20 concurrent claims, single worker drain', () => {
     // 2 个并发 claim worker（队列消费端），顺序执行保证 GPU 串行
     await Promise.all([execute('stress-w1'), execute('stress-w2')]);
 
+    if (claimed.size !== N) {
+      const rows = await prisma.orchestrationRun.findMany({
+        where: { id: { in: runIds } },
+        select: { id: true, status: true, leaseOwner: true, attempt: true },
+      });
+      const missing = runIds.filter((id) => !claimed.has(id));
+      console.log(
+        '[stress-diag] claimed:',
+        claimed.size,
+        '| missing runs:',
+        JSON.stringify(rows.filter((r) => missing.includes(r.id))),
+      );
+    }
     expect(claimed.size).toBe(N);
     for (const id of runIds) {
       const r = await prisma.orchestrationRun.findUnique({ where: { id } });

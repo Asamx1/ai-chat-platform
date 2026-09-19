@@ -15,6 +15,7 @@ export default defineConfig({
   test: {
     // claim 是全局队列：worker 测试必须文件级串行，否则互相领取对方的 run。
     fileParallelism: false,
+    setupFiles: ['./test/setup.ts'],
     environment: 'node',
     include: ['test/**/*.test.ts'],
     exclude: ['**/node_modules/**', '**/test/debate-e2e.test.ts'],
