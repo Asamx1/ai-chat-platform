@@ -5,3 +5,6 @@ export * from './strategies/consensus';
 export * from './context-builder';
 export * from './budget';
 export * from './collab';
+export * from './strategies/debate';
+export * from './judge';
+export * from './judge-schema';

@@ -131,6 +131,9 @@ importers:
       '@aichat/contracts':
         specifier: workspace:*
         version: link:../contracts
+      zod:
+        specifier: 4.1.5
+        version: 4.1.5
     devDependencies:
       vitest:
         specifier: ^3.2.4

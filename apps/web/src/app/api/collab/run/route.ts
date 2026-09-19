@@ -9,7 +9,8 @@ export const maxDuration = 300;
 
 // 契约（M1/M2）只定义了核心字段；请求侧补充幂等键、可选首条消息与席数上限。
 const BodySchema = CollabCreateRunInputSchema.extend({
-  seats: z.array(CollabSeatSchema).min(1).max(6),
+  // 协作至少 2 席；辩论场景可到 8 席（4 正/反/裁判 + 备席）。
+  seats: z.array(CollabSeatSchema).min(2).max(8),
   idempotencyKey: z.string().min(1),
   content: z.string().optional(),
 });

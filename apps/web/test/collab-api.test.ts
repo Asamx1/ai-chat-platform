@@ -120,6 +120,33 @@ describe('POST /api/collab/run', () => {
     await prisma.orchestrationRun.deleteMany({ where: { id: a.runId } });
   });
 
+  it('creates a 4-seat DEBATE run (2 pro / 1 con / 1 judge) with four participant snapshots', async () => {
+    sessionState.userId = ids.userId!;
+    const res = await POST(makeBody({
+      mode: 'DEBATE',
+      seats: [
+        { seatId: 'pro-1', modelId: 'qwen3:0.6b', role: 'pro', systemPrompt: '你是正方一辩' },
+        { seatId: 'pro-2', modelId: 'qwen3:0.6b', role: 'pro', systemPrompt: '你是正方二辩' },
+        { seatId: 'con-1', modelId: 'qwen3:0.6b', role: 'con', systemPrompt: '你是反方' },
+        { seatId: 'judge-1', modelId: 'qwen3:0.6b', role: 'judge', systemPrompt: '你是裁判' },
+      ],
+    }));
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { runId: string };
+    expect(body.runId).toBeTruthy();
+
+    const run = await prisma.orchestrationRun.findUnique({
+      where: { id: body.runId },
+      include: { participantSnapshots: true },
+    });
+    expect(run).not.toBeNull();
+    expect(run!.participantSnapshots).toHaveLength(4);
+    const snapshot = run!.configSnapshot as { mode?: string };
+    expect(snapshot.mode).toBe('DEBATE');
+    // 清理（idempotencyKey 与主用例不同）。
+    await prisma.orchestrationRun.deleteMany({ where: { id: body.runId } });
+  });
+
   it('returns 404 when the conversation belongs to someone else', async () => {
     sessionState.userId = ids.otherUserId!;
     const res = await POST(makeBody());

@@ -142,21 +142,42 @@ export async function processCollabRun(
     return text;
   };
 
+  // 单席失败替换（M4 出口项）：席位 callModel 抛错时，找同 role 且
+  // seatId 以 '-backup' 结尾的备用席重试一次；无备用则走原有降级/失败路径。
+  const callModelWithSubstitution: CallModel = async (seat, prompt, signal) => {
+    try {
+      return await callModel(seat, prompt, signal);
+    } catch (err) {
+      if (err instanceof CollabCancelledError) throw err;
+      const backup = seats.find(
+        (s) => s.seatId.endsWith('-backup') && s.seatId !== seat.seatId && s.role === seat.role,
+      );
+      if (!backup) throw err;
+      await appendEvent(runId, 'collab.seat.substituted', { from: seat.seatId, to: backup.seatId });
+      return callModel(backup, prompt, signal);
+    }
+  };
+
   try {
     await appendEvent(runId, 'run.started', { mode: snapshot.mode, seats: seats.length });
 
     let finalOutput = '';
+    let runDegraded = false;
+    let degradationReasons: string[] = [];
     for await (const ev of runOrchestration({
       mode: snapshot.mode,
       seats,
       userContent: snapshot.content ?? '',
       tokenBudget: snapshot.tokenBudget ?? DEFAULT_TOKEN_BUDGET,
-      callModel,
+      maxRounds: snapshot.maxRounds ?? 2,
+      callModel: callModelWithSubstitution,
       signal: abort.signal,
       shouldCancel: cancelRequested,
     })) {
       if (ev.type === 'final') {
         finalOutput = ev.output;
+        runDegraded = ev.degraded === true;
+        degradationReasons = ev.reasons ?? [];
         continue;
       }
       const payload: Record<string, unknown> = { ...ev };
@@ -187,9 +208,13 @@ export async function processCollabRun(
       });
     }
     await appendEvent(runId, 'run.succeeded', { messageId: assistant.id });
+    // degraded 落库：策略结果带 degraded 标志时持久化（字段 M0 schema 已有）。
     await prisma.orchestrationRun.update({
       where: { id: runId },
-      data: { status: 'SUCCEEDED' },
+      data: {
+        status: 'SUCCEEDED',
+        ...(runDegraded ? { degraded: true, degradationReasons } : {}),
+      },
     });
   } catch (err) {
     if (lostLease) return;

@@ -49,7 +49,7 @@ const DEGRADE_EVENTS = 4; // 每 4 次取消检查点产出一次 degraded 事�
 export async function* runOrchestration(
   opts: RunOrchestrationOptions,
 ): AsyncGenerator<CollabEvent> {
-  const { mode, seats, userContent, callModel, signal, shouldCancel } = opts;
+  const { mode, seats, userContent, callModel, signal, shouldCancel, maxRounds } = opts;
 
   yield { type: 'planning', mode, seats: seats.length };
 
@@ -109,12 +109,14 @@ export async function* runOrchestration(
     }
   };
 
-  if (mode === 'DEBATE') {
-    // M4 落地；M3 显式拒绝而非静默降级（PLAN §7.3 能力协商原则）
-    throw new Error('DEBATE strategy arrives in M4');
-  }
-
-  const strategy = mode === 'CONSENSUS' ? consensusStrategy : groupStrategy;
+  // M4：DEBATE 策略由并行任务交付；动态 import 避免编译期硬依赖
+  // （沙箱中 debate.ts 尚未合入时 group/consensus 路径不受影响）。
+  const strategy =
+    mode === 'DEBATE'
+      ? (await import('./strategies/debate')).debateStrategy
+      : mode === 'CONSENSUS'
+        ? consensusStrategy
+        : groupStrategy;
 
   result = await strategy.run(
     {
@@ -122,6 +124,7 @@ export async function* runOrchestration(
       seats: seats.map(toSeat),
       userContent,
       callModel: wrappedCallModel,
+      maxRounds,
     },
     emit,
   );
