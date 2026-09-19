@@ -1,0 +1,19 @@
+{
+  "id": "m7-exp1",
+  "name": "M7 exp1: SINGLE vs CONSENSUS budget-matched comparison (local qwen)",
+  "createdAt": "2026-09-25T00:00:00.000Z",
+  "conditions": [
+    { "id": "c-single-06b", "kind": "SINGLE", "params": { "model": "qwen3:0.6b" } },
+    { "id": "c-single-7b", "kind": "SINGLE", "params": { "model": "qwen2.5:7b" } },
+    { "id": "c-consensus", "kind": "CONSENSUS", "params": { "seats": ["qwen3:0.6b", "qwen3:0.6b", "qwen2.5:7b"], "judgeModel": "qwen2.5:7b" } }
+  ],
+  "dataset": { "path": "datasets/m7-exp1-v1.jsonl", "hash": "2a7119204493e712" },
+  "budget": { "maxTokensPerRun": 8192, "maxTotalUsdMicros": 0 },
+  "repeats": 3,
+  "seed": 42,
+  "models": [
+    { "key": "qwen3:0.6b", "provider": "ollama", "version": "local" },
+    { "key": "qwen2.5:7b", "provider": "ollama", "version": "local" }
+  ],
+  "meta": { "purpose": "RQ1-first-table", "notes": "SINGLE(0.6b) vs SINGLE(7b) vs CONSENSUS(0.6b*2+7b) budget-matched; scoring=normalized exact match" }
+}

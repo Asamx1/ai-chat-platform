@@ -1,0 +1,48 @@
+{"id":"a01","type":"objective","category":"arithmetic","difficulty":1,"q":"计算：17 × 23 = ?只回答数字。","ref":"391"}
+{"id":"a02","type":"objective","category":"arithmetic","difficulty":1,"q":"计算：144 ÷ 16 = ?只回答数字。","ref":"9"}
+{"id":"a03","type":"objective","category":"arithmetic","difficulty":1,"q":"计算：25 × 4 + 10 = ?只回答数字。","ref":"110"}
+{"id":"a04","type":"objective","category":"arithmetic","difficulty":2,"q":"计算：7 × 8 - 6 ÷ 2 = ?只回答数字。","ref":"53"}
+{"id":"a05","type":"objective","category":"arithmetic","difficulty":2,"q":"一个数列：2, 6, 12, 20, 30。下一个数是多少？只回答数字。","ref":"42"}
+{"id":"a06","type":"objective","category":"arithmetic","difficulty":2,"q":"3 的平方加 4 的平方等于多少？只回答数字。","ref":"25"}
+{"id":"a07","type":"objective","category":"arithmetic","difficulty":2,"q":"一件商品原价 200 元，打 7 折后是多少元？只回答数字。","ref":"140"}
+{"id":"a08","type":"objective","category":"arithmetic","difficulty":3,"q":"小明有 50 元，买了 3 支 8 元的笔和 1 本 15 元的本子，还剩多少元？只回答数字。","ref":"11"}
+{"id":"a09","type":"objective","category":"arithmetic","difficulty":3,"q":"计算：2^10 = ?只回答数字。","ref":"1024"}
+{"id":"a10","type":"objective","category":"arithmetic","difficulty":3,"q":"一根绳子对折 3 次后从中间剪一刀，会得到几段？只回答数字。","ref":"9"}
+{"id":"a11","type":"objective","category":"arithmetic","difficulty":1,"q":"计算：99 + 1 = ?只回答数字。","ref":"100"}
+{"id":"a12","type":"objective","category":"arithmetic","difficulty":2,"q":"1 到 10 的所有整数之和是多少？只回答数字。","ref":"55"}
+{"id":"l01","type":"objective","category":"logic","difficulty":1,"q":"小明比小红高，小红比小刚高。谁最矮？只回答名字。","ref":"小刚"}
+{"id":"l02","type":"objective","category":"logic","difficulty":2,"q":"如果所有的A都是B，且某些B是C，能否必然得出'某些A是C'？只回答 能 或 不能。","ref":"不能"}
+{"id":"l03","type":"objective","category":"logic","difficulty":3,"q":"甲、乙、丙三人中只有一人说真话。甲说：乙说谎。乙说：丙说谎。丙说：甲和乙都说谎。谁说真话？只回答名字。","ref":"乙"}
+{"id":"l04","type":"objective","category":"logic","difficulty":2,"q":"所有的猫都怕水，Tom 是一只猫。Tom 怕水吗？只回答 怕 或 不怕。","ref":"怕"}
+{"id":"l05","type":"objective","category":"logic","difficulty":2,"q":"如果下雨，地面会湿。地面湿了。能否必然得出下过雨？只回答 能 或 不能。","ref":"不能"}
+{"id":"l06","type":"objective","category":"logic","difficulty":3,"q":"时钟在3点15分时，时针与分针的夹角是多少度？只回答数字。","ref":"7.5"}
+{"id":"l07","type":"objective","category":"logic","difficulty":2,"q":"一个星期前是星期三。今天是星期几？只回答星期几。","ref":"星期三"}
+{"id":"l08","type":"objective","category":"logic","difficulty":3,"q":"5 个人排队，小明前面有 2 人，小明后面有几人？只回答数字。","ref":"2"}
+{"id":"l09","type":"objective","category":"logic","difficulty":2,"q":"有些花是红的，玫瑰是花。能否必然得出有些玫瑰是红的？只回答 能 或 不能。","ref":"不能"}
+{"id":"l10","type":"objective","category":"logic","difficulty":3,"q":"一个口袋里有 3 个红球和 5 个蓝球，至少摸几个球才能保证拿到一个红球？只回答数字。","ref":"6"}
+{"id":"l11","type":"objective","category":"logic","difficulty":1,"q":"白天过后是什么？只回答两个字。","ref":"夜晚"}
+{"id":"l12","type":"objective","category":"logic","difficulty":3,"q":"甲乙丙丁比赛，甲不是第一，乙在甲后面，丙是第一，丁不是最后。第二名是谁？只回答一个字。","ref":"丁"}
+{"id":"k01","type":"objective","category":"knowledge","difficulty":1,"q":"水的化学式是什么？只回答化学式。","ref":"H2O"}
+{"id":"k02","type":"objective","category":"knowledge","difficulty":1,"q":"中国最长的河流是哪条？只回答河名。","ref":"长江"}
+{"id":"k03","type":"objective","category":"knowledge","difficulty":1,"q":"一年有几个月？只回答数字。","ref":"12"}
+{"id":"k04","type":"objective","category":"knowledge","difficulty":1,"q":"光在真空中的速度大约是每秒多少万公里？只回答数字。","ref":"30"}
+{"id":"k05","type":"objective","category":"knowledge","difficulty":2,"q":"地球绕太阳一圈需要多长时间？只回答数字（单位：天，四舍五入到整数）。","ref":"365"}
+{"id":"k06","type":"objective","category":"knowledge","difficulty":2,"q":"中国有多少个省份级行政区？只回答数字。","ref":"34"}
+{"id":"k07","type":"objective","category":"knowledge","difficulty":2,"q":"氧气占地球大气体积的百分比大约是多少？只回答数字。","ref":"21"}
+{"id":"k08","type":"objective","category":"knowledge","difficulty":2,"q":"《红楼梦》的作者是谁？只回答姓名。","ref":"曹雪芹"}
+{"id":"k09","type":"objective","category":"knowledge","difficulty":3,"q":"人体最大的器官是什么？只回答器官名。","ref":"皮肤"}
+{"id":"k10","type":"objective","category":"knowledge","difficulty":3,"q":"珠穆朗玛峰的海拔大约是多少米？只回答数字（千位取整）。","ref":"8800"}
+{"id":"k11","type":"objective","category":"knowledge","difficulty":2,"q":"世界上面积最大的海洋是哪个？只回答两个字。","ref":"太平"}
+{"id":"k12","type":"objective","category":"knowledge","difficulty":3,"q":"DNA 的中文全称是什么？只回答六个字。","ref":"脱氧核糖核酸"}
+{"id":"t01","type":"objective","category":"trap","difficulty":2,"q":"一件商品先涨价20%再降价20%，最终价格比原价高还是低还是不变？只回答：高、低、不变。","ref":"低"}
+{"id":"t02","type":"objective","category":"trap","difficulty":2,"q":"一米棉花和一斤铁，哪个更重？只回答：棉花、铁、一样重。","ref":"铁"}
+{"id":"t03","type":"objective","category":"trap","difficulty":2,"q":"一个月有 31 天的月份有几个？只回答数字。","ref":"7"}
+{"id":"t04","type":"objective","category":"trap","difficulty":3,"q":"从 1 数到 100，一共要数多少个数字？只回答数字。","ref":"100"}
+{"id":"t05","type":"objective","category":"trap","difficulty":2,"q":"0.1 与 0.3 哪个大？只回答：第一个、第二个、一样大。","ref":"第二个"}
+{"id":"t06","type":"objective","category":"trap","difficulty":3,"q":"一本书每天读一半，第几天读到剩下四分之一？只回答数字。","ref":"2"}
+{"id":"t07","type":"objective","category":"trap","difficulty":2,"q":"正方形有几条对称轴？只回答数字。","ref":"4"}
+{"id":"t08","type":"objective","category":"trap","difficulty":3,"q":"水温从 10 度升高到 20 度，升高了多少倍？只回答数字。","ref":"1"}
+{"id":"t09","type":"objective","category":"trap","difficulty":2,"q":"12 点整时针和分针重合吗？只回答：重合、不重合。","ref":"重合"}
+{"id":"t10","type":"objective","category":"trap","difficulty":3,"q":"一根 10 米长的木头，锯成 2 米一段，需要锯几次？只回答数字。","ref":"4"}
+{"id":"t11","type":"objective","category":"trap","difficulty":2,"q":"0 是偶数吗？只回答：是、不是。","ref":"是"}
+{"id":"t12","type":"objective","category":"trap","difficulty":3,"q":"1 小时 45 分钟等于多少分钟？只回答数字。","ref":"105"}
