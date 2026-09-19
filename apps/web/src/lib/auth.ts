@@ -216,10 +216,16 @@ export const prismaAdapter = {
   },
 } as unknown as DBAdapter;
 
+// 本地 HTTP 冒烟（next start + 127.0.0.1）下 secure cookie 不会被浏览器回传 → 显式关闭。
+// 生产（HTTPS）不受影响；显式设 AICHAT_SECURE_COOKIES=1 可强制开。
+const useSecureCookies =
+  process.env.AICHAT_SECURE_COOKIES === '1' || process.env.NODE_ENV === 'production' && !process.env.AICHAT_LOCAL_SMOKE;
+
 export const auth = betterAuth({
   // better-auth 契约：database 必须是「收到 options、返回 adapter」的函数；
   // 传普通对象会被当成 DB 连接配置走 kysely 路径然后炸掉。
   database: () => prismaAdapter,
+  ...(useSecureCookies ? {} : { advanced: { useSecureCookies: false } }),
   trustedOrigins: ['http://localhost:3000', 'http://127.0.0.1:3000',
                    'http://localhost:3100', 'http://127.0.0.1:3100'],
   // 逻辑表名用 better-auth 默认小写（user/session/account/verification），
