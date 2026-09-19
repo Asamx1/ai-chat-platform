@@ -5,6 +5,8 @@ import ConversationList from '@/components/chat/ConversationList';
 import MessageStream from '@/components/chat/MessageStream';
 import Composer from '@/components/chat/Composer';
 import ModelPicker, { getStoredModel } from '@/components/chat/ModelPicker';
+import CollabLauncher from '@/components/collab/CollabLauncher';
+import SeatStatus from '@/components/collab/SeatStatus';
 import type { ChatMessage, MessageStatus } from '@/components/chat/types';
 
 /** SSE data JSON 事件（与冻结契约对应） */
@@ -36,6 +38,8 @@ export default function HomePage() {
   const [sending, setSending] = useState(false);
   const [listRefresh, setListRefresh] = useState(0);
   const [notice, setNotice] = useState<string | null>(null);
+  // 协作运行侧栏：非空时渲染 SeatStatus
+  const [collabRunId, setCollabRunId] = useState<string | null>(null);
   const esRef = useRef<EventSource | null>(null);
   // 当前流式 assistant 消息 id 与待重试的 idempotencyKey
   const assistantIdRef = useRef<string | null>(null);
@@ -233,7 +237,10 @@ export default function HomePage() {
       <div className="chat-main">
         <div className="chat-topbar">
           <span>{activeId ? '对话' : '新对话'}</span>
-          <ModelPicker value={modelKey} onChange={setModelKey} disabled={sending} />
+          <div className="topbar-actions">
+            <CollabLauncher conversationId={activeId} onLaunched={setCollabRunId} />
+            <ModelPicker value={modelKey} onChange={setModelKey} disabled={sending} />
+          </div>
         </div>
         {notice && <div className="msg-status failed" style={{ padding: '8px 16px' }}>{notice}</div>}
         <MessageStream messages={messages} onRetry={handleRetry} />
@@ -245,6 +252,9 @@ export default function HomePage() {
           onStop={handleStop}
         />
       </div>
+      {collabRunId && (
+        <SeatStatus runId={collabRunId} onClose={() => setCollabRunId(null)} />
+      )}
     </div>
   );
 }
