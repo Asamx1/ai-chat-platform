@@ -1,0 +1,12 @@
+{"id":"obj-01","type":"objective","category":"arithmetic","q":"计算：17 × 23 = ?只回答数字。","ref":"391"}
+{"id":"obj-02","type":"objective","category":"arithmetic","q":"计算：144 ÷ 16 = ?只回答数字。","ref":"9"}
+{"id":"obj-03","type":"objective","category":"logic","q":"如果所有的A都是B，且某些B是C，能否必然得出'某些A是C'？只回答 能 或 不能。","ref":"不能"}
+{"id":"obj-04","type":"objective","category":"logic","q":"小明比小红高，小红比小刚高。谁最矮？只回答名字。","ref":"小刚"}
+{"id":"obj-05","type":"objective","category":"knowledge","q":"光在真空中的速度大约是每秒多少万公里？只回答数字。","ref":"30"}
+{"id":"obj-06","type":"objective","category":"knowledge","q":"水的化学式是什么？只回答化学式。","ref":"H2O"}
+{"id":"obj-07","type":"objective","category":"arithmetic","q":"一个数列：2, 6, 12, 20, 30。下一个数是多少？只回答数字。","ref":"42"}
+{"id":"obj-08","type":"objective","category":"logic","q":"甲、乙、丙三人中只有一人说真话。甲说：乙说谎。乙说：丙说谎。丙说：甲和乙都说谎。谁说真话？只回答名字。","ref":"乙"}
+{"id":"obj-09","type":"objective","category":"knowledge","q":"中国最长的河流是哪条？只回答河名。","ref":"长江"}
+{"id":"obj-10","type":"objective","category":"arithmetic","q":"一件商品先涨价20%再降价20%，最终价格比原价高还是低还是不变？只回答：高、低、不变。","ref":"低"}
+{"id":"obj-11","type":"objective","category":"logic","q":"时钟在3点15分时，时针与分针的夹角是多少度？只回答数字。","ref":"7.5"}
+{"id":"obj-12","type":"objective","category":"knowledge","q":"一年中昼夜长短变化的原因是地轴的倾斜还是地球公转速度变化？只回答：倾斜 或 速度。","ref":"倾斜"}

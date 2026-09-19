@@ -1,0 +1,61 @@
+{
+  "id": "m6-smoke-001",
+  "name": "M6 smoke: SINGLE vs CONSENSUS vs DEBATE on 12-objective set (local qwen)",
+  "createdAt": "2026-09-24T00:00:00.000Z",
+  "conditions": [
+    {
+      "id": "c-single",
+      "kind": "SINGLE",
+      "params": {
+        "model": "qwen3:0.6b"
+      }
+    },
+    {
+      "id": "c-consensus",
+      "kind": "CONSENSUS",
+      "params": {
+        "seats": [
+          "qwen3:0.6b",
+          "qwen3:0.6b",
+          "qwen2.5:7b"
+        ]
+      }
+    },
+    {
+      "id": "c-debate",
+      "kind": "DEBATE",
+      "params": {
+        "pro": "qwen2.5:7b",
+        "con": "qwen3:0.6b",
+        "judge": "qwen3:0.6b",
+        "rounds": 1
+      }
+    }
+  ],
+  "dataset": {
+    "path": "datasets/m6-smoke-v1.jsonl",
+    "hash": "a1971fb1437ce634"
+  },
+  "budget": {
+    "maxTokensPerRun": 4096,
+    "maxTotalUsdMicros": 0
+  },
+  "repeats": 1,
+  "seed": 42,
+  "models": [
+    {
+      "key": "qwen3:0.6b",
+      "provider": "ollama",
+      "version": "COMPUTED_AT_RUN"
+    },
+    {
+      "key": "qwen2.5:7b",
+      "provider": "ollama",
+      "version": "COMPUTED_AT_RUN"
+    }
+  ],
+  "meta": {
+    "purpose": "m6-pipeline-smoke",
+    "notes": "本地模型流水线冒烟，非论文正式实验"
+  }
+}
