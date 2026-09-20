@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth';
 import type { DBAdapter } from 'better-auth';
 import { prisma } from '@aichat/db';
+import { resolveUseSecureCookies } from './auth-cookies';
 import { resolveAuthOriginConfig } from './auth-origin';
 
 /**
@@ -220,11 +221,7 @@ export const prismaAdapter = {
 // 本地 HTTP 冒烟（next start + 127.0.0.1）下 secure cookie 不会被浏览器回传 → 显式关闭。
 // 生产（HTTPS）不受影响；显式设 AICHAT_SECURE_COOKIES=1 可强制开。
 // 运行时判定（避免生产构建静态内联）：显式开关优先
-const useSecureCookies = process.env.AICHAT_SECURE_COOKIES === '1'
-  ? true
-  : process.env.AICHAT_LOCAL_SMOKE === '1'
-    ? false
-    : process.env.NODE_ENV === 'production';
+const useSecureCookies = resolveUseSecureCookies(process.env);
 
 const authOriginConfig = resolveAuthOriginConfig(process.env);
 
@@ -232,7 +229,7 @@ export const auth = betterAuth({
   // better-auth 契约：database 必须是「收到 options、返回 adapter」的函数；
   // 传普通对象会被当成 DB 连接配置走 kysely 路径然后炸掉。
   database: () => prismaAdapter,
-  ...(useSecureCookies ? {} : { advanced: { useSecureCookies: false } }),
+  advanced: { useSecureCookies },
   baseURL: authOriginConfig.baseURL,
   trustedOrigins: authOriginConfig.trustedOrigins,
   // 逻辑表名用 better-auth 默认小写（user/session/account/verification），

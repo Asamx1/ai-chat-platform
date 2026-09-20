@@ -16,8 +16,19 @@ const LOCAL_TRUSTED_ORIGINS = [
   'http://127.0.0.1:3100',
 ] as const;
 
-function normalizeHttpOrigin(value: string): string {
+function parseHttpOrigin(value: string): URL {
   try {
+    const rawOrigin = /^(https?):\/\/([^/?#]+)\/?$/i.exec(value);
+    const authority = rawOrigin?.[2];
+    if (
+      value !== value.trim()
+      || /[\u0000-\u001f\u007f]/.test(value)
+      || !rawOrigin
+      || authority?.includes('@')
+      || authority?.includes('\\')
+    ) {
+      throw new Error('invalid origin');
+    }
     const url = new URL(value);
     if (
       (url.protocol !== 'http:' && url.protocol !== 'https:')
@@ -29,7 +40,7 @@ function normalizeHttpOrigin(value: string): string {
     ) {
       throw new Error('invalid origin');
     }
-    return url.origin;
+    return url;
   } catch {
     throw new Error('BETTER_AUTH_URL must be a valid HTTP(S) origin');
   }
@@ -39,10 +50,25 @@ export function resolveAuthOriginConfig(
   env: AuthOriginEnvironment,
 ): AuthOriginConfig {
   let baseURL: string;
+  const isLocalSmoke = env.AICHAT_LOCAL_SMOKE === '1';
 
   if (env.BETTER_AUTH_URL) {
-    baseURL = normalizeHttpOrigin(env.BETTER_AUTH_URL);
-  } else if (env.AICHAT_LOCAL_SMOKE === '1') {
+    const url = parseHttpOrigin(env.BETTER_AUTH_URL);
+    if (url.protocol === 'http:') {
+      if (env.NODE_ENV === 'production' && !isLocalSmoke) {
+        throw new Error('BETTER_AUTH_URL must use HTTPS in production');
+      }
+      const isLoopback = url.hostname === 'localhost'
+        || url.hostname === '127.0.0.1'
+        || url.hostname === '[::1]';
+      if (!isLocalSmoke || !isLoopback) {
+        throw new Error(
+          'HTTP BETTER_AUTH_URL is allowed only for local smoke loopback origins',
+        );
+      }
+    }
+    baseURL = url.origin;
+  } else if (isLocalSmoke) {
     baseURL = 'http://127.0.0.1:3100';
   } else if (env.NODE_ENV === 'production') {
     throw new Error('BETTER_AUTH_URL is required in production');
@@ -52,6 +78,8 @@ export function resolveAuthOriginConfig(
 
   return {
     baseURL,
-    trustedOrigins: [...new Set([...LOCAL_TRUSTED_ORIGINS, baseURL])],
+    trustedOrigins: env.NODE_ENV === 'production' && !isLocalSmoke
+      ? [baseURL]
+      : [...new Set([...LOCAL_TRUSTED_ORIGINS, baseURL])],
   };
 }
