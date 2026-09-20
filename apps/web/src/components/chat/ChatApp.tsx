@@ -239,6 +239,9 @@ export default function ChatApp() {
         <div className="chat-topbar">
           <span>{activeId ? '对话' : '新对话'}</span>
           <div className="topbar-actions">
+            <a className="topbar-link" href="/settings">
+              设置
+            </a>
             <CollabLauncher conversationId={activeId} onLaunched={setCollabRunId} />
             <ModelPicker value={modelKey} onChange={setModelKey} disabled={sending} />
           </div>
