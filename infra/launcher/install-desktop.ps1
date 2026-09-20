@@ -1,7 +1,7 @@
 ﻿# 桌面快捷方式生成（AI-Chat 演示控制台）
 # 用法: powershell -File install-desktop.ps1
 $ErrorActionPreference = 'Stop'
-$repo = Split-Path $PSScriptRoot -Parent | Split-Path -Parent | Split-Path -Parent
+$repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..\')).Path
 $target = Join-Path $repo 'infra\launcher\console.ps1'
 $desktop = [Environment]::GetFolderPath('Desktop')
 $lnk = Join-Path $desktop 'AI-Chat 演示控制台.lnk'

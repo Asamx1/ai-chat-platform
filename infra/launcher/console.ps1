@@ -2,7 +2,7 @@
 # 启动: powershell -WindowStyle Hidden -STA -File console.ps1
 # 依赖: 零（Windows 自带）；调 infra/launcher/{check,start,stop}-demo.ps1
 $ErrorActionPreference = 'Stop'
-$repo = Split-Path $PSScriptRoot -Parent | Split-Path -Parent | Split-Path -Parent  # repo/infra/launcher -> repo
+$repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..\')).Path  # repo/infra/launcher -> repo
 $launcher = Join-Path $repo 'infra\launcher'
 
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
@@ -57,8 +57,8 @@ $T = @{
     </Border>
     <!-- 日志 -->
     <Border Grid.Row="3" Background="$($T.panel)" BorderBrush="$($T.border)" BorderThickness="1" CornerRadius="8" Padding="8" Margin="0,12,0,0">
-      <TextBox Name="Log" Background="Transparent" BorderThickness="0" Foreground="$($T.text)"
-               FontFamily="Consolas" FontSize="10" IsReadOnly="True" TextWrapping="Wrap"
+      <RichTextBox Name="Log" Background="Transparent" BorderThickness="0" Foreground="$($T.text)"
+               FontFamily="Consolas" FontSize="10" IsReadOnly="True"
                VerticalScrollBarVisibility="Auto"/>
     </Border>
   </Grid>

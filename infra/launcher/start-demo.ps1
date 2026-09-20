@@ -4,7 +4,10 @@
 [CmdletBinding()]
 param(
     [switch]$Json,
-    [string]$RepoRoot
+    [string]$RepoRoot,
+    [ValidateRange(1, 300)]
+    [int]$DockerReadyTimeoutSeconds = 60,
+    [string]$DockerDesktopPath = 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -107,13 +110,25 @@ try {
 
     # ---------- S0: Docker daemon ----------
     Write-Log 'OK' 'S0' '检查 Docker daemon...'
-    while ($true) {
-        try {
-            $ver = & docker info --format '{{.ServerVersion}}' 2>$null
+    $ver = $null
+    try { $ver = & docker info --format '{{.ServerVersion}}' 2>$null } catch { }
+    if (-not ($LASTEXITCODE -eq 0 -and $ver)) {
+        if (Test-Path -LiteralPath $DockerDesktopPath -PathType Leaf) {
+            Write-Log 'WAIT' 'S0' "Docker daemon 未就绪，正在自动启动 Docker Desktop（最多等待 ${DockerReadyTimeoutSeconds}s）"
+            Start-Process -FilePath $DockerDesktopPath -WindowStyle Hidden
+        } else {
+            Write-Log 'WAIT' 'S0' "Docker Desktop 未找到：$DockerDesktopPath（最多等待 ${DockerReadyTimeoutSeconds}s）"
+        }
+
+        $dockerDeadline = (Get-Date).AddSeconds($DockerReadyTimeoutSeconds)
+        while ((Get-Date) -lt $dockerDeadline) {
+            Start-Sleep -Seconds 1
+            try { $ver = & docker info --format '{{.ServerVersion}}' 2>$null } catch { $ver = $null }
             if ($LASTEXITCODE -eq 0 -and $ver) { break }
-        } catch { }
-        Write-Log 'WAIT' 'S0' 'Docker daemon 未就绪，请打开 Docker Desktop（每 2s 重试，Ctrl+C 退出）'
-        Start-Sleep -Seconds 2
+        }
+    }
+    if (-not ($LASTEXITCODE -eq 0 -and $ver)) {
+        Fail 'S0' "Docker daemon 在 ${DockerReadyTimeoutSeconds}s 内未就绪，请检查 Docker Desktop"
     }
     Write-Log 'OK' 'S0' "Docker daemon 在线（ServerVersion=$ver）"
 
