@@ -53,6 +53,14 @@ describe('resolveAuthOriginConfig', () => {
     })).toThrow(/BETTER_AUTH_URL.*loopback/);
   });
 
+  it('rejects a public HTTPS origin when local smoke mode is enabled in production', () => {
+    expect(() => resolveAuthOriginConfig({
+      AICHAT_LOCAL_SMOKE: '1',
+      BETTER_AUTH_URL: 'https://chat.example.com',
+      NODE_ENV: 'production',
+    })).toThrow(/BETTER_AUTH_URL.*loopback/);
+  });
+
   it.each([
     'http://localhost:3100',
     'http://127.0.0.1:3100',

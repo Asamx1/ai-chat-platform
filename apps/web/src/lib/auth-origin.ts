@@ -54,13 +54,16 @@ export function resolveAuthOriginConfig(
 
   if (env.BETTER_AUTH_URL) {
     const url = parseHttpOrigin(env.BETTER_AUTH_URL);
+    const isLoopback = url.hostname === 'localhost'
+      || url.hostname === '127.0.0.1'
+      || url.hostname === '[::1]';
+    if (isLocalSmoke && !isLoopback) {
+      throw new Error('BETTER_AUTH_URL must use a loopback origin in local smoke mode');
+    }
     if (url.protocol === 'http:') {
       if (env.NODE_ENV === 'production' && !isLocalSmoke) {
         throw new Error('BETTER_AUTH_URL must use HTTPS in production');
       }
-      const isLoopback = url.hostname === 'localhost'
-        || url.hostname === '127.0.0.1'
-        || url.hostname === '[::1]';
       if (!isLocalSmoke || !isLoopback) {
         throw new Error(
           'HTTP BETTER_AUTH_URL is allowed only for local smoke loopback origins',
