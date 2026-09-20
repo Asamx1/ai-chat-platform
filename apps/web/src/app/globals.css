@@ -242,6 +242,121 @@ body {
   justify-content: center;
   color: var(--text-dim);
 }
+
+/* 登录 */
+.login-shell {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background:
+    radial-gradient(circle at top, rgba(168, 85, 247, 0.12), transparent 38%),
+    var(--bg);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+}
+
+.login-brand {
+  margin-bottom: 24px;
+}
+
+.login-brand h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.login-brand p,
+.login-hint {
+  margin: 8px 0 0;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.login-field {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.login-field label {
+  font-weight: 600;
+}
+
+.login-input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.login-input:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.24);
+}
+
+.login-submit {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: #9333ea;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-submit:hover:not(:disabled) {
+  background: #7e22ce;
+}
+
+.login-submit:focus-visible {
+  outline: 3px solid rgba(168, 85, 247, 0.4);
+  outline-offset: 3px;
+}
+
+.login-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.login-error {
+  min-height: 20px;
+  margin-top: 12px;
+  color: #f87171;
+  line-height: 1.4;
+}
+
+.login-hint {
+  overflow-wrap: anywhere;
+}
+
+.login-hint strong {
+  color: var(--text);
+}
+
+@media (max-width: 360px) {
+  .login-shell {
+    padding: 12px;
+  }
+
+  .login-card {
+    padding: 24px 18px;
+  }
+}
 /* ── 运行时间线（M5 RunTimeline，Tailwind 等效原生 CSS）── */
 .tl-shell {
   border: 1px solid var(--border);

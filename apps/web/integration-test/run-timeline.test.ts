@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
-// 直连 DB 的路由单测：mock better-auth 会话，userId 用例内注入。
+// 直连 DB 的路由集成测试：mock better-auth 会话，userId 用例内注入。
 const sessionState: { userId: string | null } = { userId: null };
 
 vi.mock('next/headers', () => ({

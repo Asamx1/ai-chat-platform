@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
-// 直连 DB 的路由单测：mock 掉 better-auth 会话（本测试不覆盖鉴权细节，只覆盖
+// 直连 DB 的路由集成测试：mock 掉 better-auth 会话（本测试不覆盖鉴权细节，只覆盖
 // 「非本人/无会话 → 404」这条契约）。userId 在用例内注入。
 const sessionState: { userId: string | null } = { userId: null };
 

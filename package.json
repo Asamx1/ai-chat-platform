@@ -17,8 +17,8 @@
   "scripts": {
     "lint": "echo 'lint: not configured yet (M1)'",
     "typecheck": "echo 'typecheck: not configured yet (M1)'",
-    "test": "vitest run",
-    "test:integration": "echo 'integration: not configured yet (M2)'",
+    "test": "vitest run && pnpm --filter @aichat/web test",
+    "test:integration": "pnpm --filter @aichat/web test:integration",
     "test:e2e": "echo 'e2e: not configured yet (M1)'",
     "build": "echo 'build: not configured yet (M1)'",
     "compose:up": "docker compose -f infra/compose.yaml --env-file .env up -d",

@@ -1,5 +1,5 @@
 /**
- * chat-service 集成测试：直连 DATABASE_URL 的 Postgres 容器。
+ * chat-service 数据库集成测试：直连 DATABASE_URL 的 Postgres 容器。
  * 注意：@aichat/db 在 import 时就要求 DATABASE_URL，因此先加载 .env
  * 再动态 import 被测模块（vitest 顶层 await 可用）。
  */
