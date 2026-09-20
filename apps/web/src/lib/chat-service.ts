@@ -2,12 +2,13 @@ import { prisma } from '@aichat/db';
 import type { Prisma } from '@aichat/db';
 import {
 
-const resolver = createResolver(prisma);
   createConversation,
   createMessage,
 } from '@aichat/db';
 import { OllamaProvider, OpenAICompatibleProvider, createResolver } from '@aichat/providers';
 import type { ProviderAdapter } from '@aichat/providers';
+
+const resolver = createResolver(prisma);
 
 /** M1：同进程流式执行。runId → AbortController / seq 计数器（模块级）。 */
 const abortControllers = new Map<string, AbortController>();

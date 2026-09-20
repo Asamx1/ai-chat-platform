@@ -12,10 +12,10 @@ export async function GET() {
   date.setUTCHours(0, 0, 0, 0);
   const [registry, keys, usage] = await Promise.all([
     prisma.modelRegistry.findMany({ include: { provider: true }, orderBy: { modelKey: 'asc' } }),
-    prisma.apiKey.findMany({ where: { userId }, select: { providerId: true } }),
+    prisma.apiKey.findMany({ where: { userId }, select: { provider: true } }),
     prisma.modelUsageDaily.findMany({ where: { userId, date } }),
   ]);
-  const configured = new Set(keys.map((key) => key.providerId));
+  const configured = new Set(keys.map((key) => key.provider));
   return NextResponse.json({
     models: registry.map((model) => {
       const cloud = model.kind === 'cloud';

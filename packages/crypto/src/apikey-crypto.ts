@@ -25,12 +25,16 @@ function deriveKey(): Buffer {
   return Buffer.from(hkdfSync('sha256', master, '', 'apikey:v1', 32));
 }
 
-// Validate configuration when this module is loaded, before handling requests.
-const dataKey = deriveKey();
+// Lazy: build-time page-data collection has no env; first use validates (fail-fast at runtime).
+let cachedKey: Buffer | undefined;
+function dataKey(): Buffer {
+  if (!cachedKey) cachedKey = deriveKey();
+  return cachedKey;
+}
 
 export function encrypt(plain: string): string {
   const iv = randomBytes(IV_LEN);
-  const cipher = createCipheriv(ALG, dataKey, iv, { authTagLength: TAG_LEN });
+  const cipher = createCipheriv(ALG, dataKey(), iv, { authTagLength: TAG_LEN });
   const ciphertext = Buffer.concat([cipher.update(plain, 'utf8'), cipher.final()]);
   return [VERSION, iv.toString('base64'), cipher.getAuthTag().toString('base64'), ciphertext.toString('base64')].join(':');
 }
@@ -43,7 +47,7 @@ export function decrypt(stored: string): string {
     const iv = decode(iv64);
     const tag = decode(tag64);
     if (iv.length !== IV_LEN || tag.length !== TAG_LEN) throw new KeyDecryptError();
-    const decipher = createDecipheriv(ALG, dataKey, iv, { authTagLength: TAG_LEN });
+    const decipher = createDecipheriv(ALG, dataKey(), iv, { authTagLength: TAG_LEN });
     decipher.setAuthTag(tag);
     return Buffer.concat([decipher.update(decode(ct64)), decipher.final()]).toString('utf8');
   } catch {

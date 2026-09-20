@@ -38,9 +38,10 @@ describe('API key crypto', () => {
     const { decrypt, KeyDecryptError } = await import('../src/index');
     expect(() => decrypt(stored)).toThrow(KeyDecryptError);
   });
-  it.each([undefined, '', Buffer.alloc(31).toString('base64'), Buffer.alloc(33).toString('base64'), 'invalid'])('fails at module initialization for invalid master %s', async master => {
+  it.each([undefined, '', Buffer.alloc(31).toString('base64'), Buffer.alloc(33).toString('base64'), 'invalid'])('fails on first use for invalid master %s', async master => {
     vi.stubEnv('ENCRYPTION_KEY', master);
-    await expect(import('../src/index')).rejects.toThrow('ENCRYPTION_KEY');
+    const { encrypt } = await import('../src/index');
+    expect(() => encrypt('x')).toThrow('ENCRYPTION_KEY');
   });
   it('masks first six and last four characters with short-key boundaries', async () => {
     const { maskKey } = await import('../src/index');
