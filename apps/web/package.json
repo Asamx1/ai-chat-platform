@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run --config vitest.config.ts",
-    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration": "node --env-file=../../.env ../../node_modules/vitest/vitest.mjs run --config vitest.integration.config.ts",
     "lint": "next lint",
     "seed": "tsx --env-file=../../.env scripts/seed.ts"
   },

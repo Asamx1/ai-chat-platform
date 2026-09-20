@@ -4,7 +4,7 @@ import { defineConfig } from 'vitest/config';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)));
 
-// 数据库集成测试需要仓库根 .env；环境变量由编排方在运行前 export。
+// 数据库集成测试需要仓库根 .env；package script 使用 Node --env-file 自动加载。
 
 export default defineConfig({
   root: rootDir,
