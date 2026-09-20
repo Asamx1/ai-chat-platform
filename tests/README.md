@@ -19,6 +19,15 @@ $env:WEB_BASE_URL='http://127.0.0.1:3100'
 node tests/smoke-login.mjs
 ```
 
+Run the legacy HTTP availability smoke when its development-server contract is available:
+
+```powershell
+$env:WEB_BASE_URL='http://localhost:3000'
+node tests/smoke-db.mjs
+```
+
+`smoke-db.mjs` requires an already-running development server with `/api/health` and the M1 landing page. It verifies that an unknown account is rejected by the auth route, `/api/health` returns 200, and `/` returns HTML containing the `ai-chat-platform` or `M1` marker. It uses HTTP only and does not connect directly to the database.
+
 ## `test:e2e` preconditions
 
 1. A production web server is already listening at `WEB_BASE_URL` (default `http://127.0.0.1:3100`).
