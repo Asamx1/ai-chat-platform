@@ -3,9 +3,8 @@ import type { Prisma } from '@aichat/db';
 import {
   createConversation,
   createMessage,
-  updateMessageStatus,
 } from '@aichat/db';
-import { OllamaProvider } from '@aichat/providers';
+import { OllamaProvider, OpenAICompatibleProvider, resolver } from '@aichat/providers';
 import type { ProviderAdapter } from '@aichat/providers';
 
 /** M1：同进程流式执行。runId → AbortController / seq 计数器（模块级）。 */
@@ -20,9 +19,8 @@ function nextSeq(runId: string): number {
 
 export type ChatProviderFactory = (modelKey: string) => ProviderAdapter;
 
-/** 默认走本机 Ollama；测试可覆盖。 */
-let providerFactory: ChatProviderFactory = (modelKey) =>
-  new OllamaProvider({ baseUrl: 'http://127.0.0.1:11434', model: modelKey });
+/** Explicit test override; production always resolves the user's model. */
+let providerFactory: ChatProviderFactory | undefined;
 
 export function setChatProviderFactory(factory: ChatProviderFactory): void {
   providerFactory = factory;
@@ -47,6 +45,7 @@ export interface SendChatResult {
   conversationId: string;
   messageId: string;
   runId: string;
+  meta?: { degraded?: { reason: 'NO_KEY' | 'QUOTA_EXCEEDED'; from: string } | undefined } | undefined;
 }
 
 async function appendEvent(
@@ -78,11 +77,12 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
     where: { ownerId_idempotencyKey: { ownerId: userId, idempotencyKey } },
   });
   if (existing) {
-    const snapshot = (existing.configSnapshot ?? {}) as { userMessageId?: string };
+    const snapshot = (existing.configSnapshot ?? {}) as { userMessageId?: string; meta?: SendChatResult['meta'] };
     return {
       conversationId: existing.conversationId,
       messageId: snapshot.userMessageId ?? '',
       runId: existing.id,
+      ...(snapshot.meta ? { meta: snapshot.meta } : {}),
     };
   }
 
@@ -103,6 +103,8 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
     conversationId = conv.id;
   }
 
+  const resolved = providerFactory ? undefined : await resolver.resolve(userId, modelKey);
+  const meta = resolved?.degraded ? { degraded: resolved.degraded } : undefined;
   const userMessage = await createMessage(prisma, conversationId, content);
 
   let run;
@@ -111,10 +113,20 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
       data: {
         conversationId,
         ownerId: userId,
-        status: 'RUNNING',
+        status: process.env.EXECUTION_MODE === 'worker' ? 'PENDING' : 'RUNNING',
+        degraded: !!meta?.degraded,
+        ...(meta?.degraded ? { degradationReasons: [meta.degraded.reason] } : {}),
         idempotencyKey,
+        participantSnapshots: {
+          create: {
+            seatId: 'default', providerKey: resolved?.adapter ?? 'test',
+            modelKey: resolved?.modelId ?? modelKey, systemPrompt: '', params: {}, pricingVersion: 'registry',
+          },
+        },
         configSnapshot: {
           modelKey,
+          content,
+          ...(meta ? { meta } : {}),
           contentLength: content.length,
           userMessageId: userMessage.id,
         },
@@ -127,11 +139,12 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
         where: { ownerId_idempotencyKey: { ownerId: userId, idempotencyKey } },
       });
       if (raced) {
-        const snapshot = (raced.configSnapshot ?? {}) as { userMessageId?: string };
+        const snapshot = (raced.configSnapshot ?? {}) as { userMessageId?: string; meta?: SendChatResult['meta'] };
         return {
           conversationId: raced.conversationId,
           messageId: snapshot.userMessageId ?? '',
           runId: raced.id,
+          ...(snapshot.meta ? { meta: snapshot.meta } : {}),
         };
       }
     }
@@ -143,10 +156,10 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
   // 过渡期：EXECUTION_MODE!=worker 时 setImmediate 内联执行保持 M1 行为。
   if (process.env.EXECUTION_MODE !== 'worker') {
     setImmediate(() => {
-      executeRunInline(runId, conversationId, content, modelKey).catch(() => {});
+      executeRunInline(runId, conversationId, content, modelKey, userId).catch(() => {});
     });
   }
-  return { conversationId, messageId: userMessage.id, runId };
+  return { conversationId, messageId: userMessage.id, runId, ...(meta ? { meta } : {}) };
 }
 
 /** M1 兼容的内联执行（worker 就绪后由 apps/worker 的 processRun 接管）。 */
@@ -155,6 +168,7 @@ async function executeRunInline(
   conversationId: string,
   content: string,
   modelKey: string,
+  userId: string,
 ): Promise<void> {
   // 保险：若 worker 已抢先领走该 run（leaseOwner 非空），inline 路径直接退出，避免双执行。
   const leased = await prisma.orchestrationRun.findUnique({
@@ -176,9 +190,16 @@ async function executeRunInline(
 
     await appendEvent(runId, 'run.started', { modelKey });
 
-    const provider = providerFactory(modelKey);
+    const resolved = providerFactory ? undefined : await resolver.resolve(userId, modelKey);
+    const provider = providerFactory ? providerFactory(modelKey)
+      : resolved!.adapter === 'ollama'
+        ? new OllamaProvider({ baseUrl: resolved!.baseUrl, model: resolved!.modelId })
+        : new OpenAICompatibleProvider({ baseUrl: resolved!.baseUrl, apiKey: resolved!.apiKey, model: resolved!.modelId });
+    if (resolved?.degraded) await appendEvent(runId, 'run.degraded', { degraded: resolved.degraded });
     let text = '';
     let finishReason = 'stop';
+    let tokensIn = 0;
+    let tokensOut = 0;
     for await (const ev of provider.streamChat(
       [{ role: 'user', content }],
       { signal: controller.signal },
@@ -193,6 +214,9 @@ async function executeRunInline(
           });
           if (row?.cancelRequested) controller.abort();
         }
+      } else if (ev.type === 'usage') {
+        tokensIn = ev.usage.promptTokens;
+        tokensOut = ev.usage.completionTokens;
       } else if (ev.type === 'error') {
         throw new Error(ev.error);
       } else if (ev.type === 'done') {
@@ -204,13 +228,34 @@ async function executeRunInline(
       throw new AbortedError();
     }
 
-    const assistant = await createMessage(prisma, conversationId, text);
-    await updateMessageStatus(prisma, assistant.id, 'COMPLETE');
-    await appendEvent(runId, 'run.succeeded', {});
-    await prisma.orchestrationRun.update({
-      where: { id: runId },
-      data: { status: 'SUCCEEDED' },
+    const date = new Date();
+    date.setUTCHours(0, 0, 0, 0);
+    await prisma.$transaction(async (tx) => {
+      const participant = await tx.runParticipantSnapshot.findFirst({
+        where: { runId, seatId: 'default' }, select: { id: true },
+      });
+      const call = await tx.providerCall.create({
+        data: {
+          runId, attempt: 0, requestHash: `inline:${runId}`,
+          ...(participant ? { participantSnapshotId: participant.id } : {}),
+          usage: { promptTokens: tokensIn, completionTokens: tokensOut }, endedAt: new Date(),
+        },
+      });
+      await tx.modelUsageDaily.upsert({
+        where: { userId_modelId_date: { userId, modelId: resolved?.modelId ?? modelKey, date } },
+        create: { userId, modelId: resolved?.modelId ?? modelKey, date, tokensIn, tokensOut },
+        update: { tokensIn: { increment: tokensIn }, tokensOut: { increment: tokensOut } },
+      });
+      await tx.usageLog.create({ data: { userId, runId, callId: call.id, tokens: tokensIn + tokensOut, costMicros: 0n } });
+      await tx.message.create({ data: { conversationId, content: text, status: 'COMPLETE' } });
+      await tx.orchestrationRun.update({
+        where: { id: runId },
+        data: { status: 'SUCCEEDED', ...(resolved?.degraded ? {
+          degraded: true, degradationReasons: [resolved.degraded.reason],
+        } : {}) },
+      });
     });
+    await appendEvent(runId, 'run.succeeded', {});
   } catch (err) {
     const aborted = controller.signal.aborted;
     const status = aborted ? 'CANCELLED' : 'FAILED';

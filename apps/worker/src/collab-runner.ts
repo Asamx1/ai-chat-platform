@@ -14,9 +14,10 @@ import {
   appendEvent,
   processRun,
   recordUsage,
-  DEFAULT_PROVIDER_FACTORY,
+  resolveRunProvider,
+  loadPrompt,
 } from './runner';
-import type { RunnerDeps, WorkerProviderFactory } from './runner';
+import type { RunnerDeps } from './runner';
 
 const RENEW_INTERVAL_MS = 10_000;
 const CANCEL_POLL_INTERVAL_MS = 500;
@@ -25,12 +26,13 @@ const DEFAULT_TOKEN_BUDGET = 1_000_000;
 export type CollabRunnerDeps = RunnerDeps;
 
 interface CollabConfigSnapshot {
-  mode?: 'GROUP' | 'CONSENSUS' | 'DEBATE';
-  seats?: unknown[];
-  content?: string;
-  userMessageId?: string | null;
-  tokenBudget?: number;
-  modelKey?: string;
+  mode?: 'GROUP' | 'CONSENSUS' | 'DEBATE' | undefined;
+  seats?: unknown[] | undefined;
+  content?: string | undefined;
+  userMessageId?: string | null | undefined;
+  tokenBudget?: number | undefined;
+  maxRounds?: number | undefined;
+  modelKey?: string | undefined;
 }
 
 /**
@@ -44,7 +46,6 @@ export async function processCollabRun(
   workerId: string,
   deps: CollabRunnerDeps = {},
 ): Promise<void> {
-  const providerFactory: WorkerProviderFactory = deps.providerFactory ?? DEFAULT_PROVIDER_FACTORY;
   const renewIntervalMs = deps.renewIntervalMs ?? RENEW_INTERVAL_MS;
   const cancelPollIntervalMs = deps.cancelPollIntervalMs ?? CANCEL_POLL_INTERVAL_MS;
 
@@ -106,11 +107,7 @@ export async function processCollabRun(
     systemPrompt: row.systemPrompt,
   }));
 
-  // 逐席用量记录：callModel 内部捕获，seatId → 记账所需字段。
-  const seatUsage = new Map<
-    string,
-    { modelKey: string; prompt: string; tokens: number; usage: Prisma.InputJsonValue | null }
-  >();
+  const invocations = new Map<string, number>();
 
   const callModel: CallModel = async (seat, prompt, signal) => {
     const messages: ChatMessage[] = [];
@@ -120,25 +117,37 @@ export async function processCollabRun(
     let text = '';
     let tokens = 0;
     let usageJson: Prisma.InputJsonValue | null = null;
-    const provider = providerFactory(seat.modelKey);
+    if (!prompt.trim()) throw new Error('EMPTY_PROMPT');
+    const invocation = invocations.get(seat.seatId) ?? 0;
+    invocations.set(seat.seatId, invocation + 1);
+    const resolved = deps.providerFactory
+      ? { provider: deps.providerFactory(seat.modelKey), modelKey: seat.modelKey, degraded: undefined }
+      : await resolveRunProvider(run.ownerId, seat.modelKey);
+    const { provider } = resolved;
+    if (resolved.degraded) {
+      await appendEvent(runId, 'run.degraded', { seatId: seat.seatId, degraded: resolved.degraded });
+      await prisma.orchestrationRun.update({ where: { id: runId }, data: {
+        degraded: true, degradationReasons: [resolved.degraded.reason],
+      } });
+    }
     for await (const ev of provider.streamChat(messages, signal ? { signal } : undefined)) {
       if (ev.type === 'text-delta') {
         text += ev.delta;
       } else if (ev.type === 'usage') {
         tokens = ev.usage.promptTokens + ev.usage.completionTokens;
-        usageJson = ev.usage as Prisma.InputJsonValue;
+        usageJson = { promptTokens: ev.usage.promptTokens, completionTokens: ev.usage.completionTokens };
       } else if (ev.type === 'error') {
         throw new Error(ev.error);
       }
     }
-    const prev = seatUsage.get(seat.seatId);
-    seatUsage.set(seat.seatId, {
-      modelKey: seat.modelKey,
-      prompt,
-      tokens: (prev?.tokens ?? 0) + tokens,
-      usage: usageJson ?? prev?.usage ?? null,
+    // Account each completed call before the next resolver quota check, even if a later seat fails.
+    await recordUsage({
+      runId, ownerId: run.ownerId, attempt: run.attempt,
+      modelKey: resolved.modelKey, content: prompt, tokens, usage: usageJson,
+      seatId: seat.seatId,
+      participantSnapshotId: seatRows.find((row) => row.seatId === seat.seatId)?.id,
+      invocation,
     });
-    // E1 契约：CallModel 返回 string（usage 走 seatUsage 旁路收集）。
     return text;
   };
 
@@ -159,6 +168,7 @@ export async function processCollabRun(
   };
 
   try {
+    const content = await loadPrompt(run.conversationId, snapshot);
     await appendEvent(runId, 'run.started', { mode: snapshot.mode, seats: seats.length });
 
     let finalOutput = '';
@@ -167,7 +177,7 @@ export async function processCollabRun(
     for await (const ev of runOrchestration({
       mode: snapshot.mode,
       seats,
-      userContent: snapshot.content ?? '',
+      userContent: content,
       tokenBudget: snapshot.tokenBudget ?? DEFAULT_TOKEN_BUDGET,
       maxRounds: snapshot.maxRounds ?? 2,
       callModel: callModelWithSubstitution,
@@ -194,19 +204,6 @@ export async function processCollabRun(
         status: 'COMPLETE',
       },
     });
-    // 逐席幂等记账（recordUsage 以 requestHash 去重，崩溃重放不双计）。
-    for (const [sid, u] of seatUsage.entries()) {
-      await recordUsage({
-        runId,
-        ownerId: run.ownerId,
-        attempt: run.attempt,
-        modelKey: u.modelKey,
-        content: u.prompt,
-        tokens: u.tokens,
-        usage: u.usage,
-        seatId: sid,
-      });
-    }
     await appendEvent(runId, 'run.succeeded', { messageId: assistant.id });
     // degraded 落库：策略结果带 degraded 标志时持久化（字段 M0 schema 已有）。
     await prisma.orchestrationRun.update({
