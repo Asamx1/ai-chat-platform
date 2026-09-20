@@ -1,62 +1,48 @@
-# M1 冒烟测试（repo/tests/）
+# Smoke and end-to-end tests
 
-针对 M1 登录链路的两个 HTTP 冒烟脚本。纯 Node（v24，PATH 自带）+ 原生 `fetch`，零依赖、不安装任何包。
+These scripts verify the running web application over HTTP. They are opt-in and are not invoked by `pnpm test` or `pnpm test:integration`.
 
-## 文件
+## Commands
 
-| 脚本 | 用途 |
-| --- | --- |
-| `smoke-login.mjs` | 登录冒烟：seed 管理员账号登录 → 拿 session cookie 调 get-session 验证身份 → 错误密码必须被拒 |
-| `smoke-db.mjs` | 可用性冒烟（run_only_if：dev server 必须已启动）：auth 路由活着（无效账号非 200）+ `/api/health` 200 + 首页 HTML 含项目标识 |
+Run the production login-page browser contract:
 
-## 前置条件
-
-1. **基础设施**：docker compose 三容器已起（postgres 容器名 `aichat-postgres`，端口 5432）。
-   `DATABASE_URL=postgresql://aichat:change-me-local-only@localhost:5432/aichat`
-2. **数据库**：Prisma migrate 已应用 + seed 已执行（存在 `admin@example.com` / `admin12345` 管理员账号）。
-3. **Web 服务**：在 `repo/` 下 `pnpm dev`，默认 `http://localhost:3000`。
-
-## 用法
-
-```bash
-cd repo/tests
-
-# 登录冒烟（默认账号 admin@example.com / admin12345）
-node smoke-login.mjs
-
-# 可用性冒烟
-node smoke-db.mjs
+```powershell
+pnpm test:e2e
 ```
 
-两个脚本成功时输出 `all assertions passed` 并以退出码 0 结束；任一断言失败输出 FAIL 明细并退出码 1，可直接接 CI。
+`test:e2e` runs `tests/smoke-login-page.cjs` with the installed `puppeteer-core` package and a locally installed Edge or Chrome executable. It does not start, build, migrate, or seed the application.
 
-## 环境变量
+Run the API login smoke independently:
 
-| 变量 | 默认值 | 说明 |
-| --- | --- | --- |
-| `WEB_BASE_URL` | `http://localhost:3000` | web dev server 地址 |
-| `SEED_ADMIN_EMAIL` | `admin@example.com` | seed 的管理员邮箱 |
-| `SEED_ADMIN_PASSWORD` | `admin12345` | seed 的管理员密码 |
-
-示例：
-
-```bash
-WEB_BASE_URL=http://localhost:3001 SEED_ADMIN_EMAIL=ops@example.com node smoke-login.mjs
+```powershell
+$env:WEB_BASE_URL='http://127.0.0.1:3100'
+node tests/smoke-login.mjs
 ```
 
-## 断言点明细
+## `test:e2e` preconditions
 
-**smoke-login.mjs**
-1. `POST {BASE}/api/auth/sign-in/email`（seed 账号）→ 断言 200，且响应体含 `session`（含 `token` 或 `id` 字段，符合 better-auth 返回结构）。
-2. 用登录响应的 Set-Cookie 调 `GET {BASE}/api/auth/get-session` → 断言 200，且 `user.email` 与入参邮箱一致。
-3. 错误密码登录 → 断言非 200（better-auth 预期返回 401）。
+1. A production web server is already listening at `WEB_BASE_URL` (default `http://127.0.0.1:3100`).
+2. PostgreSQL migrations and seed data have been applied.
+3. The seed administrator account exists.
+4. Edge or Chrome is installed, or `PUPPETEER_EXECUTABLE_PATH` identifies a browser executable.
 
-**smoke-db.mjs**（run_only_if：dev server 已启动）
-1. `POST {BASE}/api/auth/sign-in/email`（不存在账号）→ 断言非 200，验证 auth 路由活着。
-2. `GET {BASE}/api/health` → 断言 200。
-3. `GET {BASE}/` → 断言 200，且 HTML 含 `ai-chat-platform` 或 `M1`（不区分大小写）。
+The browser smoke uses a clean browser context and verifies:
 
-## 说明
+- anonymous `/` redirects to `/login`;
+- semantic email/password controls are present;
+- anonymous `/api/conversations` returns 401;
+- form login reaches `/` and renders the chat UI without `HTTP 401` text;
+- authenticated `/api/conversations` returns 200;
+- authenticated `/login` redirects to `/`;
+- the expected same-origin API statuses were observed.
 
-- 不直连数据库、不用 prisma client、不走 `docker exec psql`（跨平台问题），DB 层状态通过上述 HTTP 断言间接覆盖。
-- 脚本只读不写，不会创建/修改任何服务端数据（登录产生的 session 属正常副作用）。
+## Environment variables
+
+| Variable | Browser smoke default | API smoke default | Description |
+| --- | --- | --- | --- |
+| `WEB_BASE_URL` | `http://127.0.0.1:3100` | `http://localhost:3000` | Running web application origin. A trailing slash is accepted. |
+| `SEED_ADMIN_EMAIL` | `admin@example.com` | `admin@example.com` | Seed administrator email. |
+| `SEED_ADMIN_PASSWORD` | `admin12345` | `admin12345` | Seed administrator password. |
+| `PUPPETEER_EXECUTABLE_PATH` | auto-discovered | n/a | Optional Edge/Chrome executable override. |
+
+Neither smoke prints credentials, cookies, session tokens, or response bodies containing them. Login creates a normal server-side session as an expected side effect.

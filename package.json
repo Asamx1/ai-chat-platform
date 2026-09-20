@@ -19,7 +19,7 @@
     "typecheck": "echo 'typecheck: not configured yet (M1)'",
     "test": "vitest run && pnpm --filter @aichat/web test",
     "test:integration": "pnpm --filter @aichat/web test:integration",
-    "test:e2e": "echo 'e2e: not configured yet (M1)'",
+    "test:e2e": "node tests/smoke-login-page.cjs",
     "build": "echo 'build: not configured yet (M1)'",
     "compose:up": "docker compose -f infra/compose.yaml --env-file .env up -d",
     "compose:down": "docker compose -f infra/compose.yaml --env-file .env down",

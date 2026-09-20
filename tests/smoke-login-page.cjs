@@ -8,7 +8,8 @@
 const fs = require('node:fs');
 const puppeteer = require('puppeteer-core');
 
-const BASE = process.env.WEB_BASE_URL || 'http://127.0.0.1:3100';
+const BASE_URL = new URL(process.env.WEB_BASE_URL || 'http://127.0.0.1:3100');
+const APP_ORIGIN = BASE_URL.origin;
 const EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@example.com';
 const PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'admin12345';
 const EXECUTABLE_CANDIDATES = [
@@ -42,19 +43,22 @@ async function waitForPath(page, pathname) {
     headless: 'new',
     args: ['--no-sandbox'],
   });
-  const context = await browser.createBrowserContext();
-  const page = await context.newPage();
-  const sameOriginResponses = [];
-
-  page.on('response', (response) => {
-    const url = new URL(response.url());
-    if (url.origin === BASE && (url.pathname === '/' || url.pathname === '/login' || url.pathname.startsWith('/api/'))) {
-      sameOriginResponses.push({ method: response.request().method(), path: url.pathname, status: response.status() });
-    }
-  });
+  let context;
+  let page;
 
   try {
-    await page.goto(`${BASE}/`, { waitUntil: 'networkidle2', timeout: 30_000 });
+    context = await browser.createBrowserContext();
+    page = await context.newPage();
+    const sameOriginResponses = [];
+
+    page.on('response', (response) => {
+      const url = new URL(response.url());
+      if (url.origin === APP_ORIGIN && (url.pathname === '/' || url.pathname === '/login' || url.pathname.startsWith('/api/'))) {
+        sameOriginResponses.push({ method: response.request().method(), path: url.pathname, status: response.status() });
+      }
+    });
+
+    await page.goto(new URL('/', APP_ORIGIN).href, { waitUntil: 'networkidle2', timeout: 30_000 });
     assert('anonymous home redirects to /login', new URL(page.url()).pathname === '/login', `path=${new URL(page.url()).pathname}`);
 
     const emailInput = await page.$('input[type="email"][name="email"]');
@@ -86,7 +90,7 @@ async function waitForPath(page, pathname) {
     });
     assert('authenticated conversations request returns 200', authenticatedStatus === 200, `status=${authenticatedStatus}`);
 
-    await page.goto(`${BASE}/login`, { waitUntil: 'networkidle2', timeout: 30_000 });
+    await page.goto(new URL('/login', APP_ORIGIN).href, { waitUntil: 'networkidle2', timeout: 30_000 });
     assert('authenticated /login redirects to /', new URL(page.url()).pathname === '/', `path=${new URL(page.url()).pathname}`);
 
     assert(
@@ -100,8 +104,11 @@ async function waitForPath(page, pathname) {
     console.log(`[INFO] captured ${sameOriginResponses.length} same-origin app/API responses`);
     console.log('smoke-login-page: all assertions passed');
   } finally {
-    await context.close();
-    await browser.close();
+    try {
+      if (context) await context.close();
+    } finally {
+      await browser.close();
+    }
   }
 })().catch((error) => {
   console.error(`smoke-login-page: ${error.message}`);

@@ -34,50 +34,69 @@ $psi.EnvironmentVariables['TEMP'] = $testTemp
 $psi.EnvironmentVariables['TMP'] = $testTemp
 $psi.EnvironmentVariables['PATH'] = "$shimBin;$env:SystemRoot\System32;$env:SystemRoot;$env:SystemRoot\System32\WindowsPowerShell\v1.0"
 
+$process = $null
 $stopwatch = [Diagnostics.Stopwatch]::StartNew()
-$process = [Diagnostics.Process]::Start($psi)
-$process.WaitForExit()
-$stopwatch.Stop()
-$exitCode = $process.ExitCode
-$output = $process.StandardOutput.ReadToEnd() + $process.StandardError.ReadToEnd()
 
-if ($exitCode -ne 1) {
-    throw "Expected exit code 1 when Docker is unavailable, got $exitCode"
-}
+try {
+    $process = [Diagnostics.Process]::Start($psi)
+    if (-not $process.WaitForExit(8000)) {
+        if (-not $process.HasExited) {
+            taskkill /PID $process.Id /T /F 2>$null | Out-Null
+            $null = $process.WaitForExit(2000)
+        }
+        throw "Isolated launcher did not exit within 8 seconds; its process tree was terminated"
+    }
+    $stopwatch.Stop()
+    $exitCode = $process.ExitCode
+    $output = $process.StandardOutput.ReadToEnd() + $process.StandardError.ReadToEnd()
 
-if ($stopwatch.Elapsed.TotalSeconds -gt 5) {
-    throw "Docker readiness failure exceeded 5 seconds: $($stopwatch.Elapsed.TotalSeconds)"
-}
+    if ($exitCode -ne 1) {
+        throw "Expected exit code 1 when Docker is unavailable, got $exitCode"
+    }
 
-if ($output -notmatch 'Docker daemon.*1s') {
-    throw "Expected a bounded Docker timeout message, got: $output"
-}
+    if ($stopwatch.Elapsed.TotalSeconds -gt 5) {
+        throw "Docker readiness failure exceeded 5 seconds: $($stopwatch.Elapsed.TotalSeconds)"
+    }
 
-$isolatedRunDir = Join-Path $testTemp 'aichat-demo'
-if ((Test-Path -LiteralPath (Join-Path $isolatedRunDir 'web.pid')) -or
-    (Test-Path -LiteralPath (Join-Path $isolatedRunDir 'worker.pid'))) {
-    throw "Launcher progressed beyond the isolated Docker readiness check"
-}
+    if ($output -notmatch 'Docker daemon.*1s') {
+        throw "Expected a bounded Docker timeout message, got: $output"
+    }
 
-if ($liveWebPid) {
-    $liveWebPidAfter = (Get-Content -LiteralPath $livePidPath -Raw).Trim() -as [int]
-    if ($liveWebPidAfter -ne $liveWebPid) {
-        throw "Live web PID changed: before=$liveWebPid after=$liveWebPidAfter"
+    $isolatedRunDir = Join-Path $testTemp 'aichat-demo'
+    if ((Test-Path -LiteralPath (Join-Path $isolatedRunDir 'web.pid')) -or
+        (Test-Path -LiteralPath (Join-Path $isolatedRunDir 'worker.pid'))) {
+        throw "Launcher progressed beyond the isolated Docker readiness check"
+    }
+
+    if ($liveWebPid) {
+        $liveWebPidAfter = (Get-Content -LiteralPath $livePidPath -Raw).Trim() -as [int]
+        if ($liveWebPidAfter -ne $liveWebPid) {
+            throw "Live web PID changed: before=$liveWebPid after=$liveWebPidAfter"
+        }
+    }
+
+    if ($livePortOwner) {
+        $livePortOwnerAfter = @(netstat -ano | Select-String $listenerPattern | ForEach-Object {
+            [int]$_.Matches[0].Groups[1].Value
+        } | Select-Object -Unique) | Select-Object -First 1
+        if ($livePortOwnerAfter -ne $livePortOwner) {
+            throw "Live port-3100 owner changed: before=$livePortOwner after=$livePortOwnerAfter"
+        }
+        try {
+            $null = Get-Process -Id $livePortOwner -ErrorAction Stop
+        } catch {
+            throw "Live port-3100 owner $livePortOwner was stopped by the isolated timeout test"
+        }
+    }
+
+    Write-Output "PASS: isolated Docker-unavailable startup exits in $([math]::Round($stopwatch.Elapsed.TotalSeconds, 2))s; live port-3100 owner unchanged ($livePortOwner)"
+} finally {
+    $stopwatch.Stop()
+    if ($process -and -not $process.HasExited) {
+        taskkill /PID $process.Id /T /F 2>$null | Out-Null
+        $null = $process.WaitForExit(2000)
+    }
+    if (Test-Path -LiteralPath $testTemp) {
+        Remove-Item -LiteralPath $testTemp -Recurse -Force
     }
 }
-
-if ($livePortOwner) {
-    $livePortOwnerAfter = @(netstat -ano | Select-String $listenerPattern | ForEach-Object {
-        [int]$_.Matches[0].Groups[1].Value
-    } | Select-Object -Unique) | Select-Object -First 1
-    if ($livePortOwnerAfter -ne $livePortOwner) {
-        throw "Live port-3100 owner changed: before=$livePortOwner after=$livePortOwnerAfter"
-    }
-    try {
-        $null = Get-Process -Id $livePortOwner -ErrorAction Stop
-    } catch {
-        throw "Live port-3100 owner $livePortOwner was stopped by the isolated timeout test"
-    }
-}
-
-Write-Output "PASS: isolated Docker-unavailable startup exits in $([math]::Round($stopwatch.Elapsed.TotalSeconds, 2))s; live port-3100 owner unchanged ($livePortOwner)"
