@@ -37,11 +37,43 @@ async function seedUser(email: string, password: string, role: 'ADMIN' | 'USER')
 }
 
 async function main(): Promise<void> {
+  if (process.env.NODE_ENV === 'production' && !process.env.SEED_ADMIN_PASSWORD?.trim()) {
+    console.error('SEED_ADMIN_PASSWORD is required in production');
+    process.exit(1);
+  }
+  if (process.env.NODE_ENV !== 'production' && !process.env.SEED_ADMIN_PASSWORD) {
+    console.warn('Using the default development admin password');
+  }
   const adminEmail = process.env.SEED_ADMIN_EMAIL ?? 'admin@example.com';
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? 'admin12345';
 
   await seedUser(adminEmail, adminPassword, 'ADMIN');
-  await seedUser('demo@example.com', 'demo12345', 'USER');
+  if (process.env.NODE_ENV !== 'production') {
+    await seedUser('demo@example.com', 'demo12345', 'USER');
+  }
+
+  await prisma.provider.upsert({
+    where: { id: 'deepseek' },
+    create: { id: 'deepseek', kind: 'openai-compatible', baseUrl: 'https://api.deepseek.com/v1' },
+    update: { kind: 'openai-compatible', baseUrl: 'https://api.deepseek.com/v1' },
+  });
+  await prisma.provider.upsert({
+    where: { id: 'ollama' },
+    create: { id: 'ollama', kind: 'ollama', baseUrl: 'http://127.0.0.1:11434' },
+    update: {},
+  });
+  for (const [modelKey, label, providerId, kind, adapter, baseUrl, isDefault] of [
+    ['deepseek-chat', 'DeepSeek Chat', 'deepseek', 'cloud', 'openai-compatible', 'https://api.deepseek.com/v1', false],
+    ['deepseek-reasoner', 'DeepSeek Reasoner', 'deepseek', 'cloud', 'openai-compatible', 'https://api.deepseek.com/v1', false],
+    ['qwen3:0.6b', 'Qwen3 0.6B', 'ollama', 'local', 'ollama', 'http://127.0.0.1:11434', true],
+  ] as const) {
+    const data = { kind, adapter, baseUrl, isDefault, capabilities: { label }, pricingVersion: kind === 'local' ? 'local-0' : 'deepseek-v1' };
+    await prisma.modelRegistry.upsert({
+      where: { providerId_modelKey: { providerId, modelKey } },
+      create: { providerId, modelKey, ...data },
+      update: data,
+    });
+  }
 }
 
 main()

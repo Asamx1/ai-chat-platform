@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { prisma } from '@aichat/db';
 import type { Prisma } from '@aichat/db';
-import { OllamaProvider, FakeProvider } from '@aichat/providers';
+import { OllamaProvider, OpenAICompatibleProvider, resolver } from '@aichat/providers';
 import type { ProviderAdapter } from '@aichat/providers';
 import { releaseLease, renewLease, shouldCancel } from './lease';
 
@@ -15,24 +15,38 @@ export interface RunState {
 export type WorkerProviderFactory = (modelKey: string) => ProviderAdapter;
 
 export interface RunnerDeps {
-  /** 默认本机 Ollama；测试注入 FakeProvider。 */
-  providerFactory?: WorkerProviderFactory;
+  /** Production uses the shared resolver; tests may inject a provider. */
+  providerFactory?: WorkerProviderFactory | undefined;
   /** 心跳间隔，测试可调小。 */
-  renewIntervalMs?: number;
+  renewIntervalMs?: number | undefined;
   /** cancel 查询节流间隔。 */
-  cancelPollIntervalMs?: number;
+  cancelPollIntervalMs?: number | undefined;
 }
 
-export const DEFAULT_PROVIDER_FACTORY: WorkerProviderFactory = (modelKey) => {
-  // 故障注入测试通道：SLOWMO=1 且 modelKey 以 slowmo 开头 → 慢速 Fake（每 token 100ms）。
-  if (process.env.SLOWMO === '1' && modelKey.startsWith('slowmo')) {
-    return new FakeProvider(
-      Array.from({ length: 40 }, (_, i) => `chunk${i} `),
-      { perTokenDelayMs: 150 },
-    );
+/** Resolver contract: adapter/baseUrl/apiKey/modelId plus optional degraded metadata. */
+export async function resolveRunProvider(userId: string, modelId: string) {
+  const resolved = await resolver.resolve(userId, modelId);
+  const provider = resolved.adapter === 'ollama'
+    ? new OllamaProvider({ baseUrl: resolved.baseUrl, model: resolved.modelId })
+    : new OpenAICompatibleProvider({ baseUrl: resolved.baseUrl, apiKey: resolved.apiKey, model: resolved.modelId });
+  return { provider, modelKey: resolved.modelId, degraded: resolved.degraded };
+}
+
+/** Old snapshots can recover only their referenced message in the same conversation. */
+export async function loadPrompt(conversationId: string, snapshot: {
+  content?: string | undefined;
+  userMessageId?: string | null | undefined;
+}): Promise<string> {
+  if (snapshot.content?.trim()) return snapshot.content;
+  if (snapshot.userMessageId) {
+    const message = await prisma.message.findFirst({
+      where: { id: snapshot.userMessageId, conversationId },
+      select: { content: true },
+    });
+    if (message?.content.trim()) return message.content;
   }
-  return new OllamaProvider({ baseUrl: 'http://127.0.0.1:11434', model: modelKey });
-};
+  throw new Error('EMPTY_PROMPT');
+}
 
 const RENEW_INTERVAL_MS = 10_000;
 const CANCEL_POLL_INTERVAL_MS = 500;
@@ -105,33 +119,45 @@ export async function recordUsage(opts: {
   content: string;
   tokens: number;
   usage: Prisma.InputJsonValue | null;
-  seatId?: string;
+  seatId?: string | undefined;
+  participantSnapshotId?: string | undefined;
+  invocation?: number | undefined;
 }): Promise<void> {
   const requestHash = createHash('sha256')
-    .update(`${opts.modelKey}\n${opts.content}\n${opts.runId}\n${opts.seatId ?? 'default'}`)
+    .update(`${opts.modelKey}\n${opts.content}\n${opts.runId}\n${opts.seatId ?? 'default'}${opts.invocation ? `\n${opts.invocation}` : ''}`)
     .digest('hex');
-  const existing = await prisma.providerCall.findUnique({
-    where: { requestHash },
-    select: { id: true },
-  });
-  if (existing) return;
-  const call = await prisma.providerCall.create({
-    data: {
-      runId: opts.runId,
-      attempt: opts.attempt,
-      requestHash,
-      usage: opts.usage,
-      endedAt: new Date(),
-    },
-  });
-  await prisma.usageLog.create({
-    data: {
-      userId: opts.ownerId,
-      runId: opts.runId,
-      callId: call.id,
-      tokens: opts.tokens,
-      costMicros: 0n,
-    },
+  const usage = opts.usage as { promptTokens?: number; completionTokens?: number } | null;
+  const tokensIn = usage?.promptTokens ?? 0;
+  const tokensOut = usage?.completionTokens ?? opts.tokens;
+  const date = new Date();
+  date.setUTCHours(0, 0, 0, 0);
+  await prisma.$transaction(async (tx) => {
+    const participant = opts.participantSnapshotId ?? (await tx.runParticipantSnapshot.findFirst({
+      where: { runId: opts.runId, seatId: opts.seatId ?? 'default' },
+      select: { id: true },
+    }))?.id;
+    // Unique insertion serializes concurrent replays before incrementing quota.
+    const inserted = await tx.providerCall.createMany({
+      data: [{
+        runId: opts.runId,
+        attempt: opts.attempt,
+        requestHash,
+        ...(participant ? { participantSnapshotId: participant } : {}),
+        ...(opts.usage !== null ? { usage: opts.usage } : {}),
+        endedAt: new Date(),
+      }],
+      skipDuplicates: true,
+    });
+    if (!inserted.count) return;
+    const call = await tx.providerCall.findUniqueOrThrow({ where: { requestHash } });
+    await tx.modelUsageDaily.upsert({
+      where: { userId_modelId_date: { userId: opts.ownerId, modelId: opts.modelKey, date } },
+      create: { userId: opts.ownerId, modelId: opts.modelKey, date, tokensIn, tokensOut },
+      update: { tokensIn: { increment: tokensIn }, tokensOut: { increment: tokensOut } },
+    });
+    await tx.usageLog.create({
+      data: { userId: opts.ownerId, runId: opts.runId, callId: call.id, tokens: opts.tokens, costMicros: 0n },
+    });
   });
 }
 
@@ -168,15 +194,13 @@ class CancelledError extends Error {
  * 幂等记账 → 终态。无论成败最后释放 lease。
  */
 export async function processRun(runId: string, workerId: string, deps: RunnerDeps = {}): Promise<void> {
-  const providerFactory = deps.providerFactory ?? DEFAULT_PROVIDER_FACTORY;
   const renewIntervalMs = deps.renewIntervalMs ?? RENEW_INTERVAL_MS;
   const cancelPollIntervalMs = deps.cancelPollIntervalMs ?? CANCEL_POLL_INTERVAL_MS;
 
   const run = await prisma.orchestrationRun.findUnique({ where: { id: runId } });
   if (!run) return;
 
-  const snapshot = (run.configSnapshot ?? {}) as { content?: string; modelKey?: string };
-  const content = snapshot.content ?? '';
+  const snapshot = (run.configSnapshot ?? {}) as { content?: string; modelKey?: string; userMessageId?: string };
   const modelKey = snapshot.modelKey ?? '';
   if (!modelKey) {
     await appendEvent(runId, 'run.failed', { error: 'configSnapshot missing modelKey' });
@@ -227,7 +251,17 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
       state.seq = await appendEvent(runId, 'run.started', { modelKey });
     }
 
-    const provider = providerFactory(modelKey);
+    const content = await loadPrompt(run.conversationId, snapshot);
+    const resolved = deps.providerFactory
+      ? { provider: deps.providerFactory(modelKey), modelKey, degraded: undefined }
+      : await resolveRunProvider(run.ownerId, modelKey);
+    const { provider } = resolved;
+    if (resolved.degraded) {
+      await appendEvent(runId, 'run.degraded', { degraded: resolved.degraded });
+      await prisma.orchestrationRun.update({ where: { id: runId }, data: {
+        degraded: true, degradationReasons: [resolved.degraded.reason],
+      } });
+    }
     let tokens = 0;
     let usageJson: Prisma.InputJsonValue | null = null;
     let deltasSinceCheckpoint = 0;
@@ -264,7 +298,7 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
         }
       } else if (ev.type === 'usage') {
         tokens = ev.usage.promptTokens + ev.usage.completionTokens;
-        usageJson = ev.usage as Prisma.InputJsonValue;
+        usageJson = { promptTokens: ev.usage.promptTokens, completionTokens: ev.usage.completionTokens };
       } else if (ev.type === 'error') {
         throw new Error(ev.error);
       }
@@ -284,7 +318,7 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
       runId,
       ownerId: run.ownerId,
       attempt: run.attempt,
-      modelKey,
+      modelKey: resolved.modelKey,
       content,
       tokens,
       usage: usageJson,
