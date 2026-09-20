@@ -220,6 +220,7 @@ export type UserWhereInput = {
   runs?: Prisma.OrchestrationRunListRelationFilter
   usageLogs?: Prisma.UsageLogListRelationFilter
   apiKeys?: Prisma.ApiKeyListRelationFilter
+  modelUsageDaily?: Prisma.ModelUsageDailyListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -238,6 +239,7 @@ export type UserOrderByWithRelationInput = {
   runs?: Prisma.OrchestrationRunOrderByRelationAggregateInput
   usageLogs?: Prisma.UsageLogOrderByRelationAggregateInput
   apiKeys?: Prisma.ApiKeyOrderByRelationAggregateInput
+  modelUsageDaily?: Prisma.ModelUsageDailyOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -259,6 +261,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   runs?: Prisma.OrchestrationRunListRelationFilter
   usageLogs?: Prisma.UsageLogListRelationFilter
   apiKeys?: Prisma.ApiKeyListRelationFilter
+  modelUsageDaily?: Prisma.ModelUsageDailyListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -307,6 +310,7 @@ export type UserCreateInput = {
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -325,6 +329,7 @@ export type UserUncheckedCreateInput = {
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -343,6 +348,7 @@ export type UserUpdateInput = {
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -361,6 +367,7 @@ export type UserUncheckedUpdateInput = {
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -544,6 +551,20 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
+export type UserCreateNestedOneWithoutModelUsageDailyInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutModelUsageDailyInput, Prisma.UserUncheckedCreateWithoutModelUsageDailyInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutModelUsageDailyInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutModelUsageDailyNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutModelUsageDailyInput, Prisma.UserUncheckedCreateWithoutModelUsageDailyInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutModelUsageDailyInput
+  upsert?: Prisma.UserUpsertWithoutModelUsageDailyInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutModelUsageDailyInput, Prisma.UserUpdateWithoutModelUsageDailyInput>, Prisma.UserUncheckedUpdateWithoutModelUsageDailyInput>
+}
+
 export type UserCreateWithoutConversationsInput = {
   id?: string
   email: string
@@ -559,6 +580,7 @@ export type UserCreateWithoutConversationsInput = {
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConversationsInput = {
@@ -576,6 +598,7 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConversationsInput = {
@@ -609,6 +632,7 @@ export type UserUpdateWithoutConversationsInput = {
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsInput = {
@@ -626,6 +650,7 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRunsInput = {
@@ -643,6 +668,7 @@ export type UserCreateWithoutRunsInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRunsInput = {
@@ -660,6 +686,7 @@ export type UserUncheckedCreateWithoutRunsInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRunsInput = {
@@ -693,6 +720,7 @@ export type UserUpdateWithoutRunsInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRunsInput = {
@@ -710,6 +738,7 @@ export type UserUncheckedUpdateWithoutRunsInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUsageLogsInput = {
@@ -727,6 +756,7 @@ export type UserCreateWithoutUsageLogsInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUsageLogsInput = {
@@ -744,6 +774,7 @@ export type UserUncheckedCreateWithoutUsageLogsInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUsageLogsInput = {
@@ -777,6 +808,7 @@ export type UserUpdateWithoutUsageLogsInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUsageLogsInput = {
@@ -794,6 +826,7 @@ export type UserUncheckedUpdateWithoutUsageLogsInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutApiKeysInput = {
@@ -811,6 +844,7 @@ export type UserCreateWithoutApiKeysInput = {
   conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApiKeysInput = {
@@ -828,6 +862,7 @@ export type UserUncheckedCreateWithoutApiKeysInput = {
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApiKeysInput = {
@@ -861,6 +896,7 @@ export type UserUpdateWithoutApiKeysInput = {
   conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApiKeysInput = {
@@ -878,6 +914,7 @@ export type UserUncheckedUpdateWithoutApiKeysInput = {
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -895,6 +932,7 @@ export type UserCreateWithoutSessionsInput = {
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -912,6 +950,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -945,6 +984,7 @@ export type UserUpdateWithoutSessionsInput = {
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -962,6 +1002,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -979,6 +1020,7 @@ export type UserCreateWithoutAccountsInput = {
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -996,6 +1038,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1029,6 +1072,7 @@ export type UserUpdateWithoutAccountsInput = {
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1042,6 +1086,95 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
+  usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutModelUsageDailyInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name?: string | null
+  emailVerified?: boolean
+  image?: string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
+  runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
+  usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutModelUsageDailyInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name?: string | null
+  emailVerified?: boolean
+  image?: string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
+  runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
+  usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutModelUsageDailyInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutModelUsageDailyInput, Prisma.UserUncheckedCreateWithoutModelUsageDailyInput>
+}
+
+export type UserUpsertWithoutModelUsageDailyInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutModelUsageDailyInput, Prisma.UserUncheckedUpdateWithoutModelUsageDailyInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutModelUsageDailyInput, Prisma.UserUncheckedCreateWithoutModelUsageDailyInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutModelUsageDailyInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutModelUsageDailyInput, Prisma.UserUncheckedUpdateWithoutModelUsageDailyInput>
+}
+
+export type UserUpdateWithoutModelUsageDailyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
+  runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
+  usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutModelUsageDailyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1060,6 +1193,7 @@ export type UserCountOutputType = {
   runs: number
   usageLogs: number
   apiKeys: number
+  modelUsageDaily: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1069,6 +1203,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   runs?: boolean | UserCountOutputTypeCountRunsArgs
   usageLogs?: boolean | UserCountOutputTypeCountUsageLogsArgs
   apiKeys?: boolean | UserCountOutputTypeCountApiKeysArgs
+  modelUsageDaily?: boolean | UserCountOutputTypeCountModelUsageDailyArgs
 }
 
 /**
@@ -1123,6 +1258,13 @@ export type UserCountOutputTypeCountApiKeysArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.ApiKeyWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountModelUsageDailyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ModelUsageDailyWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1140,6 +1282,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   runs?: boolean | Prisma.User$runsArgs<ExtArgs>
   usageLogs?: boolean | Prisma.User$usageLogsArgs<ExtArgs>
   apiKeys?: boolean | Prisma.User$apiKeysArgs<ExtArgs>
+  modelUsageDaily?: boolean | Prisma.User$modelUsageDailyArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1187,6 +1330,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   runs?: boolean | Prisma.User$runsArgs<ExtArgs>
   usageLogs?: boolean | Prisma.User$usageLogsArgs<ExtArgs>
   apiKeys?: boolean | Prisma.User$apiKeysArgs<ExtArgs>
+  modelUsageDaily?: boolean | Prisma.User$modelUsageDailyArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1201,6 +1345,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runs: Prisma.$OrchestrationRunPayload<ExtArgs>[]
     usageLogs: Prisma.$UsageLogPayload<ExtArgs>[]
     apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
+    modelUsageDaily: Prisma.$ModelUsageDailyPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1612,6 +1757,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   runs<T extends Prisma.User$runsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$runsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrchestrationRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   usageLogs<T extends Prisma.User$usageLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$usageLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   apiKeys<T extends Prisma.User$apiKeysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  modelUsageDaily<T extends Prisma.User$modelUsageDailyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$modelUsageDailyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ModelUsageDailyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2179,6 +2325,30 @@ export type User$apiKeysArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.ApiKeyScalarFieldEnum | Prisma.ApiKeyScalarFieldEnum[]
+}
+
+/**
+ * User.modelUsageDaily
+ */
+export type User$modelUsageDailyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ModelUsageDaily
+   */
+  select?: Prisma.ModelUsageDailySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ModelUsageDaily
+   */
+  omit?: Prisma.ModelUsageDailyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ModelUsageDailyInclude<ExtArgs> | null
+  where?: Prisma.ModelUsageDailyWhereInput
+  orderBy?: Prisma.ModelUsageDailyOrderByWithRelationInput | Prisma.ModelUsageDailyOrderByWithRelationInput[]
+  cursor?: Prisma.ModelUsageDailyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ModelUsageDailyScalarFieldEnum | Prisma.ModelUsageDailyScalarFieldEnum[]
 }
 
 /**

@@ -400,7 +400,8 @@ export const ModelName = {
   ShareLink: 'ShareLink',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  ModelUsageDaily: 'ModelUsageDaily'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "provider" | "modelRegistry" | "conversation" | "participant" | "message" | "orchestrationRun" | "runParticipantSnapshot" | "runCheckpoint" | "runEvent" | "providerCall" | "usageLog" | "apiKey" | "shareLink" | "session" | "account" | "verification"
+    modelProps: "user" | "provider" | "modelRegistry" | "conversation" | "participant" | "message" | "orchestrationRun" | "runParticipantSnapshot" | "runCheckpoint" | "runEvent" | "providerCall" | "usageLog" | "apiKey" | "shareLink" | "session" | "account" | "verification" | "modelUsageDaily"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1678,6 +1679,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ModelUsageDaily: {
+      payload: Prisma.$ModelUsageDailyPayload<ExtArgs>
+      fields: Prisma.ModelUsageDailyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ModelUsageDailyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ModelUsageDailyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload>
+        }
+        findFirst: {
+          args: Prisma.ModelUsageDailyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ModelUsageDailyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload>
+        }
+        findMany: {
+          args: Prisma.ModelUsageDailyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload>[]
+        }
+        create: {
+          args: Prisma.ModelUsageDailyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload>
+        }
+        createMany: {
+          args: Prisma.ModelUsageDailyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ModelUsageDailyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload>[]
+        }
+        delete: {
+          args: Prisma.ModelUsageDailyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload>
+        }
+        update: {
+          args: Prisma.ModelUsageDailyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload>
+        }
+        deleteMany: {
+          args: Prisma.ModelUsageDailyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ModelUsageDailyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ModelUsageDailyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload>[]
+        }
+        upsert: {
+          args: Prisma.ModelUsageDailyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelUsageDailyPayload>
+        }
+        aggregate: {
+          args: Prisma.ModelUsageDailyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateModelUsageDaily>
+        }
+        groupBy: {
+          args: Prisma.ModelUsageDailyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ModelUsageDailyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ModelUsageDailyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ModelUsageDailyCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1747,6 +1822,10 @@ export type ProviderScalarFieldEnum = (typeof ProviderScalarFieldEnum)[keyof typ
 export const ModelRegistryScalarFieldEnum = {
   id: 'id',
   providerId: 'providerId',
+  baseUrl: 'baseUrl',
+  adapter: 'adapter',
+  kind: 'kind',
+  isDefault: 'isDefault',
   modelKey: 'modelKey',
   capabilities: 'capabilities',
   pricingVersion: 'pricingVersion',
@@ -1884,9 +1963,12 @@ export const ApiKeyScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   providerId: 'providerId',
+  provider: 'provider',
   ciphertext: 'ciphertext',
   iv: 'iv',
   authTag: 'authTag',
+  verified: 'verified',
+  updatedAt: 'updatedAt',
   keyVersion: 'keyVersion',
   createdAt: 'createdAt'
 } as const
@@ -1950,6 +2032,18 @@ export const VerificationScalarFieldEnum = {
 } as const
 
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
+export const ModelUsageDailyScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  modelId: 'modelId',
+  date: 'date',
+  tokensIn: 'tokensIn',
+  tokensOut: 'tokensOut'
+} as const
+
+export type ModelUsageDailyScalarFieldEnum = (typeof ModelUsageDailyScalarFieldEnum)[keyof typeof ModelUsageDailyScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2262,6 +2356,7 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
+  modelUsageDaily?: Prisma.ModelUsageDailyOmit
 }
 
 /* Types for Logging */

@@ -67,7 +67,8 @@ export const ModelName = {
   ShareLink: 'ShareLink',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  ModelUsageDaily: 'ModelUsageDaily'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -116,6 +117,10 @@ export type ProviderScalarFieldEnum = (typeof ProviderScalarFieldEnum)[keyof typ
 export const ModelRegistryScalarFieldEnum = {
   id: 'id',
   providerId: 'providerId',
+  baseUrl: 'baseUrl',
+  adapter: 'adapter',
+  kind: 'kind',
+  isDefault: 'isDefault',
   modelKey: 'modelKey',
   capabilities: 'capabilities',
   pricingVersion: 'pricingVersion',
@@ -253,9 +258,12 @@ export const ApiKeyScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   providerId: 'providerId',
+  provider: 'provider',
   ciphertext: 'ciphertext',
   iv: 'iv',
   authTag: 'authTag',
+  verified: 'verified',
+  updatedAt: 'updatedAt',
   keyVersion: 'keyVersion',
   createdAt: 'createdAt'
 } as const
@@ -319,6 +327,18 @@ export const VerificationScalarFieldEnum = {
 } as const
 
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
+export const ModelUsageDailyScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  modelId: 'modelId',
+  date: 'date',
+  tokensIn: 'tokensIn',
+  tokensOut: 'tokensOut'
+} as const
+
+export type ModelUsageDailyScalarFieldEnum = (typeof ModelUsageDailyScalarFieldEnum)[keyof typeof ModelUsageDailyScalarFieldEnum]
 
 
 export const SortOrder = {

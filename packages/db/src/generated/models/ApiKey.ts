@@ -38,9 +38,12 @@ export type ApiKeyMinAggregateOutputType = {
   id: string | null
   userId: string | null
   providerId: string | null
+  provider: string | null
   ciphertext: string | null
   iv: string | null
   authTag: string | null
+  verified: boolean | null
+  updatedAt: Date | null
   keyVersion: number | null
   createdAt: Date | null
 }
@@ -49,9 +52,12 @@ export type ApiKeyMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   providerId: string | null
+  provider: string | null
   ciphertext: string | null
   iv: string | null
   authTag: string | null
+  verified: boolean | null
+  updatedAt: Date | null
   keyVersion: number | null
   createdAt: Date | null
 }
@@ -60,9 +66,12 @@ export type ApiKeyCountAggregateOutputType = {
   id: number
   userId: number
   providerId: number
+  provider: number
   ciphertext: number
   iv: number
   authTag: number
+  verified: number
+  updatedAt: number
   keyVersion: number
   createdAt: number
   _all: number
@@ -81,9 +90,12 @@ export type ApiKeyMinAggregateInputType = {
   id?: true
   userId?: true
   providerId?: true
+  provider?: true
   ciphertext?: true
   iv?: true
   authTag?: true
+  verified?: true
+  updatedAt?: true
   keyVersion?: true
   createdAt?: true
 }
@@ -92,9 +104,12 @@ export type ApiKeyMaxAggregateInputType = {
   id?: true
   userId?: true
   providerId?: true
+  provider?: true
   ciphertext?: true
   iv?: true
   authTag?: true
+  verified?: true
+  updatedAt?: true
   keyVersion?: true
   createdAt?: true
 }
@@ -103,9 +118,12 @@ export type ApiKeyCountAggregateInputType = {
   id?: true
   userId?: true
   providerId?: true
+  provider?: true
   ciphertext?: true
   iv?: true
   authTag?: true
+  verified?: true
+  updatedAt?: true
   keyVersion?: true
   createdAt?: true
   _all?: true
@@ -200,10 +218,13 @@ export type ApiKeyGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type ApiKeyGroupByOutputType = {
   id: string
   userId: string
-  providerId: string
+  providerId: string | null
+  provider: string
   ciphertext: string
-  iv: string
-  authTag: string
+  iv: string | null
+  authTag: string | null
+  verified: boolean
+  updatedAt: Date
   keyVersion: number
   createdAt: Date
   _count: ApiKeyCountAggregateOutputType | null
@@ -234,53 +255,66 @@ export type ApiKeyWhereInput = {
   NOT?: Prisma.ApiKeyWhereInput | Prisma.ApiKeyWhereInput[]
   id?: Prisma.StringFilter<"ApiKey"> | string
   userId?: Prisma.StringFilter<"ApiKey"> | string
-  providerId?: Prisma.StringFilter<"ApiKey"> | string
+  providerId?: Prisma.StringNullableFilter<"ApiKey"> | string | null
+  provider?: Prisma.StringFilter<"ApiKey"> | string
   ciphertext?: Prisma.StringFilter<"ApiKey"> | string
-  iv?: Prisma.StringFilter<"ApiKey"> | string
-  authTag?: Prisma.StringFilter<"ApiKey"> | string
+  iv?: Prisma.StringNullableFilter<"ApiKey"> | string | null
+  authTag?: Prisma.StringNullableFilter<"ApiKey"> | string | null
+  verified?: Prisma.BoolFilter<"ApiKey"> | boolean
+  updatedAt?: Prisma.DateTimeFilter<"ApiKey"> | Date | string
   keyVersion?: Prisma.IntFilter<"ApiKey"> | number
   createdAt?: Prisma.DateTimeFilter<"ApiKey"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  provider?: Prisma.XOR<Prisma.ProviderScalarRelationFilter, Prisma.ProviderWhereInput>
+  providerRef?: Prisma.XOR<Prisma.ProviderNullableScalarRelationFilter, Prisma.ProviderWhereInput> | null
 }
 
 export type ApiKeyOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  providerId?: Prisma.SortOrder
+  providerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  provider?: Prisma.SortOrder
   ciphertext?: Prisma.SortOrder
-  iv?: Prisma.SortOrder
-  authTag?: Prisma.SortOrder
+  iv?: Prisma.SortOrderInput | Prisma.SortOrder
+  authTag?: Prisma.SortOrderInput | Prisma.SortOrder
+  verified?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   keyVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  provider?: Prisma.ProviderOrderByWithRelationInput
+  providerRef?: Prisma.ProviderOrderByWithRelationInput
 }
 
 export type ApiKeyWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId_providerId?: Prisma.ApiKeyUserIdProviderIdCompoundUniqueInput
+  userId_provider?: Prisma.ApiKeyUserIdProviderCompoundUniqueInput
   AND?: Prisma.ApiKeyWhereInput | Prisma.ApiKeyWhereInput[]
   OR?: Prisma.ApiKeyWhereInput[]
   NOT?: Prisma.ApiKeyWhereInput | Prisma.ApiKeyWhereInput[]
   userId?: Prisma.StringFilter<"ApiKey"> | string
-  providerId?: Prisma.StringFilter<"ApiKey"> | string
+  providerId?: Prisma.StringNullableFilter<"ApiKey"> | string | null
+  provider?: Prisma.StringFilter<"ApiKey"> | string
   ciphertext?: Prisma.StringFilter<"ApiKey"> | string
-  iv?: Prisma.StringFilter<"ApiKey"> | string
-  authTag?: Prisma.StringFilter<"ApiKey"> | string
+  iv?: Prisma.StringNullableFilter<"ApiKey"> | string | null
+  authTag?: Prisma.StringNullableFilter<"ApiKey"> | string | null
+  verified?: Prisma.BoolFilter<"ApiKey"> | boolean
+  updatedAt?: Prisma.DateTimeFilter<"ApiKey"> | Date | string
   keyVersion?: Prisma.IntFilter<"ApiKey"> | number
   createdAt?: Prisma.DateTimeFilter<"ApiKey"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  provider?: Prisma.XOR<Prisma.ProviderScalarRelationFilter, Prisma.ProviderWhereInput>
-}, "id" | "userId_providerId">
+  providerRef?: Prisma.XOR<Prisma.ProviderNullableScalarRelationFilter, Prisma.ProviderWhereInput> | null
+}, "id" | "userId_providerId" | "userId_provider">
 
 export type ApiKeyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  providerId?: Prisma.SortOrder
+  providerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  provider?: Prisma.SortOrder
   ciphertext?: Prisma.SortOrder
-  iv?: Prisma.SortOrder
-  authTag?: Prisma.SortOrder
+  iv?: Prisma.SortOrderInput | Prisma.SortOrder
+  authTag?: Prisma.SortOrderInput | Prisma.SortOrder
+  verified?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   keyVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ApiKeyCountOrderByAggregateInput
@@ -296,54 +330,69 @@ export type ApiKeyScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ApiKeyScalarWhereWithAggregatesInput | Prisma.ApiKeyScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
   userId?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
-  providerId?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
+  providerId?: Prisma.StringNullableWithAggregatesFilter<"ApiKey"> | string | null
+  provider?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
   ciphertext?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
-  iv?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
-  authTag?: Prisma.StringWithAggregatesFilter<"ApiKey"> | string
+  iv?: Prisma.StringNullableWithAggregatesFilter<"ApiKey"> | string | null
+  authTag?: Prisma.StringNullableWithAggregatesFilter<"ApiKey"> | string | null
+  verified?: Prisma.BoolWithAggregatesFilter<"ApiKey"> | boolean
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ApiKey"> | Date | string
   keyVersion?: Prisma.IntWithAggregatesFilter<"ApiKey"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApiKey"> | Date | string
 }
 
 export type ApiKeyCreateInput = {
   id?: string
+  provider: string
   ciphertext: string
-  iv: string
-  authTag: string
+  iv?: string | null
+  authTag?: string | null
+  verified?: boolean
+  updatedAt?: Date | string
   keyVersion?: number
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutApiKeysInput
-  provider: Prisma.ProviderCreateNestedOneWithoutApiKeysInput
+  providerRef?: Prisma.ProviderCreateNestedOneWithoutApiKeysInput
 }
 
 export type ApiKeyUncheckedCreateInput = {
   id?: string
   userId: string
-  providerId: string
+  providerId?: string | null
+  provider: string
   ciphertext: string
-  iv: string
-  authTag: string
+  iv?: string | null
+  authTag?: string | null
+  verified?: boolean
+  updatedAt?: Date | string
   keyVersion?: number
   createdAt?: Date | string
 }
 
 export type ApiKeyUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
   ciphertext?: Prisma.StringFieldUpdateOperationsInput | string
-  iv?: Prisma.StringFieldUpdateOperationsInput | string
-  authTag?: Prisma.StringFieldUpdateOperationsInput | string
+  iv?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutApiKeysNestedInput
-  provider?: Prisma.ProviderUpdateOneRequiredWithoutApiKeysNestedInput
+  providerRef?: Prisma.ProviderUpdateOneWithoutApiKeysNestedInput
 }
 
 export type ApiKeyUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  providerId?: Prisma.StringFieldUpdateOperationsInput | string
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
   ciphertext?: Prisma.StringFieldUpdateOperationsInput | string
-  iv?: Prisma.StringFieldUpdateOperationsInput | string
-  authTag?: Prisma.StringFieldUpdateOperationsInput | string
+  iv?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -351,19 +400,25 @@ export type ApiKeyUncheckedUpdateInput = {
 export type ApiKeyCreateManyInput = {
   id?: string
   userId: string
-  providerId: string
+  providerId?: string | null
+  provider: string
   ciphertext: string
-  iv: string
-  authTag: string
+  iv?: string | null
+  authTag?: string | null
+  verified?: boolean
+  updatedAt?: Date | string
   keyVersion?: number
   createdAt?: Date | string
 }
 
 export type ApiKeyUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
   ciphertext?: Prisma.StringFieldUpdateOperationsInput | string
-  iv?: Prisma.StringFieldUpdateOperationsInput | string
-  authTag?: Prisma.StringFieldUpdateOperationsInput | string
+  iv?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -371,10 +426,13 @@ export type ApiKeyUpdateManyMutationInput = {
 export type ApiKeyUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  providerId?: Prisma.StringFieldUpdateOperationsInput | string
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
   ciphertext?: Prisma.StringFieldUpdateOperationsInput | string
-  iv?: Prisma.StringFieldUpdateOperationsInput | string
-  authTag?: Prisma.StringFieldUpdateOperationsInput | string
+  iv?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -394,13 +452,21 @@ export type ApiKeyUserIdProviderIdCompoundUniqueInput = {
   providerId: string
 }
 
+export type ApiKeyUserIdProviderCompoundUniqueInput = {
+  userId: string
+  provider: string
+}
+
 export type ApiKeyCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
   ciphertext?: Prisma.SortOrder
   iv?: Prisma.SortOrder
   authTag?: Prisma.SortOrder
+  verified?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   keyVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -413,9 +479,12 @@ export type ApiKeyMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
   ciphertext?: Prisma.SortOrder
   iv?: Prisma.SortOrder
   authTag?: Prisma.SortOrder
+  verified?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   keyVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -424,9 +493,12 @@ export type ApiKeyMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
   ciphertext?: Prisma.SortOrder
   iv?: Prisma.SortOrder
   authTag?: Prisma.SortOrder
+  verified?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   keyVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -477,64 +549,70 @@ export type ApiKeyUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.ApiKeyScalarWhereInput | Prisma.ApiKeyScalarWhereInput[]
 }
 
-export type ApiKeyCreateNestedManyWithoutProviderInput = {
-  create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderInput, Prisma.ApiKeyUncheckedCreateWithoutProviderInput> | Prisma.ApiKeyCreateWithoutProviderInput[] | Prisma.ApiKeyUncheckedCreateWithoutProviderInput[]
-  connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutProviderInput | Prisma.ApiKeyCreateOrConnectWithoutProviderInput[]
-  createMany?: Prisma.ApiKeyCreateManyProviderInputEnvelope
+export type ApiKeyCreateNestedManyWithoutProviderRefInput = {
+  create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderRefInput, Prisma.ApiKeyUncheckedCreateWithoutProviderRefInput> | Prisma.ApiKeyCreateWithoutProviderRefInput[] | Prisma.ApiKeyUncheckedCreateWithoutProviderRefInput[]
+  connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutProviderRefInput | Prisma.ApiKeyCreateOrConnectWithoutProviderRefInput[]
+  createMany?: Prisma.ApiKeyCreateManyProviderRefInputEnvelope
   connect?: Prisma.ApiKeyWhereUniqueInput | Prisma.ApiKeyWhereUniqueInput[]
 }
 
-export type ApiKeyUncheckedCreateNestedManyWithoutProviderInput = {
-  create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderInput, Prisma.ApiKeyUncheckedCreateWithoutProviderInput> | Prisma.ApiKeyCreateWithoutProviderInput[] | Prisma.ApiKeyUncheckedCreateWithoutProviderInput[]
-  connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutProviderInput | Prisma.ApiKeyCreateOrConnectWithoutProviderInput[]
-  createMany?: Prisma.ApiKeyCreateManyProviderInputEnvelope
+export type ApiKeyUncheckedCreateNestedManyWithoutProviderRefInput = {
+  create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderRefInput, Prisma.ApiKeyUncheckedCreateWithoutProviderRefInput> | Prisma.ApiKeyCreateWithoutProviderRefInput[] | Prisma.ApiKeyUncheckedCreateWithoutProviderRefInput[]
+  connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutProviderRefInput | Prisma.ApiKeyCreateOrConnectWithoutProviderRefInput[]
+  createMany?: Prisma.ApiKeyCreateManyProviderRefInputEnvelope
   connect?: Prisma.ApiKeyWhereUniqueInput | Prisma.ApiKeyWhereUniqueInput[]
 }
 
-export type ApiKeyUpdateManyWithoutProviderNestedInput = {
-  create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderInput, Prisma.ApiKeyUncheckedCreateWithoutProviderInput> | Prisma.ApiKeyCreateWithoutProviderInput[] | Prisma.ApiKeyUncheckedCreateWithoutProviderInput[]
-  connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutProviderInput | Prisma.ApiKeyCreateOrConnectWithoutProviderInput[]
-  upsert?: Prisma.ApiKeyUpsertWithWhereUniqueWithoutProviderInput | Prisma.ApiKeyUpsertWithWhereUniqueWithoutProviderInput[]
-  createMany?: Prisma.ApiKeyCreateManyProviderInputEnvelope
+export type ApiKeyUpdateManyWithoutProviderRefNestedInput = {
+  create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderRefInput, Prisma.ApiKeyUncheckedCreateWithoutProviderRefInput> | Prisma.ApiKeyCreateWithoutProviderRefInput[] | Prisma.ApiKeyUncheckedCreateWithoutProviderRefInput[]
+  connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutProviderRefInput | Prisma.ApiKeyCreateOrConnectWithoutProviderRefInput[]
+  upsert?: Prisma.ApiKeyUpsertWithWhereUniqueWithoutProviderRefInput | Prisma.ApiKeyUpsertWithWhereUniqueWithoutProviderRefInput[]
+  createMany?: Prisma.ApiKeyCreateManyProviderRefInputEnvelope
   set?: Prisma.ApiKeyWhereUniqueInput | Prisma.ApiKeyWhereUniqueInput[]
   disconnect?: Prisma.ApiKeyWhereUniqueInput | Prisma.ApiKeyWhereUniqueInput[]
   delete?: Prisma.ApiKeyWhereUniqueInput | Prisma.ApiKeyWhereUniqueInput[]
   connect?: Prisma.ApiKeyWhereUniqueInput | Prisma.ApiKeyWhereUniqueInput[]
-  update?: Prisma.ApiKeyUpdateWithWhereUniqueWithoutProviderInput | Prisma.ApiKeyUpdateWithWhereUniqueWithoutProviderInput[]
-  updateMany?: Prisma.ApiKeyUpdateManyWithWhereWithoutProviderInput | Prisma.ApiKeyUpdateManyWithWhereWithoutProviderInput[]
+  update?: Prisma.ApiKeyUpdateWithWhereUniqueWithoutProviderRefInput | Prisma.ApiKeyUpdateWithWhereUniqueWithoutProviderRefInput[]
+  updateMany?: Prisma.ApiKeyUpdateManyWithWhereWithoutProviderRefInput | Prisma.ApiKeyUpdateManyWithWhereWithoutProviderRefInput[]
   deleteMany?: Prisma.ApiKeyScalarWhereInput | Prisma.ApiKeyScalarWhereInput[]
 }
 
-export type ApiKeyUncheckedUpdateManyWithoutProviderNestedInput = {
-  create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderInput, Prisma.ApiKeyUncheckedCreateWithoutProviderInput> | Prisma.ApiKeyCreateWithoutProviderInput[] | Prisma.ApiKeyUncheckedCreateWithoutProviderInput[]
-  connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutProviderInput | Prisma.ApiKeyCreateOrConnectWithoutProviderInput[]
-  upsert?: Prisma.ApiKeyUpsertWithWhereUniqueWithoutProviderInput | Prisma.ApiKeyUpsertWithWhereUniqueWithoutProviderInput[]
-  createMany?: Prisma.ApiKeyCreateManyProviderInputEnvelope
+export type ApiKeyUncheckedUpdateManyWithoutProviderRefNestedInput = {
+  create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderRefInput, Prisma.ApiKeyUncheckedCreateWithoutProviderRefInput> | Prisma.ApiKeyCreateWithoutProviderRefInput[] | Prisma.ApiKeyUncheckedCreateWithoutProviderRefInput[]
+  connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutProviderRefInput | Prisma.ApiKeyCreateOrConnectWithoutProviderRefInput[]
+  upsert?: Prisma.ApiKeyUpsertWithWhereUniqueWithoutProviderRefInput | Prisma.ApiKeyUpsertWithWhereUniqueWithoutProviderRefInput[]
+  createMany?: Prisma.ApiKeyCreateManyProviderRefInputEnvelope
   set?: Prisma.ApiKeyWhereUniqueInput | Prisma.ApiKeyWhereUniqueInput[]
   disconnect?: Prisma.ApiKeyWhereUniqueInput | Prisma.ApiKeyWhereUniqueInput[]
   delete?: Prisma.ApiKeyWhereUniqueInput | Prisma.ApiKeyWhereUniqueInput[]
   connect?: Prisma.ApiKeyWhereUniqueInput | Prisma.ApiKeyWhereUniqueInput[]
-  update?: Prisma.ApiKeyUpdateWithWhereUniqueWithoutProviderInput | Prisma.ApiKeyUpdateWithWhereUniqueWithoutProviderInput[]
-  updateMany?: Prisma.ApiKeyUpdateManyWithWhereWithoutProviderInput | Prisma.ApiKeyUpdateManyWithWhereWithoutProviderInput[]
+  update?: Prisma.ApiKeyUpdateWithWhereUniqueWithoutProviderRefInput | Prisma.ApiKeyUpdateWithWhereUniqueWithoutProviderRefInput[]
+  updateMany?: Prisma.ApiKeyUpdateManyWithWhereWithoutProviderRefInput | Prisma.ApiKeyUpdateManyWithWhereWithoutProviderRefInput[]
   deleteMany?: Prisma.ApiKeyScalarWhereInput | Prisma.ApiKeyScalarWhereInput[]
 }
 
 export type ApiKeyCreateWithoutUserInput = {
   id?: string
+  provider: string
   ciphertext: string
-  iv: string
-  authTag: string
+  iv?: string | null
+  authTag?: string | null
+  verified?: boolean
+  updatedAt?: Date | string
   keyVersion?: number
   createdAt?: Date | string
-  provider: Prisma.ProviderCreateNestedOneWithoutApiKeysInput
+  providerRef?: Prisma.ProviderCreateNestedOneWithoutApiKeysInput
 }
 
 export type ApiKeyUncheckedCreateWithoutUserInput = {
   id?: string
-  providerId: string
+  providerId?: string | null
+  provider: string
   ciphertext: string
-  iv: string
-  authTag: string
+  iv?: string | null
+  authTag?: string | null
+  verified?: boolean
+  updatedAt?: Date | string
   keyVersion?: number
   createdAt?: Date | string
 }
@@ -571,136 +649,169 @@ export type ApiKeyScalarWhereInput = {
   NOT?: Prisma.ApiKeyScalarWhereInput | Prisma.ApiKeyScalarWhereInput[]
   id?: Prisma.StringFilter<"ApiKey"> | string
   userId?: Prisma.StringFilter<"ApiKey"> | string
-  providerId?: Prisma.StringFilter<"ApiKey"> | string
+  providerId?: Prisma.StringNullableFilter<"ApiKey"> | string | null
+  provider?: Prisma.StringFilter<"ApiKey"> | string
   ciphertext?: Prisma.StringFilter<"ApiKey"> | string
-  iv?: Prisma.StringFilter<"ApiKey"> | string
-  authTag?: Prisma.StringFilter<"ApiKey"> | string
+  iv?: Prisma.StringNullableFilter<"ApiKey"> | string | null
+  authTag?: Prisma.StringNullableFilter<"ApiKey"> | string | null
+  verified?: Prisma.BoolFilter<"ApiKey"> | boolean
+  updatedAt?: Prisma.DateTimeFilter<"ApiKey"> | Date | string
   keyVersion?: Prisma.IntFilter<"ApiKey"> | number
   createdAt?: Prisma.DateTimeFilter<"ApiKey"> | Date | string
 }
 
-export type ApiKeyCreateWithoutProviderInput = {
+export type ApiKeyCreateWithoutProviderRefInput = {
   id?: string
+  provider: string
   ciphertext: string
-  iv: string
-  authTag: string
+  iv?: string | null
+  authTag?: string | null
+  verified?: boolean
+  updatedAt?: Date | string
   keyVersion?: number
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutApiKeysInput
 }
 
-export type ApiKeyUncheckedCreateWithoutProviderInput = {
+export type ApiKeyUncheckedCreateWithoutProviderRefInput = {
   id?: string
   userId: string
+  provider: string
   ciphertext: string
-  iv: string
-  authTag: string
+  iv?: string | null
+  authTag?: string | null
+  verified?: boolean
+  updatedAt?: Date | string
   keyVersion?: number
   createdAt?: Date | string
 }
 
-export type ApiKeyCreateOrConnectWithoutProviderInput = {
+export type ApiKeyCreateOrConnectWithoutProviderRefInput = {
   where: Prisma.ApiKeyWhereUniqueInput
-  create: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderInput, Prisma.ApiKeyUncheckedCreateWithoutProviderInput>
+  create: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderRefInput, Prisma.ApiKeyUncheckedCreateWithoutProviderRefInput>
 }
 
-export type ApiKeyCreateManyProviderInputEnvelope = {
-  data: Prisma.ApiKeyCreateManyProviderInput | Prisma.ApiKeyCreateManyProviderInput[]
+export type ApiKeyCreateManyProviderRefInputEnvelope = {
+  data: Prisma.ApiKeyCreateManyProviderRefInput | Prisma.ApiKeyCreateManyProviderRefInput[]
   skipDuplicates?: boolean
 }
 
-export type ApiKeyUpsertWithWhereUniqueWithoutProviderInput = {
+export type ApiKeyUpsertWithWhereUniqueWithoutProviderRefInput = {
   where: Prisma.ApiKeyWhereUniqueInput
-  update: Prisma.XOR<Prisma.ApiKeyUpdateWithoutProviderInput, Prisma.ApiKeyUncheckedUpdateWithoutProviderInput>
-  create: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderInput, Prisma.ApiKeyUncheckedCreateWithoutProviderInput>
+  update: Prisma.XOR<Prisma.ApiKeyUpdateWithoutProviderRefInput, Prisma.ApiKeyUncheckedUpdateWithoutProviderRefInput>
+  create: Prisma.XOR<Prisma.ApiKeyCreateWithoutProviderRefInput, Prisma.ApiKeyUncheckedCreateWithoutProviderRefInput>
 }
 
-export type ApiKeyUpdateWithWhereUniqueWithoutProviderInput = {
+export type ApiKeyUpdateWithWhereUniqueWithoutProviderRefInput = {
   where: Prisma.ApiKeyWhereUniqueInput
-  data: Prisma.XOR<Prisma.ApiKeyUpdateWithoutProviderInput, Prisma.ApiKeyUncheckedUpdateWithoutProviderInput>
+  data: Prisma.XOR<Prisma.ApiKeyUpdateWithoutProviderRefInput, Prisma.ApiKeyUncheckedUpdateWithoutProviderRefInput>
 }
 
-export type ApiKeyUpdateManyWithWhereWithoutProviderInput = {
+export type ApiKeyUpdateManyWithWhereWithoutProviderRefInput = {
   where: Prisma.ApiKeyScalarWhereInput
-  data: Prisma.XOR<Prisma.ApiKeyUpdateManyMutationInput, Prisma.ApiKeyUncheckedUpdateManyWithoutProviderInput>
+  data: Prisma.XOR<Prisma.ApiKeyUpdateManyMutationInput, Prisma.ApiKeyUncheckedUpdateManyWithoutProviderRefInput>
 }
 
 export type ApiKeyCreateManyUserInput = {
   id?: string
-  providerId: string
+  providerId?: string | null
+  provider: string
   ciphertext: string
-  iv: string
-  authTag: string
+  iv?: string | null
+  authTag?: string | null
+  verified?: boolean
+  updatedAt?: Date | string
   keyVersion?: number
   createdAt?: Date | string
 }
 
 export type ApiKeyUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
   ciphertext?: Prisma.StringFieldUpdateOperationsInput | string
-  iv?: Prisma.StringFieldUpdateOperationsInput | string
-  authTag?: Prisma.StringFieldUpdateOperationsInput | string
+  iv?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  provider?: Prisma.ProviderUpdateOneRequiredWithoutApiKeysNestedInput
+  providerRef?: Prisma.ProviderUpdateOneWithoutApiKeysNestedInput
 }
 
 export type ApiKeyUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  providerId?: Prisma.StringFieldUpdateOperationsInput | string
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
   ciphertext?: Prisma.StringFieldUpdateOperationsInput | string
-  iv?: Prisma.StringFieldUpdateOperationsInput | string
-  authTag?: Prisma.StringFieldUpdateOperationsInput | string
+  iv?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiKeyUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  providerId?: Prisma.StringFieldUpdateOperationsInput | string
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
   ciphertext?: Prisma.StringFieldUpdateOperationsInput | string
-  iv?: Prisma.StringFieldUpdateOperationsInput | string
-  authTag?: Prisma.StringFieldUpdateOperationsInput | string
+  iv?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ApiKeyCreateManyProviderInput = {
+export type ApiKeyCreateManyProviderRefInput = {
   id?: string
   userId: string
+  provider: string
   ciphertext: string
-  iv: string
-  authTag: string
+  iv?: string | null
+  authTag?: string | null
+  verified?: boolean
+  updatedAt?: Date | string
   keyVersion?: number
   createdAt?: Date | string
 }
 
-export type ApiKeyUpdateWithoutProviderInput = {
+export type ApiKeyUpdateWithoutProviderRefInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
   ciphertext?: Prisma.StringFieldUpdateOperationsInput | string
-  iv?: Prisma.StringFieldUpdateOperationsInput | string
-  authTag?: Prisma.StringFieldUpdateOperationsInput | string
+  iv?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutApiKeysNestedInput
 }
 
-export type ApiKeyUncheckedUpdateWithoutProviderInput = {
+export type ApiKeyUncheckedUpdateWithoutProviderRefInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
   ciphertext?: Prisma.StringFieldUpdateOperationsInput | string
-  iv?: Prisma.StringFieldUpdateOperationsInput | string
-  authTag?: Prisma.StringFieldUpdateOperationsInput | string
+  iv?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ApiKeyUncheckedUpdateManyWithoutProviderInput = {
+export type ApiKeyUncheckedUpdateManyWithoutProviderRefInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
   ciphertext?: Prisma.StringFieldUpdateOperationsInput | string
-  iv?: Prisma.StringFieldUpdateOperationsInput | string
-  authTag?: Prisma.StringFieldUpdateOperationsInput | string
+  iv?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authTag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -711,79 +822,94 @@ export type ApiKeySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   userId?: boolean
   providerId?: boolean
+  provider?: boolean
   ciphertext?: boolean
   iv?: boolean
   authTag?: boolean
+  verified?: boolean
+  updatedAt?: boolean
   keyVersion?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
+  providerRef?: boolean | Prisma.ApiKey$providerRefArgs<ExtArgs>
 }, ExtArgs["result"]["apiKey"]>
 
 export type ApiKeySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   providerId?: boolean
+  provider?: boolean
   ciphertext?: boolean
   iv?: boolean
   authTag?: boolean
+  verified?: boolean
+  updatedAt?: boolean
   keyVersion?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
+  providerRef?: boolean | Prisma.ApiKey$providerRefArgs<ExtArgs>
 }, ExtArgs["result"]["apiKey"]>
 
 export type ApiKeySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   providerId?: boolean
+  provider?: boolean
   ciphertext?: boolean
   iv?: boolean
   authTag?: boolean
+  verified?: boolean
+  updatedAt?: boolean
   keyVersion?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
+  providerRef?: boolean | Prisma.ApiKey$providerRefArgs<ExtArgs>
 }, ExtArgs["result"]["apiKey"]>
 
 export type ApiKeySelectScalar = {
   id?: boolean
   userId?: boolean
   providerId?: boolean
+  provider?: boolean
   ciphertext?: boolean
   iv?: boolean
   authTag?: boolean
+  verified?: boolean
+  updatedAt?: boolean
   keyVersion?: boolean
   createdAt?: boolean
 }
 
-export type ApiKeyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "providerId" | "ciphertext" | "iv" | "authTag" | "keyVersion" | "createdAt", ExtArgs["result"]["apiKey"]>
+export type ApiKeyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "providerId" | "provider" | "ciphertext" | "iv" | "authTag" | "verified" | "updatedAt" | "keyVersion" | "createdAt", ExtArgs["result"]["apiKey"]>
 export type ApiKeyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
+  providerRef?: boolean | Prisma.ApiKey$providerRefArgs<ExtArgs>
 }
 export type ApiKeyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
+  providerRef?: boolean | Prisma.ApiKey$providerRefArgs<ExtArgs>
 }
 export type ApiKeyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
+  providerRef?: boolean | Prisma.ApiKey$providerRefArgs<ExtArgs>
 }
 
 export type $ApiKeyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ApiKey"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    provider: Prisma.$ProviderPayload<ExtArgs>
+    providerRef: Prisma.$ProviderPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    providerId: string
+    providerId: string | null
+    provider: string
     ciphertext: string
-    iv: string
-    authTag: string
+    iv: string | null
+    authTag: string | null
+    verified: boolean
+    updatedAt: Date
     keyVersion: number
     createdAt: Date
   }, ExtArgs["result"]["apiKey"]>
@@ -1181,7 +1307,7 @@ readonly fields: ApiKeyFieldRefs;
 export interface Prisma__ApiKeyClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  provider<T extends Prisma.ProviderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProviderDefaultArgs<ExtArgs>>): Prisma.Prisma__ProviderClient<runtime.Types.Result.GetResult<Prisma.$ProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  providerRef<T extends Prisma.ApiKey$providerRefArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApiKey$providerRefArgs<ExtArgs>>): Prisma.Prisma__ProviderClient<runtime.Types.Result.GetResult<Prisma.$ProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1214,9 +1340,12 @@ export interface ApiKeyFieldRefs {
   readonly id: Prisma.FieldRef<"ApiKey", 'String'>
   readonly userId: Prisma.FieldRef<"ApiKey", 'String'>
   readonly providerId: Prisma.FieldRef<"ApiKey", 'String'>
+  readonly provider: Prisma.FieldRef<"ApiKey", 'String'>
   readonly ciphertext: Prisma.FieldRef<"ApiKey", 'String'>
   readonly iv: Prisma.FieldRef<"ApiKey", 'String'>
   readonly authTag: Prisma.FieldRef<"ApiKey", 'String'>
+  readonly verified: Prisma.FieldRef<"ApiKey", 'Boolean'>
+  readonly updatedAt: Prisma.FieldRef<"ApiKey", 'DateTime'>
   readonly keyVersion: Prisma.FieldRef<"ApiKey", 'Int'>
   readonly createdAt: Prisma.FieldRef<"ApiKey", 'DateTime'>
 }
@@ -1612,6 +1741,25 @@ export type ApiKeyDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many ApiKeys to delete.
    */
   limit?: number
+}
+
+/**
+ * ApiKey.providerRef
+ */
+export type ApiKey$providerRefArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Provider
+   */
+  select?: Prisma.ProviderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Provider
+   */
+  omit?: Prisma.ProviderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProviderInclude<ExtArgs> | null
+  where?: Prisma.ProviderWhereInput
 }
 
 /**

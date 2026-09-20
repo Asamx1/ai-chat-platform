@@ -124,3 +124,8 @@ export type Account = Prisma.AccountModel
  * 
  */
 export type Verification = Prisma.VerificationModel
+/**
+ * Model ModelUsageDaily
+ * 
+ */
+export type ModelUsageDaily = Prisma.ModelUsageDailyModel

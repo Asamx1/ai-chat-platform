@@ -32,6 +32,9 @@ importers:
       '@aichat/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
+      '@aichat/crypto':
+        specifier: workspace:*
+        version: link:../../packages/crypto
       '@aichat/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -75,6 +78,9 @@ importers:
       '@aichat/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
+      '@aichat/crypto':
+        specifier: workspace:*
+        version: link:../../packages/crypto
       '@aichat/db':
         specifier: workspace:*
         version: link:../../packages/db
@@ -109,6 +115,12 @@ importers:
       zod:
         specifier: 4.1.5
         version: 4.1.5
+
+  packages/crypto:
+    devDependencies:
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.13.5)(jiti@2.7.0)(tsx@4.23.13)
 
   packages/db:
     dependencies:
@@ -159,6 +171,9 @@ importers:
       '@aichat/contracts':
         specifier: workspace:*
         version: link:../contracts
+      '@aichat/crypto':
+        specifier: workspace:*
+        version: link:../crypto
       zod:
         specifier: 4.1.5
         version: 4.1.5

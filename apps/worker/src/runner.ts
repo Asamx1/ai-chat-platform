@@ -1,9 +1,11 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { prisma } from '@aichat/db';
 import type { Prisma } from '@aichat/db';
-import { OllamaProvider, OpenAICompatibleProvider, resolver } from '@aichat/providers';
+import { OllamaProvider, OpenAICompatibleProvider, createResolver } from '@aichat/providers';
 import type { ProviderAdapter } from '@aichat/providers';
 import { releaseLease, renewLease, shouldCancel } from './lease';
+
+const resolver = createResolver(prisma);
 
 /** 可恢复的执行状态，持久化在 RunCheckpoint.stateJson。 */
 export interface RunState {

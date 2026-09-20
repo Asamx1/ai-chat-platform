@@ -251,7 +251,7 @@ export type ProviderCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   models?: Prisma.ModelRegistryCreateNestedManyWithoutProviderInput
-  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProviderInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProviderRefInput
 }
 
 export type ProviderUncheckedCreateInput = {
@@ -262,7 +262,7 @@ export type ProviderUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   models?: Prisma.ModelRegistryUncheckedCreateNestedManyWithoutProviderInput
-  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProviderInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProviderRefInput
 }
 
 export type ProviderUpdateInput = {
@@ -273,7 +273,7 @@ export type ProviderUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   models?: Prisma.ModelRegistryUpdateManyWithoutProviderNestedInput
-  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProviderNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProviderRefNestedInput
 }
 
 export type ProviderUncheckedUpdateInput = {
@@ -284,7 +284,7 @@ export type ProviderUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   models?: Prisma.ModelRegistryUncheckedUpdateManyWithoutProviderNestedInput
-  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProviderNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProviderRefNestedInput
 }
 
 export type ProviderCreateManyInput = {
@@ -346,6 +346,11 @@ export type ProviderScalarRelationFilter = {
   isNot?: Prisma.ProviderWhereInput
 }
 
+export type ProviderNullableScalarRelationFilter = {
+  is?: Prisma.ProviderWhereInput | null
+  isNot?: Prisma.ProviderWhereInput | null
+}
+
 export type ProviderCreateNestedOneWithoutModelsInput = {
   create?: Prisma.XOR<Prisma.ProviderCreateWithoutModelsInput, Prisma.ProviderUncheckedCreateWithoutModelsInput>
   connectOrCreate?: Prisma.ProviderCreateOrConnectWithoutModelsInput
@@ -366,10 +371,12 @@ export type ProviderCreateNestedOneWithoutApiKeysInput = {
   connect?: Prisma.ProviderWhereUniqueInput
 }
 
-export type ProviderUpdateOneRequiredWithoutApiKeysNestedInput = {
+export type ProviderUpdateOneWithoutApiKeysNestedInput = {
   create?: Prisma.XOR<Prisma.ProviderCreateWithoutApiKeysInput, Prisma.ProviderUncheckedCreateWithoutApiKeysInput>
   connectOrCreate?: Prisma.ProviderCreateOrConnectWithoutApiKeysInput
   upsert?: Prisma.ProviderUpsertWithoutApiKeysInput
+  disconnect?: Prisma.ProviderWhereInput | boolean
+  delete?: Prisma.ProviderWhereInput | boolean
   connect?: Prisma.ProviderWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProviderUpdateToOneWithWhereWithoutApiKeysInput, Prisma.ProviderUpdateWithoutApiKeysInput>, Prisma.ProviderUncheckedUpdateWithoutApiKeysInput>
 }
@@ -381,7 +388,7 @@ export type ProviderCreateWithoutModelsInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProviderInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProviderRefInput
 }
 
 export type ProviderUncheckedCreateWithoutModelsInput = {
@@ -391,7 +398,7 @@ export type ProviderUncheckedCreateWithoutModelsInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProviderInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProviderRefInput
 }
 
 export type ProviderCreateOrConnectWithoutModelsInput = {
@@ -417,7 +424,7 @@ export type ProviderUpdateWithoutModelsInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProviderNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProviderRefNestedInput
 }
 
 export type ProviderUncheckedUpdateWithoutModelsInput = {
@@ -427,7 +434,7 @@ export type ProviderUncheckedUpdateWithoutModelsInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProviderNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProviderRefNestedInput
 }
 
 export type ProviderCreateWithoutApiKeysInput = {

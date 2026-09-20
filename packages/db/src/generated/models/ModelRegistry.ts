@@ -27,6 +27,10 @@ export type AggregateModelRegistry = {
 export type ModelRegistryMinAggregateOutputType = {
   id: string | null
   providerId: string | null
+  baseUrl: string | null
+  adapter: string | null
+  kind: string | null
+  isDefault: boolean | null
   modelKey: string | null
   pricingVersion: string | null
   createdAt: Date | null
@@ -36,6 +40,10 @@ export type ModelRegistryMinAggregateOutputType = {
 export type ModelRegistryMaxAggregateOutputType = {
   id: string | null
   providerId: string | null
+  baseUrl: string | null
+  adapter: string | null
+  kind: string | null
+  isDefault: boolean | null
   modelKey: string | null
   pricingVersion: string | null
   createdAt: Date | null
@@ -45,6 +53,10 @@ export type ModelRegistryMaxAggregateOutputType = {
 export type ModelRegistryCountAggregateOutputType = {
   id: number
   providerId: number
+  baseUrl: number
+  adapter: number
+  kind: number
+  isDefault: number
   modelKey: number
   capabilities: number
   pricingVersion: number
@@ -57,6 +69,10 @@ export type ModelRegistryCountAggregateOutputType = {
 export type ModelRegistryMinAggregateInputType = {
   id?: true
   providerId?: true
+  baseUrl?: true
+  adapter?: true
+  kind?: true
+  isDefault?: true
   modelKey?: true
   pricingVersion?: true
   createdAt?: true
@@ -66,6 +82,10 @@ export type ModelRegistryMinAggregateInputType = {
 export type ModelRegistryMaxAggregateInputType = {
   id?: true
   providerId?: true
+  baseUrl?: true
+  adapter?: true
+  kind?: true
+  isDefault?: true
   modelKey?: true
   pricingVersion?: true
   createdAt?: true
@@ -75,6 +95,10 @@ export type ModelRegistryMaxAggregateInputType = {
 export type ModelRegistryCountAggregateInputType = {
   id?: true
   providerId?: true
+  baseUrl?: true
+  adapter?: true
+  kind?: true
+  isDefault?: true
   modelKey?: true
   capabilities?: true
   pricingVersion?: true
@@ -158,6 +182,10 @@ export type ModelRegistryGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type ModelRegistryGroupByOutputType = {
   id: string
   providerId: string
+  baseUrl: string | null
+  adapter: string | null
+  kind: string
+  isDefault: boolean
   modelKey: string
   capabilities: runtime.JsonValue
   pricingVersion: string
@@ -189,6 +217,10 @@ export type ModelRegistryWhereInput = {
   NOT?: Prisma.ModelRegistryWhereInput | Prisma.ModelRegistryWhereInput[]
   id?: Prisma.StringFilter<"ModelRegistry"> | string
   providerId?: Prisma.StringFilter<"ModelRegistry"> | string
+  baseUrl?: Prisma.StringNullableFilter<"ModelRegistry"> | string | null
+  adapter?: Prisma.StringNullableFilter<"ModelRegistry"> | string | null
+  kind?: Prisma.StringFilter<"ModelRegistry"> | string
+  isDefault?: Prisma.BoolFilter<"ModelRegistry"> | boolean
   modelKey?: Prisma.StringFilter<"ModelRegistry"> | string
   capabilities?: Prisma.JsonFilter<"ModelRegistry">
   pricingVersion?: Prisma.StringFilter<"ModelRegistry"> | string
@@ -201,6 +233,10 @@ export type ModelRegistryWhereInput = {
 export type ModelRegistryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  baseUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  adapter?: Prisma.SortOrderInput | Prisma.SortOrder
+  kind?: Prisma.SortOrder
+  isDefault?: Prisma.SortOrder
   modelKey?: Prisma.SortOrder
   capabilities?: Prisma.SortOrder
   pricingVersion?: Prisma.SortOrder
@@ -217,6 +253,10 @@ export type ModelRegistryWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ModelRegistryWhereInput[]
   NOT?: Prisma.ModelRegistryWhereInput | Prisma.ModelRegistryWhereInput[]
   providerId?: Prisma.StringFilter<"ModelRegistry"> | string
+  baseUrl?: Prisma.StringNullableFilter<"ModelRegistry"> | string | null
+  adapter?: Prisma.StringNullableFilter<"ModelRegistry"> | string | null
+  kind?: Prisma.StringFilter<"ModelRegistry"> | string
+  isDefault?: Prisma.BoolFilter<"ModelRegistry"> | boolean
   modelKey?: Prisma.StringFilter<"ModelRegistry"> | string
   capabilities?: Prisma.JsonFilter<"ModelRegistry">
   pricingVersion?: Prisma.StringFilter<"ModelRegistry"> | string
@@ -229,6 +269,10 @@ export type ModelRegistryWhereUniqueInput = Prisma.AtLeast<{
 export type ModelRegistryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  baseUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  adapter?: Prisma.SortOrderInput | Prisma.SortOrder
+  kind?: Prisma.SortOrder
+  isDefault?: Prisma.SortOrder
   modelKey?: Prisma.SortOrder
   capabilities?: Prisma.SortOrder
   pricingVersion?: Prisma.SortOrder
@@ -245,6 +289,10 @@ export type ModelRegistryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ModelRegistryScalarWhereWithAggregatesInput | Prisma.ModelRegistryScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ModelRegistry"> | string
   providerId?: Prisma.StringWithAggregatesFilter<"ModelRegistry"> | string
+  baseUrl?: Prisma.StringNullableWithAggregatesFilter<"ModelRegistry"> | string | null
+  adapter?: Prisma.StringNullableWithAggregatesFilter<"ModelRegistry"> | string | null
+  kind?: Prisma.StringWithAggregatesFilter<"ModelRegistry"> | string
+  isDefault?: Prisma.BoolWithAggregatesFilter<"ModelRegistry"> | boolean
   modelKey?: Prisma.StringWithAggregatesFilter<"ModelRegistry"> | string
   capabilities?: Prisma.JsonWithAggregatesFilter<"ModelRegistry">
   pricingVersion?: Prisma.StringWithAggregatesFilter<"ModelRegistry"> | string
@@ -254,6 +302,10 @@ export type ModelRegistryScalarWhereWithAggregatesInput = {
 
 export type ModelRegistryCreateInput = {
   id?: string
+  baseUrl?: string | null
+  adapter?: string | null
+  kind?: string
+  isDefault?: boolean
   modelKey: string
   capabilities: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion: string
@@ -266,6 +318,10 @@ export type ModelRegistryCreateInput = {
 export type ModelRegistryUncheckedCreateInput = {
   id?: string
   providerId: string
+  baseUrl?: string | null
+  adapter?: string | null
+  kind?: string
+  isDefault?: boolean
   modelKey: string
   capabilities: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion: string
@@ -276,6 +332,10 @@ export type ModelRegistryUncheckedCreateInput = {
 
 export type ModelRegistryUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   modelKey?: Prisma.StringFieldUpdateOperationsInput | string
   capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
@@ -288,6 +348,10 @@ export type ModelRegistryUpdateInput = {
 export type ModelRegistryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   modelKey?: Prisma.StringFieldUpdateOperationsInput | string
   capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
@@ -299,6 +363,10 @@ export type ModelRegistryUncheckedUpdateInput = {
 export type ModelRegistryCreateManyInput = {
   id?: string
   providerId: string
+  baseUrl?: string | null
+  adapter?: string | null
+  kind?: string
+  isDefault?: boolean
   modelKey: string
   capabilities: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion: string
@@ -308,6 +376,10 @@ export type ModelRegistryCreateManyInput = {
 
 export type ModelRegistryUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   modelKey?: Prisma.StringFieldUpdateOperationsInput | string
   capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
@@ -318,6 +390,10 @@ export type ModelRegistryUpdateManyMutationInput = {
 export type ModelRegistryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   modelKey?: Prisma.StringFieldUpdateOperationsInput | string
   capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
@@ -343,6 +419,10 @@ export type ModelRegistryProviderIdModelKeyCompoundUniqueInput = {
 export type ModelRegistryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  baseUrl?: Prisma.SortOrder
+  adapter?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
+  isDefault?: Prisma.SortOrder
   modelKey?: Prisma.SortOrder
   capabilities?: Prisma.SortOrder
   pricingVersion?: Prisma.SortOrder
@@ -353,6 +433,10 @@ export type ModelRegistryCountOrderByAggregateInput = {
 export type ModelRegistryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  baseUrl?: Prisma.SortOrder
+  adapter?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
+  isDefault?: Prisma.SortOrder
   modelKey?: Prisma.SortOrder
   pricingVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -362,6 +446,10 @@ export type ModelRegistryMaxOrderByAggregateInput = {
 export type ModelRegistryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  baseUrl?: Prisma.SortOrder
+  adapter?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
+  isDefault?: Prisma.SortOrder
   modelKey?: Prisma.SortOrder
   pricingVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -431,6 +519,10 @@ export type ModelRegistryUpdateOneRequiredWithoutParticipantsNestedInput = {
 
 export type ModelRegistryCreateWithoutProviderInput = {
   id?: string
+  baseUrl?: string | null
+  adapter?: string | null
+  kind?: string
+  isDefault?: boolean
   modelKey: string
   capabilities: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion: string
@@ -441,6 +533,10 @@ export type ModelRegistryCreateWithoutProviderInput = {
 
 export type ModelRegistryUncheckedCreateWithoutProviderInput = {
   id?: string
+  baseUrl?: string | null
+  adapter?: string | null
+  kind?: string
+  isDefault?: boolean
   modelKey: string
   capabilities: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion: string
@@ -481,6 +577,10 @@ export type ModelRegistryScalarWhereInput = {
   NOT?: Prisma.ModelRegistryScalarWhereInput | Prisma.ModelRegistryScalarWhereInput[]
   id?: Prisma.StringFilter<"ModelRegistry"> | string
   providerId?: Prisma.StringFilter<"ModelRegistry"> | string
+  baseUrl?: Prisma.StringNullableFilter<"ModelRegistry"> | string | null
+  adapter?: Prisma.StringNullableFilter<"ModelRegistry"> | string | null
+  kind?: Prisma.StringFilter<"ModelRegistry"> | string
+  isDefault?: Prisma.BoolFilter<"ModelRegistry"> | boolean
   modelKey?: Prisma.StringFilter<"ModelRegistry"> | string
   capabilities?: Prisma.JsonFilter<"ModelRegistry">
   pricingVersion?: Prisma.StringFilter<"ModelRegistry"> | string
@@ -490,6 +590,10 @@ export type ModelRegistryScalarWhereInput = {
 
 export type ModelRegistryCreateWithoutParticipantsInput = {
   id?: string
+  baseUrl?: string | null
+  adapter?: string | null
+  kind?: string
+  isDefault?: boolean
   modelKey: string
   capabilities: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion: string
@@ -501,6 +605,10 @@ export type ModelRegistryCreateWithoutParticipantsInput = {
 export type ModelRegistryUncheckedCreateWithoutParticipantsInput = {
   id?: string
   providerId: string
+  baseUrl?: string | null
+  adapter?: string | null
+  kind?: string
+  isDefault?: boolean
   modelKey: string
   capabilities: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion: string
@@ -526,6 +634,10 @@ export type ModelRegistryUpdateToOneWithWhereWithoutParticipantsInput = {
 
 export type ModelRegistryUpdateWithoutParticipantsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   modelKey?: Prisma.StringFieldUpdateOperationsInput | string
   capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
@@ -537,6 +649,10 @@ export type ModelRegistryUpdateWithoutParticipantsInput = {
 export type ModelRegistryUncheckedUpdateWithoutParticipantsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   providerId?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   modelKey?: Prisma.StringFieldUpdateOperationsInput | string
   capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
@@ -546,6 +662,10 @@ export type ModelRegistryUncheckedUpdateWithoutParticipantsInput = {
 
 export type ModelRegistryCreateManyProviderInput = {
   id?: string
+  baseUrl?: string | null
+  adapter?: string | null
+  kind?: string
+  isDefault?: boolean
   modelKey: string
   capabilities: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion: string
@@ -555,6 +675,10 @@ export type ModelRegistryCreateManyProviderInput = {
 
 export type ModelRegistryUpdateWithoutProviderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   modelKey?: Prisma.StringFieldUpdateOperationsInput | string
   capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
@@ -565,6 +689,10 @@ export type ModelRegistryUpdateWithoutProviderInput = {
 
 export type ModelRegistryUncheckedUpdateWithoutProviderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   modelKey?: Prisma.StringFieldUpdateOperationsInput | string
   capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
@@ -575,6 +703,10 @@ export type ModelRegistryUncheckedUpdateWithoutProviderInput = {
 
 export type ModelRegistryUncheckedUpdateManyWithoutProviderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   modelKey?: Prisma.StringFieldUpdateOperationsInput | string
   capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
@@ -616,6 +748,10 @@ export type ModelRegistryCountOutputTypeCountParticipantsArgs<ExtArgs extends ru
 export type ModelRegistrySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   providerId?: boolean
+  baseUrl?: boolean
+  adapter?: boolean
+  kind?: boolean
+  isDefault?: boolean
   modelKey?: boolean
   capabilities?: boolean
   pricingVersion?: boolean
@@ -629,6 +765,10 @@ export type ModelRegistrySelect<ExtArgs extends runtime.Types.Extensions.Interna
 export type ModelRegistrySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   providerId?: boolean
+  baseUrl?: boolean
+  adapter?: boolean
+  kind?: boolean
+  isDefault?: boolean
   modelKey?: boolean
   capabilities?: boolean
   pricingVersion?: boolean
@@ -640,6 +780,10 @@ export type ModelRegistrySelectCreateManyAndReturn<ExtArgs extends runtime.Types
 export type ModelRegistrySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   providerId?: boolean
+  baseUrl?: boolean
+  adapter?: boolean
+  kind?: boolean
+  isDefault?: boolean
   modelKey?: boolean
   capabilities?: boolean
   pricingVersion?: boolean
@@ -651,6 +795,10 @@ export type ModelRegistrySelectUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type ModelRegistrySelectScalar = {
   id?: boolean
   providerId?: boolean
+  baseUrl?: boolean
+  adapter?: boolean
+  kind?: boolean
+  isDefault?: boolean
   modelKey?: boolean
   capabilities?: boolean
   pricingVersion?: boolean
@@ -658,7 +806,7 @@ export type ModelRegistrySelectScalar = {
   updatedAt?: boolean
 }
 
-export type ModelRegistryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "providerId" | "modelKey" | "capabilities" | "pricingVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["modelRegistry"]>
+export type ModelRegistryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "providerId" | "baseUrl" | "adapter" | "kind" | "isDefault" | "modelKey" | "capabilities" | "pricingVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["modelRegistry"]>
 export type ModelRegistryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
   participants?: boolean | Prisma.ModelRegistry$participantsArgs<ExtArgs>
@@ -680,6 +828,10 @@ export type $ModelRegistryPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     providerId: string
+    baseUrl: string | null
+    adapter: string | null
+    kind: string
+    isDefault: boolean
     modelKey: string
     capabilities: runtime.JsonValue
     pricingVersion: string
@@ -1112,6 +1264,10 @@ export interface Prisma__ModelRegistryClient<T, Null = never, ExtArgs extends ru
 export interface ModelRegistryFieldRefs {
   readonly id: Prisma.FieldRef<"ModelRegistry", 'String'>
   readonly providerId: Prisma.FieldRef<"ModelRegistry", 'String'>
+  readonly baseUrl: Prisma.FieldRef<"ModelRegistry", 'String'>
+  readonly adapter: Prisma.FieldRef<"ModelRegistry", 'String'>
+  readonly kind: Prisma.FieldRef<"ModelRegistry", 'String'>
+  readonly isDefault: Prisma.FieldRef<"ModelRegistry", 'Boolean'>
   readonly modelKey: Prisma.FieldRef<"ModelRegistry", 'String'>
   readonly capabilities: Prisma.FieldRef<"ModelRegistry", 'Json'>
   readonly pricingVersion: Prisma.FieldRef<"ModelRegistry", 'String'>
