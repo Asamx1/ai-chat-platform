@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth';
 import type { DBAdapter } from 'better-auth';
 import { prisma } from '@aichat/db';
+import { resolveAuthOriginConfig } from './auth-origin';
 
 /**
  * 手写最小 PrismaAdapter（避免引入 @better-auth/prisma 依赖）。
@@ -225,13 +226,15 @@ const useSecureCookies = process.env.AICHAT_SECURE_COOKIES === '1'
     ? false
     : process.env.NODE_ENV === 'production';
 
+const authOriginConfig = resolveAuthOriginConfig(process.env);
+
 export const auth = betterAuth({
   // better-auth 契约：database 必须是「收到 options、返回 adapter」的函数；
   // 传普通对象会被当成 DB 连接配置走 kysely 路径然后炸掉。
   database: () => prismaAdapter,
   ...(useSecureCookies ? {} : { advanced: { useSecureCookies: false } }),
-  trustedOrigins: ['http://localhost:3000', 'http://127.0.0.1:3000',
-                   'http://localhost:3100', 'http://127.0.0.1:3100'],
+  baseURL: authOriginConfig.baseURL,
+  trustedOrigins: authOriginConfig.trustedOrigins,
   // 逻辑表名用 better-auth 默认小写（user/session/account/verification），
   // 与 Prisma delegate 名（prisma.user 等）一致；不要设 modelName 覆盖。
   user: {
