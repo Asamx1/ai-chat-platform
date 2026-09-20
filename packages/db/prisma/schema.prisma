@@ -61,6 +61,7 @@ model User {
   runs          OrchestrationRun[]
   usageLogs     UsageLog[]
   apiKeys       ApiKey[]
+  modelUsageDaily ModelUsageDaily[]
 }
 
 model Provider {
@@ -78,6 +79,10 @@ model ModelRegistry {
   id             String        @id @default(cuid())
   providerId     String
   provider       Provider      @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  baseUrl        String?
+  adapter        String?
+  kind           String        @default("local")
+  isDefault      Boolean       @default(false)
   modelKey       String
   capabilities   Json
   pricingVersion String
@@ -227,15 +232,20 @@ model ApiKey {
   id         String   @id @default(cuid())
   userId     String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  providerId String
-  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId String?
+  providerRef Provider? @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  provider   String
   ciphertext String
-  iv         String
-  authTag    String
+  // Legacy fields retained for a separate data migration into the v1 envelope.
+  iv         String?
+  authTag    String?
+  verified   Boolean  @default(false)
+  updatedAt  DateTime @updatedAt
   keyVersion Int      @default(1)
   createdAt  DateTime @default(now())
 
   @@unique([userId, providerId])
+  @@unique([userId, provider])
 }
 
 model ShareLink {
@@ -290,4 +300,16 @@ model Verification {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, value])
+}
+
+model ModelUsageDaily {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  modelId   String
+  date      DateTime @db.Date
+  tokensIn  Int      @default(0)
+  tokensOut Int      @default(0)
+
+  @@unique([userId, modelId, date])
 }

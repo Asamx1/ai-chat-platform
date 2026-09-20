@@ -21,6 +21,8 @@ export interface OpenAICompatibleAdapterOptions {
   apiKey: string;
   model: string;
   pricing?: Pricing | undefined;
+  /** Registry provider identifier for usage accounting. */
+  providerKey?: string;
 }
 
 interface OpenAISSEChunk {
@@ -35,12 +37,14 @@ export class OpenAICompatibleProvider implements ProviderAdapter {
   private readonly baseUrl: string;
   private readonly apiKey: string;
   private readonly model: string;
+  private readonly providerKey: string;
   private readonly pricing: Pricing | undefined;
 
   constructor(opts: OpenAICompatibleAdapterOptions) {
     this.baseUrl = opts.baseUrl.replace(/\/+$/, '');
     this.apiKey = opts.apiKey;
     this.model = opts.model;
+    this.providerKey = opts.providerKey ?? 'openai-compatible';
     this.pricing = opts.pricing;
   }
 
@@ -203,7 +207,7 @@ export class OpenAICompatibleProvider implements ProviderAdapter {
       completionTokens,
       costMicros,
       model: this.model,
-      providerKey: 'openai-compatible',
+      providerKey: this.providerKey,
     };
   }
 }
