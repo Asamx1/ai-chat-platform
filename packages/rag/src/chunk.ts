@@ -1,3 +1,6 @@
+import { getStrategy } from './strategies/registry';
+import { DEFAULT_CHUNK_CONFIG, type ChunkConfig, type ChunkInput, type ChunkResult, type StrategyName } from './strategies/types';
+
 export type Part = { text: string };
 export type Slice = { ordinal: number; start: number; end: number; text: string };
 export function normalize(text: string): string {
@@ -8,13 +11,23 @@ export function chunk(parts: Part[], size = 512, overlap = 50): Slice[] {
   if (!Number.isSafeInteger(size) || !Number.isSafeInteger(overlap) || size <= 0 || overlap < 0 || overlap >= size) {
     throw new RangeError('Invalid chunk window');
   }
-  const chars = Array.from(normalize(parts.map(p => p.text).join('\n')));
-  if (!chars.join('').trim()) return [];
-  const slices: Slice[] = [];
-  for (let start = 0; start < chars.length; start += size - overlap) {
-    const end = Math.min(start + size, chars.length);
-    slices.push({ ordinal: slices.length, start, end, text: chars.slice(start, end).join('') });
-    if (end === chars.length) break;
-  }
-  return slices;
+  const config: ChunkConfig = { ...DEFAULT_CHUNK_CONFIG, fixedSize: size, fixedOverlap: overlap, parentChild: false };
+  // Route through the fixed strategy so the legacy entry and the registry stay identical.
+  return getStrategy('fixed')
+    .chunk({ parts, mime: 'text/plain' }, config)
+    .map(r => ({ ordinal: r.ordinal, start: r.start, end: r.end, text: r.text }));
 }
+
+/**
+ * Strategy-aware entry point driven by Document.chunkStrategy. Unknown strategies throw;
+ * the default is `structure` per the M9 design.
+ */
+export function chunkDocument(
+  doc: ChunkInput,
+  strategy: StrategyName = 'structure',
+  config: Readonly<ChunkConfig> = DEFAULT_CHUNK_CONFIG,
+): ChunkResult[] {
+  return getStrategy(strategy).chunk(doc, config);
+}
+
+export type { ChunkConfig, ChunkInput, ChunkResult, StrategyName };
