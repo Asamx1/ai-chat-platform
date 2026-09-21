@@ -7,7 +7,7 @@ import Composer from '@/components/chat/Composer';
 import ModelPicker, { getStoredModel } from '@/components/chat/ModelPicker';
 import CollabLauncher from '@/components/collab/CollabLauncher';
 import KbMountPicker from '@/components/kb/KbMountPicker';
-import SeatStatus from '@/components/collab/SeatStatus';
+import OrchestrationProgress from '@/components/collab/OrchestrationProgress';
 import RunTimeline from '@/components/runs/RunTimeline';
 import type { ChatMessage, MessageStatus } from '@/components/chat/types';
 
@@ -25,7 +25,7 @@ function loadCache(convId: string): ChatMessage[] {
   }
 }
 
-export default function ChatApp() {
+export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [modelKey, setModelKey] = useState(getStoredModel());
@@ -33,7 +33,7 @@ export default function ChatApp() {
   const [sending, setSending] = useState(false);
   const [listRefresh, setListRefresh] = useState(0);
   const [notice, setNotice] = useState<string | null>(null);
-  // 协作运行侧栏：非空时渲染 SeatStatus
+  // 协作运行侧栏：进度视图与事件详情
   const [collabRunId, setCollabRunId] = useState<string | null>(null);
   const newConversationRef = useRef<string | null>(null);
   const esRef = useRef<EventSource | null>(null);
@@ -224,6 +224,7 @@ export default function ChatApp() {
         <div className="chat-topbar">
           <span>{activeId ? '对话' : '新对话'}</span>
           <div className="topbar-actions">
+            {isAdmin && <a className="topbar-link" href="/admin">后台</a>}
             <a className="topbar-link" href="/kb">
               知识库
             </a>
@@ -247,7 +248,8 @@ export default function ChatApp() {
       </div>
       {collabRunId && (
         <div className="collab-side">
-          <SeatStatus runId={collabRunId} onClose={() => setCollabRunId(null)} />
+          <button type="button" className="tl-btn" onClick={() => setCollabRunId(null)}>关闭协作进度</button>
+          <OrchestrationProgress key={collabRunId} runId={collabRunId} />
           <RunTimeline runId={collabRunId} collapsed />
         </div>
       )}
