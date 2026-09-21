@@ -830,3 +830,218 @@ body {
 .topbar-link:hover {
   color: var(--text);
 }
+
+/* ── 知识库页（/kb）── */
+.kb-upload {
+  display: flex;
+  flex-direction: column;
+}
+
+.kb-file-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-dim);
+  font: inherit;
+  outline: none;
+}
+
+.kb-file-input:focus-visible {
+  border-color: var(--accent);
+}
+
+.kb-done {
+  margin-top: 8px;
+  color: #34d399;
+  font-size: 13px;
+}
+
+.kb-empty {
+  margin: 0;
+  color: var(--text-dim);
+}
+
+/* 列表条目 */
+.kb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kb-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.kb-item:last-child {
+  border-bottom: 0;
+}
+
+.kb-item-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.kb-item-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kb-name {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kb-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kb-error {
+  margin-top: 6px;
+  color: #f87171;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.kb-delete-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.kb-confirm {
+  flex-shrink: 0;
+  min-width: 220px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bubble);
+}
+
+.kb-confirm p {
+  margin: 0 0 4px;
+  color: var(--text-dim);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* 状态徽章：语义沿 settings 页徽章体系（is-ok 绿 / is-empty 灰） */
+.kb-badge {
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.kb-badge.is-ready {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+}
+
+.kb-badge.is-processing,
+.kb-badge.is-pending {
+  background: rgba(59, 130, 246, 0.18);
+  color: #93c5fd;
+}
+
+.kb-badge.is-failed {
+  background: rgba(248, 113, 113, 0.15);
+  color: #f87171;
+}
+
+.kb-badge.is-empty {
+  background: var(--bubble);
+  color: var(--text-dim);
+}
+
+/* ── 会话挂载选择器（顶栏）── */
+.kb-mount {
+  position: relative;
+}
+
+.kb-toggle-btn {
+  background: var(--bubble);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.kb-toggle-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.kb-mount-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 100;
+  min-width: 240px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kb-mount-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kb-mount-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.kb-mount-option:hover {
+  background: var(--bubble);
+}
+
+.kb-mount-option input {
+  accent-color: var(--accent);
+}
+
+.kb-save-btn {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+.kb-mount-empty {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 12px;
+  line-height: 1.5;
+}

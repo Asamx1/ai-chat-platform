@@ -6,6 +6,7 @@ import MessageStream from '@/components/chat/MessageStream';
 import Composer from '@/components/chat/Composer';
 import ModelPicker, { getStoredModel } from '@/components/chat/ModelPicker';
 import CollabLauncher from '@/components/collab/CollabLauncher';
+import KbMountPicker from '@/components/kb/KbMountPicker';
 import SeatStatus from '@/components/collab/SeatStatus';
 import RunTimeline from '@/components/runs/RunTimeline';
 import type { ChatMessage, MessageStatus } from '@/components/chat/types';
@@ -223,11 +224,15 @@ export default function ChatApp() {
         <div className="chat-topbar">
           <span>{activeId ? '对话' : '新对话'}</span>
           <div className="topbar-actions">
+            <a className="topbar-link" href="/kb">
+              知识库
+            </a>
             <a className="topbar-link" href="/settings">
               设置
             </a>
             <CollabLauncher conversationId={activeId} onLaunched={setCollabRunId} />
             <ModelPicker value={modelKey} onChange={setModelKey} disabled={sending} />
+            <KbMountPicker conversationId={activeId} />
           </div>
         </div>
         {notice && <div role="alert" className="msg-status failed" style={{ padding: '8px 16px' }}>{notice}</div>}
