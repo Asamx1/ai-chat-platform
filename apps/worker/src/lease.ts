@@ -11,7 +11,9 @@ import { prisma } from '@aichat/db';
 
 export const LEASE_TTL_SECONDS = 30;
 
-/** 原子领取下一个可执行的 run（PENDING，或租约过期的 RUNNING）。返回 runId | null。 */
+/** PENDING 入队；只有曾被 worker 领取（attempt > 0）的 run 才能恢复/重试。
+ * M1 inline 创建 RUNNING 且 attempt=0、无租约，不能作为过期任务领取。
+ */
 export async function claimNextRun(workerId: string): Promise<string | null> {
   const rows = await prisma.$queryRawUnsafe<{ id: string }[]>(
     `UPDATE "OrchestrationRun"
@@ -23,6 +25,7 @@ export async function claimNextRun(workerId: string): Promise<string | null> {
        SELECT id FROM "OrchestrationRun"
         WHERE ("status" = 'PENDING'
                OR ("status" IN ('RUNNING', 'FAILED')
+                   AND "attempt" > 0
                    AND ("leaseExpiresAt" IS NULL OR "leaseExpiresAt" < now())
                    AND "attempt" < 3))
           AND "cancelRequested" = false

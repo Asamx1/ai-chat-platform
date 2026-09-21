@@ -8,6 +8,11 @@ export interface RunEvent {
   error?: unknown;
 }
 
+/** A failed attempt can be followed by useful output; wait for server confirmation. */
+export function shouldCloseRunStream(event: RunEvent): boolean {
+  return ['run.succeeded', 'run.cancelled', 'stream.end', 'error'].includes(event.type);
+}
+
 export function errorMessage(error: unknown, fallback: string): string {
   if (typeof error === 'string' && error.trim()) return error;
   if (error && typeof error === 'object' && 'message' in error) {
@@ -24,9 +29,13 @@ export async function sendFailure(response: Response): Promise<string> {
 export function applyRunEvent(message: ChatMessage, event: RunEvent, retryKey: string): ChatMessage {
   switch (event.type) {
     case 'provider.delta':
-      return { ...message, content: message.content + (event.payload?.delta ?? event.delta ?? '') };
+      return {
+        ...message,
+        content: message.content + (event.payload?.delta ?? event.delta ?? ''),
+        status: 'streaming', error: undefined, retryIdempotencyKey: undefined,
+      };
     case 'run.succeeded':
-      return { ...message, status: 'succeeded', retryIdempotencyKey: undefined };
+      return { ...message, status: 'succeeded', error: undefined, retryIdempotencyKey: undefined };
     case 'run.failed':
     case 'error':
       return {

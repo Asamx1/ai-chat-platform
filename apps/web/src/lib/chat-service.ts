@@ -74,6 +74,7 @@ async function appendEvent(
  */
 export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
   const { userId, content, modelKey, idempotencyKey } = input;
+  const useWorker = process.env.EXECUTION_MODE === 'worker';
 
   // 幂等重放：先查已有 run，直接返回（含首次创建时记录的 userMessageId）。
   const existing = await prisma.orchestrationRun.findUnique({
@@ -116,7 +117,8 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
       data: {
         conversationId,
         ownerId: userId,
-        status: process.env.EXECUTION_MODE === 'worker' ? 'PENDING' : 'RUNNING',
+        // attempt=0 的 RUNNING 专属 inline；worker 只恢复已经领取过的 run。
+        status: useWorker ? 'PENDING' : 'RUNNING',
         degraded: !!meta?.degraded,
         ...(meta?.degraded ? { degradationReasons: [meta.degraded.reason] } : {}),
         idempotencyKey,
@@ -157,7 +159,7 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
 
   // M2 outbox 模式：API 只写命令（run=PENDING），执行交给 worker。
   // 过渡期：EXECUTION_MODE!=worker 时 setImmediate 内联执行保持 M1 行为。
-  if (process.env.EXECUTION_MODE !== 'worker') {
+  if (!useWorker) {
     setImmediate(() => {
       executeRunInline(runId, conversationId, content, modelKey, userId).catch(() => {});
     });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { applyRunEvent, sendFailure } from '../src/components/chat/chat-events';
+import { applyRunEvent, sendFailure, shouldCloseRunStream } from '../src/components/chat/chat-events';
 import MessageStream from '../src/components/chat/MessageStream';
 import type { ChatMessage } from '../src/components/chat/types';
 
@@ -32,5 +32,29 @@ describe('chat error visibility and SSE envelope', () => {
   it('supports legacy flattened events and a missing error reason', () => {
     expect(applyRunEvent(message, { type: 'provider.delta', delta: 'old' }, 'r').content).toBe('old');
     expect(applyRunEvent(message, { type: 'error' }, 'r').error).toBe('生成失败，请稍后重试。');
+  });
+  it('keeps failed → delta → succeeded subscribed and removes stale error/retry UI', () => {
+    const failedEvent = { type: 'run.failed', payload: { error: 'sequence collision' } };
+    expect(shouldCloseRunStream(failedEvent)).toBe(false);
+    const failed = applyRunEvent({ ...message, content: 'partial ' }, failedEvent, 'retry');
+    const resumed = applyRunEvent(failed, { type: 'provider.delta', payload: { delta: '你好' } }, 'retry');
+    expect(resumed).toMatchObject({ content: 'partial 你好', status: 'streaming' });
+    expect(resumed.error).toBeUndefined();
+    expect(resumed.retryIdempotencyKey).toBeUndefined();
+    const succeeded = applyRunEvent(resumed, { type: 'run.succeeded' }, 'retry');
+    const markup = renderToStaticMarkup(<MessageStream messages={[succeeded]} onRetry={() => {}} />);
+    expect(markup).toContain('partial 你好');
+    expect(markup).toContain('已完成');
+    expect(markup).not.toContain('role="alert"');
+    expect(markup).not.toContain('重试');
+    expect(shouldCloseRunStream({ type: 'run.succeeded' })).toBe(true);
+  });
+  it('clears failure on success without a delta and closes confirmed terminal failures', () => {
+    const failed = applyRunEvent(message, { type: 'run.failed', error: 'failed' }, 'retry');
+    expect(applyRunEvent(failed, { type: 'run.succeeded' }, 'retry')).toMatchObject({
+      status: 'succeeded', error: undefined, retryIdempotencyKey: undefined,
+    });
+    expect(shouldCloseRunStream({ type: 'stream.end' })).toBe(true);
+    expect(applyRunEvent(failed, { type: 'stream.end' }, 'retry')).toBe(failed);
   });
 });

@@ -10,9 +10,7 @@ import SeatStatus from '@/components/collab/SeatStatus';
 import RunTimeline from '@/components/runs/RunTimeline';
 import type { ChatMessage, MessageStatus } from '@/components/chat/types';
 
-import { applyRunEvent, sendFailure, type RunEvent } from './chat-events';
-
-const TERMINAL_TYPES = new Set(['run.succeeded', 'run.failed', 'run.cancelled', 'error']);
+import { applyRunEvent, sendFailure, shouldCloseRunStream, type RunEvent } from './chat-events';
 
 /** sessionStorage 缓存 key：conv:{id} */
 const cacheKey = (convId: string) => `conv:${convId}`;
@@ -160,7 +158,7 @@ export default function ChatApp() {
             persist(conversationId as string, next);
             return next;
           });
-          if (TERMINAL_TYPES.has(evt.type)) {
+          if (shouldCloseRunStream(evt)) {
             closeStream();
             setSending(false);
           }

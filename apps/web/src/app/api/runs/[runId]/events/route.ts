@@ -88,7 +88,11 @@ export async function GET(request: Request, ctx: RouteContext): Promise<Response
               where: { id: runId },
               select: { status: true },
             });
-            if (current && TERMINAL_RUN_STATUSES.has(current.status)) break;
+            if (current && TERMINAL_RUN_STATUSES.has(current.status)) {
+              // 明确通知客户端已追平终态，避免失败后 EventSource 无限重连。
+              send(`data: ${JSON.stringify({ type: 'stream.end', runId })}\n\n`);
+              break;
+            }
             if (Date.now() - lastHeartbeat >= HEARTBEAT_INTERVAL_MS) {
               send(HEARTBEAT);
               lastHeartbeat = Date.now();
@@ -111,7 +115,8 @@ export async function GET(request: Request, ctx: RouteContext): Promise<Response
             );
             after = ev.seq;
             lastHeartbeat = Date.now();
-            if (isTerminalEvent(ev.type)) {
+            // 失败事件可能来自旧执行者/可重试 attempt，继续读取后续事件。
+            if (isTerminalEvent(ev.type) && ev.type !== 'run.failed') {
               terminal = true;
               break;
             }
