@@ -22,7 +22,7 @@ export interface Reservation {
 export interface QuotaCall { id: string; quotaReservation: Reservation | null }
 export async function lockQuota(tx: QuotaTransaction, userId: string, modelId: string): Promise<void> {
   // A transaction-scoped lock also covers absent overrides and different UTC dates.
-  await tx.$queryRawUnsafe('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', JSON.stringify([userId, modelId]));
+  await tx.$executeRawUnsafe('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', JSON.stringify([userId, modelId]));
 }
 export async function findQuotaCall(db: QuotaTransaction, requestHash: string): Promise<QuotaCall | undefined> {
   return (await db.$queryRawUnsafe<QuotaCall[]>('SELECT id,"quotaReservation" FROM "ProviderCall" WHERE "requestHash"=$1', requestHash))[0];
@@ -35,7 +35,7 @@ export async function reserveQuota(db: QuotaStore, input: {
   return db.$transaction(async tx => {
     await lockQuota(tx, input.userId, input.modelId);
     // Request identity is independent of selected/fallback model, including on retries.
-    await tx.$queryRawUnsafe('SELECT pg_advisory_xact_lock(hashtextextended($1, 1))', input.requestHash);
+    await tx.$executeRawUnsafe('SELECT pg_advisory_xact_lock(hashtextextended($1, 1))', input.requestHash);
     const existing = await findQuotaCall(tx, input.requestHash);
     if (existing) throw new Error('QUOTA_CALL_EXISTS');
     const date = usageDate(input.now ?? new Date()).toISOString().slice(0, 10);
