@@ -73,14 +73,17 @@ function parsePdf(data: Uint8Array, signal: AbortSignal): Promise<string> {
 async function readObject(job: Job, signal: AbortSignal): Promise<Uint8Array> {
   if (job.size > MAX_FILE_BYTES || job.size < 0) throw new PermanentRagError('FILE_TOO_LARGE');
   const { Client } = await import('minio');
+  const { S3_ENDPOINT, S3_BUCKET, MINIO_ROOT_USER, MINIO_ROOT_PASSWORD } = process.env;
+  if (!S3_ENDPOINT || !S3_BUCKET || !MINIO_ROOT_USER || !MINIO_ROOT_PASSWORD) throw new PermanentRagError('STORAGE_UNAVAILABLE');
+  const s3url = new URL(S3_ENDPOINT);
   const client = new Client({
-    endPoint: process.env.MINIO_ENDPOINT || '127.0.0.1',
-    port: Number(process.env.MINIO_PORT || 9000), useSSL: process.env.MINIO_USE_SSL === 'true',
-    accessKey: process.env.MINIO_ACCESS_KEY || process.env.MINIO_ROOT_USER || '',
-    secretKey: process.env.MINIO_SECRET_KEY || process.env.MINIO_ROOT_PASSWORD || '',
+    endPoint: s3url.hostname,
+    port: Number(s3url.port || 9000), useSSL: s3url.protocol === 'https:',
+    accessKey: MINIO_ROOT_USER,
+    secretKey: MINIO_ROOT_PASSWORD,
   });
   client.setRequestOptions({ timeout: 60_000 });
-  const stream = await client.getObject(process.env.MINIO_BUCKET || 'knowledge-base', job.objectKey);
+  const stream = await client.getObject(S3_BUCKET, job.objectKey);
   const abort = (): void => { stream.destroy(new Error('OBJECT_READ_ABORTED')); };
   signal.addEventListener('abort', abort, { once: true });
   let size = 0;
