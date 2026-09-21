@@ -195,6 +195,7 @@ export type ConversationWhereInput = {
   messages?: Prisma.MessageListRelationFilter
   runs?: Prisma.OrchestrationRunListRelationFilter
   shareLinks?: Prisma.ShareLinkListRelationFilter
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseListRelationFilter
 }
 
 export type ConversationOrderByWithRelationInput = {
@@ -209,6 +210,7 @@ export type ConversationOrderByWithRelationInput = {
   messages?: Prisma.MessageOrderByRelationAggregateInput
   runs?: Prisma.OrchestrationRunOrderByRelationAggregateInput
   shareLinks?: Prisma.ShareLinkOrderByRelationAggregateInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseOrderByRelationAggregateInput
 }
 
 export type ConversationWhereUniqueInput = Prisma.AtLeast<{
@@ -226,6 +228,7 @@ export type ConversationWhereUniqueInput = Prisma.AtLeast<{
   messages?: Prisma.MessageListRelationFilter
   runs?: Prisma.OrchestrationRunListRelationFilter
   shareLinks?: Prisma.ShareLinkListRelationFilter
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseListRelationFilter
 }, "id">
 
 export type ConversationOrderByWithAggregationInput = {
@@ -263,6 +266,7 @@ export type ConversationCreateInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutConversationInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutConversationInput
   shareLinks?: Prisma.ShareLinkCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationUncheckedCreateInput = {
@@ -276,6 +280,7 @@ export type ConversationUncheckedCreateInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutConversationInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutConversationInput
   shareLinks?: Prisma.ShareLinkUncheckedCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationUpdateInput = {
@@ -289,6 +294,7 @@ export type ConversationUpdateInput = {
   messages?: Prisma.MessageUpdateManyWithoutConversationNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutConversationNestedInput
   shareLinks?: Prisma.ShareLinkUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationUncheckedUpdateInput = {
@@ -302,6 +308,7 @@ export type ConversationUncheckedUpdateInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutConversationNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutConversationNestedInput
   shareLinks?: Prisma.ShareLinkUncheckedUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationCreateManyInput = {
@@ -474,6 +481,20 @@ export type ConversationUpdateOneRequiredWithoutShareLinksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ConversationUpdateToOneWithWhereWithoutShareLinksInput, Prisma.ConversationUpdateWithoutShareLinksInput>, Prisma.ConversationUncheckedUpdateWithoutShareLinksInput>
 }
 
+export type ConversationCreateNestedOneWithoutKnowledgeBasesInput = {
+  create?: Prisma.XOR<Prisma.ConversationCreateWithoutKnowledgeBasesInput, Prisma.ConversationUncheckedCreateWithoutKnowledgeBasesInput>
+  connectOrCreate?: Prisma.ConversationCreateOrConnectWithoutKnowledgeBasesInput
+  connect?: Prisma.ConversationWhereUniqueInput
+}
+
+export type ConversationUpdateOneRequiredWithoutKnowledgeBasesNestedInput = {
+  create?: Prisma.XOR<Prisma.ConversationCreateWithoutKnowledgeBasesInput, Prisma.ConversationUncheckedCreateWithoutKnowledgeBasesInput>
+  connectOrCreate?: Prisma.ConversationCreateOrConnectWithoutKnowledgeBasesInput
+  upsert?: Prisma.ConversationUpsertWithoutKnowledgeBasesInput
+  connect?: Prisma.ConversationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ConversationUpdateToOneWithWhereWithoutKnowledgeBasesInput, Prisma.ConversationUpdateWithoutKnowledgeBasesInput>, Prisma.ConversationUncheckedUpdateWithoutKnowledgeBasesInput>
+}
+
 export type ConversationCreateWithoutOwnerInput = {
   id?: string
   title: string
@@ -484,6 +505,7 @@ export type ConversationCreateWithoutOwnerInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutConversationInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutConversationInput
   shareLinks?: Prisma.ShareLinkCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationUncheckedCreateWithoutOwnerInput = {
@@ -496,6 +518,7 @@ export type ConversationUncheckedCreateWithoutOwnerInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutConversationInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutConversationInput
   shareLinks?: Prisma.ShareLinkUncheckedCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationCreateOrConnectWithoutOwnerInput = {
@@ -546,6 +569,7 @@ export type ConversationCreateWithoutParticipantsInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutConversationInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutConversationInput
   shareLinks?: Prisma.ShareLinkCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationUncheckedCreateWithoutParticipantsInput = {
@@ -558,6 +582,7 @@ export type ConversationUncheckedCreateWithoutParticipantsInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutConversationInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutConversationInput
   shareLinks?: Prisma.ShareLinkUncheckedCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationCreateOrConnectWithoutParticipantsInput = {
@@ -586,6 +611,7 @@ export type ConversationUpdateWithoutParticipantsInput = {
   messages?: Prisma.MessageUpdateManyWithoutConversationNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutConversationNestedInput
   shareLinks?: Prisma.ShareLinkUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationUncheckedUpdateWithoutParticipantsInput = {
@@ -598,6 +624,7 @@ export type ConversationUncheckedUpdateWithoutParticipantsInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutConversationNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutConversationNestedInput
   shareLinks?: Prisma.ShareLinkUncheckedUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationCreateWithoutMessagesInput = {
@@ -610,6 +637,7 @@ export type ConversationCreateWithoutMessagesInput = {
   participants?: Prisma.ParticipantCreateNestedManyWithoutConversationInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutConversationInput
   shareLinks?: Prisma.ShareLinkCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationUncheckedCreateWithoutMessagesInput = {
@@ -622,6 +650,7 @@ export type ConversationUncheckedCreateWithoutMessagesInput = {
   participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutConversationInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutConversationInput
   shareLinks?: Prisma.ShareLinkUncheckedCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationCreateOrConnectWithoutMessagesInput = {
@@ -650,6 +679,7 @@ export type ConversationUpdateWithoutMessagesInput = {
   participants?: Prisma.ParticipantUpdateManyWithoutConversationNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutConversationNestedInput
   shareLinks?: Prisma.ShareLinkUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationUncheckedUpdateWithoutMessagesInput = {
@@ -662,6 +692,7 @@ export type ConversationUncheckedUpdateWithoutMessagesInput = {
   participants?: Prisma.ParticipantUncheckedUpdateManyWithoutConversationNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutConversationNestedInput
   shareLinks?: Prisma.ShareLinkUncheckedUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationCreateWithoutRunsInput = {
@@ -674,6 +705,7 @@ export type ConversationCreateWithoutRunsInput = {
   participants?: Prisma.ParticipantCreateNestedManyWithoutConversationInput
   messages?: Prisma.MessageCreateNestedManyWithoutConversationInput
   shareLinks?: Prisma.ShareLinkCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationUncheckedCreateWithoutRunsInput = {
@@ -686,6 +718,7 @@ export type ConversationUncheckedCreateWithoutRunsInput = {
   participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutConversationInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutConversationInput
   shareLinks?: Prisma.ShareLinkUncheckedCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationCreateOrConnectWithoutRunsInput = {
@@ -714,6 +747,7 @@ export type ConversationUpdateWithoutRunsInput = {
   participants?: Prisma.ParticipantUpdateManyWithoutConversationNestedInput
   messages?: Prisma.MessageUpdateManyWithoutConversationNestedInput
   shareLinks?: Prisma.ShareLinkUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationUncheckedUpdateWithoutRunsInput = {
@@ -726,6 +760,7 @@ export type ConversationUncheckedUpdateWithoutRunsInput = {
   participants?: Prisma.ParticipantUncheckedUpdateManyWithoutConversationNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutConversationNestedInput
   shareLinks?: Prisma.ShareLinkUncheckedUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationCreateWithoutShareLinksInput = {
@@ -738,6 +773,7 @@ export type ConversationCreateWithoutShareLinksInput = {
   participants?: Prisma.ParticipantCreateNestedManyWithoutConversationInput
   messages?: Prisma.MessageCreateNestedManyWithoutConversationInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationUncheckedCreateWithoutShareLinksInput = {
@@ -750,6 +786,7 @@ export type ConversationUncheckedCreateWithoutShareLinksInput = {
   participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutConversationInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutConversationInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutConversationInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutConversationInput
 }
 
 export type ConversationCreateOrConnectWithoutShareLinksInput = {
@@ -778,6 +815,7 @@ export type ConversationUpdateWithoutShareLinksInput = {
   participants?: Prisma.ParticipantUpdateManyWithoutConversationNestedInput
   messages?: Prisma.MessageUpdateManyWithoutConversationNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationUncheckedUpdateWithoutShareLinksInput = {
@@ -790,6 +828,75 @@ export type ConversationUncheckedUpdateWithoutShareLinksInput = {
   participants?: Prisma.ParticipantUncheckedUpdateManyWithoutConversationNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutConversationNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutConversationNestedInput
+}
+
+export type ConversationCreateWithoutKnowledgeBasesInput = {
+  id?: string
+  title: string
+  type: $Enums.ConversationType
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutConversationsInput
+  participants?: Prisma.ParticipantCreateNestedManyWithoutConversationInput
+  messages?: Prisma.MessageCreateNestedManyWithoutConversationInput
+  runs?: Prisma.OrchestrationRunCreateNestedManyWithoutConversationInput
+  shareLinks?: Prisma.ShareLinkCreateNestedManyWithoutConversationInput
+}
+
+export type ConversationUncheckedCreateWithoutKnowledgeBasesInput = {
+  id?: string
+  ownerId: string
+  title: string
+  type: $Enums.ConversationType
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutConversationInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutConversationInput
+  runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutConversationInput
+  shareLinks?: Prisma.ShareLinkUncheckedCreateNestedManyWithoutConversationInput
+}
+
+export type ConversationCreateOrConnectWithoutKnowledgeBasesInput = {
+  where: Prisma.ConversationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ConversationCreateWithoutKnowledgeBasesInput, Prisma.ConversationUncheckedCreateWithoutKnowledgeBasesInput>
+}
+
+export type ConversationUpsertWithoutKnowledgeBasesInput = {
+  update: Prisma.XOR<Prisma.ConversationUpdateWithoutKnowledgeBasesInput, Prisma.ConversationUncheckedUpdateWithoutKnowledgeBasesInput>
+  create: Prisma.XOR<Prisma.ConversationCreateWithoutKnowledgeBasesInput, Prisma.ConversationUncheckedCreateWithoutKnowledgeBasesInput>
+  where?: Prisma.ConversationWhereInput
+}
+
+export type ConversationUpdateToOneWithWhereWithoutKnowledgeBasesInput = {
+  where?: Prisma.ConversationWhereInput
+  data: Prisma.XOR<Prisma.ConversationUpdateWithoutKnowledgeBasesInput, Prisma.ConversationUncheckedUpdateWithoutKnowledgeBasesInput>
+}
+
+export type ConversationUpdateWithoutKnowledgeBasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumConversationTypeFieldUpdateOperationsInput | $Enums.ConversationType
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutConversationsNestedInput
+  participants?: Prisma.ParticipantUpdateManyWithoutConversationNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutConversationNestedInput
+  runs?: Prisma.OrchestrationRunUpdateManyWithoutConversationNestedInput
+  shareLinks?: Prisma.ShareLinkUpdateManyWithoutConversationNestedInput
+}
+
+export type ConversationUncheckedUpdateWithoutKnowledgeBasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumConversationTypeFieldUpdateOperationsInput | $Enums.ConversationType
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  participants?: Prisma.ParticipantUncheckedUpdateManyWithoutConversationNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutConversationNestedInput
+  runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutConversationNestedInput
+  shareLinks?: Prisma.ShareLinkUncheckedUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationCreateManyOwnerInput = {
@@ -810,6 +917,7 @@ export type ConversationUpdateWithoutOwnerInput = {
   messages?: Prisma.MessageUpdateManyWithoutConversationNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutConversationNestedInput
   shareLinks?: Prisma.ShareLinkUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationUncheckedUpdateWithoutOwnerInput = {
@@ -822,6 +930,7 @@ export type ConversationUncheckedUpdateWithoutOwnerInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutConversationNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutConversationNestedInput
   shareLinks?: Prisma.ShareLinkUncheckedUpdateManyWithoutConversationNestedInput
+  knowledgeBases?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutConversationNestedInput
 }
 
 export type ConversationUncheckedUpdateManyWithoutOwnerInput = {
@@ -842,6 +951,7 @@ export type ConversationCountOutputType = {
   messages: number
   runs: number
   shareLinks: number
+  knowledgeBases: number
 }
 
 export type ConversationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -849,6 +959,7 @@ export type ConversationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   messages?: boolean | ConversationCountOutputTypeCountMessagesArgs
   runs?: boolean | ConversationCountOutputTypeCountRunsArgs
   shareLinks?: boolean | ConversationCountOutputTypeCountShareLinksArgs
+  knowledgeBases?: boolean | ConversationCountOutputTypeCountKnowledgeBasesArgs
 }
 
 /**
@@ -889,6 +1000,13 @@ export type ConversationCountOutputTypeCountShareLinksArgs<ExtArgs extends runti
   where?: Prisma.ShareLinkWhereInput
 }
 
+/**
+ * ConversationCountOutputType without action
+ */
+export type ConversationCountOutputTypeCountKnowledgeBasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConversationKnowledgeBaseWhereInput
+}
+
 
 export type ConversationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -902,6 +1020,7 @@ export type ConversationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   messages?: boolean | Prisma.Conversation$messagesArgs<ExtArgs>
   runs?: boolean | Prisma.Conversation$runsArgs<ExtArgs>
   shareLinks?: boolean | Prisma.Conversation$shareLinksArgs<ExtArgs>
+  knowledgeBases?: boolean | Prisma.Conversation$knowledgeBasesArgs<ExtArgs>
   _count?: boolean | Prisma.ConversationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["conversation"]>
 
@@ -941,6 +1060,7 @@ export type ConversationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   messages?: boolean | Prisma.Conversation$messagesArgs<ExtArgs>
   runs?: boolean | Prisma.Conversation$runsArgs<ExtArgs>
   shareLinks?: boolean | Prisma.Conversation$shareLinksArgs<ExtArgs>
+  knowledgeBases?: boolean | Prisma.Conversation$knowledgeBasesArgs<ExtArgs>
   _count?: boolean | Prisma.ConversationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ConversationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -958,6 +1078,7 @@ export type $ConversationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     messages: Prisma.$MessagePayload<ExtArgs>[]
     runs: Prisma.$OrchestrationRunPayload<ExtArgs>[]
     shareLinks: Prisma.$ShareLinkPayload<ExtArgs>[]
+    knowledgeBases: Prisma.$ConversationKnowledgeBasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1365,6 +1486,7 @@ export interface Prisma__ConversationClient<T, Null = never, ExtArgs extends run
   messages<T extends Prisma.Conversation$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Conversation$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   runs<T extends Prisma.Conversation$runsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Conversation$runsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrchestrationRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   shareLinks<T extends Prisma.Conversation$shareLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Conversation$shareLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShareLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  knowledgeBases<T extends Prisma.Conversation$knowledgeBasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Conversation$knowledgeBasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationKnowledgeBasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1889,6 +2011,30 @@ export type Conversation$shareLinksArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.ShareLinkScalarFieldEnum | Prisma.ShareLinkScalarFieldEnum[]
+}
+
+/**
+ * Conversation.knowledgeBases
+ */
+export type Conversation$knowledgeBasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ConversationKnowledgeBase
+   */
+  select?: Prisma.ConversationKnowledgeBaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ConversationKnowledgeBase
+   */
+  omit?: Prisma.ConversationKnowledgeBaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConversationKnowledgeBaseInclude<ExtArgs> | null
+  where?: Prisma.ConversationKnowledgeBaseWhereInput
+  orderBy?: Prisma.ConversationKnowledgeBaseOrderByWithRelationInput | Prisma.ConversationKnowledgeBaseOrderByWithRelationInput[]
+  cursor?: Prisma.ConversationKnowledgeBaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConversationKnowledgeBaseScalarFieldEnum | Prisma.ConversationKnowledgeBaseScalarFieldEnum[]
 }
 
 /**

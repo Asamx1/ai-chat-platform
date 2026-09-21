@@ -8,7 +8,8 @@ export function json(body: unknown, status = 200): Response {
   return Response.json(body, { status, headers: { 'Cache-Control': 'no-store', Vary: 'Cookie' } });
 }
 export function error(code: string, status: number): Response { return json({ error: code }, status); }
-export async function requireAdmin(req?: Request) {
+type AdminGate = { response: Response; user?: undefined } | { user: { id: string; email: string; role: string; disabled: boolean }; response?: undefined };
+export async function requireAdmin(req?: Request): Promise<AdminGate> {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) return { response: error('UNAUTHORIZED', 401) } as const;
   const user = await prisma.user.findUnique({ where: { id: session.user.id }, select: userSelect });

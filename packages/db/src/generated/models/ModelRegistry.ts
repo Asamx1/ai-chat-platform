@@ -227,6 +227,7 @@ export type ModelRegistryWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"ModelRegistry"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ModelRegistry"> | Date | string
   provider?: Prisma.XOR<Prisma.ProviderScalarRelationFilter, Prisma.ProviderWhereInput>
+  modelQuotas?: Prisma.UserModelQuotaListRelationFilter
   participants?: Prisma.ParticipantListRelationFilter
 }
 
@@ -243,6 +244,7 @@ export type ModelRegistryOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   provider?: Prisma.ProviderOrderByWithRelationInput
+  modelQuotas?: Prisma.UserModelQuotaOrderByRelationAggregateInput
   participants?: Prisma.ParticipantOrderByRelationAggregateInput
 }
 
@@ -263,6 +265,7 @@ export type ModelRegistryWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"ModelRegistry"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ModelRegistry"> | Date | string
   provider?: Prisma.XOR<Prisma.ProviderScalarRelationFilter, Prisma.ProviderWhereInput>
+  modelQuotas?: Prisma.UserModelQuotaListRelationFilter
   participants?: Prisma.ParticipantListRelationFilter
 }, "id" | "providerId_modelKey">
 
@@ -312,6 +315,7 @@ export type ModelRegistryCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   provider: Prisma.ProviderCreateNestedOneWithoutModelsInput
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutModelInput
   participants?: Prisma.ParticipantCreateNestedManyWithoutModelInput
 }
 
@@ -327,6 +331,7 @@ export type ModelRegistryUncheckedCreateInput = {
   pricingVersion: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutModelInput
   participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutModelInput
 }
 
@@ -342,6 +347,7 @@ export type ModelRegistryUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   provider?: Prisma.ProviderUpdateOneRequiredWithoutModelsNestedInput
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutModelNestedInput
   participants?: Prisma.ParticipantUpdateManyWithoutModelNestedInput
 }
 
@@ -357,6 +363,7 @@ export type ModelRegistryUncheckedUpdateInput = {
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutModelNestedInput
   participants?: Prisma.ParticipantUncheckedUpdateManyWithoutModelNestedInput
 }
 
@@ -517,6 +524,20 @@ export type ModelRegistryUpdateOneRequiredWithoutParticipantsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ModelRegistryUpdateToOneWithWhereWithoutParticipantsInput, Prisma.ModelRegistryUpdateWithoutParticipantsInput>, Prisma.ModelRegistryUncheckedUpdateWithoutParticipantsInput>
 }
 
+export type ModelRegistryCreateNestedOneWithoutModelQuotasInput = {
+  create?: Prisma.XOR<Prisma.ModelRegistryCreateWithoutModelQuotasInput, Prisma.ModelRegistryUncheckedCreateWithoutModelQuotasInput>
+  connectOrCreate?: Prisma.ModelRegistryCreateOrConnectWithoutModelQuotasInput
+  connect?: Prisma.ModelRegistryWhereUniqueInput
+}
+
+export type ModelRegistryUpdateOneRequiredWithoutModelQuotasNestedInput = {
+  create?: Prisma.XOR<Prisma.ModelRegistryCreateWithoutModelQuotasInput, Prisma.ModelRegistryUncheckedCreateWithoutModelQuotasInput>
+  connectOrCreate?: Prisma.ModelRegistryCreateOrConnectWithoutModelQuotasInput
+  upsert?: Prisma.ModelRegistryUpsertWithoutModelQuotasInput
+  connect?: Prisma.ModelRegistryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ModelRegistryUpdateToOneWithWhereWithoutModelQuotasInput, Prisma.ModelRegistryUpdateWithoutModelQuotasInput>, Prisma.ModelRegistryUncheckedUpdateWithoutModelQuotasInput>
+}
+
 export type ModelRegistryCreateWithoutProviderInput = {
   id?: string
   baseUrl?: string | null
@@ -528,6 +549,7 @@ export type ModelRegistryCreateWithoutProviderInput = {
   pricingVersion: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutModelInput
   participants?: Prisma.ParticipantCreateNestedManyWithoutModelInput
 }
 
@@ -542,6 +564,7 @@ export type ModelRegistryUncheckedCreateWithoutProviderInput = {
   pricingVersion: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutModelInput
   participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutModelInput
 }
 
@@ -600,6 +623,7 @@ export type ModelRegistryCreateWithoutParticipantsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   provider: Prisma.ProviderCreateNestedOneWithoutModelsInput
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutModelInput
 }
 
 export type ModelRegistryUncheckedCreateWithoutParticipantsInput = {
@@ -614,6 +638,7 @@ export type ModelRegistryUncheckedCreateWithoutParticipantsInput = {
   pricingVersion: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutModelInput
 }
 
 export type ModelRegistryCreateOrConnectWithoutParticipantsInput = {
@@ -644,6 +669,7 @@ export type ModelRegistryUpdateWithoutParticipantsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   provider?: Prisma.ProviderUpdateOneRequiredWithoutModelsNestedInput
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutModelNestedInput
 }
 
 export type ModelRegistryUncheckedUpdateWithoutParticipantsInput = {
@@ -658,6 +684,83 @@ export type ModelRegistryUncheckedUpdateWithoutParticipantsInput = {
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutModelNestedInput
+}
+
+export type ModelRegistryCreateWithoutModelQuotasInput = {
+  id?: string
+  baseUrl?: string | null
+  adapter?: string | null
+  kind?: string
+  isDefault?: boolean
+  modelKey: string
+  capabilities: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  pricingVersion: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  provider: Prisma.ProviderCreateNestedOneWithoutModelsInput
+  participants?: Prisma.ParticipantCreateNestedManyWithoutModelInput
+}
+
+export type ModelRegistryUncheckedCreateWithoutModelQuotasInput = {
+  id?: string
+  providerId: string
+  baseUrl?: string | null
+  adapter?: string | null
+  kind?: string
+  isDefault?: boolean
+  modelKey: string
+  capabilities: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  pricingVersion: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutModelInput
+}
+
+export type ModelRegistryCreateOrConnectWithoutModelQuotasInput = {
+  where: Prisma.ModelRegistryWhereUniqueInput
+  create: Prisma.XOR<Prisma.ModelRegistryCreateWithoutModelQuotasInput, Prisma.ModelRegistryUncheckedCreateWithoutModelQuotasInput>
+}
+
+export type ModelRegistryUpsertWithoutModelQuotasInput = {
+  update: Prisma.XOR<Prisma.ModelRegistryUpdateWithoutModelQuotasInput, Prisma.ModelRegistryUncheckedUpdateWithoutModelQuotasInput>
+  create: Prisma.XOR<Prisma.ModelRegistryCreateWithoutModelQuotasInput, Prisma.ModelRegistryUncheckedCreateWithoutModelQuotasInput>
+  where?: Prisma.ModelRegistryWhereInput
+}
+
+export type ModelRegistryUpdateToOneWithWhereWithoutModelQuotasInput = {
+  where?: Prisma.ModelRegistryWhereInput
+  data: Prisma.XOR<Prisma.ModelRegistryUpdateWithoutModelQuotasInput, Prisma.ModelRegistryUncheckedUpdateWithoutModelQuotasInput>
+}
+
+export type ModelRegistryUpdateWithoutModelQuotasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  modelKey?: Prisma.StringFieldUpdateOperationsInput | string
+  capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  provider?: Prisma.ProviderUpdateOneRequiredWithoutModelsNestedInput
+  participants?: Prisma.ParticipantUpdateManyWithoutModelNestedInput
+}
+
+export type ModelRegistryUncheckedUpdateWithoutModelQuotasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  providerId?: Prisma.StringFieldUpdateOperationsInput | string
+  baseUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adapter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  modelKey?: Prisma.StringFieldUpdateOperationsInput | string
+  capabilities?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  participants?: Prisma.ParticipantUncheckedUpdateManyWithoutModelNestedInput
 }
 
 export type ModelRegistryCreateManyProviderInput = {
@@ -684,6 +787,7 @@ export type ModelRegistryUpdateWithoutProviderInput = {
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutModelNestedInput
   participants?: Prisma.ParticipantUpdateManyWithoutModelNestedInput
 }
 
@@ -698,6 +802,7 @@ export type ModelRegistryUncheckedUpdateWithoutProviderInput = {
   pricingVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutModelNestedInput
   participants?: Prisma.ParticipantUncheckedUpdateManyWithoutModelNestedInput
 }
 
@@ -720,10 +825,12 @@ export type ModelRegistryUncheckedUpdateManyWithoutProviderInput = {
  */
 
 export type ModelRegistryCountOutputType = {
+  modelQuotas: number
   participants: number
 }
 
 export type ModelRegistryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  modelQuotas?: boolean | ModelRegistryCountOutputTypeCountModelQuotasArgs
   participants?: boolean | ModelRegistryCountOutputTypeCountParticipantsArgs
 }
 
@@ -735,6 +842,13 @@ export type ModelRegistryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Type
    * Select specific fields to fetch from the ModelRegistryCountOutputType
    */
   select?: Prisma.ModelRegistryCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ModelRegistryCountOutputType without action
+ */
+export type ModelRegistryCountOutputTypeCountModelQuotasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserModelQuotaWhereInput
 }
 
 /**
@@ -758,6 +872,7 @@ export type ModelRegistrySelect<ExtArgs extends runtime.Types.Extensions.Interna
   createdAt?: boolean
   updatedAt?: boolean
   provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
+  modelQuotas?: boolean | Prisma.ModelRegistry$modelQuotasArgs<ExtArgs>
   participants?: boolean | Prisma.ModelRegistry$participantsArgs<ExtArgs>
   _count?: boolean | Prisma.ModelRegistryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["modelRegistry"]>
@@ -809,6 +924,7 @@ export type ModelRegistrySelectScalar = {
 export type ModelRegistryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "providerId" | "baseUrl" | "adapter" | "kind" | "isDefault" | "modelKey" | "capabilities" | "pricingVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["modelRegistry"]>
 export type ModelRegistryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   provider?: boolean | Prisma.ProviderDefaultArgs<ExtArgs>
+  modelQuotas?: boolean | Prisma.ModelRegistry$modelQuotasArgs<ExtArgs>
   participants?: boolean | Prisma.ModelRegistry$participantsArgs<ExtArgs>
   _count?: boolean | Prisma.ModelRegistryCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -823,6 +939,7 @@ export type $ModelRegistryPayload<ExtArgs extends runtime.Types.Extensions.Inter
   name: "ModelRegistry"
   objects: {
     provider: Prisma.$ProviderPayload<ExtArgs>
+    modelQuotas: Prisma.$UserModelQuotaPayload<ExtArgs>[]
     participants: Prisma.$ParticipantPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1232,6 +1349,7 @@ readonly fields: ModelRegistryFieldRefs;
 export interface Prisma__ModelRegistryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   provider<T extends Prisma.ProviderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProviderDefaultArgs<ExtArgs>>): Prisma.Prisma__ProviderClient<runtime.Types.Result.GetResult<Prisma.$ProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  modelQuotas<T extends Prisma.ModelRegistry$modelQuotasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ModelRegistry$modelQuotasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserModelQuotaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   participants<T extends Prisma.ModelRegistry$participantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ModelRegistry$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1666,6 +1784,30 @@ export type ModelRegistryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many ModelRegistries to delete.
    */
   limit?: number
+}
+
+/**
+ * ModelRegistry.modelQuotas
+ */
+export type ModelRegistry$modelQuotasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserModelQuota
+   */
+  select?: Prisma.UserModelQuotaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserModelQuota
+   */
+  omit?: Prisma.UserModelQuotaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserModelQuotaInclude<ExtArgs> | null
+  where?: Prisma.UserModelQuotaWhereInput
+  orderBy?: Prisma.UserModelQuotaOrderByWithRelationInput | Prisma.UserModelQuotaOrderByWithRelationInput[]
+  cursor?: Prisma.UserModelQuotaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserModelQuotaScalarFieldEnum | Prisma.UserModelQuotaScalarFieldEnum[]
 }
 
 /**

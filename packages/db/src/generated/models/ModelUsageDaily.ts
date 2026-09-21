@@ -29,11 +29,13 @@ export type AggregateModelUsageDaily = {
 export type ModelUsageDailyAvgAggregateOutputType = {
   tokensIn: number | null
   tokensOut: number | null
+  reservedTokens: number | null
 }
 
 export type ModelUsageDailySumAggregateOutputType = {
   tokensIn: number | null
   tokensOut: number | null
+  reservedTokens: number | null
 }
 
 export type ModelUsageDailyMinAggregateOutputType = {
@@ -43,6 +45,7 @@ export type ModelUsageDailyMinAggregateOutputType = {
   date: Date | null
   tokensIn: number | null
   tokensOut: number | null
+  reservedTokens: number | null
 }
 
 export type ModelUsageDailyMaxAggregateOutputType = {
@@ -52,6 +55,7 @@ export type ModelUsageDailyMaxAggregateOutputType = {
   date: Date | null
   tokensIn: number | null
   tokensOut: number | null
+  reservedTokens: number | null
 }
 
 export type ModelUsageDailyCountAggregateOutputType = {
@@ -61,6 +65,7 @@ export type ModelUsageDailyCountAggregateOutputType = {
   date: number
   tokensIn: number
   tokensOut: number
+  reservedTokens: number
   _all: number
 }
 
@@ -68,11 +73,13 @@ export type ModelUsageDailyCountAggregateOutputType = {
 export type ModelUsageDailyAvgAggregateInputType = {
   tokensIn?: true
   tokensOut?: true
+  reservedTokens?: true
 }
 
 export type ModelUsageDailySumAggregateInputType = {
   tokensIn?: true
   tokensOut?: true
+  reservedTokens?: true
 }
 
 export type ModelUsageDailyMinAggregateInputType = {
@@ -82,6 +89,7 @@ export type ModelUsageDailyMinAggregateInputType = {
   date?: true
   tokensIn?: true
   tokensOut?: true
+  reservedTokens?: true
 }
 
 export type ModelUsageDailyMaxAggregateInputType = {
@@ -91,6 +99,7 @@ export type ModelUsageDailyMaxAggregateInputType = {
   date?: true
   tokensIn?: true
   tokensOut?: true
+  reservedTokens?: true
 }
 
 export type ModelUsageDailyCountAggregateInputType = {
@@ -100,6 +109,7 @@ export type ModelUsageDailyCountAggregateInputType = {
   date?: true
   tokensIn?: true
   tokensOut?: true
+  reservedTokens?: true
   _all?: true
 }
 
@@ -196,6 +206,7 @@ export type ModelUsageDailyGroupByOutputType = {
   date: Date
   tokensIn: number
   tokensOut: number
+  reservedTokens: number
   _count: ModelUsageDailyCountAggregateOutputType | null
   _avg: ModelUsageDailyAvgAggregateOutputType | null
   _sum: ModelUsageDailySumAggregateOutputType | null
@@ -228,6 +239,7 @@ export type ModelUsageDailyWhereInput = {
   date?: Prisma.DateTimeFilter<"ModelUsageDaily"> | Date | string
   tokensIn?: Prisma.IntFilter<"ModelUsageDaily"> | number
   tokensOut?: Prisma.IntFilter<"ModelUsageDaily"> | number
+  reservedTokens?: Prisma.IntFilter<"ModelUsageDaily"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -238,6 +250,7 @@ export type ModelUsageDailyOrderByWithRelationInput = {
   date?: Prisma.SortOrder
   tokensIn?: Prisma.SortOrder
   tokensOut?: Prisma.SortOrder
+  reservedTokens?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -252,6 +265,7 @@ export type ModelUsageDailyWhereUniqueInput = Prisma.AtLeast<{
   date?: Prisma.DateTimeFilter<"ModelUsageDaily"> | Date | string
   tokensIn?: Prisma.IntFilter<"ModelUsageDaily"> | number
   tokensOut?: Prisma.IntFilter<"ModelUsageDaily"> | number
+  reservedTokens?: Prisma.IntFilter<"ModelUsageDaily"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId_modelId_date">
 
@@ -262,6 +276,7 @@ export type ModelUsageDailyOrderByWithAggregationInput = {
   date?: Prisma.SortOrder
   tokensIn?: Prisma.SortOrder
   tokensOut?: Prisma.SortOrder
+  reservedTokens?: Prisma.SortOrder
   _count?: Prisma.ModelUsageDailyCountOrderByAggregateInput
   _avg?: Prisma.ModelUsageDailyAvgOrderByAggregateInput
   _max?: Prisma.ModelUsageDailyMaxOrderByAggregateInput
@@ -279,6 +294,7 @@ export type ModelUsageDailyScalarWhereWithAggregatesInput = {
   date?: Prisma.DateTimeWithAggregatesFilter<"ModelUsageDaily"> | Date | string
   tokensIn?: Prisma.IntWithAggregatesFilter<"ModelUsageDaily"> | number
   tokensOut?: Prisma.IntWithAggregatesFilter<"ModelUsageDaily"> | number
+  reservedTokens?: Prisma.IntWithAggregatesFilter<"ModelUsageDaily"> | number
 }
 
 export type ModelUsageDailyCreateInput = {
@@ -287,6 +303,7 @@ export type ModelUsageDailyCreateInput = {
   date: Date | string
   tokensIn?: number
   tokensOut?: number
+  reservedTokens?: number
   user: Prisma.UserCreateNestedOneWithoutModelUsageDailyInput
 }
 
@@ -297,6 +314,7 @@ export type ModelUsageDailyUncheckedCreateInput = {
   date: Date | string
   tokensIn?: number
   tokensOut?: number
+  reservedTokens?: number
 }
 
 export type ModelUsageDailyUpdateInput = {
@@ -305,6 +323,7 @@ export type ModelUsageDailyUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tokensIn?: Prisma.IntFieldUpdateOperationsInput | number
   tokensOut?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedTokens?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutModelUsageDailyNestedInput
 }
 
@@ -315,6 +334,7 @@ export type ModelUsageDailyUncheckedUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tokensIn?: Prisma.IntFieldUpdateOperationsInput | number
   tokensOut?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedTokens?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ModelUsageDailyCreateManyInput = {
@@ -324,6 +344,7 @@ export type ModelUsageDailyCreateManyInput = {
   date: Date | string
   tokensIn?: number
   tokensOut?: number
+  reservedTokens?: number
 }
 
 export type ModelUsageDailyUpdateManyMutationInput = {
@@ -332,6 +353,7 @@ export type ModelUsageDailyUpdateManyMutationInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tokensIn?: Prisma.IntFieldUpdateOperationsInput | number
   tokensOut?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedTokens?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ModelUsageDailyUncheckedUpdateManyInput = {
@@ -341,6 +363,7 @@ export type ModelUsageDailyUncheckedUpdateManyInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tokensIn?: Prisma.IntFieldUpdateOperationsInput | number
   tokensOut?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedTokens?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ModelUsageDailyListRelationFilter = {
@@ -366,11 +389,13 @@ export type ModelUsageDailyCountOrderByAggregateInput = {
   date?: Prisma.SortOrder
   tokensIn?: Prisma.SortOrder
   tokensOut?: Prisma.SortOrder
+  reservedTokens?: Prisma.SortOrder
 }
 
 export type ModelUsageDailyAvgOrderByAggregateInput = {
   tokensIn?: Prisma.SortOrder
   tokensOut?: Prisma.SortOrder
+  reservedTokens?: Prisma.SortOrder
 }
 
 export type ModelUsageDailyMaxOrderByAggregateInput = {
@@ -380,6 +405,7 @@ export type ModelUsageDailyMaxOrderByAggregateInput = {
   date?: Prisma.SortOrder
   tokensIn?: Prisma.SortOrder
   tokensOut?: Prisma.SortOrder
+  reservedTokens?: Prisma.SortOrder
 }
 
 export type ModelUsageDailyMinOrderByAggregateInput = {
@@ -389,11 +415,13 @@ export type ModelUsageDailyMinOrderByAggregateInput = {
   date?: Prisma.SortOrder
   tokensIn?: Prisma.SortOrder
   tokensOut?: Prisma.SortOrder
+  reservedTokens?: Prisma.SortOrder
 }
 
 export type ModelUsageDailySumOrderByAggregateInput = {
   tokensIn?: Prisma.SortOrder
   tokensOut?: Prisma.SortOrder
+  reservedTokens?: Prisma.SortOrder
 }
 
 export type ModelUsageDailyCreateNestedManyWithoutUserInput = {
@@ -444,6 +472,7 @@ export type ModelUsageDailyCreateWithoutUserInput = {
   date: Date | string
   tokensIn?: number
   tokensOut?: number
+  reservedTokens?: number
 }
 
 export type ModelUsageDailyUncheckedCreateWithoutUserInput = {
@@ -452,6 +481,7 @@ export type ModelUsageDailyUncheckedCreateWithoutUserInput = {
   date: Date | string
   tokensIn?: number
   tokensOut?: number
+  reservedTokens?: number
 }
 
 export type ModelUsageDailyCreateOrConnectWithoutUserInput = {
@@ -490,6 +520,7 @@ export type ModelUsageDailyScalarWhereInput = {
   date?: Prisma.DateTimeFilter<"ModelUsageDaily"> | Date | string
   tokensIn?: Prisma.IntFilter<"ModelUsageDaily"> | number
   tokensOut?: Prisma.IntFilter<"ModelUsageDaily"> | number
+  reservedTokens?: Prisma.IntFilter<"ModelUsageDaily"> | number
 }
 
 export type ModelUsageDailyCreateManyUserInput = {
@@ -498,6 +529,7 @@ export type ModelUsageDailyCreateManyUserInput = {
   date: Date | string
   tokensIn?: number
   tokensOut?: number
+  reservedTokens?: number
 }
 
 export type ModelUsageDailyUpdateWithoutUserInput = {
@@ -506,6 +538,7 @@ export type ModelUsageDailyUpdateWithoutUserInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tokensIn?: Prisma.IntFieldUpdateOperationsInput | number
   tokensOut?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedTokens?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ModelUsageDailyUncheckedUpdateWithoutUserInput = {
@@ -514,6 +547,7 @@ export type ModelUsageDailyUncheckedUpdateWithoutUserInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tokensIn?: Prisma.IntFieldUpdateOperationsInput | number
   tokensOut?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedTokens?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ModelUsageDailyUncheckedUpdateManyWithoutUserInput = {
@@ -522,6 +556,7 @@ export type ModelUsageDailyUncheckedUpdateManyWithoutUserInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tokensIn?: Prisma.IntFieldUpdateOperationsInput | number
   tokensOut?: Prisma.IntFieldUpdateOperationsInput | number
+  reservedTokens?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -533,6 +568,7 @@ export type ModelUsageDailySelect<ExtArgs extends runtime.Types.Extensions.Inter
   date?: boolean
   tokensIn?: boolean
   tokensOut?: boolean
+  reservedTokens?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["modelUsageDaily"]>
 
@@ -543,6 +579,7 @@ export type ModelUsageDailySelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   date?: boolean
   tokensIn?: boolean
   tokensOut?: boolean
+  reservedTokens?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["modelUsageDaily"]>
 
@@ -553,6 +590,7 @@ export type ModelUsageDailySelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   date?: boolean
   tokensIn?: boolean
   tokensOut?: boolean
+  reservedTokens?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["modelUsageDaily"]>
 
@@ -563,9 +601,10 @@ export type ModelUsageDailySelectScalar = {
   date?: boolean
   tokensIn?: boolean
   tokensOut?: boolean
+  reservedTokens?: boolean
 }
 
-export type ModelUsageDailyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "modelId" | "date" | "tokensIn" | "tokensOut", ExtArgs["result"]["modelUsageDaily"]>
+export type ModelUsageDailyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "modelId" | "date" | "tokensIn" | "tokensOut" | "reservedTokens", ExtArgs["result"]["modelUsageDaily"]>
 export type ModelUsageDailyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -588,6 +627,7 @@ export type $ModelUsageDailyPayload<ExtArgs extends runtime.Types.Extensions.Int
     date: Date
     tokensIn: number
     tokensOut: number
+    reservedTokens: number
   }, ExtArgs["result"]["modelUsageDaily"]>
   composites: {}
 }
@@ -1018,6 +1058,7 @@ export interface ModelUsageDailyFieldRefs {
   readonly date: Prisma.FieldRef<"ModelUsageDaily", 'DateTime'>
   readonly tokensIn: Prisma.FieldRef<"ModelUsageDaily", 'Int'>
   readonly tokensOut: Prisma.FieldRef<"ModelUsageDaily", 'Int'>
+  readonly reservedTokens: Prisma.FieldRef<"ModelUsageDaily", 'Int'>
 }
     
 

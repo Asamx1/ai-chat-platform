@@ -62,6 +62,7 @@ export type ProviderCallCountAggregateOutputType = {
   participantSnapshotId: number
   attempt: number
   requestHash: number
+  quotaReservation: number
   usage: number
   error: number
   startedAt: number
@@ -106,6 +107,7 @@ export type ProviderCallCountAggregateInputType = {
   participantSnapshotId?: true
   attempt?: true
   requestHash?: true
+  quotaReservation?: true
   usage?: true
   error?: true
   startedAt?: true
@@ -205,6 +207,7 @@ export type ProviderCallGroupByOutputType = {
   participantSnapshotId: string | null
   attempt: number
   requestHash: string
+  quotaReservation: runtime.JsonValue | null
   usage: runtime.JsonValue | null
   error: string | null
   startedAt: Date
@@ -240,6 +243,7 @@ export type ProviderCallWhereInput = {
   participantSnapshotId?: Prisma.StringNullableFilter<"ProviderCall"> | string | null
   attempt?: Prisma.IntFilter<"ProviderCall"> | number
   requestHash?: Prisma.StringFilter<"ProviderCall"> | string
+  quotaReservation?: Prisma.JsonNullableFilter<"ProviderCall">
   usage?: Prisma.JsonNullableFilter<"ProviderCall">
   error?: Prisma.StringNullableFilter<"ProviderCall"> | string | null
   startedAt?: Prisma.DateTimeFilter<"ProviderCall"> | Date | string
@@ -255,6 +259,7 @@ export type ProviderCallOrderByWithRelationInput = {
   participantSnapshotId?: Prisma.SortOrderInput | Prisma.SortOrder
   attempt?: Prisma.SortOrder
   requestHash?: Prisma.SortOrder
+  quotaReservation?: Prisma.SortOrderInput | Prisma.SortOrder
   usage?: Prisma.SortOrderInput | Prisma.SortOrder
   error?: Prisma.SortOrderInput | Prisma.SortOrder
   startedAt?: Prisma.SortOrder
@@ -273,6 +278,7 @@ export type ProviderCallWhereUniqueInput = Prisma.AtLeast<{
   runId?: Prisma.StringFilter<"ProviderCall"> | string
   participantSnapshotId?: Prisma.StringNullableFilter<"ProviderCall"> | string | null
   attempt?: Prisma.IntFilter<"ProviderCall"> | number
+  quotaReservation?: Prisma.JsonNullableFilter<"ProviderCall">
   usage?: Prisma.JsonNullableFilter<"ProviderCall">
   error?: Prisma.StringNullableFilter<"ProviderCall"> | string | null
   startedAt?: Prisma.DateTimeFilter<"ProviderCall"> | Date | string
@@ -288,6 +294,7 @@ export type ProviderCallOrderByWithAggregationInput = {
   participantSnapshotId?: Prisma.SortOrderInput | Prisma.SortOrder
   attempt?: Prisma.SortOrder
   requestHash?: Prisma.SortOrder
+  quotaReservation?: Prisma.SortOrderInput | Prisma.SortOrder
   usage?: Prisma.SortOrderInput | Prisma.SortOrder
   error?: Prisma.SortOrderInput | Prisma.SortOrder
   startedAt?: Prisma.SortOrder
@@ -308,6 +315,7 @@ export type ProviderCallScalarWhereWithAggregatesInput = {
   participantSnapshotId?: Prisma.StringNullableWithAggregatesFilter<"ProviderCall"> | string | null
   attempt?: Prisma.IntWithAggregatesFilter<"ProviderCall"> | number
   requestHash?: Prisma.StringWithAggregatesFilter<"ProviderCall"> | string
+  quotaReservation?: Prisma.JsonNullableWithAggregatesFilter<"ProviderCall">
   usage?: Prisma.JsonNullableWithAggregatesFilter<"ProviderCall">
   error?: Prisma.StringNullableWithAggregatesFilter<"ProviderCall"> | string | null
   startedAt?: Prisma.DateTimeWithAggregatesFilter<"ProviderCall"> | Date | string
@@ -318,6 +326,7 @@ export type ProviderCallCreateInput = {
   id?: string
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -333,6 +342,7 @@ export type ProviderCallUncheckedCreateInput = {
   participantSnapshotId?: string | null
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -344,6 +354,7 @@ export type ProviderCallUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -359,6 +370,7 @@ export type ProviderCallUncheckedUpdateInput = {
   participantSnapshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -372,6 +384,7 @@ export type ProviderCallCreateManyInput = {
   participantSnapshotId?: string | null
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -382,6 +395,7 @@ export type ProviderCallUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -394,6 +408,7 @@ export type ProviderCallUncheckedUpdateManyInput = {
   participantSnapshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -416,6 +431,7 @@ export type ProviderCallCountOrderByAggregateInput = {
   participantSnapshotId?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
   requestHash?: Prisma.SortOrder
+  quotaReservation?: Prisma.SortOrder
   usage?: Prisma.SortOrder
   error?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
@@ -559,6 +575,7 @@ export type ProviderCallCreateWithoutRunInput = {
   id?: string
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -572,6 +589,7 @@ export type ProviderCallUncheckedCreateWithoutRunInput = {
   participantSnapshotId?: string | null
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -614,6 +632,7 @@ export type ProviderCallScalarWhereInput = {
   participantSnapshotId?: Prisma.StringNullableFilter<"ProviderCall"> | string | null
   attempt?: Prisma.IntFilter<"ProviderCall"> | number
   requestHash?: Prisma.StringFilter<"ProviderCall"> | string
+  quotaReservation?: Prisma.JsonNullableFilter<"ProviderCall">
   usage?: Prisma.JsonNullableFilter<"ProviderCall">
   error?: Prisma.StringNullableFilter<"ProviderCall"> | string | null
   startedAt?: Prisma.DateTimeFilter<"ProviderCall"> | Date | string
@@ -624,6 +643,7 @@ export type ProviderCallCreateWithoutParticipantSnapshotInput = {
   id?: string
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -637,6 +657,7 @@ export type ProviderCallUncheckedCreateWithoutParticipantSnapshotInput = {
   runId: string
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -674,6 +695,7 @@ export type ProviderCallCreateWithoutUsageLogInput = {
   id?: string
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -688,6 +710,7 @@ export type ProviderCallUncheckedCreateWithoutUsageLogInput = {
   participantSnapshotId?: string | null
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -714,6 +737,7 @@ export type ProviderCallUpdateWithoutUsageLogInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -728,6 +752,7 @@ export type ProviderCallUncheckedUpdateWithoutUsageLogInput = {
   participantSnapshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -739,6 +764,7 @@ export type ProviderCallCreateManyRunInput = {
   participantSnapshotId?: string | null
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -749,6 +775,7 @@ export type ProviderCallUpdateWithoutRunInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -762,6 +789,7 @@ export type ProviderCallUncheckedUpdateWithoutRunInput = {
   participantSnapshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -774,6 +802,7 @@ export type ProviderCallUncheckedUpdateManyWithoutRunInput = {
   participantSnapshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -785,6 +814,7 @@ export type ProviderCallCreateManyParticipantSnapshotInput = {
   runId: string
   attempt: number
   requestHash: string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: string | null
   startedAt?: Date | string
@@ -795,6 +825,7 @@ export type ProviderCallUpdateWithoutParticipantSnapshotInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -808,6 +839,7 @@ export type ProviderCallUncheckedUpdateWithoutParticipantSnapshotInput = {
   runId?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -820,6 +852,7 @@ export type ProviderCallUncheckedUpdateManyWithoutParticipantSnapshotInput = {
   runId?: Prisma.StringFieldUpdateOperationsInput | string
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
   requestHash?: Prisma.StringFieldUpdateOperationsInput | string
+  quotaReservation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   usage?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -834,6 +867,7 @@ export type ProviderCallSelect<ExtArgs extends runtime.Types.Extensions.Internal
   participantSnapshotId?: boolean
   attempt?: boolean
   requestHash?: boolean
+  quotaReservation?: boolean
   usage?: boolean
   error?: boolean
   startedAt?: boolean
@@ -849,6 +883,7 @@ export type ProviderCallSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   participantSnapshotId?: boolean
   attempt?: boolean
   requestHash?: boolean
+  quotaReservation?: boolean
   usage?: boolean
   error?: boolean
   startedAt?: boolean
@@ -863,6 +898,7 @@ export type ProviderCallSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   participantSnapshotId?: boolean
   attempt?: boolean
   requestHash?: boolean
+  quotaReservation?: boolean
   usage?: boolean
   error?: boolean
   startedAt?: boolean
@@ -877,13 +913,14 @@ export type ProviderCallSelectScalar = {
   participantSnapshotId?: boolean
   attempt?: boolean
   requestHash?: boolean
+  quotaReservation?: boolean
   usage?: boolean
   error?: boolean
   startedAt?: boolean
   endedAt?: boolean
 }
 
-export type ProviderCallOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "runId" | "participantSnapshotId" | "attempt" | "requestHash" | "usage" | "error" | "startedAt" | "endedAt", ExtArgs["result"]["providerCall"]>
+export type ProviderCallOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "runId" | "participantSnapshotId" | "attempt" | "requestHash" | "quotaReservation" | "usage" | "error" | "startedAt" | "endedAt", ExtArgs["result"]["providerCall"]>
 export type ProviderCallInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   run?: boolean | Prisma.OrchestrationRunDefaultArgs<ExtArgs>
   participantSnapshot?: boolean | Prisma.ProviderCall$participantSnapshotArgs<ExtArgs>
@@ -911,6 +948,7 @@ export type $ProviderCallPayload<ExtArgs extends runtime.Types.Extensions.Intern
     participantSnapshotId: string | null
     attempt: number
     requestHash: string
+    quotaReservation: runtime.JsonValue | null
     usage: runtime.JsonValue | null
     error: string | null
     startedAt: Date
@@ -1346,6 +1384,7 @@ export interface ProviderCallFieldRefs {
   readonly participantSnapshotId: Prisma.FieldRef<"ProviderCall", 'String'>
   readonly attempt: Prisma.FieldRef<"ProviderCall", 'Int'>
   readonly requestHash: Prisma.FieldRef<"ProviderCall", 'String'>
+  readonly quotaReservation: Prisma.FieldRef<"ProviderCall", 'Json'>
   readonly usage: Prisma.FieldRef<"ProviderCall", 'Json'>
   readonly error: Prisma.FieldRef<"ProviderCall", 'String'>
   readonly startedAt: Prisma.FieldRef<"ProviderCall", 'DateTime'>

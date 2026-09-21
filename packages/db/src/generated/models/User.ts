@@ -27,6 +27,7 @@ export type AggregateUser = {
 export type UserMinAggregateOutputType = {
   id: string | null
   email: string | null
+  disabled: boolean | null
   passwordHash: string | null
   role: $Enums.Role | null
   createdAt: Date | null
@@ -39,6 +40,7 @@ export type UserMinAggregateOutputType = {
 export type UserMaxAggregateOutputType = {
   id: string | null
   email: string | null
+  disabled: boolean | null
   passwordHash: string | null
   role: $Enums.Role | null
   createdAt: Date | null
@@ -51,6 +53,7 @@ export type UserMaxAggregateOutputType = {
 export type UserCountAggregateOutputType = {
   id: number
   email: number
+  disabled: number
   passwordHash: number
   role: number
   createdAt: number
@@ -65,6 +68,7 @@ export type UserCountAggregateOutputType = {
 export type UserMinAggregateInputType = {
   id?: true
   email?: true
+  disabled?: true
   passwordHash?: true
   role?: true
   createdAt?: true
@@ -77,6 +81,7 @@ export type UserMinAggregateInputType = {
 export type UserMaxAggregateInputType = {
   id?: true
   email?: true
+  disabled?: true
   passwordHash?: true
   role?: true
   createdAt?: true
@@ -89,6 +94,7 @@ export type UserMaxAggregateInputType = {
 export type UserCountAggregateInputType = {
   id?: true
   email?: true
+  disabled?: true
   passwordHash?: true
   role?: true
   createdAt?: true
@@ -174,6 +180,7 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type UserGroupByOutputType = {
   id: string
   email: string
+  disabled: boolean
   passwordHash: string
   role: $Enums.Role
   createdAt: Date
@@ -207,6 +214,7 @@ export type UserWhereInput = {
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
+  disabled?: Prisma.BoolFilter<"User"> | boolean
   passwordHash?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -214,6 +222,7 @@ export type UserWhereInput = {
   name?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
   image?: Prisma.StringNullableFilter<"User"> | string | null
+  modelQuotas?: Prisma.UserModelQuotaListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   conversations?: Prisma.ConversationListRelationFilter
@@ -221,11 +230,13 @@ export type UserWhereInput = {
   usageLogs?: Prisma.UsageLogListRelationFilter
   apiKeys?: Prisma.ApiKeyListRelationFilter
   modelUsageDaily?: Prisma.ModelUsageDailyListRelationFilter
+  knowledgeBases?: Prisma.KnowledgeBaseListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  disabled?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -233,6 +244,7 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
+  modelQuotas?: Prisma.UserModelQuotaOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   conversations?: Prisma.ConversationOrderByRelationAggregateInput
@@ -240,6 +252,7 @@ export type UserOrderByWithRelationInput = {
   usageLogs?: Prisma.UsageLogOrderByRelationAggregateInput
   apiKeys?: Prisma.ApiKeyOrderByRelationAggregateInput
   modelUsageDaily?: Prisma.ModelUsageDailyOrderByRelationAggregateInput
+  knowledgeBases?: Prisma.KnowledgeBaseOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -248,6 +261,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
+  disabled?: Prisma.BoolFilter<"User"> | boolean
   passwordHash?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -255,6 +269,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
   image?: Prisma.StringNullableFilter<"User"> | string | null
+  modelQuotas?: Prisma.UserModelQuotaListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   conversations?: Prisma.ConversationListRelationFilter
@@ -262,11 +277,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   usageLogs?: Prisma.UsageLogListRelationFilter
   apiKeys?: Prisma.ApiKeyListRelationFilter
   modelUsageDaily?: Prisma.ModelUsageDailyListRelationFilter
+  knowledgeBases?: Prisma.KnowledgeBaseListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  disabled?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -285,6 +302,7 @@ export type UserScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
+  disabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -297,6 +315,7 @@ export type UserScalarWhereWithAggregatesInput = {
 export type UserCreateInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -304,6 +323,7 @@ export type UserCreateInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
@@ -311,11 +331,13 @@ export type UserCreateInput = {
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -323,6 +345,7 @@ export type UserUncheckedCreateInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
@@ -330,11 +353,13 @@ export type UserUncheckedCreateInput = {
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -342,6 +367,7 @@ export type UserUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
@@ -349,11 +375,13 @@ export type UserUpdateInput = {
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -361,6 +389,7 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
@@ -368,11 +397,13 @@ export type UserUncheckedUpdateInput = {
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -385,6 +416,7 @@ export type UserCreateManyInput = {
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -397,6 +429,7 @@ export type UserUpdateManyMutationInput = {
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -409,6 +442,7 @@ export type UserUncheckedUpdateManyInput = {
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  disabled?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -421,6 +455,7 @@ export type UserCountOrderByAggregateInput = {
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  disabled?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -433,6 +468,7 @@ export type UserMaxOrderByAggregateInput = {
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  disabled?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -451,6 +487,10 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
 }
@@ -461,10 +501,6 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type UserCreateNestedOneWithoutConversationsInput = {
@@ -565,9 +601,38 @@ export type UserUpdateOneRequiredWithoutModelUsageDailyNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutModelUsageDailyInput, Prisma.UserUpdateWithoutModelUsageDailyInput>, Prisma.UserUncheckedUpdateWithoutModelUsageDailyInput>
 }
 
+export type UserCreateNestedOneWithoutKnowledgeBasesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutKnowledgeBasesInput, Prisma.UserUncheckedCreateWithoutKnowledgeBasesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutKnowledgeBasesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutKnowledgeBasesInput, Prisma.UserUncheckedCreateWithoutKnowledgeBasesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutKnowledgeBasesInput
+  upsert?: Prisma.UserUpsertWithoutKnowledgeBasesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutKnowledgeBasesInput, Prisma.UserUpdateWithoutKnowledgeBasesInput>, Prisma.UserUncheckedUpdateWithoutKnowledgeBasesInput>
+}
+
+export type UserCreateNestedOneWithoutModelQuotasInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutModelQuotasInput, Prisma.UserUncheckedCreateWithoutModelQuotasInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutModelQuotasInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutModelQuotasNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutModelQuotasInput, Prisma.UserUncheckedCreateWithoutModelQuotasInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutModelQuotasInput
+  upsert?: Prisma.UserUpsertWithoutModelQuotasInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutModelQuotasInput, Prisma.UserUpdateWithoutModelQuotasInput>, Prisma.UserUncheckedUpdateWithoutModelQuotasInput>
+}
+
 export type UserCreateWithoutConversationsInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -575,17 +640,20 @@ export type UserCreateWithoutConversationsInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConversationsInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -593,12 +661,14 @@ export type UserUncheckedCreateWithoutConversationsInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConversationsInput = {
@@ -620,6 +690,7 @@ export type UserUpdateToOneWithWhereWithoutConversationsInput = {
 export type UserUpdateWithoutConversationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -627,17 +698,20 @@ export type UserUpdateWithoutConversationsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -645,17 +719,20 @@ export type UserUncheckedUpdateWithoutConversationsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRunsInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -663,17 +740,20 @@ export type UserCreateWithoutRunsInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRunsInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -681,12 +761,14 @@ export type UserUncheckedCreateWithoutRunsInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRunsInput = {
@@ -708,6 +790,7 @@ export type UserUpdateToOneWithWhereWithoutRunsInput = {
 export type UserUpdateWithoutRunsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -715,17 +798,20 @@ export type UserUpdateWithoutRunsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRunsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -733,17 +819,20 @@ export type UserUncheckedUpdateWithoutRunsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUsageLogsInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -751,17 +840,20 @@ export type UserCreateWithoutUsageLogsInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUsageLogsInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -769,12 +861,14 @@ export type UserUncheckedCreateWithoutUsageLogsInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUsageLogsInput = {
@@ -796,6 +890,7 @@ export type UserUpdateToOneWithWhereWithoutUsageLogsInput = {
 export type UserUpdateWithoutUsageLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -803,17 +898,20 @@ export type UserUpdateWithoutUsageLogsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUsageLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -821,17 +919,20 @@ export type UserUncheckedUpdateWithoutUsageLogsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutApiKeysInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -839,17 +940,20 @@ export type UserCreateWithoutApiKeysInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApiKeysInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -857,12 +961,14 @@ export type UserUncheckedCreateWithoutApiKeysInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApiKeysInput = {
@@ -884,6 +990,7 @@ export type UserUpdateToOneWithWhereWithoutApiKeysInput = {
 export type UserUpdateWithoutApiKeysInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -891,17 +998,20 @@ export type UserUpdateWithoutApiKeysInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApiKeysInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -909,17 +1019,20 @@ export type UserUncheckedUpdateWithoutApiKeysInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -927,17 +1040,20 @@ export type UserCreateWithoutSessionsInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -945,12 +1061,14 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -972,6 +1090,7 @@ export type UserUpdateToOneWithWhereWithoutSessionsInput = {
 export type UserUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -979,17 +1098,20 @@ export type UserUpdateWithoutSessionsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -997,17 +1119,20 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -1015,17 +1140,20 @@ export type UserCreateWithoutAccountsInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -1033,12 +1161,14 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1060,6 +1190,7 @@ export type UserUpdateToOneWithWhereWithoutAccountsInput = {
 export type UserUpdateWithoutAccountsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1067,17 +1198,20 @@ export type UserUpdateWithoutAccountsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1085,17 +1219,20 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutModelUsageDailyInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -1103,17 +1240,20 @@ export type UserCreateWithoutModelUsageDailyInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutModelUsageDailyInput = {
   id?: string
   email: string
+  disabled?: boolean
   passwordHash: string
   role?: $Enums.Role
   createdAt?: Date | string
@@ -1121,12 +1261,14 @@ export type UserUncheckedCreateWithoutModelUsageDailyInput = {
   name?: string | null
   emailVerified?: boolean
   image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
   runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
   usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutModelUsageDailyInput = {
@@ -1148,6 +1290,207 @@ export type UserUpdateToOneWithWhereWithoutModelUsageDailyInput = {
 export type UserUpdateWithoutModelUsageDailyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
+  runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
+  usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutModelUsageDailyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
+  usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutKnowledgeBasesInput = {
+  id?: string
+  email: string
+  disabled?: boolean
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name?: string | null
+  emailVerified?: boolean
+  image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
+  runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
+  usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutKnowledgeBasesInput = {
+  id?: string
+  email: string
+  disabled?: boolean
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name?: string | null
+  emailVerified?: boolean
+  image?: string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
+  runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
+  usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutKnowledgeBasesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutKnowledgeBasesInput, Prisma.UserUncheckedCreateWithoutKnowledgeBasesInput>
+}
+
+export type UserUpsertWithoutKnowledgeBasesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutKnowledgeBasesInput, Prisma.UserUncheckedUpdateWithoutKnowledgeBasesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutKnowledgeBasesInput, Prisma.UserUncheckedCreateWithoutKnowledgeBasesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutKnowledgeBasesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutKnowledgeBasesInput, Prisma.UserUncheckedUpdateWithoutKnowledgeBasesInput>
+}
+
+export type UserUpdateWithoutKnowledgeBasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  conversations?: Prisma.ConversationUpdateManyWithoutOwnerNestedInput
+  runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
+  usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutKnowledgeBasesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelQuotas?: Prisma.UserModelQuotaUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  conversations?: Prisma.ConversationUncheckedUpdateManyWithoutOwnerNestedInput
+  runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
+  usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutModelQuotasInput = {
+  id?: string
+  email: string
+  disabled?: boolean
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name?: string | null
+  emailVerified?: boolean
+  image?: string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  conversations?: Prisma.ConversationCreateNestedManyWithoutOwnerInput
+  runs?: Prisma.OrchestrationRunCreateNestedManyWithoutOwnerInput
+  usageLogs?: Prisma.UsageLogCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutModelQuotasInput = {
+  id?: string
+  email: string
+  disabled?: boolean
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name?: string | null
+  emailVerified?: boolean
+  image?: string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  conversations?: Prisma.ConversationUncheckedCreateNestedManyWithoutOwnerInput
+  runs?: Prisma.OrchestrationRunUncheckedCreateNestedManyWithoutOwnerInput
+  usageLogs?: Prisma.UsageLogUncheckedCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedCreateNestedManyWithoutUserInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutModelQuotasInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutModelQuotasInput, Prisma.UserUncheckedCreateWithoutModelQuotasInput>
+}
+
+export type UserUpsertWithoutModelQuotasInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutModelQuotasInput, Prisma.UserUncheckedUpdateWithoutModelQuotasInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutModelQuotasInput, Prisma.UserUncheckedCreateWithoutModelQuotasInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutModelQuotasInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutModelQuotasInput, Prisma.UserUncheckedUpdateWithoutModelQuotasInput>
+}
+
+export type UserUpdateWithoutModelQuotasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1161,11 +1504,14 @@ export type UserUpdateWithoutModelUsageDailyInput = {
   runs?: Prisma.OrchestrationRunUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutModelUsageDailyInput = {
+export type UserUncheckedUpdateWithoutModelQuotasInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1179,6 +1525,8 @@ export type UserUncheckedUpdateWithoutModelUsageDailyInput = {
   runs?: Prisma.OrchestrationRunUncheckedUpdateManyWithoutOwnerNestedInput
   usageLogs?: Prisma.UsageLogUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  modelUsageDaily?: Prisma.ModelUsageDailyUncheckedUpdateManyWithoutUserNestedInput
+  knowledgeBases?: Prisma.KnowledgeBaseUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1187,6 +1535,7 @@ export type UserUncheckedUpdateWithoutModelUsageDailyInput = {
  */
 
 export type UserCountOutputType = {
+  modelQuotas: number
   sessions: number
   accounts: number
   conversations: number
@@ -1194,9 +1543,11 @@ export type UserCountOutputType = {
   usageLogs: number
   apiKeys: number
   modelUsageDaily: number
+  knowledgeBases: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  modelQuotas?: boolean | UserCountOutputTypeCountModelQuotasArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   conversations?: boolean | UserCountOutputTypeCountConversationsArgs
@@ -1204,6 +1555,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   usageLogs?: boolean | UserCountOutputTypeCountUsageLogsArgs
   apiKeys?: boolean | UserCountOutputTypeCountApiKeysArgs
   modelUsageDaily?: boolean | UserCountOutputTypeCountModelUsageDailyArgs
+  knowledgeBases?: boolean | UserCountOutputTypeCountKnowledgeBasesArgs
 }
 
 /**
@@ -1214,6 +1566,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountModelQuotasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserModelQuotaWhereInput
 }
 
 /**
@@ -1265,10 +1624,18 @@ export type UserCountOutputTypeCountModelUsageDailyArgs<ExtArgs extends runtime.
   where?: Prisma.ModelUsageDailyWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountKnowledgeBasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeBaseWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
+  disabled?: boolean
   passwordHash?: boolean
   role?: boolean
   createdAt?: boolean
@@ -1276,6 +1643,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   emailVerified?: boolean
   image?: boolean
+  modelQuotas?: boolean | Prisma.User$modelQuotasArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   conversations?: boolean | Prisma.User$conversationsArgs<ExtArgs>
@@ -1283,12 +1651,14 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   usageLogs?: boolean | Prisma.User$usageLogsArgs<ExtArgs>
   apiKeys?: boolean | Prisma.User$apiKeysArgs<ExtArgs>
   modelUsageDaily?: boolean | Prisma.User$modelUsageDailyArgs<ExtArgs>
+  knowledgeBases?: boolean | Prisma.User$knowledgeBasesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
+  disabled?: boolean
   passwordHash?: boolean
   role?: boolean
   createdAt?: boolean
@@ -1301,6 +1671,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
+  disabled?: boolean
   passwordHash?: boolean
   role?: boolean
   createdAt?: boolean
@@ -1313,6 +1684,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 export type UserSelectScalar = {
   id?: boolean
   email?: boolean
+  disabled?: boolean
   passwordHash?: boolean
   role?: boolean
   createdAt?: boolean
@@ -1322,8 +1694,9 @@ export type UserSelectScalar = {
   image?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "role" | "createdAt" | "updatedAt" | "name" | "emailVerified" | "image", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "disabled" | "passwordHash" | "role" | "createdAt" | "updatedAt" | "name" | "emailVerified" | "image", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  modelQuotas?: boolean | Prisma.User$modelQuotasArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   conversations?: boolean | Prisma.User$conversationsArgs<ExtArgs>
@@ -1331,6 +1704,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   usageLogs?: boolean | Prisma.User$usageLogsArgs<ExtArgs>
   apiKeys?: boolean | Prisma.User$apiKeysArgs<ExtArgs>
   modelUsageDaily?: boolean | Prisma.User$modelUsageDailyArgs<ExtArgs>
+  knowledgeBases?: boolean | Prisma.User$knowledgeBasesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1339,6 +1713,7 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    modelQuotas: Prisma.$UserModelQuotaPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     conversations: Prisma.$ConversationPayload<ExtArgs>[]
@@ -1346,10 +1721,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     usageLogs: Prisma.$UsageLogPayload<ExtArgs>[]
     apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
     modelUsageDaily: Prisma.$ModelUsageDailyPayload<ExtArgs>[]
+    knowledgeBases: Prisma.$KnowledgeBasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
+    disabled: boolean
     passwordHash: string
     role: $Enums.Role
     createdAt: Date
@@ -1751,6 +2128,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  modelQuotas<T extends Prisma.User$modelQuotasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$modelQuotasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserModelQuotaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conversations<T extends Prisma.User$conversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$conversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1758,6 +2136,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   usageLogs<T extends Prisma.User$usageLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$usageLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   apiKeys<T extends Prisma.User$apiKeysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   modelUsageDaily<T extends Prisma.User$modelUsageDailyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$modelUsageDailyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ModelUsageDailyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  knowledgeBases<T extends Prisma.User$knowledgeBasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$knowledgeBasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeBasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1789,6 +2168,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
+  readonly disabled: Prisma.FieldRef<"User", 'Boolean'>
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -2184,6 +2564,30 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * User.modelQuotas
+ */
+export type User$modelQuotasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserModelQuota
+   */
+  select?: Prisma.UserModelQuotaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserModelQuota
+   */
+  omit?: Prisma.UserModelQuotaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserModelQuotaInclude<ExtArgs> | null
+  where?: Prisma.UserModelQuotaWhereInput
+  orderBy?: Prisma.UserModelQuotaOrderByWithRelationInput | Prisma.UserModelQuotaOrderByWithRelationInput[]
+  cursor?: Prisma.UserModelQuotaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserModelQuotaScalarFieldEnum | Prisma.UserModelQuotaScalarFieldEnum[]
+}
+
+/**
  * User.sessions
  */
 export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2349,6 +2753,30 @@ export type User$modelUsageDailyArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ModelUsageDailyScalarFieldEnum | Prisma.ModelUsageDailyScalarFieldEnum[]
+}
+
+/**
+ * User.knowledgeBases
+ */
+export type User$knowledgeBasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeBase
+   */
+  select?: Prisma.KnowledgeBaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeBase
+   */
+  omit?: Prisma.KnowledgeBaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeBaseInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeBaseWhereInput
+  orderBy?: Prisma.KnowledgeBaseOrderByWithRelationInput | Prisma.KnowledgeBaseOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeBaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeBaseScalarFieldEnum | Prisma.KnowledgeBaseScalarFieldEnum[]
 }
 
 /**

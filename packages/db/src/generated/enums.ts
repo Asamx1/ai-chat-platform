@@ -57,3 +57,13 @@ export const RunPhase = {
 } as const
 
 export type RunPhase = (typeof RunPhase)[keyof typeof RunPhase]
+
+
+export const DocumentStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  READY: 'READY',
+  FAILED: 'FAILED'
+} as const
+
+export type DocumentStatus = (typeof DocumentStatus)[keyof typeof DocumentStatus]

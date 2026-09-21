@@ -107,3 +107,28 @@ export type Verification = Prisma.VerificationModel
  * 
  */
 export type ModelUsageDaily = Prisma.ModelUsageDailyModel
+/**
+ * Model KnowledgeBase
+ * 
+ */
+export type KnowledgeBase = Prisma.KnowledgeBaseModel
+/**
+ * Model Document
+ * 
+ */
+export type Document = Prisma.DocumentModel
+/**
+ * Model Chunk
+ * 
+ */
+export type Chunk = Prisma.ChunkModel
+/**
+ * Model ConversationKnowledgeBase
+ * 
+ */
+export type ConversationKnowledgeBase = Prisma.ConversationKnowledgeBaseModel
+/**
+ * Model UserModelQuota
+ * 
+ */
+export type UserModelQuota = Prisma.UserModelQuotaModel

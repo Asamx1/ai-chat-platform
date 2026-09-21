@@ -68,7 +68,12 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  ModelUsageDaily: 'ModelUsageDaily'
+  ModelUsageDaily: 'ModelUsageDaily',
+  KnowledgeBase: 'KnowledgeBase',
+  Document: 'Document',
+  Chunk: 'Chunk',
+  ConversationKnowledgeBase: 'ConversationKnowledgeBase',
+  UserModelQuota: 'UserModelQuota'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -90,6 +95,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
+  disabled: 'disabled',
   passwordHash: 'passwordHash',
   role: 'role',
   createdAt: 'createdAt',
@@ -232,6 +238,7 @@ export const ProviderCallScalarFieldEnum = {
   participantSnapshotId: 'participantSnapshotId',
   attempt: 'attempt',
   requestHash: 'requestHash',
+  quotaReservation: 'quotaReservation',
   usage: 'usage',
   error: 'error',
   startedAt: 'startedAt',
@@ -335,10 +342,74 @@ export const ModelUsageDailyScalarFieldEnum = {
   modelId: 'modelId',
   date: 'date',
   tokensIn: 'tokensIn',
-  tokensOut: 'tokensOut'
+  tokensOut: 'tokensOut',
+  reservedTokens: 'reservedTokens'
 } as const
 
 export type ModelUsageDailyScalarFieldEnum = (typeof ModelUsageDailyScalarFieldEnum)[keyof typeof ModelUsageDailyScalarFieldEnum]
+
+
+export const KnowledgeBaseScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type KnowledgeBaseScalarFieldEnum = (typeof KnowledgeBaseScalarFieldEnum)[keyof typeof KnowledgeBaseScalarFieldEnum]
+
+
+export const DocumentScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  name: 'name',
+  mime: 'mime',
+  objectKey: 'objectKey',
+  model: 'model',
+  size: 'size',
+  chunkCount: 'chunkCount',
+  status: 'status',
+  error: 'error',
+  attempt: 'attempt',
+  leaseOwner: 'leaseOwner',
+  leaseExpiresAt: 'leaseExpiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
+
+
+export const ChunkScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  ordinal: 'ordinal',
+  start: 'start',
+  end: 'end',
+  text: 'text',
+  createdAt: 'createdAt'
+} as const
+
+export type ChunkScalarFieldEnum = (typeof ChunkScalarFieldEnum)[keyof typeof ChunkScalarFieldEnum]
+
+
+export const ConversationKnowledgeBaseScalarFieldEnum = {
+  conversationId: 'conversationId',
+  kbId: 'kbId'
+} as const
+
+export type ConversationKnowledgeBaseScalarFieldEnum = (typeof ConversationKnowledgeBaseScalarFieldEnum)[keyof typeof ConversationKnowledgeBaseScalarFieldEnum]
+
+
+export const UserModelQuotaScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  modelId: 'modelId',
+  dailyLimit: 'dailyLimit'
+} as const
+
+export type UserModelQuotaScalarFieldEnum = (typeof UserModelQuotaScalarFieldEnum)[keyof typeof UserModelQuotaScalarFieldEnum]
 
 
 export const SortOrder = {
