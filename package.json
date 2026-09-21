@@ -15,8 +15,8 @@
     ]
   },
   "scripts": {
-    "lint": "echo 'lint: not configured yet (M1)'",
-    "typecheck": "echo 'typecheck: not configured yet (M1)'",
+    "lint": "pnpm typecheck",
+    "typecheck": "node scripts/typecheck.mjs",
     "test": "vitest run && pnpm --filter @aichat/web test",
     "test:integration": "pnpm --filter @aichat/web test:integration",
     "test:e2e": "node tests/smoke-login-page.cjs",

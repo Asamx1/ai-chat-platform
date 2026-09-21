@@ -63,6 +63,16 @@ export class OpenAICompatibleProvider implements ProviderAdapter {
     };
   }
 
+  /** Text-only DeepSeek byte-level tokenizer: UTF-8 bytes bound token count.
+   * Reserve 256 framing tokens per message plus 256 for BOS/assistant framing.
+   * Tools, images and hidden reasoning are not supported by this bound.
+   */
+  inputTokenUpperBound(messages: ChatMessage[]): number | undefined {
+    if (this.model !== 'deepseek-chat') return undefined;
+    return 256 + messages.reduce((sum, message) =>
+      sum + Buffer.byteLength(message.content, 'utf8') + Buffer.byteLength(message.role, 'utf8') + 256, 0);
+  }
+
   async *streamChat(
     messages: ChatMessage[],
     opts?: StreamChatOptions,
@@ -160,7 +170,8 @@ export class OpenAICompatibleProvider implements ProviderAdapter {
         return;
       }
       if (!finished) {
-        // stream ended without [DONE]; ensure done semantics if usage never seen
+        yield { type: 'error', error: 'incomplete provider stream' };
+        return;
       }
       yield { type: 'done', finishReason: 'stop' };
     } catch (err) {

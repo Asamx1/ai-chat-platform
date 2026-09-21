@@ -1,3 +1,4 @@
+import { quotaProvider } from '@aichat/providers/quota-provider';
 import { prisma } from '@aichat/db';
 import type { Prisma } from '@aichat/db';
 import {
@@ -5,7 +6,7 @@ import {
   createConversation,
   createMessage,
 } from '@aichat/db';
-import { OllamaProvider, OpenAICompatibleProvider, createResolver } from '@aichat/providers';
+import { createResolver } from '@aichat/providers';
 import type { ProviderAdapter } from '@aichat/providers';
 import { injectContext, retrieveContext, revalidateContext } from './rag-context';
 import type { RagSnapshot } from './rag-context';
@@ -205,10 +206,17 @@ async function executeRunInline(
     await appendEvent(runId, 'run.started', { modelKey });
 
     const resolved = providerFactory ? undefined : await resolver.resolve(userId, modelKey);
-    const provider = providerFactory ? providerFactory(modelKey)
-      : resolved!.adapter === 'ollama'
-        ? new OllamaProvider({ baseUrl: resolved!.baseUrl, model: resolved!.model })
-        : new OpenAICompatibleProvider({ baseUrl: resolved!.baseUrl, apiKey: resolved!.apiKey, model: resolved!.model });
+    const provider = providerFactory ? providerFactory(modelKey) : quotaProvider(prisma, {
+      userId, runId, modelId: modelKey, initial: resolved, attempt: 0, seatId: 'default', invocation: 0,
+      onResolved: async model => {
+        if (model.degraded) {
+          await appendEvent(runId, 'run.degraded', { degraded: model.degraded });
+          await prisma.orchestrationRun.update({ where: { id: runId }, data: {
+            degraded: true, degradationReasons: [model.degraded.reason],
+          } });
+        }
+      },
+    });
     if (resolved?.degraded) await appendEvent(runId, 'run.degraded', { degraded: resolved.degraded });
     const currentRag = await revalidateContext(userId, conversationId, rag);
     if (currentRag.status === 'RAG_UNAVAILABLE') {
@@ -253,6 +261,7 @@ async function executeRunInline(
     const date = new Date();
     date.setUTCHours(0, 0, 0, 0);
     await prisma.$transaction(async (tx) => {
+      if (providerFactory) {
       const participant = await tx.runParticipantSnapshot.findFirst({
         where: { runId, seatId: 'default' }, select: { id: true },
       });
@@ -269,6 +278,7 @@ async function executeRunInline(
         update: { tokensIn: { increment: tokensIn }, tokensOut: { increment: tokensOut } },
       });
       await tx.usageLog.create({ data: { userId, runId, callId: call.id, tokens: tokensIn + tokensOut, costMicros: 0n } });
+      }
       await tx.message.create({ data: { conversationId, content: text, status: 'COMPLETE' } });
       await tx.orchestrationRun.update({
         where: { id: runId },

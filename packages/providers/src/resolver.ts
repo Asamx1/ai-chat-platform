@@ -16,7 +16,7 @@ export interface RegistryModel {
 type DailyKey = { userId: string; modelId: string; date: Date };
 export interface UsageStore {
   modelUsageDaily: {
-    findUnique(args: { where: { userId_modelId_date: DailyKey } }): Promise<{ tokensIn: number; tokensOut: number } | null>;
+    findUnique(args: { where: { userId_modelId_date: DailyKey } }): Promise<{ tokensIn: number; tokensOut: number; reservedTokens?: number } | null>;
     upsert(args: {
       where: { userId_modelId_date: DailyKey };
       create: DailyKey & { tokensIn: number; tokensOut: number };
@@ -26,6 +26,9 @@ export interface UsageStore {
 }
 
 export interface ResolverStore extends UsageStore {
+  userModelQuota: {
+    findUnique(args: { where: { userId_modelId: { userId: string; modelId: string } } }): Promise<{ dailyLimit: number } | null>;
+  };
   modelRegistry: {
     findUnique(args: { where: { id: string }; include: { provider: true } }): Promise<RegistryModel | null>;
     findFirst(args: {
@@ -115,6 +118,7 @@ export function createResolver(
   }
 
   return {
+    fallback,
     async resolve(userId: string, modelId: string): Promise<ResolvedModel> {
       // Prefer the registry id; legacy clients and snapshots may still send modelKey.
       const row = await db.modelRegistry.findUnique({ where: { id: modelId }, include: { provider: true } })
@@ -138,7 +142,9 @@ export function createResolver(
       const usage = await db.modelUsageDaily.findUnique({
         where: { userId_modelId_date: { userId, modelId: row.id, date: usageDate(now()) } },
       });
-      if (usage && usage.tokensIn + usage.tokensOut > DAILY_CLOUD_TOKEN_LIMIT) {
+      const quota = await db.userModelQuota.findUnique({ where: { userId_modelId: { userId, modelId: row.id } } });
+      const limit = quota?.dailyLimit ?? DAILY_CLOUD_TOKEN_LIMIT;
+      if ((usage ? usage.tokensIn + usage.tokensOut + (usage.reservedTokens ?? 0) : 0) >= limit) {
         return fallback(modelId, 'QUOTA_EXCEEDED');
       }
       const resolved = result(row, key, source);

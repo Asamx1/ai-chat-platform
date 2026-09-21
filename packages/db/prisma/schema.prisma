@@ -48,6 +48,8 @@ enum RunPhase {
 model User {
   id            String             @id @default(cuid())
   email         String             @unique
+  disabled      Boolean            @default(false)
+  modelQuotas   UserModelQuota[]
   passwordHash  String
   role          Role               @default(USER)
   createdAt     DateTime           @default(now())
@@ -89,6 +91,7 @@ model ModelRegistry {
   pricingVersion String
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
+  modelQuotas    UserModelQuota[]
   participants   Participant[]
 
   @@unique([providerId, modelKey])
@@ -210,6 +213,7 @@ model ProviderCall {
   participantSnapshot   RunParticipantSnapshot? @relation(fields: [participantSnapshotId], references: [id], onDelete: SetNull)
   attempt               Int
   requestHash           String                  @unique
+  quotaReservation      Json?
   usage                 Json?
   error                 String?
   startedAt             DateTime                @default(now())
@@ -312,6 +316,7 @@ model ModelUsageDaily {
   date      DateTime @db.Date
   tokensIn  Int      @default(0)
   tokensOut Int      @default(0)
+  reservedTokens Int @default(0)
 
   @@unique([userId, modelId, date])
 }
@@ -378,4 +383,14 @@ model ConversationKnowledgeBase {
   kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
   @@id([conversationId, kbId])
   @@index([kbId])
+}
+
+model UserModelQuota {
+  id String @id @default(cuid())
+  userId String
+  modelId String
+  dailyLimit Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  model ModelRegistry @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  @@unique([userId, modelId])
 }

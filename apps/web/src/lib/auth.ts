@@ -171,6 +171,10 @@ export const prismaAdapter = {
     if (!mapped.id) {
       mapped.id = generateId();
     }
+    if (m === 'session') {
+      const user = await prisma.user.findUnique({ where: { id: String(mapped.userId) } });
+      if (!user || user.disabled) throw new Error('USER_DISABLED');
+    }
     const row = await delegate(m).create({ data: mapped });
     return fromPrismaRow(m, row);
   },
@@ -182,6 +186,11 @@ export const prismaAdapter = {
       where: toPrismaWhere(m, where),
       include: joinToInclude(m, join),
     });
+    if (m === 'user' && row?.disabled) return null;
+    if (m === 'session' && row) {
+      const user = await prisma.user.findUnique({ where: { id: row.userId } });
+      if (!user || user.disabled) return null;
+    }
     return fromPrismaRow(m, row);
   },
   async findMany({ model, where, limit, sortBy }: { model: string; where?: unknown; limit?: number; sortBy?: { field: string; direction: 'asc' | 'desc' } }) {
@@ -238,6 +247,7 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: { type: 'string', input: false },
+      disabled: { type: 'boolean', input: false, defaultValue: false },
     },
   },
   emailAndPassword: {

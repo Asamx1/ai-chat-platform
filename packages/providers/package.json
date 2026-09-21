@@ -5,7 +5,9 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./resolver": "./src/resolver.ts"
+    "./resolver": "./src/resolver.ts",
+    "./quota": "./src/quota.ts",
+    "./quota-provider": "./src/quota-provider.ts"
   },
   "scripts": {
     "test": "vitest run"

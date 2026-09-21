@@ -13,6 +13,7 @@ const local: RegistryModel = {
 };
 function setup(env: Record<string, string> = {}) {
   const db = {
+    userModelQuota: { findUnique: vi.fn(async (): Promise<{ dailyLimit: number } | null> => null) },
     modelRegistry: { findUnique: vi.fn(async (): Promise<RegistryModel | null> => cloud), findFirst: vi.fn(async (): Promise<RegistryModel | null> => local) },
     apiKey: { findUnique: vi.fn(async (): Promise<{ ciphertext: string } | null> => null) },
     modelUsageDaily: {
@@ -46,7 +47,7 @@ describe('provider resolver', () => {
     const { resolver, db } = setup({ DEEPSEEK_API_KEY: 'key' });
     db.modelUsageDaily.findUnique.mockResolvedValue({ tokensIn: tokens - 10, tokensOut: 10 });
     const result = await resolver.resolve('u', cloud.id);
-    expect(result.degraded).toEqual(tokens > 200_000 ? { reason: 'QUOTA_EXCEEDED', from: cloud.id } : undefined);
+    expect(result.degraded).toEqual(tokens >= 200_000 ? { reason: 'QUOTA_EXCEEDED', from: cloud.id } : undefined);
     expect(db.modelUsageDaily.findUnique).toHaveBeenCalledWith({ where: { userId_modelId_date: { userId: 'u', modelId: cloud.id, date: new Date('2026-09-20T00:00:00Z') } } });
   });
   it.each([local, cloud])('resolves legacy modelKey $modelKey to the registry id', async row => {
@@ -130,5 +131,21 @@ describe('daily usage write contract', () => {
     const { db } = setup();
     await expect(incrementDailyUsage(db, 'u', cloud.id, value, 0)).rejects.toThrow(RangeError);
     expect(db.modelUsageDaily.upsert).not.toHaveBeenCalled();
+  });
+});
+
+describe('per-user model quota overrides', () => {
+  it.each([0, 50, 200000])('uses override %s including zero and exact limit', async dailyLimit => {
+    const { db, resolver } = setup({ DEEPSEEK_API_KEY: 'key' });
+    db.userModelQuota.findUnique.mockResolvedValue({ dailyLimit });
+    db.modelUsageDaily.findUnique.mockResolvedValue({ tokensIn: dailyLimit, tokensOut: 0 });
+    expect((await resolver.resolve('u', cloud.id)).degraded?.reason).toBe('QUOTA_EXCEEDED');
+    expect(db.userModelQuota.findUnique).toHaveBeenCalledWith({ where: { userId_modelId: { userId: 'u', modelId: cloud.id } } });
+  });
+  it('uses a larger override instead of the default', async () => {
+    const { db, resolver } = setup({ DEEPSEEK_API_KEY: 'key' });
+    db.userModelQuota.findUnique.mockResolvedValue({ dailyLimit: 300000 });
+    db.modelUsageDaily.findUnique.mockResolvedValue({ tokensIn: 200000, tokensOut: 0 });
+    expect((await resolver.resolve('u', cloud.id)).degraded).toBeUndefined();
   });
 });

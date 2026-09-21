@@ -1,10 +1,11 @@
+const { browserExecutable, artifactDir } = require('./browser-paths.cjs');
 /**
  * M3 UI 浏览器细验 v2：放宽断言（文本匹配代替脆弱选择器）。
  */
 const puppeteer = require('puppeteer-core');
-const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
+const EDGE = browserExecutable();
 const BASE = 'http://127.0.0.1:3100';
-const SHOT = 'E:/AI-Workstation/work/ai-chat-platform/ui-m3';
+const SHOT = require('node:path').join(artifactDir(), 'ui-m3');
 
 const ok = (name, cond) => {
   console.log(`[${cond ? 'PASS' : 'FAIL'}] ${name}`);

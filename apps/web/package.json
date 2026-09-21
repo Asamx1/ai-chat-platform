@@ -9,7 +9,7 @@
     "start": "next start",
     "test": "vitest run --config vitest.config.ts",
     "test:integration": "node --env-file=../../.env ../../node_modules/vitest/vitest.mjs run --config vitest.integration.config.ts",
-    "lint": "next lint",
+    "lint": "tsc --noEmit --incremental false",
     "seed": "tsx --env-file=../../.env scripts/seed.ts",
     "test:deepseek": "node test/deepseek-api.test.mjs && node test/deepseek-worker.test.mjs && node test/deepseek-safety.test.mjs",
     "test:rag": "node test/rag-api.test.mjs && node test/rag-chat.test.mjs"

@@ -1,3 +1,4 @@
+const { browserExecutable, artifactDir } = require('./browser-paths.cjs');
 /**
  * Production login-page browser smoke test.
  *
@@ -12,12 +13,7 @@ const BASE_URL = new URL(process.env.WEB_BASE_URL || 'http://127.0.0.1:3100');
 const APP_ORIGIN = BASE_URL.origin;
 const EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@example.com';
 const PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'admin12345';
-const EXECUTABLE_CANDIDATES = [
-  process.env.PUPPETEER_EXECUTABLE_PATH,
-  'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
-  'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
-  'C:/Program Files/Google/Chrome/Application/chrome.exe',
-].filter(Boolean);
+
 
 function assert(label, condition, detail = '') {
   if (!condition) {
@@ -35,7 +31,7 @@ async function waitForPath(page, pathname) {
 }
 
 (async () => {
-  const executablePath = EXECUTABLE_CANDIDATES.find((candidate) => fs.existsSync(candidate));
+  const executablePath = browserExecutable();
   assert('browser executable discovered', Boolean(executablePath));
 
   const browser = await puppeteer.launch({

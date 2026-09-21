@@ -122,7 +122,7 @@ export async function processCollabRun(
     invocations.set(seat.seatId, invocation + 1);
     const resolved = deps.providerFactory
       ? { provider: deps.providerFactory(seat.modelKey), modelKey: seat.modelKey, degraded: undefined }
-      : await resolveRunProvider(run.ownerId, seat.modelKey);
+      : await resolveRunProvider(run.ownerId, seat.modelKey, { runId, attempt: run.attempt, seatId: seat.seatId, invocation });
     const { provider } = resolved;
     if (resolved.degraded) {
       await appendEvent(runId, 'run.degraded', { seatId: seat.seatId, degraded: resolved.degraded });
@@ -141,7 +141,7 @@ export async function processCollabRun(
       }
     }
     // Account each completed call before the next resolver quota check, even if a later seat fails.
-    await recordUsage({
+    if (deps.providerFactory) await recordUsage({
       runId, ownerId: run.ownerId, attempt: run.attempt,
       modelKey: resolved.modelKey, content: prompt, tokens, usage: usageJson,
       seatId: seat.seatId,
@@ -157,7 +157,7 @@ export async function processCollabRun(
     try {
       return await callModel(seat, prompt, signal);
     } catch (err) {
-      if (err instanceof CollabCancelledError) throw err;
+      if (err instanceof CollabCancelledError || (err instanceof Error && ['QUOTA_OUTCOME_UNKNOWN', 'QUOTA_CALL_EXISTS'].includes(err.message))) throw err;
       const backup = seats.find(
         (s) => s.seatId.endsWith('-backup') && s.seatId !== seat.seatId && s.role === seat.role,
       );

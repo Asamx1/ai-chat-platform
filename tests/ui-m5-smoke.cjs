@@ -1,11 +1,12 @@
+const { browserExecutable, artifactDir } = require('./browser-paths.cjs');
 /**
  * M5 UI 冒烟：时间线渲染 + 导出下载 + 冷启动回放路径。
  * 前置：生产服(next start :3100) + DB 里有历史 SUCCEEDED 协作 run(admin 用户)。
  */
 const puppeteer = require('puppeteer-core');
-const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
+const EDGE = browserExecutable();
 const BASE = 'http://127.0.0.1:3100';
-const SHOT = 'E:/AI-Workstation/work/ai-chat-platform';
+const SHOT = artifactDir();
 
 const ok = (name, cond) => {
   console.log(`[${cond ? 'PASS' : 'FAIL'}] ${name}`);

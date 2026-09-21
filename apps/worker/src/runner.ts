@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
+import { quotaProvider } from '@aichat/providers/quota-provider';
 import { prisma } from '@aichat/db';
 import type { Prisma } from '@aichat/db';
 import { OllamaProvider, OpenAICompatibleProvider, createResolver } from '@aichat/providers';
@@ -26,7 +27,19 @@ export interface RunnerDeps {
 }
 
 /** Resolver contract: adapter/baseUrl/apiKey/modelId plus optional degraded metadata. */
-export async function resolveRunProvider(userId: string, modelId: string) {
+export async function resolveRunProvider(userId: string, modelId: string, execution?: {
+  runId: string; attempt: number; seatId: string; invocation: number;
+}) {
+  if (execution) return {
+    provider: quotaProvider(prisma, { ...execution, userId, modelId, onResolved: async model => {
+      if (model.degraded) {
+        await appendEvent(execution.runId, 'run.degraded', { seatId: execution.seatId, degraded: model.degraded });
+        await prisma.orchestrationRun.update({ where: { id: execution.runId }, data: {
+          degraded: true, degradationReasons: [model.degraded.reason],
+        } });
+      }
+    } }), modelKey: modelId, degraded: undefined,
+  };
   const resolved = await resolver.resolve(userId, modelId);
   const provider = resolved.adapter === 'ollama'
     ? new OllamaProvider({ baseUrl: resolved.baseUrl, model: resolved.model })
@@ -256,7 +269,7 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
     const content = await loadPrompt(run.conversationId, snapshot);
     const resolved = deps.providerFactory
       ? { provider: deps.providerFactory(modelKey), modelKey, degraded: undefined }
-      : await resolveRunProvider(run.ownerId, modelKey);
+      : await resolveRunProvider(run.ownerId, modelKey, { runId, attempt: run.attempt, seatId: 'default', invocation: 0 });
     const { provider } = resolved;
     if (resolved.degraded) {
       await appendEvent(runId, 'run.degraded', { degraded: resolved.degraded });
@@ -269,6 +282,8 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
     let deltasSinceCheckpoint = 0;
     let lastCheckpointAt = Date.now();
 
+    // The shared entry replays a completed response in full; replace a partial checkpoint.
+    if (!deps.providerFactory) state.accumulated = '';
     for await (const ev of provider.streamChat(
       [{ role: 'user', content }],
       { signal: abort.signal },
@@ -316,7 +331,7 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
 
     state.assistantMessageId = await upsertAssistantMessage(run.conversationId, state);
     version = await saveCheckpoint(runId, state, version);
-    await recordUsage({
+    if (deps.providerFactory) await recordUsage({
       runId,
       ownerId: run.ownerId,
       attempt: run.attempt,

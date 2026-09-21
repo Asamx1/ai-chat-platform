@@ -2,6 +2,7 @@ import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { prisma } from '@aichat/db';
 import { encrypt, decrypt, maskKey } from '@aichat/crypto';
+import { isSameOrigin } from '@/lib/same-origin';
 import { auth } from '@/lib/auth';
 
 export const runtime = 'nodejs';
@@ -21,6 +22,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  if (!isSameOrigin(req)) return NextResponse.json({ error: 'FORBIDDEN' }, { status: 403 });
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 });
   let body: unknown;
@@ -64,6 +66,7 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  if (!isSameOrigin(req)) return NextResponse.json({ error: 'FORBIDDEN' }, { status: 403 });
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 });
   const provider = new URL(req.url).searchParams.get('provider');

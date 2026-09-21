@@ -33,6 +33,8 @@ export interface StreamChatOptions {
 }
 
 export interface ProviderAdapter {
+  /** Conservative bound for the entire supported request; undefined forbids cloud execution. */
+  inputTokenUpperBound?(messages: ChatMessage[]): number | undefined;
   capabilities(): ProviderCapabilities;
   streamChat(messages: ChatMessage[], opts?: StreamChatOptions): AsyncIterable<ProviderStreamEvent>;
 }
