@@ -16,8 +16,8 @@ export function scanMarkdown(cps: string[]): StructureSection[] {
   for (let i = 0; i < cps.length; i++) if (cps[i] === '\n') lineStarts.push(i + 1);
   const lines = lineStarts.map((s, idx) => ({
     start: s,
-    end: idx + 1 < lineStarts.length ? lineStarts[idx + 1] : cps.length,
-    text: cps.slice(s, idx + 1 < lineStarts.length ? lineStarts[idx + 1] - 1 : cps.length).join(''),
+    end: idx + 1 < lineStarts.length ? (lineStarts[idx + 1] ?? cps.length) : cps.length,
+    text: cps.slice(s, idx + 1 < lineStarts.length ? (lineStarts[idx + 1] ?? cps.length) - 1 : cps.length).join(''),
   }));
   const sections: StructureSection[] = [];
   const stack: { level: number; title: string }[] = [];
@@ -32,29 +32,32 @@ export function scanMarkdown(cps: string[]): StructureSection[] {
   };
   for (let li = 0; li < lines.length; li++) {
     const line = lines[li];
+    if (!line) continue;
     const fenceMatch = line.text.match(/^\s*(```|~~~)/);
     if (fenceMatch) {
-      if (!fence) fence = fenceMatch[1];
-      else if (fence === fenceMatch[1]) fence = null;
+      const marker = fenceMatch[1] ?? '';
+      if (!fence) fence = marker;
+      else if (fence === marker) fence = null;
     }
     if (fence) continue;
     const atx = line.text.match(ATX);
     let level: number | null = null;
     let title = '';
     if (atx) {
-      level = atx[1].length;
-      title = atx[2].trim();
-    } else if (li + 1 < lines.length && lines[li + 1].text.trim() !== '') {
-      const next = lines[li + 1].text;
+      level = atx[1]?.length ?? 0;
+      title = (atx[2] ?? '').trim();
+    } else if (li + 1 < lines.length && lines[li + 1]?.text.trim() !== '') {
+      const next = lines[li + 1]?.text;
+      if (next === undefined) continue;
       if (SETEXT_1.test(next) || SETEXT_2.test(next)) {
         level = SETEXT_1.test(next) ? 1 : 2;
         title = line.text.trim();
         li++;
       }
     }
-    if (level == null) continue;
+    if (level == null || level === 0) continue;
     push(line.start);
-    while (stack.length && stack[stack.length - 1].level >= level) stack.pop();
+    while (stack.length && (stack[stack.length - 1]?.level ?? 0) >= level) stack.pop();
     stack.push({ level, title });
     current = { start: line.start, end: cps.length, headingPath: stack.map(h => h.title) };
   }

@@ -132,8 +132,10 @@ export function packUnits(units: Range[], target: number, max: number, overlap: 
   // Add overlap by extending each chunk backwards into the previous chunk (same parent region).
   for (let i = 1; i < packed.length; i++) {
     const prev = packed[i - 1];
-    if (prev.end - overlap > packed[i].start) continue; // no gap to bridge
-    packed[i] = { start: Math.max(packed[i].start, prev.end - overlap), end: packed[i].end };
+    const cur = packed[i];
+    if (!prev || !cur) continue;
+    if (prev.end - overlap > cur.start) continue; // no gap to bridge
+    packed[i] = { start: Math.max(cur.start, prev.end - overlap), end: cur.end };
   }
   return packed.filter(r => r.end > r.start);
 }

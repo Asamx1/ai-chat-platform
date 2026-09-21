@@ -351,6 +351,7 @@ model Document {
   model String
   size Int
   chunkCount Int @default(0)
+  chunkStrategy String @default("structure")
   status DocumentStatus @default(PENDING)
   error String?
   attempt Int @default(0)
@@ -367,13 +368,25 @@ model Chunk {
   id String @id @default(cuid())
   documentId String
   document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  parentId String?
+  parent Chunk? @relation("ChildChunks", fields: [parentId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  children Chunk[] @relation("ChildChunks")
+  headingPath String? // JSON-serialized string[] produced by the chunker; display metadata only
+  kind String @default("CHILD") // PARENT | CHILD | STANDALONE
   ordinal Int
   start Int
   end Int
   text String @db.Text
+  // Database-generated full-text column: GENERATED ALWAYS AS (to_tsvector('simple', text)) STORED.
+  // Prisma cannot express generated columns, so the DDL in the migration (…_m9_rag_quality) is the
+  // source of truth; the app never writes this column.
+  tsv Unsupported("tsvector")?
   embedding Unsupported("vector(1024)")
   createdAt DateTime @default(now())
   @@unique([documentId, ordinal])
+  @@index([parentId], map: "Chunk_parentId_idx")
+  // GIN index chunk_tsv_idx ON (tsv) also lives only in the migration SQL; Prisma cannot index
+  // Unsupported columns.
 }
 
 model ConversationKnowledgeBase {

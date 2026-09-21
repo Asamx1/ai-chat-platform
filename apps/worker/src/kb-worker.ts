@@ -1,9 +1,9 @@
 import { createRequire } from 'node:module';
 import { Worker } from 'node:worker_threads';
 import { prisma } from '@aichat/db';
-import { chunk, embed, embeddingModel, parse, store, PermanentRagError, LeaseLostError, MAX_FILE_BYTES } from '@aichat/rag';
+import { chunkDocument, embed, embeddingModel, parse, storePlan, PermanentRagError, LeaseLostError, MAX_FILE_BYTES, type ChunkResult, type StrategyName } from '@aichat/rag';
 
-type Job = { id: string; attempt: number; mime: string; objectKey: string; model: string; size: number };
+type Job = { id: string; attempt: number; mime: string; objectKey: string; model: string; size: number; chunkStrategy: string };
 export async function claimDocument(worker: string): Promise<Job | null> {
   // Recovery is deliberately restricted to exhausted, expired leases.
   await prisma.$executeRawUnsafe(`UPDATE "Document" SET status='FAILED',error='ATTEMPTS_EXHAUSTED',
@@ -17,7 +17,7 @@ export async function claimDocument(worker: string): Promise<Job | null> {
       (status='PENDING' OR (status='PROCESSING' AND
        ("leaseExpiresAt" IS NULL OR "leaseExpiresAt"<=clock_timestamp())))
       ORDER BY "createdAt",id LIMIT 1 FOR UPDATE SKIP LOCKED)
-    RETURNING id,attempt,mime,"objectKey",model,size`, worker);
+    RETURNING id,attempt,mime,"objectKey",model,size,"chunkStrategy"`, worker);
   return rows[0] ?? null;
 }
 export async function renewDocument(job: Job, worker: string): Promise<number> {
@@ -115,10 +115,17 @@ export async function processDocument(job: Job, worker: string): Promise<void> {
     if (job.model !== embeddingModel()) throw new PermanentRagError('EMBEDDING_MODEL_MISMATCH');
     const data = await readObject(job, controller.signal);
     const parts = await parse(data, job.mime, bytes => parsePdf(bytes, controller.signal));
-    const slices = chunk(parts);
-    const vectors = await embed(slices.map(slice => slice.text), controller.signal, job.model);
+    // Dispatch through the registry so Document.chunkStrategy matches the stored chunks;
+    // unknown strategies are permanent errors, never silently re-chunked as fixed.
+    let results: ChunkResult[];
+    try {
+      results = chunkDocument({ parts, mime: job.mime }, job.chunkStrategy as StrategyName);
+    } catch {
+      throw new PermanentRagError('UNKNOWN_CHUNK_STRATEGY');
+    }
+    const vectors = await embed(results.map(result => result.text), controller.signal, job.model);
     controller.signal.throwIfAborted();
-    await store(job.id, job.attempt, worker, slices, vectors);
+    await storePlan(job.id, job.attempt, worker, results, vectors);
   } catch (error) {
     if (!controller.signal.aborted && !(error instanceof LeaseLostError)) await failDocument(job, worker, error);
   } finally { clearInterval(heartbeat); }

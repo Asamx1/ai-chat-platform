@@ -1,4 +1,5 @@
-export * from './chunk';
+export { chunk, chunkDocument } from './chunk';
+export type { Part, Slice } from './chunk';
 export * from './strategies/registry';
 export * from './strategies/types';
 export * from './parse';

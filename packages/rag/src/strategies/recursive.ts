@@ -10,7 +10,9 @@ const SEPARATORS = ['\n## ', '\n', '。', ' '];
 function recursiveRanges(start: number, end: number, cps: string[], seps: string[], config: Readonly<ChunkConfig>): Range[] {
   if (end - start <= config.childMax) return [{ start, end }];
   for (let s = 0; s < seps.length; s++) {
-    const pieces = splitKeeping(start, end, seps[s], cps);
+    const sep = seps[s];
+    if (sep === undefined) continue;
+    const pieces = splitKeeping(start, end, sep, cps);
     if (pieces.length <= 1) continue;
     const units = pieces.flatMap(p => recursiveRanges(p.start, p.end, cps, seps.slice(s + 1), config));
     return packUnits(units, config.childTarget, config.childMax, config.childOverlap);
