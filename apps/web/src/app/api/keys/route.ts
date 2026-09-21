@@ -11,12 +11,12 @@ export async function GET() {
   if (!session?.user) return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 });
   const rows = await prisma.apiKey.findMany({ where: { userId: session.user.id } });
   return NextResponse.json({
-    keys: rows.map((row) => ({
-      provider: row.provider,
-      maskedKey: maskKey(decrypt(row.ciphertext)),
-      verified: row.verified,
-      updatedAt: row.updatedAt.toISOString(),
-    })),
+    keys: rows.map((row) => {
+      let maskedKey = '***';
+      let intact = true;
+      try { maskedKey = maskKey(decrypt(row.ciphertext)); } catch { intact = false; }
+      return { provider: row.provider, maskedKey, verified: intact && row.verified, updatedAt: row.updatedAt.toISOString() };
+    }),
   });
 }
 

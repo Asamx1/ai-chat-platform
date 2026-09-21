@@ -21,11 +21,11 @@ export async function GET() {
       const cloud = model.kind === 'cloud';
       const keySource = !cloud ? null : configured.has(model.providerId) ? 'db'
         : model.providerId === 'deepseek' && process.env.DEEPSEEK_API_KEY?.trim() ? 'env' : null;
-      const daily = usage.find((row) => row.modelId === model.modelKey);
+      const daily = usage.find((row) => row.modelId === model.id);
       const used = (daily?.tokensIn ?? 0) + (daily?.tokensOut ?? 0);
       const capabilities = model.capabilities as { label?: string | undefined };
       return {
-        id: model.modelKey,
+        id: model.id,
         label: capabilities?.label ?? model.modelKey,
         provider: model.providerId,
         kind: model.kind,
