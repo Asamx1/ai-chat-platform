@@ -1,4 +1,4 @@
 packages:
   - "apps/*"
-  - "packages/*" # includes packages/crypto (@aichat/crypto)
+  - "packages/*" # includes packages/crypto and packages/rag (@aichat/rag)
   - "experiments"

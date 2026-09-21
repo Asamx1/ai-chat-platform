@@ -1,0 +1,21 @@
+{
+  "name": "@aichat/rag",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./parse": "./src/parse.ts"
+  },
+  "scripts": {
+    "test": "vitest run --root ../.. packages/rag/test",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@aichat/db": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "vitest": "^3"
+  }
+}

@@ -62,6 +62,7 @@ model User {
   usageLogs     UsageLog[]
   apiKeys       ApiKey[]
   modelUsageDaily ModelUsageDaily[]
+  knowledgeBases KnowledgeBase[]
 }
 
 model Provider {
@@ -105,6 +106,7 @@ model Conversation {
   messages     Message[]
   runs         OrchestrationRun[]
   shareLinks   ShareLink[]
+  knowledgeBases ConversationKnowledgeBase[]
 
   @@index([ownerId, updatedAt])
 }
@@ -312,4 +314,68 @@ model ModelUsageDaily {
   tokensOut Int      @default(0)
 
   @@unique([userId, modelId, date])
+}
+
+
+enum DocumentStatus {
+  PENDING
+  PROCESSING
+  READY
+  FAILED
+}
+
+model KnowledgeBase {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  documents Document[]
+  conversations ConversationKnowledgeBase[]
+  @@index([userId, updatedAt])
+}
+
+model Document {
+  id String @id @default(cuid())
+  kbId String
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  name String
+  mime String
+  objectKey String @unique
+  model String
+  size Int
+  chunkCount Int @default(0)
+  status DocumentStatus @default(PENDING)
+  error String?
+  attempt Int @default(0)
+  leaseOwner String?
+  leaseExpiresAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  chunks Chunk[]
+  @@index([kbId, createdAt])
+  @@index([status, leaseExpiresAt])
+}
+
+model Chunk {
+  id String @id @default(cuid())
+  documentId String
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  ordinal Int
+  start Int
+  end Int
+  text String @db.Text
+  embedding Unsupported("vector(1024)")
+  createdAt DateTime @default(now())
+  @@unique([documentId, ordinal])
+}
+
+model ConversationKnowledgeBase {
+  conversationId String
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  kbId String
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  @@id([conversationId, kbId])
+  @@index([kbId])
 }

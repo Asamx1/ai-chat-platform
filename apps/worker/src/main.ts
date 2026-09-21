@@ -1,4 +1,5 @@
 import os from 'node:os';
+import { runKbWorker } from './kb-worker';
 import { claimNextRun } from './lease';
 import { processCollabRun } from './collab-runner';
 
@@ -8,6 +9,7 @@ const POLL_INTERVAL_MS = 1_000;
 
 let shuttingDown = false;
 
+process.on('SIGTERM', () => { shuttingDown = true; });
 process.on('SIGINT', () => {
   // 优雅退出：不打断当前 run，处理完再退。
   shuttingDown = true;
@@ -27,7 +29,7 @@ async function main(): Promise<void> {
   }
 }
 
-main()
+Promise.all([main(), runKbWorker(WORKER_ID, () => shuttingDown, WORKER_ONCE)])
   .then(() => process.exit(0))
   .catch((err) => {
     console.error('[worker] fatal:', err);
