@@ -55,6 +55,7 @@ export async function GET(request: Request, ctx: RouteContext): Promise<Response
       orderBy: { seq: 'asc' },
     });
     return Response.json({
+      run: { status: run.status },
       events: events.map((ev) => ({
         runId,
         seq: ev.seq,

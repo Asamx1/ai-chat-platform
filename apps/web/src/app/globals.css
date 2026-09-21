@@ -1045,3 +1045,40 @@ body {
   font-size: 12px;
   line-height: 1.5;
 }
+
+/* ── Day2 admin：复用设置页令牌与 data-table 表格布局 ── */
+.admin-page { max-width: 1180px; margin: 0 auto; padding: 32px 16px; display: grid; gap: 24px; }
+.admin-card { min-width: 0; padding: 24px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel); }
+.admin-card h2 { margin: 0 0 16px; font-size: 18px; overflow-wrap: anywhere; }
+.admin-toolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin: 12px 0; }
+.admin-toolbar label { display: grid; gap: 6px; }
+.admin-card input:not([type=checkbox]), .admin-card select { max-width: 100%; min-height: 38px; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; }
+.admin-card input[type=checkbox] { accent-color: var(--accent); width: 20px; height: 20px; }
+.admin-card :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.admin-table-wrap { overflow-x: auto; }
+.admin-page .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+.admin-page .data-table th, .admin-page .data-table td { padding: 12px; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+.admin-page .data-table th { color: var(--text-dim); font-weight: 500; }
+.admin-page .data-table small { display: block; color: var(--text-dim); margin-top: 4px; }
+.admin-error { color: #f87171; }
+.admin-hint { color: var(--text-dim); line-height: 1.6; }
+
+/* ── Day2 progress：事件驱动阶段与参与者、权威用量快照 ── */
+.progress-shell { padding: 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; }
+.progress-shell h2 { margin: 0; font-size: 16px; }
+.progress-stages { display: flex; gap: 6px; padding: 0; list-style: none; overflow-x: auto; }
+.progress-stage { flex: 1; min-width: 58px; padding: 8px 4px; text-align: center; color: var(--text-dim); border-bottom: 3px solid var(--border); }
+.progress-stage.is-visited { border-color: var(--text-dim); }
+.progress-stage.is-current { color: var(--text); border-color: var(--accent); background: var(--bubble); }
+.progress-participants { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.progress-participant { padding: 10px; border: 1px solid var(--border); border-radius: 8px; display: grid; gap: 6px; overflow-wrap: anywhere; }
+.progress-warning { color: #fbbf24; }
+.progress-hint, .progress-usage { font-size: 12px; color: var(--text-dim); overflow-wrap: anywhere; }
+.collab-side { width: min(440px, 40vw); flex-shrink: 0; padding: 12px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; border-left: 1px solid var(--border); }
+.topbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+@media (max-width: 760px) {
+  .app-shell:has(.collab-side) { flex-wrap: wrap; overflow-y: auto; }
+  .app-shell:has(.collab-side) .chat-main { min-height: 65dvh; }
+  .collab-side { width: 100%; max-height: 70dvh; border-left: 0; border-top: 1px solid var(--border); }
+  .admin-card { padding: 16px; }
+}
