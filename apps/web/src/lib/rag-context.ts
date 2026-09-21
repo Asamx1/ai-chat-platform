@@ -69,7 +69,8 @@ export function injectContext(messages: ChatMessage[], hits: RagHit[], capabilit
   }
   const selected = topHits(hits);
   while (selected.length) {
-    const context: ChatMessage = { role: 'user', content: `RAG_DATA\n${JSON.stringify(selected)}\nEND_RAG_DATA` };
+    const nonce = globalThis.crypto.randomUUID().replaceAll("-", "");
+    const context: ChatMessage = { role: 'user', content: `RAG_DATA_${nonce}\n${JSON.stringify(selected)}\nEND_RAG_DATA_${nonce}` };
     // Preserve original system prompts and history; the original question remains last.
     const injected = [...messages.filter(message => message.role === 'system'), instruction,
       ...messages.filter(message => message.role !== 'system').slice(0, -1), context,
