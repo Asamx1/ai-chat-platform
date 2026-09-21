@@ -7,6 +7,8 @@ import {
 } from '@aichat/db';
 import { OllamaProvider, OpenAICompatibleProvider, createResolver } from '@aichat/providers';
 import type { ProviderAdapter } from '@aichat/providers';
+import { injectContext, retrieveContext, revalidateContext } from './rag-context';
+import type { RagSnapshot } from './rag-context';
 
 const resolver = createResolver(prisma);
 
@@ -109,6 +111,11 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
 
   const resolved = providerFactory ? undefined : await resolver.resolve(userId, modelKey);
   const meta = resolved?.degraded ? { degraded: resolved.degraded } : undefined;
+  const rag = await retrieveContext(userId, conversationId, content);
+  const degradationReasons = [
+    ...(meta?.degraded ? [meta.degraded.reason] : []),
+    ...(rag.status === 'RAG_UNAVAILABLE' ? ['RAG_UNAVAILABLE'] : []),
+  ];
   const userMessage = await createMessage(prisma, conversationId, content);
 
   let run;
@@ -119,8 +126,8 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
         ownerId: userId,
         // attempt=0 的 RUNNING 专属 inline；worker 只恢复已经领取过的 run。
         status: useWorker ? 'PENDING' : 'RUNNING',
-        degraded: !!meta?.degraded,
-        ...(meta?.degraded ? { degradationReasons: [meta.degraded.reason] } : {}),
+        degraded: degradationReasons.length > 0,
+        ...(degradationReasons.length ? { degradationReasons } : {}),
         idempotencyKey,
         participantSnapshots: {
           create: {
@@ -131,6 +138,7 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
         configSnapshot: {
           modelKey,
           content,
+          rag,
           ...(meta ? { meta } : {}),
           contentLength: content.length,
           userMessageId: userMessage.id,
@@ -161,7 +169,7 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
   // 过渡期：EXECUTION_MODE!=worker 时 setImmediate 内联执行保持 M1 行为。
   if (!useWorker) {
     setImmediate(() => {
-      executeRunInline(runId, conversationId, content, modelKey, userId).catch(() => {});
+      executeRunInline(runId, conversationId, content, modelKey, userId, rag).catch(() => {});
     });
   }
   return { conversationId, messageId: userMessage.id, runId, ...(meta ? { meta } : {}) };
@@ -174,6 +182,7 @@ async function executeRunInline(
   content: string,
   modelKey: string,
   userId: string,
+  rag: RagSnapshot,
 ): Promise<void> {
   // 保险：若 worker 已抢先领走该 run（leaseOwner 非空），inline 路径直接退出，避免双执行。
   const leased = await prisma.orchestrationRun.findUnique({
@@ -201,13 +210,21 @@ async function executeRunInline(
         ? new OllamaProvider({ baseUrl: resolved!.baseUrl, model: resolved!.model })
         : new OpenAICompatibleProvider({ baseUrl: resolved!.baseUrl, apiKey: resolved!.apiKey, model: resolved!.model });
     if (resolved?.degraded) await appendEvent(runId, 'run.degraded', { degraded: resolved.degraded });
+    const currentRag = await revalidateContext(userId, conversationId, rag);
+    if (currentRag.status === 'RAG_UNAVAILABLE') {
+      await appendEvent(runId, 'run.degraded', { reason: 'RAG_UNAVAILABLE' });
+      await prisma.orchestrationRun.update({ where: { id: runId }, data: {
+        degraded: true, degradationReasons: [...(resolved?.degraded ? [resolved.degraded.reason] : []), 'RAG_UNAVAILABLE'],
+      } });
+    }
+    const prompt = injectContext([{ role: 'user', content }], currentRag.hits, provider.capabilities());
     let text = '';
     let finishReason = 'stop';
     let tokensIn = 0;
     let tokensOut = 0;
     for await (const ev of provider.streamChat(
-      [{ role: 'user', content }],
-      { signal: controller.signal },
+      prompt.messages,
+      { signal: controller.signal, maxTokens: prompt.maxTokens },
     )) {
       if (ev.type === 'text-delta') {
         text += ev.delta;
@@ -256,7 +273,8 @@ async function executeRunInline(
       await tx.orchestrationRun.update({
         where: { id: runId },
         data: { status: 'SUCCEEDED', ...(resolved?.degraded ? {
-          degraded: true, degradationReasons: [resolved.degraded.reason],
+          degraded: true, degradationReasons: [resolved.degraded.reason,
+            ...(currentRag.status === 'RAG_UNAVAILABLE' ? ['RAG_UNAVAILABLE'] : [])],
         } : {}) },
       });
     });
