@@ -29,8 +29,8 @@ export interface RunnerDeps {
 export async function resolveRunProvider(userId: string, modelId: string) {
   const resolved = await resolver.resolve(userId, modelId);
   const provider = resolved.adapter === 'ollama'
-    ? new OllamaProvider({ baseUrl: resolved.baseUrl, model: resolved.modelId })
-    : new OpenAICompatibleProvider({ baseUrl: resolved.baseUrl, apiKey: resolved.apiKey, model: resolved.modelId });
+    ? new OllamaProvider({ baseUrl: resolved.baseUrl, model: resolved.model })
+    : new OpenAICompatibleProvider({ baseUrl: resolved.baseUrl, apiKey: resolved.apiKey, model: resolved.model });
   return { provider, modelKey: resolved.modelId, degraded: resolved.degraded };
 }
 

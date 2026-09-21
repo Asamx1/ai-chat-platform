@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createResolver, incrementDailyUsage, type RegistryModel, type ResolverStore } from '../src/resolver';
 
 const cloud: RegistryModel = {
-  id: 'deepseek-chat', modelKey: 'deepseek-chat', providerId: 'deepseek', kind: 'cloud',
+  id: 'registry-deepseek-id', modelKey: 'deepseek-chat', providerId: 'deepseek', kind: 'cloud',
   baseUrl: 'https://registry.example/v1', adapter: 'openai-compatible', isDefault: false,
   provider: { kind: 'openai-compatible', baseUrl: 'https://provider.example/v1' },
 };
@@ -49,9 +49,31 @@ describe('provider resolver', () => {
     expect(result.degraded).toEqual(tokens > 200_000 ? { reason: 'QUOTA_EXCEEDED', from: cloud.id } : undefined);
     expect(db.modelUsageDaily.findUnique).toHaveBeenCalledWith({ where: { userId_modelId_date: { userId: 'u', modelId: cloud.id, date: new Date('2026-09-20T00:00:00Z') } } });
   });
+  it.each([local, cloud])('resolves legacy modelKey $modelKey to the registry id', async row => {
+    const { resolver, db } = setup({ DEEPSEEK_API_KEY: 'key' });
+    db.modelRegistry.findUnique.mockResolvedValue(null);
+    db.modelRegistry.findFirst.mockResolvedValue(row);
+    expect(await resolver.resolve('u', row.modelKey)).toMatchObject({ modelId: row.id, model: row.modelKey });
+    expect(db.modelRegistry.findFirst).toHaveBeenCalledWith({
+      where: { modelKey: row.modelKey, provider: { enabled: true } },
+      include: { provider: true }, orderBy: { updatedAt: 'desc' },
+    });
+    if (row.kind === 'cloud') {
+      expect(db.modelUsageDaily.findUnique).toHaveBeenCalledWith({ where: {
+        userId_modelId_date: { userId: 'u', modelId: row.id, date: new Date('2026-09-20') },
+      } });
+    }
+  });
+  it('prefers an exact registry id over a colliding modelKey', async () => {
+    const { resolver, db } = setup();
+    db.modelRegistry.findUnique.mockResolvedValue(local);
+    expect(await resolver.resolve('u', local.id)).toMatchObject({ modelId: local.id, model: local.modelKey });
+    expect(db.modelRegistry.findFirst).not.toHaveBeenCalled();
+  });
   it('reports unknown models as 400', async () => {
     const { resolver, db } = setup();
     db.modelRegistry.findUnique.mockResolvedValue(null);
+    db.modelRegistry.findFirst.mockResolvedValue(null);
     await expect(resolver.resolve('u', 'unknown')).rejects.toMatchObject({ status: 400, code: 'UNKNOWN_MODEL' });
     expect(db.apiKey.findUnique).not.toHaveBeenCalled();
   });

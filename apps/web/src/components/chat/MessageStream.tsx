@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { ChatMessage } from './types';
 
 const STATUS_LABEL: Record<string, string> = {
@@ -37,6 +37,7 @@ export default function MessageStream({
             {m.status && (
               <div className={`msg-status${m.status === 'failed' || m.status === 'error' ? ' failed' : ''}`}>
                 {STATUS_LABEL[m.status] ?? m.status}
+                {m.error && <span role="alert">：{m.error}</span>}
                 {onRetry && (m.status === 'failed' || m.status === 'error') && m.retryIdempotencyKey && (
                   <button
                     className="retry-btn"

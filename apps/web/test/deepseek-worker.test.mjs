@@ -8,7 +8,7 @@ let run, messages, participants, events, calls, daily, logs, transactions;
 beforeEach(() => {
   process.env.EXECUTION_MODE = 'worker';
   f.prompts = []; f.resolutions = []; delete f.resolve;
-  f.resolved = { adapter: 'openai-compatible', modelId: 'deepseek-chat', apiKey: 'secret', baseUrl: 'https://api.deepseek.com/v1' };
+  f.resolved = { adapter: 'openai-compatible', modelId: 'deepseek-chat', model: 'deepseek-chat', apiKey: 'secret', baseUrl: 'https://api.deepseek.com/v1' };
   messages = []; participants = []; events = []; calls = []; daily = []; logs = []; transactions = 0;
   run = { id: 'run-a', ownerId: 'user-a', conversationId: 'conversation-a', status: 'RUNNING', attempt: 1, configSnapshot: { modelKey: 'deepseek-chat', content: 'question' } };
   Object.assign(f.prisma, {
@@ -52,6 +52,7 @@ test('B1: sendChat persists content; worker resolves and streams that nonempty p
   assert.equal(run.configSnapshot.content, 'actual question'); assert.equal(run.status, 'PENDING'); assert.equal(result.meta, undefined);
   await processRun(result.runId, 'worker-a');
   assert.equal(f.prompts[0].messages[0].content, 'actual question');
+  assert.equal(f.prompts[0].options.model, 'deepseek-chat');
   assert.deepEqual(f.resolutions, [['user-a', 'deepseek-chat'], ['user-a', 'deepseek-chat']]);
   assert.equal(run.status, 'SUCCEEDED'); assert.equal(transactions, 1);
   assert.equal(calls[0].participantSnapshotId, 'snapshot-a'); assert.equal(daily[0].tokensIn, 11); assert.equal(daily[0].tokensOut, 7);
@@ -70,7 +71,7 @@ test('empty prompt fails run without resolver or upstream call', async () => {
   assert.ok(events.some(e => e.type === 'run.failed' && e.payload.error === 'EMPTY_PROMPT'));
 });
 test('degraded response metadata and worker usage identify the actual local model', async () => {
-  f.resolved = { adapter: 'ollama', baseUrl: 'http://localhost:11434', modelId: 'qwen3:0.6b', degraded: { reason: 'NO_KEY', from: 'deepseek-chat' } };
+  f.resolved = { adapter: 'ollama', baseUrl: 'http://localhost:11434', modelId: 'qwen3:0.6b', model: 'qwen3:0.6b', degraded: { reason: 'NO_KEY', from: 'deepseek-chat' } };
   const result = await sendChat({ userId: 'user-a', conversationId: 'conversation-a', content: 'question', modelKey: 'deepseek-chat', idempotencyKey: 'test-degrade' });
   assert.deepEqual(result.meta.degraded, f.resolved.degraded);
   await processRun(run.id, 'worker-a');

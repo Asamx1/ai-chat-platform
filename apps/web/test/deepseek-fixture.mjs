@@ -5,7 +5,7 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 export const fixture = globalThis.__deepseekFixture = {
   session: { user: { id: 'user-a' } }, prisma: {}, prompts: [], resolutions: [],
-  resolved: { adapter: 'openai-compatible', modelId: 'deepseek-chat', apiKey: 'secret', baseUrl: 'https://api.deepseek.com/v1' },
+  resolved: { adapter: 'openai-compatible', modelId: 'deepseek-chat', model: 'deepseek-chat', apiKey: 'secret', baseUrl: 'https://api.deepseek.com/v1' },
 };
 const sources = {
   'next/headers': 'export const headers = async () => new Headers();',
@@ -22,6 +22,7 @@ const sources = {
   '@aichat/providers': `const f = globalThis.__deepseekFixture;
     export const DAILY_CLOUD_TOKEN_LIMIT = 200000;
     export const resolver = { resolve: async (...args) => { f.resolutions.push(args); return f.resolve ? f.resolve(...args) : f.resolved; } };
+    export const createResolver = () => resolver;
     export class OllamaProvider {
       constructor(options) { this.options = options; }
       async *streamChat(messages) {

@@ -196,8 +196,8 @@ async function executeRunInline(
     const resolved = providerFactory ? undefined : await resolver.resolve(userId, modelKey);
     const provider = providerFactory ? providerFactory(modelKey)
       : resolved!.adapter === 'ollama'
-        ? new OllamaProvider({ baseUrl: resolved!.baseUrl, model: resolved!.modelId })
-        : new OpenAICompatibleProvider({ baseUrl: resolved!.baseUrl, apiKey: resolved!.apiKey, model: resolved!.modelId });
+        ? new OllamaProvider({ baseUrl: resolved!.baseUrl, model: resolved!.model })
+        : new OpenAICompatibleProvider({ baseUrl: resolved!.baseUrl, apiKey: resolved!.apiKey, model: resolved!.model });
     if (resolved?.degraded) await appendEvent(runId, 'run.degraded', { degraded: resolved.degraded });
     let text = '';
     let finishReason = 'stop';

@@ -29,9 +29,9 @@ export interface ResolverStore extends UsageStore {
   modelRegistry: {
     findUnique(args: { where: { id: string }; include: { provider: true } }): Promise<RegistryModel | null>;
     findFirst(args: {
-      where: { kind: string; provider: { kind: string }; isDefault?: boolean; modelKey?: string };
+      where: { kind?: string; provider: { kind?: string; enabled?: boolean }; isDefault?: boolean; modelKey?: string };
       include: { provider: true };
-      orderBy: { id: 'asc' };
+      orderBy: { id: 'asc' } | { updatedAt: 'desc' };
     }): Promise<RegistryModel | null>;
   };
   apiKey: {
@@ -41,7 +41,7 @@ export interface ResolverStore extends UsageStore {
 
 export class ModelResolutionError extends Error {
   constructor(public readonly code: 'UNKNOWN_MODEL' | 'NO_LOCAL_MODEL', public readonly status: number) {
-    super(code);
+    super(code === 'UNKNOWN_MODEL' ? '所选模型不存在或不可用，请重新选择模型。' : '云端模型暂不可用，且没有可用的本地回退模型，请检查模型配置。');
     this.name = 'ModelResolutionError';
   }
 }
@@ -116,7 +116,12 @@ export function createResolver(
 
   return {
     async resolve(userId: string, modelId: string): Promise<ResolvedModel> {
-      const row = await db.modelRegistry.findUnique({ where: { id: modelId }, include: { provider: true } });
+      // Prefer the registry id; legacy clients and snapshots may still send modelKey.
+      const row = await db.modelRegistry.findUnique({ where: { id: modelId }, include: { provider: true } })
+        ?? await db.modelRegistry.findFirst({
+          where: { modelKey: modelId, provider: { enabled: true } },
+          include: { provider: true }, orderBy: { updatedAt: 'desc' },
+        });
       if (!row) throw new ModelResolutionError('UNKNOWN_MODEL', 400);
       if (row.kind !== 'cloud') return result(row);
       const stored = await db.apiKey.findUnique({ where: { userId_provider: { userId, provider: row.providerId } } });
@@ -131,7 +136,7 @@ export function createResolver(
       }
       if (!key) return fallback(modelId, 'NO_KEY');
       const usage = await db.modelUsageDaily.findUnique({
-        where: { userId_modelId_date: { userId, modelId, date: usageDate(now()) } },
+        where: { userId_modelId_date: { userId, modelId: row.id, date: usageDate(now()) } },
       });
       if (usage && usage.tokensIn + usage.tokensOut > DAILY_CLOUD_TOKEN_LIMIT) {
         return fallback(modelId, 'QUOTA_EXCEEDED');

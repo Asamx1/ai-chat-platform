@@ -10,14 +10,9 @@ import SeatStatus from '@/components/collab/SeatStatus';
 import RunTimeline from '@/components/runs/RunTimeline';
 import type { ChatMessage, MessageStatus } from '@/components/chat/types';
 
-/** SSE data JSON 事件（与冻结契约对应） */
-interface RunEvent {
-  type: string;
-  delta?: string;
-  error?: { message?: string };
-}
+import { applyRunEvent, sendFailure, type RunEvent } from './chat-events';
 
-const TERMINAL_TYPES = new Set(['run.succeeded', 'run.failed', 'run.cancelled']);
+const TERMINAL_TYPES = new Set(['run.succeeded', 'run.failed', 'run.cancelled', 'error']);
 
 /** sessionStorage 缓存 key：conv:{id} */
 const cacheKey = (convId: string) => `conv:${convId}`;
@@ -41,6 +36,7 @@ export default function ChatApp() {
   const [notice, setNotice] = useState<string | null>(null);
   // 协作运行侧栏：非空时渲染 SeatStatus
   const [collabRunId, setCollabRunId] = useState<string | null>(null);
+  const newConversationRef = useRef<string | null>(null);
   const esRef = useRef<EventSource | null>(null);
   // 当前流式 assistant 消息 id 与待重试的 idempotencyKey
   const assistantIdRef = useRef<string | null>(null);
@@ -57,6 +53,12 @@ export default function ChatApp() {
   useEffect(() => {
     if (!activeId) {
       setMessages([]);
+      return;
+    }
+    // The send callback already owns the new conversation's live messages.
+    // A history request here can overwrite its assistant bubble before completion.
+    if (newConversationRef.current === activeId) {
+      newConversationRef.current = null;
       return;
     }
     setMessages(loadCache(activeId));
@@ -109,7 +111,7 @@ export default function ChatApp() {
             idempotencyKey,
           }),
         });
-        if (!res.ok) throw new Error(`send HTTP ${res.status}`);
+        if (!res.ok) throw new Error(await sendFailure(res));
         const { conversationId, runId: rid } = (await res.json()) as {
           conversationId: string;
           messageId?: string;
@@ -117,6 +119,7 @@ export default function ChatApp() {
         };
         convId = conversationId;
         if (!activeId) {
+          newConversationRef.current = conversationId;
           setActiveId(conversationId);
           setListRefresh((k) => k + 1);
         }
@@ -151,29 +154,8 @@ export default function ChatApp() {
           }
           setMessages((prev) => {
             const next = prev.map((m) => {
-              if (m.id !== assistantIdRef.current) return m;
-              switch (evt.type) {
-                case 'provider.delta':
-                  return { ...m, content: m.content + (evt.delta ?? '') };
-                case 'run.succeeded':
-                  return { ...m, status: 'succeeded' as MessageStatus, retryIdempotencyKey: undefined };
-                case 'run.failed':
-                  return {
-                    ...m,
-                    status: 'failed' as MessageStatus,
-                    retryIdempotencyKey: idempotencyKey,
-                  };
-                case 'run.cancelled':
-                  return { ...m, status: 'cancelled' as MessageStatus };
-                case 'error':
-                  return {
-                    ...m,
-                    status: 'error' as MessageStatus,
-                    retryIdempotencyKey: idempotencyKey,
-                  };
-                default:
-                  return m;
-              }
+              if (m.id !== assistantId) return m;
+              return applyRunEvent(m, evt, idempotencyKey);
             });
             persist(conversationId as string, next);
             return next;
@@ -183,9 +165,13 @@ export default function ChatApp() {
             setSending(false);
           }
         };
+        es.onopen = () => setNotice(null);
         es.onerror = () => {
-          // 浏览器会自动重连；若已达终态则 closeStream 已执行。此处仅兜底恢复按钮状态
-          if (!esRef.current) setSending(false);
+          setNotice('消息流连接中断，正在尝试重连；可停止后重试。');
+          if (es.readyState === EventSource.CLOSED) {
+            closeStream();
+            setSending(false);
+          }
         };
       } catch (e) {
         setSending(false);
@@ -246,7 +232,7 @@ export default function ChatApp() {
             <ModelPicker value={modelKey} onChange={setModelKey} disabled={sending} />
           </div>
         </div>
-        {notice && <div className="msg-status failed" style={{ padding: '8px 16px' }}>{notice}</div>}
+        {notice && <div role="alert" className="msg-status failed" style={{ padding: '8px 16px' }}>{notice}</div>}
         <MessageStream messages={messages} onRetry={handleRetry} />
         <Composer
           disabled={sending}

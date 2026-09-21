@@ -1,6 +1,7 @@
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { ModelResolutionError } from '@aichat/providers';
 import { auth } from '@/lib/auth';
 import { sendChat, ChatNotFoundError } from '@/lib/chat-service';
 
@@ -44,6 +45,9 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(result);
   } catch (err) {
+    if (err instanceof ModelResolutionError) {
+      return NextResponse.json({ error: err.message, code: err.code }, { status: err.status });
+    }
     if (err instanceof ChatNotFoundError) {
       return NextResponse.json({ error: err.message }, { status: 404 });
     }
