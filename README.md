@@ -56,6 +56,25 @@ node tests/smoke-db.mjs                               # DB 连通
 node tests/m1-acceptance.mjs 10                       # SSE/隔离黄金路径
 ```
 
+## Windows 演示启动器（生产模式，端口 3100）
+
+完成上述依赖安装、数据库迁移与种子初始化后，可运行：
+
+```powershell
+powershell -File infra/launcher/start-demo.ps1
+powershell -File infra/launcher/check-demo.ps1
+powershell -File infra/launcher/stop-demo.ps1 -IncludeContainers
+```
+
+启动器加载根 `.env`，仅在进程环境覆盖 `BETTER_AUTH_URL=http://127.0.0.1:3100`、
+`AICHAT_LOCAL_SMOKE=1`、`AICHAT_SECURE_COOKIES=0`，构建与运行均继承这些设置，不修改 `.env`。
+当 `apps/web/.next/BUILD_ID` 不存在，或 Web、`packages/`、根环境/依赖/编译配置、启动脚本
+比构建新时，在 `apps/web` 执行 `pnpm exec next build`；否则复用构建。
+源码扫描跳过依赖、缓存与产物目录。删除文件或保留旧时间戳的变更后，可删除 `BUILD_ID` 强制重建。
+构建失败会回滚本轮启动的服务；成功后执行 `pnpm exec next start -p 3100`，
+worker 仍执行 `pnpm exec tsx src/main.ts`。停止脚本通过 PID 进程树及 3100 端口兜底停止服务，
+检查脚本继续以 `http://127.0.0.1:3100` 返回 HTTP 200 判断 Web 就绪。
+
 ## 演示路径（答辩 5 分钟）
 
 1. 登录 → 单聊（流式/停止/刷新续传）

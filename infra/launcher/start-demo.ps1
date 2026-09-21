@@ -80,6 +80,37 @@ function Rollback {
     }
 }
 
+# 构建输入：Web、全部 workspace 包，以及根环境/依赖/编译配置。
+# 逐层遍历，避免进入 node_modules/.next 等产物目录（PS 5.1 兼容）。
+function Get-WebBuildInputs {
+    param([string]$Path)
+    foreach ($item in (Get-ChildItem -LiteralPath $Path -Force)) {
+        if ($item.PSIsContainer) {
+            if ($item.Name -notin @('node_modules', '.next', '.git', 'dist', 'coverage', '.turbo')) {
+                Get-WebBuildInputs -Path $item.FullName
+            }
+        } elseif ($item.Name -ne 'next-env.d.ts' -and $item.Extension -ne '.tsbuildinfo') {
+            $item
+        }
+    }
+}
+
+function Test-WebBuildRequired {
+    param([string]$Root, [string]$BuildId)
+    if (-not (Test-Path -LiteralPath $BuildId -PathType Leaf)) { return $true }
+    $builtAt = (Get-Item -LiteralPath $BuildId).LastWriteTimeUtc
+    $inputs = @(
+        Get-WebBuildInputs -Path (Join-Path $Root 'apps\web')
+        Get-WebBuildInputs -Path (Join-Path $Root 'packages')
+        Get-ChildItem -LiteralPath $Root -File -Force | Where-Object {
+            $_.Name -like '.env*' -or $_.Name -like 'tsconfig*.json' -or
+            $_.Name -in @('package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', '.npmrc')
+        }
+        Get-Item -LiteralPath $PSCommandPath
+    )
+    return [bool]($inputs | Where-Object { $_.LastWriteTimeUtc -gt $builtAt } | Select-Object -First 1)
+}
+
 # ---------- 启停互斥 ----------
 $script:LockFile = Join-Path $d 'starting.lock'
 if (Test-Path $script:LockFile) {
@@ -104,9 +135,10 @@ try {
     if ([string]::IsNullOrWhiteSpace($env:BETTER_AUTH_SECRET)) {
         Fail 'ENV' 'BETTER_AUTH_SECRET 为空：请在 .env 设置 32+ 字节随机串（openssl rand -base64 32）'
     }
+    $env:BETTER_AUTH_URL = 'http://127.0.0.1:3100'
     $env:AICHAT_LOCAL_SMOKE = '1'
     $env:AICHAT_SECURE_COOKIES = '0'
-    Write-Log 'OK' 'ENV' '.env 已加载（BETTER_AUTH_SECRET 非空；强制 AICHAT_LOCAL_SMOKE=1 / AICHAT_SECURE_COOKIES=0）'
+    Write-Log 'OK' 'ENV' '.env 已加载（BETTER_AUTH_SECRET 非空；进程级 BETTER_AUTH_URL=http://127.0.0.1:3100 / AICHAT_LOCAL_SMOKE=1 / AICHAT_SECURE_COOKIES=0）'
 
     # ---------- S0: Docker daemon ----------
     Write-Log 'OK' 'S0' '检查 Docker daemon...'
@@ -187,8 +219,37 @@ try {
     Get-NetTCPConnection -LocalPort 3100 -ErrorAction SilentlyContinue |
         Where-Object { $_.State -eq 'Listen' } |
         ForEach-Object { taskkill /PID $_.OwningProcess /T /F 2>$null | Out-Null }
+    $webRoot = Join-Path $r 'apps\web'
+    $buildId = Join-Path $webRoot '.next\BUILD_ID'
+    if (Test-WebBuildRequired -Root $r -BuildId $buildId) {
+        Write-Log 'WAIT' 'S3' '生产构建：BUILD_ID 缺失或构建输入较新，运行 next build...'
+        # 先失效旧标记，失败构建不可在下次启动时被复用。
+        Remove-Item -LiteralPath $buildId -Force -ErrorAction SilentlyContinue
+        $buildStartedAt = [DateTime]::UtcNow
+        $previousEAP = $ErrorActionPreference
+        Push-Location $webRoot
+        try {
+            # next 的 stderr 也可能是警告；以原生命令退出码判定失败。
+            $ErrorActionPreference = 'Continue'
+            & $env:ComSpec /d /c 'pnpm exec next build' 2>&1 | ForEach-Object { Write-Host "  $_" }
+            $buildExitCode = $LASTEXITCODE
+        } finally {
+            $ErrorActionPreference = $previousEAP
+            Pop-Location
+        }
+        if ($buildExitCode -ne 0 -or -not (Test-Path -LiteralPath $buildId -PathType Leaf)) {
+            Remove-Item -LiteralPath $buildId -Force -ErrorAction SilentlyContinue
+            Fail 'S3' "Web 生产构建失败（exit=$buildExitCode），未启动 web/worker"
+        }
+        # 使用开始时间，构建期间修改的源码会在下一次启动触发重建。
+        (Get-Item -LiteralPath $buildId).LastWriteTimeUtc = $buildStartedAt
+        Write-Log 'OK' 'S3' 'Web 生产构建完成'
+    } else {
+        Write-Log 'OK' 'S3' 'Web 构建输入未更新，复用 .next/BUILD_ID'
+    }
+    # 子进程继承上述本地认证变量，确保 HTTP 登录 cookie 可用。
     $web = Start-Process -FilePath $env:ComSpec -ArgumentList '/d', '/c', 'pnpm exec next start -p 3100' `
-        -WorkingDirectory (Join-Path $r 'apps\web') -WindowStyle Hidden -PassThru
+        -WorkingDirectory $webRoot -WindowStyle Hidden -PassThru
     $script:Started.web = $true
     Set-Content -Path (Join-Path $d 'web.pid') -Value $web.Id -Encoding ASCII
     [IO.File]::WriteAllText((Join-Path $d 'web.pid.time'), $web.StartTime.ToString('o'))
@@ -222,6 +283,9 @@ try {
     Write-Log 'OK' 'done' '启动完成'
     if ($Json) { Write-Output '{ "step": "done", "state": "ok" }' }
     exit 0
+}
+catch {
+    Fail 'launcher' "异常: $($_.Exception.Message)"
 }
 finally {
     if ($script:LockFile -and (Test-Path $script:LockFile)) { Remove-Item $script:LockFile -Force -ErrorAction SilentlyContinue }

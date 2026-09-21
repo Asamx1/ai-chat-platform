@@ -56,7 +56,7 @@ function Stop-ByPidFile {
         Remove-Item $pidFile, $timeFile -Force -ErrorAction SilentlyContinue
         return
     }
-    # cmd→node 进程树：taskkill /T /F 兜底 + Stop-Process
+    # cmd→pnpm→next start/tsx 的 node 进程树：taskkill /T /F + Stop-Process
     taskkill /PID $p /T /F 2>$null | Out-Null
     try { Stop-Process -Id $p -Force -ErrorAction SilentlyContinue } catch {}
     Remove-Item $pidFile, $timeFile -Force -ErrorAction SilentlyContinue

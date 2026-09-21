@@ -76,7 +76,7 @@ try {
     Add-Check 'ollama-loaded' '三模型驻留内存' 'fail' '无法访问 api/ps：确认 Ollama 在线'
 }
 
-# ⑤ Web 3100
+# ⑤ 生产 Web 3100：HTTP 200 检查不依赖 dev server
 try {
     $resp = Invoke-WebRequest -Uri 'http://127.0.0.1:3100' -UseBasicParsing -TimeoutSec 5
     if ($resp.StatusCode -eq 200) {
@@ -85,7 +85,7 @@ try {
         Add-Check 'web' 'Web :3100 HTTP 200' 'fail' ("状态码 " + $resp.StatusCode + "，期望 200")
     }
 } catch {
-    Add-Check 'web' 'Web :3100 HTTP 200' 'fail' '3100 无响应：运行 start-demo.ps1，或手动在 apps/web 下 pnpm exec next start -p 3100'
+    Add-Check 'web' 'Web :3100 HTTP 200' 'fail' '3100 无响应：运行 start-demo.ps1（自动生产构建并携带本地认证环境启动 next start -p 3100）'
 }
 
 # ⑥ Worker 存活（pid 文件 + Get-Process；StartTime 不匹配只 WARN）
