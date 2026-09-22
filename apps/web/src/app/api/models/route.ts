@@ -25,7 +25,8 @@ export async function GET() {
       const used = (daily?.tokensIn ?? 0) + (daily?.tokensOut ?? 0);
       const capabilities = model.capabilities as { label?: string | undefined };
       return {
-        id: model.id,
+        // id 必须是 modelKey:ModelPicker 与 /api/chat/send BodySchema 都以 modelKey 为准
+        id: model.modelKey,
         label: capabilities?.label ?? model.modelKey,
         provider: model.providerId,
         kind: model.kind,

@@ -59,11 +59,19 @@ export default function ModelPicker({
   useEffect(() => {
     let cancelled = false;
     fetchModelOptions().then((models) => {
-      if (!cancelled && models.length > 0) setOptions(models);
+      if (cancelled || models.length === 0) return;
+      setOptions(models);
+      // 存储值不在可用列表(如历史遗留/未注册模型)时,自动切到第一个可用模型
+      if (!models.includes(value)) {
+        const first = models[0]!;
+        localStorage.setItem(STORAGE_KEY, first);
+        onChange(first);
+      }
     });
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
