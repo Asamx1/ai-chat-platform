@@ -109,10 +109,14 @@ export async function processCollabRun(
 
   const invocations = new Map<string, number>();
 
-  const callModel: CallModel = async (seat, prompt, signal) => {
-    const messages: ChatMessage[] = [];
-    if (seat.systemPrompt) messages.push({ role: 'system', content: seat.systemPrompt });
-    messages.push({ role: 'user', content: prompt });
+  const callModel: CallModel = async (seat, messages, callOpts) => {
+    // Orchestrator strategies pass a full messages array; seat system prompts may
+    // already be embedded as the leading system message — dedupe defensively.
+    const chatMessages: ChatMessage[] =
+      messages.length > 0 ? messages : seat.systemPrompt
+        ? [{ role: 'system', content: seat.systemPrompt }, { role: 'user', content: '' }]
+        : [{ role: 'user', content: '' }];
+    const prompt = chatMessages.filter((m) => m.role !== 'system').map((m) => m.content).join('\n');
 
     let text = '';
     let tokens = 0;
@@ -130,7 +134,7 @@ export async function processCollabRun(
         degraded: true, degradationReasons: [resolved.degraded.reason],
       } });
     }
-    for await (const ev of provider.streamChat(messages, signal ? { signal } : undefined)) {
+    for await (const ev of provider.streamChat(chatMessages, callOpts?.signal ? { signal: callOpts.signal } : undefined)) {
       if (ev.type === 'text-delta') {
         text += ev.delta;
       } else if (ev.type === 'usage') {

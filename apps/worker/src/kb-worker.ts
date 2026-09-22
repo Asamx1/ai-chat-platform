@@ -1,4 +1,5 @@
 import { createRequire } from 'node:module';
+import * as minio from 'minio';
 import { Worker } from 'node:worker_threads';
 import { prisma } from '@aichat/db';
 import { chunkDocument, embed, embeddingModel, parse, storePlan, PermanentRagError, LeaseLostError, MAX_FILE_BYTES, type ChunkResult, type StrategyName } from '@aichat/rag';
@@ -72,7 +73,7 @@ function parsePdf(data: Uint8Array, signal: AbortSignal): Promise<string> {
 
 async function readObject(job: Job, signal: AbortSignal): Promise<Uint8Array> {
   if (job.size > MAX_FILE_BYTES || job.size < 0) throw new PermanentRagError('FILE_TOO_LARGE');
-  const { Client } = await import('minio');
+  const Client = minio.Client;
   const { S3_ENDPOINT, S3_BUCKET, MINIO_ROOT_USER, MINIO_ROOT_PASSWORD } = process.env;
   if (!S3_ENDPOINT || !S3_BUCKET || !MINIO_ROOT_USER || !MINIO_ROOT_PASSWORD) throw new PermanentRagError('STORAGE_UNAVAILABLE');
   const s3url = new URL(S3_ENDPOINT);
@@ -82,7 +83,7 @@ async function readObject(job: Job, signal: AbortSignal): Promise<Uint8Array> {
     accessKey: MINIO_ROOT_USER,
     secretKey: MINIO_ROOT_PASSWORD,
   });
-  client.setRequestOptions({ timeout: 60_000 });
+  // minio RequestOptions no longer accepts `timeout`; rely on the lease heartbeat for stuck reads.
   const stream = await client.getObject(S3_BUCKET, job.objectKey);
   const abort = (): void => { stream.destroy(new Error('OBJECT_READ_ABORTED')); };
   signal.addEventListener('abort', abort, { once: true });
@@ -132,15 +133,22 @@ export async function processDocument(job: Job, worker: string): Promise<void> {
 }
 
 export async function runKbWorker(worker: string, stopping: () => boolean, once = false): Promise<void> {
-  // Probe failures affect only this independent loop; never block chat startup.
-  let probed = false;
-  while (!stopping()) {
-    try {
-      if (!probed) { await embed(['probe'], AbortSignal.timeout(60_000)); probed = true; }
-      const job = await claimDocument(worker);
-      if (job) await processDocument(job, worker);
-    } catch (error) { console.error('[kb-worker]', error); }
-    if (once || stopping()) break;
-    await new Promise(resolve => setTimeout(resolve, 1_000));
-  }
+  const configured = Number(process.env.KB_CONCURRENCY);
+  const concurrency = Number.isSafeInteger(configured) && configured > 0 ? Math.min(configured, 8) : 2;
+  const loop = async (owner: string): Promise<void> => {
+    // Probe and document failures affect only this independent loop.
+    let probed = false;
+    while (!stopping()) {
+      let processed = false;
+      try {
+        if (!probed) { await embed(['probe'], AbortSignal.timeout(60_000)); probed = true; }
+        if (stopping()) break;
+        const job = await claimDocument(owner);
+        if (job) { await processDocument(job, owner); processed = true; }
+      } catch (error: unknown) { console.error('[kb-worker]', error); }
+      if (once || stopping()) break;
+      if (!processed) await new Promise(resolve => setTimeout(resolve, 1_000));
+    }
+  };
+  await Promise.all(Array.from({ length: concurrency }, (_, index) => loop(`${worker}:kb:${index}`)));
 }
