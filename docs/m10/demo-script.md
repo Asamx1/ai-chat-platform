@@ -2,6 +2,17 @@
 
 语料：答辩演示库（8 篇《智能问答系统设计》中文文档，structure 策略）。
 加载：`pnpm exec tsx experiments/demo-seed.mts`（幂等，重跑即重置）。
+
+## 演示前 30 分钟检查清单（必做）
+
+1. `docker ps` 确认 aichat-postgres / aichat-minio 均 Up；不 Up 则 `docker start aichat-postgres aichat-minio`。
+2. 重跑一次 `npx tsx experiments/demo-seed.mts`（幂等：MinIO 对象丢失/账号漂移都能自愈）。
+3. 起服务：`apps/web` 用 `PORT=3001 pnpm dev`,`apps/worker` 用 `source <全量env> && KB_CONCURRENCY=4 pnpm dev`(tmux + nohup 防 WSL 重启）。
+4. 浏览器打开 **http://localhost:3001** 登录 demo@example.com / demo12345。
+
+> ⚠️ 端口对照（防现场混淆）:**本系统 Web = 3001**;`localhost:3000` 被同机另一项目 LibreChat 占用，页面若出现陌生界面/乱码即开错端口。
+> 本地实际部署：PG=5433、MinIO=9000、Ollama=11434、Web=3001、**无 Redis**。
+> Q5 预期答案中的 5432/6379/3000 是**语料文档内描述的目标架构**，按语料念即可，与本地部署端口不冲突。
 叙事线：简单事实查找 → 结构/引用展示 → 跨节综合 → 对比与决策题。
 
 | # | 问题 | 预期答案摘要 | 展示点 | 讲解要点 |
@@ -22,4 +33,5 @@
 - Q1-Q4 用默认检索即可；讲 Q7 前可打开 KB 分块预览页对比 structure/fixed 的 headingPath 差异。
 - Q2/Q3 演示引用悬浮：鼠标停在引用徽章上 1-2 秒再念出 headingPath。
 - 每题后可顺手点击引用徽章跳到块预览页，再返回对话（浏览器返回即可）。
-- 备用兜底：若现场网络/服务异常，按 docs/m10 录屏顺序口述 + 截图讲解。
+- 录屏：答辩前用 Windows 自带 Xbox Game Bar(Win+G)对着 3001 手动录一遍全流程；自动截图包见 docs/m10/screenshots/(headless Edge 按本脚本 10 问自动生成)。
+- 备用兜底：若现场网络/服务异常，按 docs/m10/screenshots/ 截图顺序口述讲解。
