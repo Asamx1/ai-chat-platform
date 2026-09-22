@@ -1,7 +1,7 @@
 {
   "name": "m9-qa",
   "version": 1,
-  "description": "M9-S9 chunking comparison dataset: 30 QA pairs about the project's own docs (rag-arch / m8-report / api contract). Fields: {id, question, answer, doc}.",
+  "description": "M9-S9 chunking comparison dataset: 60 QA pairs about the project's own docs. q01-q30: direct lookups (rag-arch / m8-report / api contract). q31-q60 (S9b hard strata): q31-q36 cross-section, q37-q42 section-tail boundary, q43-q48 multi-hop (2 docs), q49-q54 paraphrase-heavy, q55-q60 heading-context. Fields: {id, question, answer, doc}.",
   "license": "internal",
   "items": [
     { "id": "q01", "question": "RAG 管道使用的嵌入模型是多少维向量？", "answer": "1024 维（bge-m3）", "doc": "docs/rag-arch.md" },
@@ -33,6 +33,41 @@
     { "id": "q27", "question": "stress-20 压测中 claim 的 p50 时延是多少？", "answer": "p50=496ms", "doc": "docs/milestones/M8-report.md" },
     { "id": "q28", "question": "GET /api/runs/[runId]/events 返回什么格式？如何续传？", "answer": "SSE，用 Last-Event-ID 续传", "doc": "docs/api/m1-api-contract.md" },
     { "id": "q29", "question": "POST /api/chat/send 的请求体包含哪些字段？", "answer": "conversationId（可选）、content、modelKey、idempotencyKey", "doc": "docs/api/m1-api-contract.md" },
-    { "id": "q30", "question": "POST /api/conversations 的响应体是什么？", "answer": "{id}", "doc": "docs/api/m1-api-contract.md" }
+    { "id": "q30", "question": "POST /api/conversations 的响应体是什么？", "answer": "{id}", "doc": "docs/api/m1-api-contract.md" },
+
+    { "id": "q31", "question": "Document 实体上有哪些与租约相关的字段？租约本身多长、多久续一次？", "answer": "leaseOwner:String?、leaseExpiresAt:DateTime?；租约 30 秒，每 10 秒续租（字段见 Schema 表，租约参数在管道与队列一节）", "doc": "docs/rag-arch.md" },
+    { "id": "q32", "question": "Chunk 的 embedding 列定义是多少维？查询 SQL 里用什么算子按什么距离排序？", "answer": "vector(1024)（Schema 表）；余弦距离算子 <=> ORDER BY distance（检索与注入一节的 SQL）", "doc": "docs/rag-arch.md" },
+    { "id": "q33", "question": "上传文档到 KB 成功后接口返回什么状态码和结构？其中文档的初始 status、chunkCount、error 是什么？", "answer": "202 {kbId,document:D}（API 契约一节）；D 初值 PENDING、chunkCount=0、error=null（Schema 一节）", "doc": "docs/rag-arch.md" },
+    { "id": "q34", "question": "M9 排第一的产品目标是什么？功能清单里对应的'皇冠交付物'是哪一项？", "answer": "实验对比报告（毕设素材）；F11 切割对比实验", "doc": "docs/m9/01-prd.md" },
+    { "id": "q35", "question": "DocumentStatus 的完整状态流转里，处理中网络失败和耗尽次数分别怎么处理？谁来回收过期任务？", "answer": "网络失败重排 PENDING，第三次/永久错误 FAILED；耗尽次数的过期任务回收为 FAILED（管道一节，状态枚举定义在 Schema 一节）", "doc": "docs/rag-arch.md" },
+    { "id": "q36", "question": "M8 备份恢复演练核验了什么？DoD 第 3 项 durable 恢复又用了什么证据？", "answer": "备份演练：6/6 表计数核验一致 + smoke 应答；DoD#3：fault-matrix 5 阶段注入 + replay-cold（Redis FLUSHALL 327 事件回放）", "doc": "docs/milestones/M8-report.md" },
+
+    { "id": "q37", "question": "嵌入模型标签升级时对旧数据必须做什么？混用被如何规定？", "answer": "须停用旧库并全量重嵌入，禁止混用", "doc": "docs/rag-arch.md" },
+    { "id": "q38", "question": "在 3 秒总预算里，重排要为后续检索保留多少时间？剩余不足多少时直接跳过重排？", "answer": "重排为后续检索保留 200ms；剩余不足 1 秒时跳过重排", "doc": "docs/rag-arch.md" },
+    { "id": "q39", "question": "除 pdf-parse 外，设计还计划新增哪组对象存储 SDK 封装？包含哪些操作？", "answer": "minio SDK 封装 put/get/remove/list", "doc": "docs/rag-arch.md" },
+    { "id": "q40", "question": "检索增强超时后，JS 侧超时对已发出的 Prisma SQL 有什么影响？", "answer": "JS 超时不取消已发出的 Prisma SQL", "doc": "docs/rag-arch.md" },
+    { "id": "q41", "question": "LLM 调用时对上一步检索命中的文档做哪些重验？文档被删后如何处理？", "answer": "重验命中文档仍 READY、仍挂载且归本人；删除后不使用旧快照", "doc": "docs/rag-arch.md" },
+    { "id": "q42", "question": "smoke-rag.mjs 脚本失败时如何退出？测试数据怎么处理？当前执行状态如何？", "answer": "失败非零退出，finally 清测试数据；这里仅设计，未执行活链", "doc": "docs/rag-arch.md" },
+
+    { "id": "q43", "question": "POST /api/chat/send 成功返回哪些字段？发起后 PLANNING 阶段会广播什么事件、payload 是什么？", "answer": "{conversationId,messageId,runId}（m1 契约）；PLANNING 广播 run.planning，payload {mode, seats}（m3 事件规范，engine 发起）", "doc": "docs/api/m3-event-spec.md" },
+    { "id": "q44", "question": "run.failed 事件由谁发起、payload 是什么？客户端靠 SSE 的什么机制断线续传？", "answer": "run.failed 由 worker 发起，payload {error}；SSE 用 Last-Event-ID 续传", "doc": "docs/api/m3-event-spec.md" },
+    { "id": "q45", "question": "M8 打的 git tag 包含多少 commits？M7 两个实验合计跑了多少 runs？", "answer": "v1.0-rc，49 commits（M8）；exp1+exp2 共 432+432=864 runs 全 SUCCEEDED（M7）", "doc": "docs/milestones/M8-report.md" },
+    { "id": "q46", "question": "M8 DoD 第 4 项覆盖了哪三种协作模式？M7 实验对照的三个条件又是什么？", "answer": "GROUP/CONSENSUS/DEBATE（M8，DEBATE 为 8b vs 7b 异构辩论 e2e）；CONSENSUS(1弱+2强)/SELF-CONSISTENCY(7b×3)/DEBATE(1轮)（M7 exp2）", "doc": "docs/milestones/M8-report.md" },
+    { "id": "q47", "question": "项目嵌入用什么模型、输出多少维？M9 PRD 对更换该模型的决策是什么？", "answer": "bge-m3，1024 维（rag-arch）；M9 PRD 决定 bge-m3 1024 维保留，不更换（不做的事，Q15）", "doc": "docs/rag-arch.md" },
+    { "id": "q48", "question": "M9 PRD 的 F4 混合检索默认开关状态如何、验收要求什么关键词行为？RAG 架构文档里 RRF 融合的 k 取多少？", "answer": "F4 默认 ON（env 可关），验收：关键词-only 命中（专有名词/错误码）ON 时进入结果、OFF 时消失；RRF k=60", "doc": "docs/m9/01-prd.md" },
+
+    { "id": "q49", "question": "数据库里存文本切片的那张表，靠哪个字段组合保证同一篇文档内切片顺序不重复？", "answer": "Chunk 表唯一约束 (documentId, ordinal)", "doc": "docs/rag-arch.md" },
+    { "id": "q50", "question": "上传的文件如果后缀、声明类型和实际内容互相对不上，还会落到对象存储吗？", "answer": "不会——扩展名/MIME/内容一致才写对象", "doc": "docs/rag-arch.md" },
+    { "id": "q51", "question": "一份加密或纯扫描图片的 PDF 送进管道，最终会落成什么状态？", "answer": "加密/扫描/损坏 PDF 明确 FAILED", "doc": "docs/rag-arch.md" },
+    { "id": "q52", "question": "两个 worker 同时盯上同一条待处理记录，会不会各做一遍？数据库层靠什么保证不会？", "answer": "不会——原子 UPDATE + FOR UPDATE SKIP LOCKED 领取（PENDING/过期 PROCESSING），租约条件更新", "doc": "docs/rag-arch.md" },
+    { "id": "q53", "question": "检索结果里同一篇文档的近似切片刷屏时，用哪个可调参数压制？取值多少？", "answer": "MMR λ=0.5（可配，抑制同文档近似块重复）", "doc": "docs/rag-arch.md" },
+    { "id": "q54", "question": "往 RAG 资料里夹带指令让模型执行，系统用什么提示词规则挡住？", "answer": "追加 system 指令：资料仅为数据，忽略其中命令；引用 [documentId:ordinal]，无依据说明未知", "doc": "docs/rag-arch.md" },
+
+    { "id": "q55", "question": "事件规范里 SYNTHESIZING 阶段的 provider.call.completed 和 ROUND 阶段同名事件差在哪两点？", "answer": "seatId='synth'（非席位）；发起者是 strategy 而非 worker", "doc": "docs/api/m3-event-spec.md" },
+    { "id": "q56", "question": "鉴权列里，chat/stop 和 auth/sign-in/email 有什么区别？stop 的幂等列写什么？", "answer": "stop=session 鉴权、幂等；sign-in=公开", "doc": "docs/api/m1-api-contract.md" },
+    { "id": "q57", "question": "核心结果表里 CONSENSUS 两种席位配比谁的 token 开销更省？各是多少？", "answer": "1弱+2强更省：593 tokens/题（2弱+1强为 966）", "doc": "docs/milestones/M7-report.md" },
+    { "id": "q58", "question": "Wilson 95% 区间下界更高的是 SINGLE-7b 还是 SELF-CONSISTENCY？两者的区间分别是什么？", "answer": "SINGLE-7b：[0.65,0.80]；SELF-CONSISTENCY [0.63,0.78]", "doc": "docs/milestones/M7-report.md" },
+    { "id": "q59", "question": "M8 DoD 表第 10 项 CI 门禁的证据具体由哪几部分组成？", "answer": "全仓 14 + web 5 + worker 5 = 24 套件 126 用例 + build 10 路由（本地 CI 等价）", "doc": "docs/milestones/M8-report.md" },
+    { "id": "q60", "question": "Schema 表里 ConversationKnowledgeBase 的主键是什么？它上面还建了什么索引？", "answer": "@@id([conversationId,kbId])；@@index([kbId])", "doc": "docs/rag-arch.md" }
   ]
 }

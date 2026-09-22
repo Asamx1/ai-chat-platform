@@ -1,11 +1,11 @@
 /**
- * M9-S9 分块策略对照实验：structure vs recursive vs fixed × 30 QA。
+ * M9-S9 分块策略对照实验：structure vs recursive vs fixed × 数据集全体 QA（长度由 m9-qa.json 决定）。
  * 纯向量臂（保持对照干净；hybrid 臂留作 S9b）：
  *   chunk（in-memory，走 @aichat/rag 注册表）→ Ollama bge-m3 嵌入（批量）→ 余弦 top-5 → qwen3:8b 判分。
  * 判分：format json + temperature 0；防御式解析，失败回退 hit=0。
  * 限速：全程串行 Ollama 调用；HTTP 错误重试 1 次，二次失败嵌入丢块、判分回退。
  * 运行：pnpm exec tsx experiments/runners/m9-chunk-compare.ts
- *   （3 策略 × 30 QA = 90 次判分 + 约 330 次嵌入；GPU 串行预计 15-30 分钟）
+ *   （3 策略 × N QA 次判分；GPU 串行，N=60 时预计 30-60 分钟）
  * 输出：experiments/results/m9-chunk-compare.json（逐 QA 原始行 + 聚合）与 .md 摘要表。
  */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -122,7 +122,7 @@ async function judge(qa: QA, contexts: string[]): Promise<{ hit: number; score: 
 async function main(): Promise<void> {
   const dataset = JSON.parse(readFileSync('experiments/datasets/m9-qa.json', 'utf8')) as { items: QA[] };
   const qas = dataset.items;
-  if (qas.length !== 30) throw new Error(`expected 30 QA, got ${qas.length}`);
+  if (qas.length === 0) throw new Error('dataset has no QA items');
 
   // 前置探针：Ollama 可用性
   await fetch(`${OLLAMA}/api/tags`, { signal: AbortSignal.timeout(5000) });
@@ -221,7 +221,7 @@ async function main(): Promise<void> {
     '# M9-S9 分块策略对照（纯向量臂）',
     '',
     `- 运行时间：${payload.ranAt}`,
-    `- 嵌入：${EMBED_MODEL}（1024d）· 判分：${JUDGE_MODEL}（temp=0, json）· 语料：${CORPUS.length} 篇项目文档 · 30 QA`,
+    `- 嵌入：${EMBED_MODEL}（1024d）· 判分：${JUDGE_MODEL}（temp=0, json）· 语料：${CORPUS.length} 篇项目文档 · ${qas.length} QA`,
     '',
     '| 策略 | chunks | hit@5 | Wilson 95% 下界 | 平均分 (1-5) | 判分回退 |',
     '|---|---|---|---|---|---|',
