@@ -27,8 +27,9 @@ export async function POST(req: Request, context: Context) {
     // Registry membership check only; an unknown strategy is a 400 and clears nothing.
     type StrategyKey = Parameters<typeof getStrategy>[0];
     try { getStrategy(strategy as StrategyKey); } catch { throw new KbError('INVALID_REQUEST', 400); }
-    if (size !== undefined &&
-        (!Number.isSafeInteger(size) || size < 64 || size > 4096)) throw new KbError('INVALID_REQUEST', 400);
+    const sizeNum: unknown = size;
+    if (sizeNum !== undefined &&
+        (typeof sizeNum !== 'number' || !Number.isSafeInteger(sizeNum) || sizeNum < 64 || sizeNum > 4096)) throw new KbError('INVALID_REQUEST', 400);
     const updated = await prisma.$transaction(async tx => {
       const rows = await tx.$queryRaw<{ id: string }[]>`
         SELECT d.id FROM "Document" d
