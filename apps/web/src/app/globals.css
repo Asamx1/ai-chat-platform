@@ -1220,3 +1220,7 @@ body {
 .kb-section-filter { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; font-size: 13px; }
 .kb-section-filter select { min-height: 36px; max-width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; }
 .kb-section-filter span { color: var(--text-dim); }
+
+.settings-badge.is-running { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
+.settings-badge.is-failed { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+.admin-run-error { max-width: 48rem; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }

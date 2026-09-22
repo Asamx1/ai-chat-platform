@@ -23,14 +23,14 @@ export async function GET() {
         : model.providerId === 'deepseek' && process.env.DEEPSEEK_API_KEY?.trim() ? 'env' : null;
       const daily = usage.find((row) => row.modelId === model.id);
       const used = (daily?.tokensIn ?? 0) + (daily?.tokensOut ?? 0);
-      const capabilities = model.capabilities as { label?: string | undefined };
+      const capabilities = model.capabilities as { label?: string | undefined; available?: boolean };
       return {
         // id 必须是 modelKey:ModelPicker 与 /api/chat/send BodySchema 都以 modelKey 为准
         id: model.modelKey,
         label: capabilities?.label ?? model.modelKey,
         provider: model.providerId,
         kind: model.kind,
-        available: model.provider.enabled && (!cloud || (keySource !== null && used <= DAILY_CLOUD_TOKEN_LIMIT)),
+        available: capabilities?.available !== false && model.provider.enabled && (!cloud || (keySource !== null && used <= DAILY_CLOUD_TOKEN_LIMIT)),
         keySource,
         quotaRemaining: cloud ? Math.max(0, DAILY_CLOUD_TOKEN_LIMIT - used) : null,
       };
