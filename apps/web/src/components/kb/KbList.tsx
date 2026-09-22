@@ -2,6 +2,7 @@
 
 import { KB_STATUS_TEXT, kbStatus, type KnowledgeBase } from './types';
 import KbDeleteButton from './KbDeleteButton';
+import Link from 'next/link';
 
 /** 时间显示：相对友好格式（当日 HH:mm，否则 YYYY-MM-DD） */
 function fmtTime(iso: string): string {
@@ -46,8 +47,16 @@ export default function KbList({
               </div>
               <div className="kb-item-meta">
                 <span>{(kb.documents ?? []).length} 个文档</span>
+                <Link href={`/kb/${kb.id}/playground`} className="kb-link">试验台</Link>
                 <span>{chunkCount} chunks</span>
                 {updatedAt && <span>{fmtTime(updatedAt)}</span>}
+              </div>
+              <div className="kb-doc-list">
+                {(kb.documents ?? []).map((d) => (
+                  <span key={d.id} className="kb-doc">
+                    <Link href={`/kb/${d.id}/chunks`} className="kb-link">{d.name}</Link>
+                  </span>
+                ))}
               </div>
               {status === 'FAILED' &&
                 (kb.documents ?? [])
