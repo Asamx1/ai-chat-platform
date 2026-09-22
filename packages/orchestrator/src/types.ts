@@ -20,7 +20,7 @@ export interface ChatMessage {
 export type CallModel = (
   seat: SeatConfig,
   messages: ChatMessage[],
-  opts?: { signal?: AbortSignal },
+  opts?: { signal?: AbortSignal | undefined },
 ) => Promise<string>;
 
 /** Everything a strategy needs to execute; callModel is injected by the engine. */
@@ -28,7 +28,7 @@ export interface RunContext {
   runId: string;
   seats: SeatConfig[];
   userContent: string;
-  maxRounds?: number;
+  maxRounds?: number | undefined;
   callModel: CallModel;
 }
 
@@ -41,8 +41,8 @@ export interface EngineEvent {
 
 export interface StrategyResult {
   assistantMessageContent: string;
-  degraded?: boolean;
-  reasons?: string[];
+  degraded?: boolean | undefined;
+  reasons?: string[] | undefined;
 }
 
 /** emit provided by the engine: assigns seq and derives phase updates. */

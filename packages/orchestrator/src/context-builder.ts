@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { ChatMessage } from '@aichat/providers';
+import type { ChatMessage } from './types';
 
 /**
  * 席位配置（与 @aichat/contracts 的 CollabSeat 字段对齐；本地别名以便纯逻辑复用）。

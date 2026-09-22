@@ -5,7 +5,8 @@ import { VerdictSchema, buildJudgePrompt, type Verdict } from './judge-schema';
 export function fisherYatesShuffle<T>(arr: T[], rng: () => number = Math.random): T[] {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+    // Both indices are in bounds for rng values in [0, 1).
+    [arr[i], arr[j]] = [arr[j]!, arr[i]!];
   }
   return arr;
 }
@@ -44,8 +45,8 @@ export function anonymize(candidates: JudgeCandidate[], rng: () => number = Math
   }
   const shuffled = fisherYatesShuffle([...candidates], rng);
   return {
-    options: shuffled.map((c, i) => ({ label: LABELS[i], content: c.content })),
-    orderMap: shuffled.map((c, i) => ({ label: LABELS[i], seatId: c.seatId, modelKey: c.modelKey })),
+    options: shuffled.map((c, i) => ({ label: LABELS[i]!, content: c.content })),
+    orderMap: shuffled.map((c, i) => ({ label: LABELS[i]!, seatId: c.seatId, modelKey: c.modelKey })),
   };
 }
 
@@ -92,8 +93,8 @@ function pickPair(candidates: JudgeCandidate[], judgeModelKey: string): [JudgeCa
     throw new Error(`judgePair requires at least 2 candidates, got ${candidates.length}`);
   }
   const foreign = candidates.filter((c) => c.modelKey !== judgeModelKey);
-  if (foreign.length >= 2) return [foreign[0], foreign[1]];
-  return [candidates[0], candidates[1]];
+  if (foreign.length >= 2) return [foreign[0]!, foreign[1]!];
+  return [candidates[0]!, candidates[1]!];
 }
 
 /**
@@ -111,7 +112,8 @@ export async function judgePair(
   const rng = opts.rng ?? Math.random;
   const pair = pickPair(candidates, opts.judgeSeat.modelKey);
   const { options, orderMap } = anonymize(pair, rng);
-  const basePrompt = buildJudgePrompt(task, options[0].content, options[1].content);
+  // anonymize preserves the two entries selected by pickPair.
+  const basePrompt = buildJudgePrompt(task, options[0]!.content, options[1]!.content);
   const callOpts = { signal: opts.signal };
 
   const first = await callModel(opts.judgeSeat, basePrompt, callOpts);

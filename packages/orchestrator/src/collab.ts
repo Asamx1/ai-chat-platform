@@ -18,6 +18,13 @@ export interface OrchestratorSeat {
   systemPrompt: string;
 }
 
+/** Callback at the collab boundary, after strategy messages are flattened. */
+export type CollabCallModel = (
+  seat: SeatConfig,
+  prompt: string,
+  signal?: AbortSignal,
+) => Promise<string>;
+
 export class CollabCancelledError extends Error {
   constructor() {
     super('collab run cancelled');
@@ -31,7 +38,7 @@ export type CollabEvent =
   | { type: 'seat.completed'; seatId: string; output: string; tokens?: number }
   | { type: 'round.completed'; round: number; seatsDone: number }
   | { type: 'degraded'; seatId: string; reason: string }
-  | { type: 'final'; output: string; degraded?: boolean; reasons?: string[] };
+  | { type: 'final'; output: string; degraded?: boolean | undefined; reasons?: string[] | undefined };
 
 export interface RunOrchestrationOptions {
   mode: 'GROUP' | 'CONSENSUS' | 'DEBATE';
@@ -39,7 +46,7 @@ export interface RunOrchestrationOptions {
   userContent: string;
   tokenBudget?: number;
   maxRounds?: number;
-  callModel: CallModel;
+  callModel: CollabCallModel;
   signal?: AbortSignal;
   shouldCancel?: () => Promise<boolean>;
 }
@@ -73,18 +80,18 @@ export async function* runOrchestration(
   const wrappedCallModel: CallModel = async (seat, messages, callOpts) => {
     if (await maybeCancelled()) throw new CollabCancelledError();
     events.push({ type: 'seat.started', seatId: seat.seatId });
-    // E3 collab-runner 的 callModel 签名是 (seat, prompt: string, signal?)：
+    // collab 边界的 callModel 签名是 (seat, prompt: string, signal?)：
     // 策略产出的完整 messages 数组压成单条 user 文本（system 已由 seat 携带）。
     const prompt = messages
       .filter((m) => m.role !== 'system')
       .map((m) => (m.role === 'assistant' ? `[${m.role}] ${m.content}` : m.content))
-.join('\n\n');
+      .join('\n\n');
     const output = await callModel(seat, prompt, callOpts?.signal);
     events.push({ type: 'seat.completed', seatId: seat.seatId, output });
     return output;
   };
 
-  const emit = (type: string, payload: Record<string, unknown>) => {
+  const emit = (type: string, payload: Record<string, unknown> = {}) => {
     // E1 内核策略可能 emit 的事件透传（round 完成等）
     if (type === 'provider.call.completed' && payload.seatId) {
       // E1 内核的席位完成事件也映射为 seat.completed（wrappedCallModel 的补充路径）

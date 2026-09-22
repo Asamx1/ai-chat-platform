@@ -85,12 +85,12 @@ describe('buildJudgePrompt / VerdictSchema', () => {
   it('returns system+user messages without leaking model identity', () => {
     const messages = buildJudgePrompt(TASK, '内容A', '内容B');
     expect(messages).toHaveLength(2);
-    expect(messages[0].role).toBe('system');
-    expect(messages[1].role).toBe('user');
-    expect(messages[1].content).toContain(TASK);
-    expect(messages[1].content).toContain('内容A');
-    expect(messages[1].content).toContain('内容B');
-    expect(messages[1].content).not.toContain('model-x');
+    expect(messages[0]!.role).toBe('system');
+    expect(messages[1]!.role).toBe('user');
+    expect(messages[1]!.content).toContain(TASK);
+    expect(messages[1]!.content).toContain('内容A');
+    expect(messages[1]!.content).toContain('内容B');
+    expect(messages[1]!.content).not.toContain('model-x');
   });
 
   it('accepts a valid verdict and rejects extra fields / out-of-range values', () => {
@@ -120,7 +120,7 @@ describe('judgePair', () => {
     expect(result.verdict).not.toBeNull();
     expect(result.verdict!.winner).toBe('A');
     expect(calls).toHaveLength(2);
-    expect(calls[1].messages.at(-1)!.content).toContain('不符合 JSON schema');
+    expect(calls[1]!.messages.at(-1)!.content).toContain('不符合 JSON schema');
   });
 
   it('returns verdict null after two invalid outputs instead of throwing', async () => {
@@ -172,7 +172,7 @@ describe('judgePair', () => {
   it('requires at least two candidates', async () => {
     const { callModel } = judgeModel([]);
     await expect(
-      judgePair(callModel, TASK, [CANDIDATES[0]], { judgeSeat: judgeSeat() }),
+      judgePair(callModel, TASK, [CANDIDATES[0]!], { judgeSeat: judgeSeat() }),
     ).rejects.toThrow(/at least 2/);
   });
 });

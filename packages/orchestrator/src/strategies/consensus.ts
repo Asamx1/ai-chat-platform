@@ -3,7 +3,8 @@ import type { ChatMessage, EmitFn, RunContext, SeatConfig, Strategy, StrategyRes
 function pickSynthesizer(seats: SeatConfig[]): { synthesizer: SeatConfig; candidates: SeatConfig[] } {
   const explicit = seats.find((s) => s.role === 'synthesizer');
   if (explicit) return { synthesizer: explicit, candidates: seats.filter((s) => s !== explicit) };
-  const last = seats[seats.length - 1];
+  // The fallback synthesizer assumes a nonempty seat list.
+  const last = seats[seats.length - 1]!;
   return { synthesizer: last, candidates: seats.slice(0, -1) };
 }
 

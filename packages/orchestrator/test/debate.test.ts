@@ -121,7 +121,7 @@ describe('debateStrategy', () => {
 
   it('pro seat failure degrades but the run succeeds', async () => {
     const { calls, callModel } = recorder(
-      new Map([
+      new Map<string, string | Error>([
         ['p1', new Error('provider boom')],
         ['j', 'verdict'],
       ]),

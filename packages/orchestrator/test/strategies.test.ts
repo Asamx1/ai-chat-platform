@@ -37,7 +37,7 @@ describe('groupStrategy', () => {
   it('3 seats speak in order with full event sequence; content contains each output', async () => {
     const seats = [seat('a'), seat('b'), seat('c')];
     const { calls, callModel } = recorder(
-      new Map([
+      new Map<string, string | Error>([
         ['a', 'alpha'],
         ['b', 'beta'],
         ['c', 'gamma'],
@@ -153,7 +153,7 @@ describe('consensusStrategy', () => {
   it('candidate failure degrades but run succeeds', async () => {
     const seats = [seat('a'), seat('b'), seat('synth', 'synthesizer')];
     const { callModel } = recorder(
-      new Map([
+      new Map<string, string | Error>([
         ['a', new Error('timeout')],
         ['synth', 'merged'],
       ]),
