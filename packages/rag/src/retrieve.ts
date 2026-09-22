@@ -1,7 +1,21 @@
 import { prisma } from '@aichat/db';
 import { embed, embeddingModel, validateVector } from './embed';
+import { rerank } from './rerank';
+import { rewriteQuery } from './rewrite';
 export type Hit = { documentId: string; ordinal: number; name: string; text: string; distance: number };
-type Candidate = Hit & { chunkId: string; parentId: string | null; kind: string | null; embedding: string };
+export type Candidate = Hit & { chunkId: string; parentId: string | null; kind: string | null; embedding: string };
+
+/** Rewrite lists contribute their best rank, not extra RRF votes. Ties retain list order. */
+function mergeBestRank(lists: Candidate[][]): Candidate[] {
+  const merged = new Map<string, { item: Candidate; rank: number }>();
+  for (const list of lists) {
+    for (const [rank, item] of list.entries()) {
+      const prior = merged.get(item.chunkId);
+      if (!prior || rank < prior.rank) merged.set(item.chunkId, { item, rank });
+    }
+  }
+  return [...merged.values()].sort((a, b) => a.rank - b.rank).map(entry => entry.item);
+}
 
 /** One vote per chunk per list; ranks are one-based. */
 export function reciprocalRankFusion<T extends { chunkId: string; distance: number }>(lists: readonly (readonly T[])[]): T[] {
@@ -75,7 +89,14 @@ function hitOnly(hit: Hit): Hit {
 export async function retrieve(userId: string, conversationId: string, query: string): Promise<Hit[]> {
   const deadline = Date.now() + 3_000;
   const model = embeddingModel();
-  const [vector] = await embed([query], AbortSignal.timeout(3_000), model);
+  const rewrite = process.env.RAG_REWRITE !== '0';
+  const rerankEnabled = process.env.RAG_RERANK !== '0';
+  // Keep the original query and leave most of the shared budget for retrieval.
+  const queries = rewrite ? [...new Set([query, ...await rewriteQuery(query, Math.min(800, deadline - Date.now()))])] : [query];
+  const embeddings = await beforeDeadline(embed(queries, AbortSignal.timeout(Math.max(0, deadline - Date.now())), model), deadline);
+  if (embeddings.length !== queries.length) throw new Error('INVALID_EMBEDDING_COUNT');
+  for (const embedding of embeddings) validateVector(embedding);
+  const [vector] = embeddings;
   validateVector(vector);
   const args = [JSON.stringify(vector), userId, conversationId, model];
   const hybrid = process.env.RAG_HYBRID !== '0';
@@ -83,7 +104,7 @@ export async function retrieve(userId: string, conversationId: string, query: st
   const small2big = process.env.RAG_SMALL2BIG !== '0';
   const pureVector = () => beforeDeadline(prisma.$queryRawUnsafe<Hit[]>(
     `SELECT ${projection} ${scope}${retrievalKinds} ORDER BY distance,c.id LIMIT 5`, ...args), deadline);
-  if (!hybrid && !mmr && !small2big) return pureVector();
+  if (!hybrid && !mmr && !small2big && !rewrite && !rerankEnabled) return pureVector();
 
   let baseline: Hit[] | undefined;
   // Reserve time for a baseline retry if enhanced SQL fails. Timers bound caller waiting,
@@ -91,9 +112,10 @@ export async function retrieve(userId: string, conversationId: string, query: st
   const enhancedDeadline = deadline - 200;
   try {
     const columns = `${projection},c.id AS "chunkId",c."parentId",c.kind,c.embedding::text AS embedding`;
-    const vectorSearch = beforeDeadline(prisma.$queryRawUnsafe<Candidate[]>(
-      `SELECT ${columns} ${scope}${retrievalKinds} ORDER BY distance,c.id LIMIT 20`, ...args), enhancedDeadline)
-      .then(rows => { baseline = rows.slice(0, 5).map(hitOnly); return rows; });
+    const vectorSearch = Promise.all(embeddings.map((embedding, index) => beforeDeadline(prisma.$queryRawUnsafe<Candidate[]>(
+      `SELECT ${columns} ${scope}${retrievalKinds} ORDER BY distance,c.id LIMIT 20`,
+      JSON.stringify(embedding), userId, conversationId, model), enhancedDeadline)
+      .then(rows => { if (index === 0) baseline = rows.slice(0, 5).map(hitOnly); return rows; }))).then(mergeBestRank);
     const lexicalSearch = hybrid
       ? beforeDeadline(prisma.$queryRawUnsafe<Candidate[]>(
         `SELECT ${columns} ${scope}${retrievalKinds}
@@ -105,7 +127,7 @@ export async function retrieve(userId: string, conversationId: string, query: st
     const [vectors, lexical] = await Promise.allSettled([vectorSearch, lexicalSearch]);
     if (vectors.status === 'rejected') throw vectors.reason;
     if (lexical.status === 'rejected') throw lexical.reason;
-    let ranked = hybrid ? reciprocalRankFusion([vectors.value, lexical.value]).slice(0, 20) : vectors.value;
+    let ranked = (hybrid ? reciprocalRankFusion([vectors.value, lexical.value]) : vectors.value).slice(0, 20);
     if (mmr) {
       ranked = maximalMarginalRelevance(ranked.map(candidate => {
         const embedding: unknown = JSON.parse(candidate.embedding);
@@ -113,6 +135,8 @@ export async function retrieve(userId: string, conversationId: string, query: st
         return { candidate, embedding };
       }), ranked.length).map(item => item.candidate);
     }
+    const remaining = deadline - Date.now();
+    if (rerankEnabled && remaining >= 1_000) ranked = await rerank(query, ranked, remaining - 200);
     if (!small2big) return ranked.slice(0, 5).map(hitOnly);
     const parentIds = [...new Set(ranked.filter(hit => hit.kind === 'CHILD' && hit.parentId != null).map(hit => hit.parentId!))];
     const parents = parentIds.length ? await beforeDeadline(prisma.$queryRawUnsafe<(Hit & { chunkId: string })[]>(

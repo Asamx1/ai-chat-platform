@@ -56,6 +56,8 @@ MinIO 私桶键 `userId/kbId/documentId`；服务端流式计数，文件≤20,0
 
 ## 5. 检索与注入
 
+M9-S7：`RAG_REWRITE` 与 `RAG_RERANK` 默认开启，分别设为 `0` 可关闭且不调用对应 LLM。改写使用 `qwen3:0.6b` 单次生成 2–3 条同义查询，始终保留原查询；批量嵌入后并行向量召回，按 chunkId 去重并保留最佳排名，再与原查询词法结果做 RRF/MMR。HyDE 不启用。MMR 后的 top-20 由同一模型单次输出候选编号排序，每段正文最多 300 字符；随后展开父块并去重，最多返回 top-5，公开字段仍为 Hit。响应允许从说明文字中提取 JSON 数组，但类型、数量及排序编号必须合法；改写失败回退 `[query]`，重排失败保留输入向量/RRF/MMR 顺序。Ollama 使用 `OLLAMA_BASE_URL`（默认 `http://127.0.0.1:11434`）的 `/api/chat`。每次调用由 AbortController 和等待超时共同限制在 3 秒以内，包含响应体解析且不重试；检索共享 3 秒总预算，改写最多占 800ms，剩余不足 1 秒时跳过重排，重排为后续检索保留 200ms。
+
 M9-S6：`retrieve.ts` 默认并行召回向量与词法各 top-20；词法使用实际生成列 `Chunk.tsv`、`plainto_tsquery('pg_catalog.simple', q)` 和 `ts_rank`（不是 BM25）。两个分支保留相同的权限、READY、model 过滤，排除 PARENT，按 chunk ID 用 RRF（k=60）融合到 top-20。MMR（λ=0.5）以归一化排名为相关性，使用库内 bge-m3 向量的余弦相似度抑制重复；向量只在内部使用。
 
 随后 CHILD 按 parentId 展开为同文档、已授权的 PARENT 正文（现有上下文字段 `text`），引用 ordinal 同步指向父块，保留子块 distance；父缺失时保留子块，父组去重后最多返回 5 条。`RAG_HYBRID`、`RAG_MMR`、`RAG_SMALL2BIG` 均默认开启，分别设为 `0` 可独立关闭。增强错误/超时跳过其余增强并返回原查询向量 top-5；基线本身失败仍交由调用方降级为空上下文。共享 3 秒等待预算，增强预留 200ms 给基线重试；JS 超时不取消已发出的 Prisma SQL。

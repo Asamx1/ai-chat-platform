@@ -5,11 +5,14 @@ vi.mock('../src/embed', async importOriginal => ({
   ...await importOriginal<typeof import('../src/embed')>(), embed: vi.fn(async () => [embedding]),
 }));
 import { maximalMarginalRelevance, reciprocalRankFusion, retrieve } from '../src/retrieve';
+import * as rerankModule from '../src/rerank';
+import * as rewriteModule from '../src/rewrite';
+import { embed } from '../src/embed';
 beforeEach(() => {
   query.mockReset().mockResolvedValue([]);
-  for (const name of ['RAG_HYBRID', 'RAG_MMR', 'RAG_SMALL2BIG']) vi.stubEnv(name, '0');
+  for (const name of ['RAG_HYBRID', 'RAG_MMR', 'RAG_SMALL2BIG', 'RAG_RERANK', 'RAG_REWRITE']) vi.stubEnv(name, '0');
 });
-afterEach(() => { vi.unstubAllEnvs(); vi.useRealTimers(); });
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); vi.useRealTimers(); });
 it('binds vector, owner, conversation and model; projects no embedding', async () => {
   const owner = "owner'; DROP TABLE x;--";
   const conversation = "conversation' OR true--";
@@ -131,4 +134,61 @@ it('retries pure vector SQL when enhanced vector retrieval fails', async () => {
   expect(await retrieve('owner', 'conversation', 'query')).toEqual([publicHit('baseline')]);
   expect(query.mock.calls[1]![0]).toContain('LIMIT 5');
   expect(query.mock.calls[1]![0]).not.toContain('AS embedding');
+});
+
+it('does not call rerank when RAG_RERANK is 0', async () => {
+  const spy = vi.spyOn(rerankModule, 'rerank');
+  vi.stubEnv('RAG_MMR', '1');
+  query.mockResolvedValueOnce([candidate('a'), candidate('b')]);
+  await retrieve('owner', 'conversation', 'query');
+  expect(spy).not.toHaveBeenCalled();
+});
+
+it('defaults to rewrite, embeds the original plus paraphrases and merges by best rank', async () => {
+  vi.stubEnv('RAG_REWRITE', undefined);
+  const rewrite = vi.spyOn(rewriteModule, 'rewriteQuery').mockResolvedValue(['first', 'second']);
+  const embedSpy = vi.mocked(embed).mockResolvedValueOnce([embedding, embedding, embedding]);
+  query.mockResolvedValueOnce([candidate('a'), candidate('b'), candidate('c')])
+    .mockResolvedValueOnce([candidate('c'), candidate('a'), candidate('d')])
+    .mockResolvedValueOnce([candidate('d'), candidate('c')]);
+  expect(await retrieve('owner', 'conversation', 'query')).toEqual(['a', 'c', 'd', 'b'].map(text => publicHit(text)));
+  expect(rewrite).toHaveBeenCalledTimes(1);
+  expect(embedSpy).toHaveBeenLastCalledWith(['query', 'first', 'second'], expect.any(AbortSignal), expect.any(String));
+  expect(query).toHaveBeenCalledTimes(3);
+  for (const [sql, , owner, conversation] of query.mock.calls) {
+    expect(sql).toContain('k."userId"=$2 AND v."ownerId"=$2');
+    expect([owner, conversation]).toEqual(['owner', 'conversation']);
+  }
+});
+
+it('defaults to rerank after MMR and before authorized parent expansion', async () => {
+  vi.stubEnv('RAG_RERANK', undefined);
+  vi.stubEnv('RAG_MMR', '1');
+  vi.stubEnv('RAG_SMALL2BIG', '1');
+  const rows = Array.from({ length: 20 }, (_, index) => candidate(String(index)));
+  rows[19] = { ...candidate('19'), parentId: 'parent' };
+  const spy = vi.spyOn(rerankModule, 'rerank').mockImplementation(async (_query, hits) => [...hits].reverse());
+  query.mockResolvedValueOnce(rows).mockResolvedValueOnce([{ ...candidate('parent'), text: 'expanded' }]);
+  const hits = await retrieve('owner', 'conversation', 'query');
+  expect(spy).toHaveBeenCalledTimes(1);
+  expect(spy.mock.calls[0]?.[1]).toHaveLength(20);
+  expect(hits).toHaveLength(5);
+  expect(hits[0]).toEqual(publicHit('expanded'));
+});
+
+it('skips rerank with less than one second remaining', async () => {
+  vi.useFakeTimers();
+  vi.stubEnv('RAG_RERANK', '1');
+  const spy = vi.spyOn(rerankModule, 'rerank');
+  query.mockImplementationOnce(() => new Promise(resolve => setTimeout(() => resolve([candidate('a')]), 2_100)));
+  const pending = retrieve('owner', 'conversation', 'query');
+  await vi.advanceTimersByTimeAsync(2_100);
+  expect(await pending).toEqual([publicHit('a')]);
+  expect(spy).not.toHaveBeenCalled();
+});
+
+it('does not call rewrite when RAG_REWRITE is 0', async () => {
+  const spy = vi.spyOn(rewriteModule, 'rewriteQuery');
+  await retrieve('owner', 'conversation', 'query');
+  expect(spy).not.toHaveBeenCalled();
 });
