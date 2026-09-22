@@ -56,6 +56,12 @@ MinIO 私桶键 `userId/kbId/documentId`；服务端流式计数，文件≤20,0
 
 ## 5. 检索与注入
 
+M9-S6：`retrieve.ts` 默认并行召回向量与词法各 top-20；词法使用实际生成列 `Chunk.tsv`、`plainto_tsquery('pg_catalog.simple', q)` 和 `ts_rank`（不是 BM25）。两个分支保留相同的权限、READY、model 过滤，排除 PARENT，按 chunk ID 用 RRF（k=60）融合到 top-20。MMR（λ=0.5）以归一化排名为相关性，使用库内 bge-m3 向量的余弦相似度抑制重复；向量只在内部使用。
+
+随后 CHILD 按 parentId 展开为同文档、已授权的 PARENT 正文（现有上下文字段 `text`），引用 ordinal 同步指向父块，保留子块 distance；父缺失时保留子块，父组去重后最多返回 5 条。`RAG_HYBRID`、`RAG_MMR`、`RAG_SMALL2BIG` 均默认开启，分别设为 `0` 可独立关闭。增强错误/超时跳过其余增强并返回原查询向量 top-5；基线本身失败仍交由调用方降级为空上下文。共享 3 秒等待预算，增强预留 200ms 给基线重试；JS 超时不取消已发出的 Prisma SQL。
+
+集成限制：现有 web `rag-context.ts` 仍按 distance 重排命中，可能覆盖 RRF/MMR 顺序；本次未修改该调用层。以下 SQL 描述基础向量路径（当前实现另加检索块 kind 过滤）。
+
 sendChat 所有权校验后、建 run 前检索当前 content；collab/run 在 effectiveContent 确定后同样检索。结果存 configSnapshot.rag（命中及状态），幂等重放沿用。超时3秒/错误降级空上下文，记录 RAG_UNAVAILABLE；无挂载直接跳过。
 
 ```sql
