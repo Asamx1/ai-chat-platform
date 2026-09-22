@@ -151,6 +151,18 @@ async function main(): Promise<void> {
     conversation.id, kbId);
 
   const base = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+  // M10-S3: seed Provider + ModelRegistry (local ollama) so chat can resolve a model
+  const OLLAMA_URL = process.env.OLLAMA_BASE_URL || 'http://127.0.0.1:11434';
+  const LOCAL_MODEL = process.env.LOCAL_DEFAULT_MODEL || 'qwen3:8b';
+  let provider = await prisma.provider.findFirst({ where: { kind: 'ollama' } });
+  if (!provider) provider = await prisma.provider.create({ data: { kind: 'ollama', baseUrl: OLLAMA_URL, enabled: true } });
+  let localModel = await prisma.modelRegistry.findFirst({ where: { providerId: provider.id, modelKey: LOCAL_MODEL } });
+  if (!localModel) {
+    localModel = await prisma.modelRegistry.create({ data: { providerId: provider.id, kind: 'local', isDefault: true, modelKey: LOCAL_MODEL, capabilities: { label: LOCAL_MODEL + ' (local)' }, pricingVersion: 'v0' } });
+  }
+  await prisma.modelRegistry.updateMany({ where: { id: localModel.id }, data: { isDefault: true } });
+  console.log(`[demo-seed] model registry: ${localModel.modelKey} (${localModel.id})`);
+
   console.log('\n=== 答辩演示库就绪 ===');
   console.log(`登录:   ${base}/login  (${email} / ${password})`);
   console.log(`知识库: ${base}/kb/${kbId}`);
