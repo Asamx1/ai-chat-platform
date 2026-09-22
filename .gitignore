@@ -28,3 +28,4 @@ apps/web/tsconfig.tsbuildinfo
 # launcher runtime artifacts (PID/logs)
 infra/launcher/*.pid
 infra/launcher/*.log
+tsconfig.tsbuildinfo
