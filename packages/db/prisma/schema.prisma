@@ -136,6 +136,7 @@ model Message {
   participantId  String?
   participant    Participant?  @relation(fields: [participantId], references: [id], onDelete: SetNull)
   content        String        @db.Text
+  citations      Json? // Retrieval sources used for this assistant message; null for legacy/user messages
   status         MessageStatus
   createdAt      DateTime      @default(now())
 

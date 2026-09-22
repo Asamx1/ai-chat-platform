@@ -2226,6 +2226,7 @@ export const MessageScalarFieldEnum = {
   parentId: 'parentId',
   participantId: 'participantId',
   content: 'content',
+  citations: 'citations',
   status: 'status',
   createdAt: 'createdAt'
 } as const
@@ -2428,6 +2429,7 @@ export const DocumentScalarFieldEnum = {
   model: 'model',
   size: 'size',
   chunkCount: 'chunkCount',
+  chunkStrategy: 'chunkStrategy',
   status: 'status',
   error: 'error',
   attempt: 'attempt',
@@ -2443,6 +2445,9 @@ export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typ
 export const ChunkScalarFieldEnum = {
   id: 'id',
   documentId: 'documentId',
+  parentId: 'parentId',
+  headingPath: 'headingPath',
+  kind: 'kind',
   ordinal: 'ordinal',
   start: 'start',
   end: 'end',

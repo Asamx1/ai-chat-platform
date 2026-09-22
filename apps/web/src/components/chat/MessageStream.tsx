@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import type { ChatMessage } from './types';
+import CitationBadges from './CitationBadges';
 
 const STATUS_LABEL: Record<string, string> = {
   streaming: '生成中…',
@@ -33,7 +34,10 @@ export default function MessageStream({
       {messages.map((m) => (
         <div key={m.id} className={`msg-row ${m.role}`}>
           <div>
-            <div className="msg-bubble">{m.content || (m.status === 'streaming' ? '…' : '')}</div>
+            <div className="msg-bubble">
+              {m.content || (m.status === 'streaming' ? '…' : '')}
+              {m.role === 'assistant' && <CitationBadges citations={m.citations ?? []} />}
+            </div>
             {m.status && (
               <div className={`msg-status${m.status === 'failed' || m.status === 'error' ? ' failed' : ''}`}>
                 {STATUS_LABEL[m.status] ?? m.status}

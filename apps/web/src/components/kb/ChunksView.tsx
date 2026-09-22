@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { parseHeadingPath } from '../../lib/citation-metadata';
 
 export type ChunkRow = {
   id: string;
@@ -14,17 +15,6 @@ export type ChunkRow = {
 };
 
 type Group = { parent: ChunkRow | null; children: ChunkRow[] };
-
-/** headingPath 是 chunker 写入的 JSON string[]；解析失败时静默降级为空路径。 */
-function parseHeadingPath(raw: string | null): string[] {
-  if (!raw) return [];
-  try {
-    const parsed: unknown = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.every((part) => typeof part === 'string') ? (parsed as string[]) : [];
-  } catch {
-    return [];
-  }
-}
 
 /**
  * 按 small-to-big 结构分组：PARENT 作为组头，CHILD 依 parentId 归组（保持 ordinal 顺序），
@@ -70,11 +60,28 @@ function ChunkText({ text }: { text: string }) {
 
 /** chunk 预览主体：父块 + 子块缩进列表，kind 徽章 / 标题路径 / ordinal 与偏移。 */
 export default function ChunksView({ chunks }: { chunks: ChunkRow[] }) {
-  const groups = useMemo(() => groupChunks(chunks), [chunks]);
+  // JSON-encoded select values keep empty/missing headings distinct from “all”.
+  const [section, setSection] = useState('all');
+  const sections = useMemo(() => [...new Set(chunks.map(chunk =>
+    parseHeadingPath(chunk.headingPath)[0] ?? '',
+  ))], [chunks]);
+  const visible = useMemo(() => chunks.filter(chunk => section === 'all' ||
+    JSON.stringify(parseHeadingPath(chunk.headingPath)[0] ?? '') === section), [chunks, section]);
+  const groups = useMemo(() => groupChunks(visible), [visible]);
   if (chunks.length === 0) {
     return <p className="kb-empty">该文档还没有 chunk（解析完成后生成）。</p>;
   }
   return (
+    <>
+    <div className="kb-section-filter">
+      <label htmlFor="chunk-section">章节</label>
+      <select id="chunk-section" value={section} onChange={event => setSection(event.target.value)}>
+        <option value="all">全部章节</option>
+        {sections.map(heading => <option key={heading} value={JSON.stringify(heading)}>{heading || '无标题'}</option>)}
+      </select>
+      <span aria-live="polite">{visible.length} / {chunks.length} chunks</span>
+    </div>
+    {visible.length === 0 && <p className="kb-empty">该章节没有 chunk。</p>}
     <ul className="kb-chunk-groups">
       {groups.map((group) => {
         const head = group.parent ?? group.children[0]!;
@@ -111,5 +118,6 @@ export default function ChunksView({ chunks }: { chunks: ChunkRow[] }) {
         );
       })}
     </ul>
+    </>
   );
 }

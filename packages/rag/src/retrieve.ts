@@ -2,7 +2,7 @@ import { prisma } from '@aichat/db';
 import { embed, embeddingModel, validateVector } from './embed';
 import { rerank } from './rerank';
 import { rewriteQuery } from './rewrite';
-export type Hit = { documentId: string; ordinal: number; name: string; text: string; distance: number };
+export type Hit = { documentId: string; ordinal: number; name: string; text: string; distance: number; headingPath?: string | null };
 export type Candidate = Hit & { chunkId: string; parentId: string | null; kind: string | null; embedding: string };
 
 /** Rewrite lists contribute their best rank, not extra RRF votes. Ties retain list order. */
@@ -70,7 +70,7 @@ const scope = `FROM "Chunk" c JOIN "Document" d ON d.id=c."documentId"
      JOIN "ConversationKnowledgeBase" m ON m."kbId"=k.id
      JOIN "Conversation" v ON v.id=m."conversationId"
      WHERE k."userId"=$2 AND v."ownerId"=$2 AND v.id=$3 AND d.status='READY' AND d.model=$4`;
-const projection = `c."documentId",c.ordinal,d.name,c.text,c.embedding <=> $1::vector(1024) AS distance`;
+const projection = `c."documentId",c.ordinal,d.name,c.text,c."headingPath",c.embedding <=> $1::vector(1024) AS distance`;
 const retrievalKinds = ` AND (c.kind IS NULL OR c.kind IN ('CHILD','STANDALONE'))`;
 
 async function beforeDeadline<T>(work: PromiseLike<T>, deadline: number): Promise<T> {
@@ -83,7 +83,8 @@ async function beforeDeadline<T>(work: PromiseLike<T>, deadline: number): Promis
 }
 
 function hitOnly(hit: Hit): Hit {
-  return { documentId: hit.documentId, ordinal: hit.ordinal, name: hit.name, text: hit.text, distance: hit.distance };
+  return { documentId: hit.documentId, ordinal: hit.ordinal, name: hit.name, text: hit.text, distance: hit.distance,
+    ...(hit.headingPath !== undefined ? { headingPath: hit.headingPath } : {}) };
 }
 
 export async function retrieve(userId: string, conversationId: string, query: string): Promise<Hit[]> {

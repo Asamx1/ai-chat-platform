@@ -279,7 +279,7 @@ async function executeRunInline(
       });
       await tx.usageLog.create({ data: { userId, runId, callId: call.id, tokens: tokensIn + tokensOut, costMicros: 0n } });
       }
-      await tx.message.create({ data: { conversationId, content: text, status: 'COMPLETE' } });
+      await tx.message.create({ data: { conversationId, content: text, status: 'COMPLETE', citations: prompt.citations } });
       await tx.orchestrationRun.update({
         where: { id: runId },
         data: { status: 'SUCCEEDED', ...(resolved?.degraded ? {
@@ -288,7 +288,7 @@ async function executeRunInline(
         } : {}) },
       });
     });
-    await appendEvent(runId, 'run.succeeded', {});
+    await appendEvent(runId, 'run.succeeded', { citations: prompt.citations });
   } catch (err) {
     const aborted = controller.signal.aborted;
     const status = aborted ? 'CANCELLED' : 'FAILED';

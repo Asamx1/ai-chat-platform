@@ -9,6 +9,7 @@ import CollabLauncher from '@/components/collab/CollabLauncher';
 import KbMountPicker from '@/components/kb/KbMountPicker';
 import OrchestrationProgress from '@/components/collab/OrchestrationProgress';
 import RunTimeline from '@/components/runs/RunTimeline';
+import { parseCitations } from '@/lib/citation-metadata';
 import type { ChatMessage, MessageStatus } from '@/components/chat/types';
 
 import { applyRunEvent, sendFailure, shouldCloseRunStream, type RunEvent } from './chat-events';
@@ -67,10 +68,11 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
       .then((data) => {
         if (cancelled || !data?.items) return;
         setMessages(
-          data.items.map((m: { id: string; role: 'user' | 'assistant'; content: string; status?: string }) => ({
+          data.items.map((m: { id: string; role: 'user' | 'assistant'; content: string; status?: string; citations?: unknown }) => ({
             id: m.id,
             role: m.role,
             content: m.content,
+            citations: parseCitations(m.citations),
             status: (m.status?.toLowerCase() ?? 'succeeded') as MessageStatus,
           })),
         );

@@ -47,6 +47,7 @@ export type DocumentMinAggregateOutputType = {
   model: string | null
   size: number | null
   chunkCount: number | null
+  chunkStrategy: string | null
   status: $Enums.DocumentStatus | null
   error: string | null
   attempt: number | null
@@ -65,6 +66,7 @@ export type DocumentMaxAggregateOutputType = {
   model: string | null
   size: number | null
   chunkCount: number | null
+  chunkStrategy: string | null
   status: $Enums.DocumentStatus | null
   error: string | null
   attempt: number | null
@@ -83,6 +85,7 @@ export type DocumentCountAggregateOutputType = {
   model: number
   size: number
   chunkCount: number
+  chunkStrategy: number
   status: number
   error: number
   attempt: number
@@ -115,6 +118,7 @@ export type DocumentMinAggregateInputType = {
   model?: true
   size?: true
   chunkCount?: true
+  chunkStrategy?: true
   status?: true
   error?: true
   attempt?: true
@@ -133,6 +137,7 @@ export type DocumentMaxAggregateInputType = {
   model?: true
   size?: true
   chunkCount?: true
+  chunkStrategy?: true
   status?: true
   error?: true
   attempt?: true
@@ -151,6 +156,7 @@ export type DocumentCountAggregateInputType = {
   model?: true
   size?: true
   chunkCount?: true
+  chunkStrategy?: true
   status?: true
   error?: true
   attempt?: true
@@ -256,6 +262,7 @@ export type DocumentGroupByOutputType = {
   model: string
   size: number
   chunkCount: number
+  chunkStrategy: string
   status: $Enums.DocumentStatus
   error: string | null
   attempt: number
@@ -297,6 +304,7 @@ export type DocumentWhereInput = {
   model?: Prisma.StringFilter<"Document"> | string
   size?: Prisma.IntFilter<"Document"> | number
   chunkCount?: Prisma.IntFilter<"Document"> | number
+  chunkStrategy?: Prisma.StringFilter<"Document"> | string
   status?: Prisma.EnumDocumentStatusFilter<"Document"> | $Enums.DocumentStatus
   error?: Prisma.StringNullableFilter<"Document"> | string | null
   attempt?: Prisma.IntFilter<"Document"> | number
@@ -317,6 +325,7 @@ export type DocumentOrderByWithRelationInput = {
   model?: Prisma.SortOrder
   size?: Prisma.SortOrder
   chunkCount?: Prisma.SortOrder
+  chunkStrategy?: Prisma.SortOrder
   status?: Prisma.SortOrder
   error?: Prisma.SortOrderInput | Prisma.SortOrder
   attempt?: Prisma.SortOrder
@@ -340,6 +349,7 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   model?: Prisma.StringFilter<"Document"> | string
   size?: Prisma.IntFilter<"Document"> | number
   chunkCount?: Prisma.IntFilter<"Document"> | number
+  chunkStrategy?: Prisma.StringFilter<"Document"> | string
   status?: Prisma.EnumDocumentStatusFilter<"Document"> | $Enums.DocumentStatus
   error?: Prisma.StringNullableFilter<"Document"> | string | null
   attempt?: Prisma.IntFilter<"Document"> | number
@@ -360,6 +370,7 @@ export type DocumentOrderByWithAggregationInput = {
   model?: Prisma.SortOrder
   size?: Prisma.SortOrder
   chunkCount?: Prisma.SortOrder
+  chunkStrategy?: Prisma.SortOrder
   status?: Prisma.SortOrder
   error?: Prisma.SortOrderInput | Prisma.SortOrder
   attempt?: Prisma.SortOrder
@@ -386,6 +397,7 @@ export type DocumentScalarWhereWithAggregatesInput = {
   model?: Prisma.StringWithAggregatesFilter<"Document"> | string
   size?: Prisma.IntWithAggregatesFilter<"Document"> | number
   chunkCount?: Prisma.IntWithAggregatesFilter<"Document"> | number
+  chunkStrategy?: Prisma.StringWithAggregatesFilter<"Document"> | string
   status?: Prisma.EnumDocumentStatusWithAggregatesFilter<"Document"> | $Enums.DocumentStatus
   error?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   attempt?: Prisma.IntWithAggregatesFilter<"Document"> | number
@@ -403,6 +415,7 @@ export type DocumentCreateInput = {
   model: string
   size: number
   chunkCount?: number
+  chunkStrategy?: string
   status?: $Enums.DocumentStatus
   error?: string | null
   attempt?: number
@@ -423,6 +436,7 @@ export type DocumentUncheckedCreateInput = {
   model: string
   size: number
   chunkCount?: number
+  chunkStrategy?: string
   status?: $Enums.DocumentStatus
   error?: string | null
   attempt?: number
@@ -441,6 +455,7 @@ export type DocumentUpdateInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
   chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -461,6 +476,7 @@ export type DocumentUncheckedUpdateInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
   chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -480,6 +496,7 @@ export type DocumentCreateManyInput = {
   model: string
   size: number
   chunkCount?: number
+  chunkStrategy?: string
   status?: $Enums.DocumentStatus
   error?: string | null
   attempt?: number
@@ -497,6 +514,7 @@ export type DocumentUpdateManyMutationInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
   chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -515,6 +533,7 @@ export type DocumentUncheckedUpdateManyInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
   chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -543,6 +562,7 @@ export type DocumentCountOrderByAggregateInput = {
   model?: Prisma.SortOrder
   size?: Prisma.SortOrder
   chunkCount?: Prisma.SortOrder
+  chunkStrategy?: Prisma.SortOrder
   status?: Prisma.SortOrder
   error?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
@@ -567,6 +587,7 @@ export type DocumentMaxOrderByAggregateInput = {
   model?: Prisma.SortOrder
   size?: Prisma.SortOrder
   chunkCount?: Prisma.SortOrder
+  chunkStrategy?: Prisma.SortOrder
   status?: Prisma.SortOrder
   error?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
@@ -585,6 +606,7 @@ export type DocumentMinOrderByAggregateInput = {
   model?: Prisma.SortOrder
   size?: Prisma.SortOrder
   chunkCount?: Prisma.SortOrder
+  chunkStrategy?: Prisma.SortOrder
   status?: Prisma.SortOrder
   error?: Prisma.SortOrder
   attempt?: Prisma.SortOrder
@@ -667,6 +689,7 @@ export type DocumentCreateWithoutKbInput = {
   model: string
   size: number
   chunkCount?: number
+  chunkStrategy?: string
   status?: $Enums.DocumentStatus
   error?: string | null
   attempt?: number
@@ -685,6 +708,7 @@ export type DocumentUncheckedCreateWithoutKbInput = {
   model: string
   size: number
   chunkCount?: number
+  chunkStrategy?: string
   status?: $Enums.DocumentStatus
   error?: string | null
   attempt?: number
@@ -733,6 +757,7 @@ export type DocumentScalarWhereInput = {
   model?: Prisma.StringFilter<"Document"> | string
   size?: Prisma.IntFilter<"Document"> | number
   chunkCount?: Prisma.IntFilter<"Document"> | number
+  chunkStrategy?: Prisma.StringFilter<"Document"> | string
   status?: Prisma.EnumDocumentStatusFilter<"Document"> | $Enums.DocumentStatus
   error?: Prisma.StringNullableFilter<"Document"> | string | null
   attempt?: Prisma.IntFilter<"Document"> | number
@@ -750,6 +775,7 @@ export type DocumentCreateWithoutChunksInput = {
   model: string
   size: number
   chunkCount?: number
+  chunkStrategy?: string
   status?: $Enums.DocumentStatus
   error?: string | null
   attempt?: number
@@ -769,6 +795,7 @@ export type DocumentUncheckedCreateWithoutChunksInput = {
   model: string
   size: number
   chunkCount?: number
+  chunkStrategy?: string
   status?: $Enums.DocumentStatus
   error?: string | null
   attempt?: number
@@ -802,6 +829,7 @@ export type DocumentUpdateWithoutChunksInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
   chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -821,6 +849,7 @@ export type DocumentUncheckedUpdateWithoutChunksInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
   chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -838,6 +867,7 @@ export type DocumentCreateManyKbInput = {
   model: string
   size: number
   chunkCount?: number
+  chunkStrategy?: string
   status?: $Enums.DocumentStatus
   error?: string | null
   attempt?: number
@@ -855,6 +885,7 @@ export type DocumentUpdateWithoutKbInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
   chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -873,6 +904,7 @@ export type DocumentUncheckedUpdateWithoutKbInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
   chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -891,6 +923,7 @@ export type DocumentUncheckedUpdateManyWithoutKbInput = {
   model?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.IntFieldUpdateOperationsInput | number
   chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -940,6 +973,7 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   model?: boolean
   size?: boolean
   chunkCount?: boolean
+  chunkStrategy?: boolean
   status?: boolean
   error?: boolean
   attempt?: boolean
@@ -961,6 +995,7 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   model?: boolean
   size?: boolean
   chunkCount?: boolean
+  chunkStrategy?: boolean
   status?: boolean
   error?: boolean
   attempt?: boolean
@@ -980,6 +1015,7 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   model?: boolean
   size?: boolean
   chunkCount?: boolean
+  chunkStrategy?: boolean
   status?: boolean
   error?: boolean
   attempt?: boolean
@@ -999,6 +1035,7 @@ export type DocumentSelectScalar = {
   model?: boolean
   size?: boolean
   chunkCount?: boolean
+  chunkStrategy?: boolean
   status?: boolean
   error?: boolean
   attempt?: boolean
@@ -1008,7 +1045,7 @@ export type DocumentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "name" | "mime" | "objectKey" | "model" | "size" | "chunkCount" | "status" | "error" | "attempt" | "leaseOwner" | "leaseExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "name" | "mime" | "objectKey" | "model" | "size" | "chunkCount" | "chunkStrategy" | "status" | "error" | "attempt" | "leaseOwner" | "leaseExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>
@@ -1036,6 +1073,7 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     model: string
     size: number
     chunkCount: number
+    chunkStrategy: string
     status: $Enums.DocumentStatus
     error: string | null
     attempt: number
@@ -1476,6 +1514,7 @@ export interface DocumentFieldRefs {
   readonly model: Prisma.FieldRef<"Document", 'String'>
   readonly size: Prisma.FieldRef<"Document", 'Int'>
   readonly chunkCount: Prisma.FieldRef<"Document", 'Int'>
+  readonly chunkStrategy: Prisma.FieldRef<"Document", 'String'>
   readonly status: Prisma.FieldRef<"Document", 'DocumentStatus'>
   readonly error: Prisma.FieldRef<"Document", 'String'>
   readonly attempt: Prisma.FieldRef<"Document", 'Int'>

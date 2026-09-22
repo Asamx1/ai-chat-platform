@@ -1,3 +1,5 @@
+import type { Citation } from '../../lib/citation-metadata';
+
 export interface Conversation {
   id: string;
   title: string;
@@ -15,6 +17,7 @@ export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
   content: string;
+  citations?: Citation[];
   error?: string | undefined;
   /** assistant 流式消息的状态角标 */
   status?: MessageStatus | undefined;

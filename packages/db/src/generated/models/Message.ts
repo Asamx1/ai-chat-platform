@@ -50,6 +50,7 @@ export type MessageCountAggregateOutputType = {
   parentId: number
   participantId: number
   content: number
+  citations: number
   status: number
   createdAt: number
   _all: number
@@ -82,6 +83,7 @@ export type MessageCountAggregateInputType = {
   parentId?: true
   participantId?: true
   content?: true
+  citations?: true
   status?: true
   createdAt?: true
   _all?: true
@@ -165,6 +167,7 @@ export type MessageGroupByOutputType = {
   parentId: string | null
   participantId: string | null
   content: string
+  citations: runtime.JsonValue | null
   status: $Enums.MessageStatus
   createdAt: Date
   _count: MessageCountAggregateOutputType | null
@@ -196,6 +199,7 @@ export type MessageWhereInput = {
   parentId?: Prisma.StringNullableFilter<"Message"> | string | null
   participantId?: Prisma.StringNullableFilter<"Message"> | string | null
   content?: Prisma.StringFilter<"Message"> | string
+  citations?: Prisma.JsonNullableFilter<"Message">
   status?: Prisma.EnumMessageStatusFilter<"Message"> | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
   conversation?: Prisma.XOR<Prisma.ConversationScalarRelationFilter, Prisma.ConversationWhereInput>
@@ -210,6 +214,7 @@ export type MessageOrderByWithRelationInput = {
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   participantId?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrder
+  citations?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   conversation?: Prisma.ConversationOrderByWithRelationInput
@@ -227,6 +232,7 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<{
   parentId?: Prisma.StringNullableFilter<"Message"> | string | null
   participantId?: Prisma.StringNullableFilter<"Message"> | string | null
   content?: Prisma.StringFilter<"Message"> | string
+  citations?: Prisma.JsonNullableFilter<"Message">
   status?: Prisma.EnumMessageStatusFilter<"Message"> | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
   conversation?: Prisma.XOR<Prisma.ConversationScalarRelationFilter, Prisma.ConversationWhereInput>
@@ -241,6 +247,7 @@ export type MessageOrderByWithAggregationInput = {
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   participantId?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrder
+  citations?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.MessageCountOrderByAggregateInput
@@ -257,6 +264,7 @@ export type MessageScalarWhereWithAggregatesInput = {
   parentId?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
   participantId?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
   content?: Prisma.StringWithAggregatesFilter<"Message"> | string
+  citations?: Prisma.JsonNullableWithAggregatesFilter<"Message">
   status?: Prisma.EnumMessageStatusWithAggregatesFilter<"Message"> | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Message"> | Date | string
 }
@@ -264,6 +272,7 @@ export type MessageScalarWhereWithAggregatesInput = {
 export type MessageCreateInput = {
   id?: string
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
   conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput
@@ -278,6 +287,7 @@ export type MessageUncheckedCreateInput = {
   parentId?: string | null
   participantId?: string | null
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
   children?: Prisma.MessageUncheckedCreateNestedManyWithoutParentInput
@@ -286,6 +296,7 @@ export type MessageUncheckedCreateInput = {
 export type MessageUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput
@@ -300,6 +311,7 @@ export type MessageUncheckedUpdateInput = {
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.MessageUncheckedUpdateManyWithoutParentNestedInput
@@ -311,6 +323,7 @@ export type MessageCreateManyInput = {
   parentId?: string | null
   participantId?: string | null
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
 }
@@ -318,6 +331,7 @@ export type MessageCreateManyInput = {
 export type MessageUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -328,6 +342,7 @@ export type MessageUncheckedUpdateManyInput = {
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -353,6 +368,7 @@ export type MessageCountOrderByAggregateInput = {
   parentId?: Prisma.SortOrder
   participantId?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  citations?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -526,6 +542,7 @@ export type MessageUncheckedUpdateManyWithoutParentNestedInput = {
 export type MessageCreateWithoutConversationInput = {
   id?: string
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
   parent?: Prisma.MessageCreateNestedOneWithoutChildrenInput
@@ -538,6 +555,7 @@ export type MessageUncheckedCreateWithoutConversationInput = {
   parentId?: string | null
   participantId?: string | null
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
   children?: Prisma.MessageUncheckedCreateNestedManyWithoutParentInput
@@ -578,6 +596,7 @@ export type MessageScalarWhereInput = {
   parentId?: Prisma.StringNullableFilter<"Message"> | string | null
   participantId?: Prisma.StringNullableFilter<"Message"> | string | null
   content?: Prisma.StringFilter<"Message"> | string
+  citations?: Prisma.JsonNullableFilter<"Message">
   status?: Prisma.EnumMessageStatusFilter<"Message"> | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
 }
@@ -585,6 +604,7 @@ export type MessageScalarWhereInput = {
 export type MessageCreateWithoutParticipantInput = {
   id?: string
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
   conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput
@@ -597,6 +617,7 @@ export type MessageUncheckedCreateWithoutParticipantInput = {
   conversationId: string
   parentId?: string | null
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
   children?: Prisma.MessageUncheckedCreateNestedManyWithoutParentInput
@@ -631,6 +652,7 @@ export type MessageUpdateManyWithWhereWithoutParticipantInput = {
 export type MessageCreateWithoutChildrenInput = {
   id?: string
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
   conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput
@@ -644,6 +666,7 @@ export type MessageUncheckedCreateWithoutChildrenInput = {
   parentId?: string | null
   participantId?: string | null
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
 }
@@ -656,6 +679,7 @@ export type MessageCreateOrConnectWithoutChildrenInput = {
 export type MessageCreateWithoutParentInput = {
   id?: string
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
   conversation: Prisma.ConversationCreateNestedOneWithoutMessagesInput
@@ -668,6 +692,7 @@ export type MessageUncheckedCreateWithoutParentInput = {
   conversationId: string
   participantId?: string | null
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
   children?: Prisma.MessageUncheckedCreateNestedManyWithoutParentInput
@@ -697,6 +722,7 @@ export type MessageUpdateToOneWithWhereWithoutChildrenInput = {
 export type MessageUpdateWithoutChildrenInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput
@@ -710,6 +736,7 @@ export type MessageUncheckedUpdateWithoutChildrenInput = {
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -735,6 +762,7 @@ export type MessageCreateManyConversationInput = {
   parentId?: string | null
   participantId?: string | null
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
 }
@@ -742,6 +770,7 @@ export type MessageCreateManyConversationInput = {
 export type MessageUpdateWithoutConversationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   parent?: Prisma.MessageUpdateOneWithoutChildrenNestedInput
@@ -754,6 +783,7 @@ export type MessageUncheckedUpdateWithoutConversationInput = {
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.MessageUncheckedUpdateManyWithoutParentNestedInput
@@ -764,6 +794,7 @@ export type MessageUncheckedUpdateManyWithoutConversationInput = {
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   participantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -773,6 +804,7 @@ export type MessageCreateManyParticipantInput = {
   conversationId: string
   parentId?: string | null
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
 }
@@ -780,6 +812,7 @@ export type MessageCreateManyParticipantInput = {
 export type MessageUpdateWithoutParticipantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput
@@ -792,6 +825,7 @@ export type MessageUncheckedUpdateWithoutParticipantInput = {
   conversationId?: Prisma.StringFieldUpdateOperationsInput | string
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.MessageUncheckedUpdateManyWithoutParentNestedInput
@@ -802,6 +836,7 @@ export type MessageUncheckedUpdateManyWithoutParticipantInput = {
   conversationId?: Prisma.StringFieldUpdateOperationsInput | string
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -811,6 +846,7 @@ export type MessageCreateManyParentInput = {
   conversationId: string
   participantId?: string | null
   content: string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status: $Enums.MessageStatus
   createdAt?: Date | string
 }
@@ -818,6 +854,7 @@ export type MessageCreateManyParentInput = {
 export type MessageUpdateWithoutParentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   conversation?: Prisma.ConversationUpdateOneRequiredWithoutMessagesNestedInput
@@ -830,6 +867,7 @@ export type MessageUncheckedUpdateWithoutParentInput = {
   conversationId?: Prisma.StringFieldUpdateOperationsInput | string
   participantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.MessageUncheckedUpdateManyWithoutParentNestedInput
@@ -840,6 +878,7 @@ export type MessageUncheckedUpdateManyWithoutParentInput = {
   conversationId?: Prisma.StringFieldUpdateOperationsInput | string
   participantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  citations?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -881,6 +920,7 @@ export type MessageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   parentId?: boolean
   participantId?: boolean
   content?: boolean
+  citations?: boolean
   status?: boolean
   createdAt?: boolean
   conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>
@@ -896,6 +936,7 @@ export type MessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   parentId?: boolean
   participantId?: boolean
   content?: boolean
+  citations?: boolean
   status?: boolean
   createdAt?: boolean
   conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>
@@ -909,6 +950,7 @@ export type MessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   parentId?: boolean
   participantId?: boolean
   content?: boolean
+  citations?: boolean
   status?: boolean
   createdAt?: boolean
   conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>
@@ -922,11 +964,12 @@ export type MessageSelectScalar = {
   parentId?: boolean
   participantId?: boolean
   content?: boolean
+  citations?: boolean
   status?: boolean
   createdAt?: boolean
 }
 
-export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "conversationId" | "parentId" | "participantId" | "content" | "status" | "createdAt", ExtArgs["result"]["message"]>
+export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "conversationId" | "parentId" | "participantId" | "content" | "citations" | "status" | "createdAt", ExtArgs["result"]["message"]>
 export type MessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   conversation?: boolean | Prisma.ConversationDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Message$parentArgs<ExtArgs>
@@ -959,6 +1002,7 @@ export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     parentId: string | null
     participantId: string | null
     content: string
+    citations: runtime.JsonValue | null
     status: $Enums.MessageStatus
     createdAt: Date
   }, ExtArgs["result"]["message"]>
@@ -1393,6 +1437,7 @@ export interface MessageFieldRefs {
   readonly parentId: Prisma.FieldRef<"Message", 'String'>
   readonly participantId: Prisma.FieldRef<"Message", 'String'>
   readonly content: Prisma.FieldRef<"Message", 'String'>
+  readonly citations: Prisma.FieldRef<"Message", 'Json'>
   readonly status: Prisma.FieldRef<"Message", 'MessageStatus'>
   readonly createdAt: Prisma.FieldRef<"Message", 'DateTime'>
 }

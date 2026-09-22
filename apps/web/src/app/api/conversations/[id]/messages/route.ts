@@ -2,6 +2,7 @@ import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@aichat/db';
+import { parseCitations } from '@/lib/citation-metadata';
 
 /** GET /api/conversations/[id]/messages?limit=50&before=<iso>
  * 历史消息分页（createdAt 游标倒序返回正序数组）。所有权校验：非本人 404。 */
@@ -32,18 +33,20 @@ export async function GET(
     select: {
       id: true,
       content: true,
+      citations: true,
       status: true,
       participantId: true,
       createdAt: true,
     },
   });
-  // participantId 非空 = assistant 席位消息；M1 单聊：participant 为空 = user 消息
+  // New inline assistant messages store citations (including []); legacy rows retain their existing role inference.
   const items = messages
     .slice()
     .reverse()
     .map((m) => ({
       id: m.id,
-      role: m.participantId ? ('assistant' as const) : ('user' as const),
+      role: m.participantId || Array.isArray(m.citations) ? ('assistant' as const) : ('user' as const),
+      citations: parseCitations(m.citations),
       content: m.content,
       status: m.status,
       createdAt: m.createdAt.toISOString(),

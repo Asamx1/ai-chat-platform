@@ -1,8 +1,9 @@
 import type { ChatMessage } from './types';
+import { parseCitations } from '../../lib/citation-metadata';
 
 export interface RunEvent {
   type: string;
-  payload?: { delta?: string; error?: unknown };
+  payload?: { delta?: string; error?: unknown; citations?: unknown };
   // Compatibility with older flattened events.
   delta?: string;
   error?: unknown;
@@ -35,7 +36,7 @@ export function applyRunEvent(message: ChatMessage, event: RunEvent, retryKey: s
         status: 'streaming', error: undefined, retryIdempotencyKey: undefined,
       };
     case 'run.succeeded':
-      return { ...message, status: 'succeeded', error: undefined, retryIdempotencyKey: undefined };
+      return { ...message, citations: parseCitations(event.payload?.citations), status: 'succeeded', error: undefined, retryIdempotencyKey: undefined };
     case 'run.failed':
     case 'error':
       return {

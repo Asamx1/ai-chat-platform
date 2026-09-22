@@ -1,7 +1,8 @@
 import { prisma } from '@aichat/db';
+import { parseHeadingPath, type Citation } from './citation-metadata';
 import type { ChatMessage, ProviderCapabilities } from '@aichat/providers';
 
-export type RagHit = { documentId: string; ordinal: number; name: string; text: string; distance: number };
+export type RagHit = { documentId: string; ordinal: number; name: string; text: string; distance: number; headingPath?: string | null };
 export type RagSnapshot = { status: 'READY' | 'SKIPPED' | 'RAG_UNAVAILABLE'; hits: RagHit[] };
 
 async function deadline<T>(work: () => Promise<T>): Promise<T> {
@@ -41,7 +42,7 @@ export async function revalidateContext(userId: string, conversationId: string, 
       const valid: RagHit[] = [];
       for (const hit of topHits(snapshot.hits)) {
         const rows = await prisma.$queryRaw<Omit<RagHit, 'distance'>[]>`
-          SELECT c."documentId", c.ordinal, d.name, c.text FROM "Chunk" c
+          SELECT c."documentId", c.ordinal, d.name, c.text, c."headingPath" FROM "Chunk" c
           JOIN "Document" d ON d.id = c."documentId" JOIN "KnowledgeBase" k ON k.id = d."kbId"
           JOIN "ConversationKnowledgeBase" m ON m."kbId" = k.id JOIN "Conversation" v ON v.id = m."conversationId"
           WHERE c."documentId" = ${hit.documentId} AND c.ordinal = ${hit.ordinal}
@@ -75,8 +76,17 @@ export function injectContext(messages: ChatMessage[], hits: RagHit[], capabilit
     const injected = [...messages.filter(message => message.role === 'system'), instruction,
       ...messages.filter(message => message.role !== 'system').slice(0, -1), context,
       ...messages.filter(message => message.role !== 'system').slice(-1)];
-    if (cost([instruction, context]) <= 2048 && cost(injected) <= budget) return { messages: injected, maxTokens };
+    if (cost([instruction, context]) <= 2048 && cost(injected) <= budget) return { messages: injected, maxTokens, citations: selected.map(toCitation) };
     selected.pop();
   }
-  return { messages: [...messages], maxTokens };
+  return { messages: [...messages], maxTokens, citations: [] as Citation[] };
+}
+
+function toCitation(hit: RagHit): Citation {
+  const text = Array.from(hit.text);
+  return {
+    documentId: hit.documentId, name: hit.name, ordinal: hit.ordinal,
+    text: text.length > 200 ? `${text.slice(0, 200).join('')}…` : hit.text,
+    headingPath: parseHeadingPath(hit.headingPath), distance: hit.distance,
+  };
 }
