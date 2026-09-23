@@ -24,9 +24,10 @@ export async function consumeCompileOutbox(): Promise<boolean> {
 export async function claimCompileJob(owner: string): Promise<CompileJobRow | null> {
   const [row] = await prisma.$queryRawUnsafe<CompileJobRow[]>(`UPDATE "CompileJob" j SET status='RUNNING',attempt=j.attempt+1,
     "leaseOwner"=$1,"leaseExpiresAt"=clock_timestamp()+interval '90 seconds',"lastError"=NULL,"updatedAt"=clock_timestamp()
-    WHERE j.id=(SELECT id FROM "CompileJob" WHERE attempt<"maxAttempts" AND
+    WHERE j.id=(SELECT id FROM "CompileJob" WHERE attempt<"maxAttempts" AND "artifactType"='SUMMARY'
+      AND EXISTS (SELECT 1 FROM "IndexGeneration" g WHERE g.id="CompileJob"."generationId" AND g.status<>'FAILED') AND
       ((status='PENDING' AND ("leaseExpiresAt" IS NULL OR "leaseExpiresAt"<=clock_timestamp())) OR
-       (status='RUNNING' AND "leaseExpiresAt"<=clock_timestamp()))
+       (status='RUNNING' AND "leaseExpiresAt"<=clock_timestamp())))
       ORDER BY "createdAt",id LIMIT 1 FOR UPDATE SKIP LOCKED)
     RETURNING j.id,j."kbId",j."sourceVersionId",j."generationId",j."artifactType",j.attempt,j."maxAttempts",j."leaseOwner",
       (SELECT "documentId" FROM "SourceVersion" WHERE id=j."sourceVersionId") AS "documentId",

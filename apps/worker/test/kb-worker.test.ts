@@ -51,7 +51,8 @@ it.each([
 ])('parses KB_CONCURRENCY=%s and gives each loop a distinct owner', async (value, count) => {
   vi.stubEnv('KB_CONCURRENCY', value);
   await runKbWorker('worker', () => false, true);
-  expect(query).toHaveBeenCalledTimes(count);
+  // Each loop now issues two SELECT claims (rebuild queue first, then documents).
+  expect(query).toHaveBeenCalledTimes(count * 2);
   expect(new Set(query.mock.calls.map(call => call[1])).size).toBe(count);
 });
 
@@ -64,7 +65,9 @@ it('claims concurrently without deadlock, drains without sleep and waits for eve
   let claims = 0;
   let stopping = false;
   let settled = false;
-  query.mockImplementation(async () => {
+  query.mockImplementation(async (sql: string, ..._rest: unknown[]) => {
+    // Rebuild claims (CompileJob/RECHUNK) always come back empty here.
+    if (sql.includes('RECHUNK')) return [];
     const index = claims++;
     if (claims === 2) bothClaims.resolve();
     await bothClaims.promise;
@@ -90,15 +93,21 @@ it('claims concurrently without deadlock, drains without sleep and waits for eve
     await running;
   }
   expect(storePlan.mock.calls.map(call => call[0])).toEqual(['fast', 'next', 'slow']);
+  const documentClaims = query.mock.calls.filter(call => !String(call[0]).includes('RECHUNK'));
   for (const call of storePlan.mock.calls) {
-    expect(call[2]).toBe(query.mock.calls[call[0] === 'slow' ? 0 : call[0] === 'fast' ? 1 : 2]![1]);
+    expect(call[2]).toBe(documentClaims[call[0] === 'slow' ? 0 : call[0] === 'fast' ? 1 : 2]![1]);
   }
   expect(vi.getTimerCount()).toBe(0);
 });
 
 it('isolates document and failure-write errors and preserves model mismatch as permanent', async () => {
   const log = vi.spyOn(console, 'error').mockImplementation(() => {});
-  query.mockResolvedValueOnce([{ ...job('bad'), model: 'other-model' }]).mockResolvedValueOnce([job('good')]);
+  let documentClaims = 0;
+  query.mockImplementation(async (sql: string) => {
+    if (sql.includes('RECHUNK')) return [];
+    documentClaims += 1;
+    return documentClaims === 1 ? [{ ...job('bad'), model: 'other-model' }] : [job('good')];
+  });
   execute.mockImplementation(async (_sql, ...args) => {
     if (args[0] === 'bad') throw new Error('failure write unavailable');
     return 1;
@@ -116,13 +125,13 @@ it('waits on an empty queue and exits without another claim after shutdown', asy
   let stopping = false;
   const running = runKbWorker('worker', () => stopping);
   await vi.advanceTimersByTimeAsync(0);
-  expect(query).toHaveBeenCalledTimes(2);
+  expect(query.mock.calls.filter(call => !String(call[0]).includes('RECHUNK'))).toHaveLength(2);
   await vi.advanceTimersByTimeAsync(999);
-  expect(query).toHaveBeenCalledTimes(2);
+  expect(query.mock.calls.filter(call => !String(call[0]).includes('RECHUNK'))).toHaveLength(2);
   stopping = true;
   await vi.advanceTimersByTimeAsync(1);
   await running;
-  expect(query).toHaveBeenCalledTimes(2);
+  expect(query.mock.calls.filter(call => !String(call[0]).includes('RECHUNK'))).toHaveLength(2);
 });
 
 it('does not probe or claim when already stopping', async () => {

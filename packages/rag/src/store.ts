@@ -186,6 +186,47 @@ export async function storePlan(
   }, { timeout: 25_000 });
 }
 
+/** Commit a rebuild task without changing the live Document or active generation. */
+export async function storeRebuildPlan(jobId: string, owner: string, sourceVersionId: string,
+  plan: ChunkResult[], vectors: number[][]): Promise<void> {
+  if (!plan.length || plan.length !== vectors.length) throw new PermanentRagError('INVALID_CHUNKS');
+  vectors.forEach(validateVector);
+  const ids = new Map(plan.map(result => [result.key, randomUUID()]));
+  await prisma.$transaction(async tx => {
+    const [job] = await tx.$queryRawUnsafe<{ kbId: string; generationId: string; documentId: string }[]>(`
+      SELECT j."kbId",j."generationId",s."documentId" FROM "CompileJob" j
+      JOIN "SourceVersion" s ON s.id=j."sourceVersionId"
+      JOIN "IndexGeneration" g ON g.id=j."generationId"
+      WHERE j.id=$1 AND j."leaseOwner"=$2 AND j."sourceVersionId"=$3 AND j.status='RUNNING'
+        AND j."leaseExpiresAt">clock_timestamp() AND g.status='BUILDING' FOR UPDATE OF j,g`,
+      jobId, owner, sourceVersionId);
+    if (!job) throw new LeaseLostError('LEASE_LOST');
+    const [source] = await tx.$queryRawUnsafe<{ id: string }[]>(`
+      SELECT id FROM "Document" WHERE id=$1 AND "kbId"=$2 AND kind='SOURCE'
+        AND "sourceVersionId"=$3 AND status='READY'`, job.documentId, job.kbId, sourceVersionId);
+    if (!source) throw new LeaseLostError('SOURCE_CHANGED');
+    for (const [index, result] of plan.entries()) {
+      if (result.kind !== 'PARENT') continue;
+      await tx.$executeRawUnsafe(`INSERT INTO "Chunk" (id,"documentId","parentId",kind,ordinal,start,"end",text,"headingPath",embedding,"kbId","generationId")
+        VALUES ($1,$2,NULL,$3,$4,$5,$6,$7,$8,$9::vector(1024),$10,$11)`, ids.get(result.key), job.documentId,
+        result.kind, result.ordinal, result.start, result.end, result.text, JSON.stringify(result.headingPath),
+        JSON.stringify(vectors[index]), job.kbId, job.generationId);
+    }
+    for (const [index, result] of plan.entries()) {
+      if (result.kind === 'PARENT') continue;
+      await tx.$executeRawUnsafe(`INSERT INTO "Chunk" (id,"documentId","parentId",kind,ordinal,start,"end",text,"headingPath",embedding,"kbId","generationId")
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10::vector(1024),$11,$12)`, ids.get(result.key), job.documentId,
+        result.parentId ? ids.get(result.parentId) : null, result.kind, result.ordinal, result.start, result.end,
+        result.text, JSON.stringify(result.headingPath), JSON.stringify(vectors[index]), job.kbId, job.generationId);
+    }
+    await tx.$executeRawUnsafe(`UPDATE "CompileJob" SET status='SUCCEEDED',"leaseOwner"=NULL,"leaseExpiresAt"=NULL,"updatedAt"=clock_timestamp() WHERE id=$1`, jobId);
+    await tx.$executeRawUnsafe(`INSERT INTO "CompileOutbox" (id,"kbId","documentId","sourceVersionId","generationId","eventType")
+      VALUES ($1,$2,$3,$4,$5,'SOURCE_READY') ON CONFLICT DO NOTHING`, randomUUID(), job.kbId, job.documentId, sourceVersionId, job.generationId);
+    await tx.$executeRawUnsafe(`UPDATE "IndexGeneration" g SET "documentCount"=(SELECT count(DISTINCT "documentId") FROM "Chunk" WHERE "generationId"=g.id),
+      "chunkCount"=(SELECT count(*) FROM "Chunk" WHERE "generationId"=g.id) WHERE g.id=$1`, job.generationId);
+  }, { timeout: 25_000 });
+}
+
 /** A retrieved retrieval block (CHILD/STANDALONE) before small-to-big expansion. */
 export type ChildHit = {
   chunkId: string;

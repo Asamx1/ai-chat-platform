@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { prisma } from '@aichat/db';
 import { retrieve } from '../retrieve';
-import type { Hit } from '../retrieve';
+import type { Hit, RetrieveOptions } from '../retrieve';
 import { calculateEvidenceMetrics } from './metrics';
 import type { EvidenceMetrics } from './metrics';
 import { evalDatasetSchema } from './types';
@@ -12,6 +12,7 @@ export type EvalRunConfig = {
   corpusSnapshotId: string; generation: string; sourceVersions: Record<string, string>;
   commit: string; embeddingModel: string; strategy: string; switches: Record<string, boolean>;
   contextTokenBudget?: number; split?: 'DEV' | 'HELDOUT';
+  retrieveOptions?: RetrieveOptions;
   retriever?: (userId: string, conversationId: string, question: string) => Promise<Hit[]>;
   locate?: (hits: readonly Hit[], config: EvalRunConfig, kbId: string) => Promise<RetrievalUnit[]>;
 };
@@ -36,15 +37,18 @@ export async function locateAuthorizedHits(hits: readonly Hit[], config: EvalRun
   const located: RetrievalUnit[] = [];
   for (const hit of hits) {
     const rows = await prisma.$queryRawUnsafe<Array<{ start: number; end: number; text: string }>>(
-      `SELECT c.start,c."end",c.text FROM "Chunk" c
+      `SELECT CASE WHEN c.text=$3 THEN c.start ELSE c.start+strpos(c.text,$3)-1 END AS start,
+              CASE WHEN c.text=$3 THEN c."end" ELSE c.start+strpos(c.text,$3)-1+length($3) END AS "end",$3::text AS text FROM "Chunk" c
        JOIN "Document" d ON d.id=c."documentId"
        JOIN "KnowledgeBase" k ON k.id=d."kbId"
        JOIN "ConversationKnowledgeBase" m ON m."kbId"=k.id
        JOIN "Conversation" v ON v.id=m."conversationId"
-       WHERE c."documentId"=$1 AND c.ordinal=$2 AND c.text=$3 AND k.id=$4
+       WHERE c."documentId"=$1 AND c.ordinal=$2 AND strpos(c.text,$3)>0 AND k.id=$4
          AND k."userId"=$5 AND v."ownerId"=$5 AND v.id=$6
-         AND d.status='READY' AND d.model=$7 LIMIT 1`,
+         AND d.status='READY' AND d.model=$7 AND c."generationId"=$8
+         AND d."sourceVersionId"=$9 LIMIT 1`,
       hit.documentId, hit.ordinal, hit.text, kbId, config.userId, config.conversationId, config.embeddingModel,
+      config.generation, config.sourceVersions[hit.documentId] ?? '',
     );
     const row = rows[0];
     const version = config.sourceVersions[hit.documentId];
@@ -67,7 +71,9 @@ export async function runEvaluation(config: EvalRunConfig): Promise<EvalRunRepor
     if (item.reviewStatus !== 'APPROVED' || (config.split && item.split !== config.split)) continue;
     const start = Date.now();
     try {
-      const hits = await (config.retriever ?? retrieve)(config.userId, config.conversationId, item.question);
+      const hits = config.retriever
+        ? await config.retriever(config.userId, config.conversationId, item.question)
+        : await retrieve(config.userId, config.conversationId, item.question, config.retrieveOptions);
       const units = await (config.locate ?? locateAuthorizedHits)(hits, config, item.kbId);
       let remaining = budget;
       const context = units.filter(unit => {

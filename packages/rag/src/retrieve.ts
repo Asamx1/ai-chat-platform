@@ -92,9 +92,9 @@ function hitOnly(hit: Hit): Hit {
 
 export type GraphPath = { used: boolean; timeoutMs: number; error?: string; entities: number; relations: number };
 export type RetrievedHits = Hit[] & { graphPath: GraphPath };
-export type RetrieveOptions = { includeKinds?: readonly ('SOURCE' | 'WIKI_SUMMARY' | 'WIKI_ENTITY')[]; graphWeight?: number; candidateQuota?: readonly [number, number, number] };
+export type RetrieveOptions = { includeKinds?: readonly ('SOURCE' | 'WIKI_SUMMARY' | 'WIKI_ENTITY')[]; graphWeight?: number; candidateQuota?: readonly [number, number, number]; switches?: { wiki?: boolean; graph?: boolean }; generationOverrides?: Readonly<Record<string, string>> };
 export function allowedKinds(options?: RetrieveOptions): string[] {
-  if (process.env.RAG_WIKI !== 'true') return ['SOURCE'];
+  if (!(options?.switches?.wiki ?? (process.env.RAG_WIKI === 'true')) || process.env.RAG_WIKI === 'false') return ['SOURCE'];
   const requested = options?.includeKinds ?? ['SOURCE'];
   return [...new Set(requested.filter(kind => kind === 'SOURCE' || kind === 'WIKI_SUMMARY' || kind === 'WIKI_ENTITY'))];
 }
@@ -161,8 +161,16 @@ export async function retrieve(userId: string, conversationId: string, query: st
     where: { userId, conversations: { some: { conversationId, conversation: { ownerId: userId } } } },
     select: { id: true, activeGenerationId: true },
   }), deadline);
+  if (options?.generationOverrides) for (const kb of generations) {
+    const override = options.generationOverrides[kb.id];
+    if (!override) continue;
+    const valid = await beforeDeadline(prisma.indexGeneration.findFirst({ where: { id: override, kbId: kb.id,
+      status: { in: ['BUILDING', 'ACTIVE', 'RETIRED'] } }, select: { id: true } }), deadline);
+    if (!valid) throw new Error('INVALID_GENERATION_OVERRIDE');
+    kb.activeGenerationId = override;
+  }
   const snapshot = JSON.stringify(generations);
-  const graphEnabled = process.env.RAG_GRAPH === 'true';
+  const graphEnabled = (options?.switches?.graph ?? (process.env.RAG_GRAPH === 'true')) && process.env.RAG_GRAPH !== 'false';
   const graphBudget = Math.max(0, Math.min(300, deadline - Date.now() - 1));
   const graphDeadline = Date.now() + graphBudget;
   const graphWork: Promise<PromiseSettledResult<HopResult>[]> = graphEnabled && graphBudget > 0

@@ -2,10 +2,49 @@ import { createRequire } from 'node:module';
 import * as minio from 'minio';
 import { Worker } from 'node:worker_threads';
 import { prisma } from '@aichat/db';
-import { embed, embeddingModel, parse, planChunksAsync, writeUnlessAborted, storePlan, PermanentRagError, LeaseLostError, MAX_FILE_BYTES, isStrategyName, DEFAULT_CHUNK_CONFIG, type PlanStats } from '@aichat/rag';
+import { embed, embeddingModel, parse, planChunksAsync, writeUnlessAborted, storePlan, storeRebuildPlan, PermanentRagError, LeaseLostError, MAX_FILE_BYTES, isStrategyName, DEFAULT_CHUNK_CONFIG, type PlanStats } from '@aichat/rag';
 import { kbConcurrency } from './lib/config';
 
 type Job = { id: string; attempt: number; mime: string; objectKey: string; model: string; size: number; chunkStrategy: string };
+type RebuildJob = Job & { rebuildJobId: string; sourceVersionId: string; generationId: string; leaseOwner: string };
+export async function claimRebuild(owner: string): Promise<RebuildJob | null> {
+  const [job] = await prisma.$queryRawUnsafe<RebuildJob[]>(`UPDATE "CompileJob" j SET status='RUNNING',attempt=j.attempt+1,
+    "leaseOwner"=$1,"leaseExpiresAt"=clock_timestamp()+interval '90 seconds',"updatedAt"=clock_timestamp()
+    WHERE j.id=(SELECT q.id FROM "CompileJob" q JOIN "IndexGeneration" g ON g.id=q."generationId"
+      WHERE q."artifactType"='RECHUNK' AND g.status='BUILDING' AND q.attempt<q."maxAttempts"
+        AND (q.status='PENDING' OR (q.status='RUNNING' AND q."leaseExpiresAt"<=clock_timestamp()))
+      ORDER BY q."createdAt",q.id LIMIT 1 FOR UPDATE OF q SKIP LOCKED)
+    RETURNING j.id AS "rebuildJobId",j."sourceVersionId",j."generationId",j."leaseOwner",
+      (SELECT s."documentId" FROM "SourceVersion" s WHERE s.id=j."sourceVersionId") AS id,
+      (SELECT d.mime FROM "Document" d JOIN "SourceVersion" s ON s."documentId"=d.id WHERE s.id=j."sourceVersionId") AS mime,
+      (SELECT d."objectKey" FROM "Document" d JOIN "SourceVersion" s ON s."documentId"=d.id WHERE s.id=j."sourceVersionId") AS "objectKey",
+      (SELECT d.model FROM "Document" d JOIN "SourceVersion" s ON s."documentId"=d.id WHERE s.id=j."sourceVersionId") AS model,
+      (SELECT d.size FROM "Document" d JOIN "SourceVersion" s ON s."documentId"=d.id WHERE s.id=j."sourceVersionId") AS size,
+      split_part(j."promptVersion",':',2) AS "chunkStrategy"`, owner);
+  return job ?? null;
+}
+
+export async function processRebuild(job: RebuildJob): Promise<void> {
+  const controller = new AbortController();
+  const heartbeat = setInterval(() => { void prisma.$executeRawUnsafe(`UPDATE "CompileJob" SET "leaseExpiresAt"=clock_timestamp()+interval '90 seconds'
+    WHERE id=$1 AND status='RUNNING' AND "leaseOwner"=$2 AND "leaseExpiresAt">clock_timestamp()`, job.rebuildJobId, job.leaseOwner)
+    .then(count => { if (count !== 1) controller.abort(); }).catch(() => controller.abort()); }, 20_000);
+  try {
+    if (job.model !== embeddingModel() || !isStrategyName(job.chunkStrategy)) throw new PermanentRagError('INVALID_REBUILD_CONFIG');
+    const data = await readObject(job, controller.signal);
+    const parts = await parse(data, job.mime, bytes => parsePdf(bytes, controller.signal));
+    const plan = await planChunksAsync({ parts, mime: job.mime }, job.chunkStrategy, DEFAULT_CHUNK_CONFIG, {
+      embedBatch: texts => embed(texts, controller.signal, job.model), signal: controller.signal, embeddingModel: job.model });
+    const vectors = await embed(plan.map(item => item.text), controller.signal, job.model);
+    controller.signal.throwIfAborted();
+    await writeUnlessAborted(controller.signal, () => storeRebuildPlan(job.rebuildJobId, job.leaseOwner, job.sourceVersionId, plan, vectors));
+  } catch (error) {
+    if (error instanceof LeaseLostError || controller.signal.aborted) return;
+    await prisma.$executeRawUnsafe(`UPDATE "CompileJob" SET status=CASE WHEN attempt<"maxAttempts" THEN 'PENDING' ELSE 'FAILED' END,
+      "lastError"=$3,"leaseOwner"=NULL,"leaseExpiresAt"=NULL,"updatedAt"=clock_timestamp()
+      WHERE id=$1 AND "leaseOwner"=$2 AND status='RUNNING'`, job.rebuildJobId, job.leaseOwner, String(error).slice(0, 1000));
+  } finally { clearInterval(heartbeat); }
+}
 export async function claimDocument(worker: string): Promise<Job | null> {
   // Recovery is deliberately restricted to exhausted, expired leases.
   await prisma.$executeRawUnsafe(`UPDATE "Document" SET status='FAILED',error='ATTEMPTS_EXHAUSTED',
@@ -154,8 +193,9 @@ export async function runKbWorker(worker: string, stopping: () => boolean, once 
       try {
         if (!probed) { await embed(['probe'], AbortSignal.timeout(60_000)); probed = true; }
         if (stopping()) break;
-        const job = await claimDocument(owner);
-        if (job) { await processDocument(job, owner); processed = true; }
+        const rebuild = await claimRebuild(owner);
+        if (rebuild) { await processRebuild(rebuild); processed = true; }
+        else { const job = await claimDocument(owner); if (job) { await processDocument(job, owner); processed = true; } }
       } catch (error: unknown) { console.error('[kb-worker]', error); }
       if (once || stopping()) break;
       if (!processed) await new Promise(resolve => setTimeout(resolve, 1_000));
