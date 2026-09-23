@@ -11,7 +11,7 @@
  *   （3 策略 × 60 QA × 2 臂判分，串行 Ollama，预计 30-60 分钟）
  * 输出：experiments/results/m11-rerank-arm.{json,md}（由执行产生，勿手写）。
  */
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, appendFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { wilsonCI } from '../analysis/stats';
 import { chunkDocument } from '../../packages/rag/src/chunk';
@@ -319,6 +319,21 @@ async function main(): Promise<void> {
   mkdirSync(resultsDir, { recursive: true });
 
   const rows: Row[] = [];
+  // 断点续跑:WSL 重启频发,逐行落盘,重启后跳过已完成 (strategy|arm|qaId)
+  const PROGRESS = join(resultsDir, 'm11-rerank-arm.progress.jsonl');
+  const done = new Set<string>();
+  if (existsSync(PROGRESS)) {
+    for (const line of readFileSync(PROGRESS, 'utf8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const r = JSON.parse(line) as Row;
+        done.add(`${r.strategy}|${r.arm}|${r.qaId}`);
+        rows.push(r);
+      } catch { /* 截断行忽略 */ }
+    }
+    if (done.size) process.stderr.write(`[resume] ${done.size} rows already done\n`);
+  }
+  const checkpoint = (row: Row): void => { appendFileSync(PROGRESS, JSON.stringify(row) + '\n'); };
 
   for (const strategy of STRATEGIES) {
     const indexed: Indexed[] = [];
@@ -366,17 +381,18 @@ async function main(): Promise<void> {
       ranked = maximalMarginalRelevance(ranked, CANDIDATE_K);
 
       // arm off：与 m9-hybrid-arm 相同，MMR 后直接 top-5
+      if (done.has(`${strategy}|off|${qa.id}`) && done.has(`${strategy}|on|${qa.id}`)) continue;
       const tOff = Date.now();
       const top5Off = ranked.slice(0, TOP_K);
-      const verdictOff = await judge(qa, top5Off.map((c) => c.text));
-      rows.push({
+      const verdictOff = done.has(`${strategy}|off|${qa.id}`) ? null : await judge(qa, top5Off.map((c) => c.text));
+      if (verdictOff) rows.push({
         strategy, arm: 'off', qaId: qa.id,
         top5: top5Off.map((c) => ({ doc: c.doc, ordinal: c.ordinal, kind: c.kind })),
         hit: verdictOff.hit, score: verdictOff.score, judgeFallback: verdictOff.fallback,
         rerankFallback: false, rerankMs: 0, elapsedMs: Date.now() - tOff,
         error: verdictOff.error,
       });
-      process.stderr.write(`[${strategy}] ${qa.id} off hit=${verdictOff.hit} score=${verdictOff.score}\n`);
+      if (verdictOff) { checkpoint(rows[rows.length - 1]!); process.stderr.write(`[${strategy}] ${qa.id} off hit=${verdictOff.hit} score=${verdictOff.score}\n`); }
 
       // arm on：MMR 后 top-10 → LLM rerank（独立计时）→ top-5
       const tOn = Date.now();
@@ -384,15 +400,15 @@ async function main(): Promise<void> {
       const { items: reranked, fallback: rrFallback } = await rerank(qa.question, ranked.slice(0, RERANK_CANDIDATE_K));
       const rerankMs = Date.now() - tRerank;
       const top5On = reranked.slice(0, TOP_K);
-      const verdictOn = await judge(qa, top5On.map((c) => c.text));
-      rows.push({
+      const verdictOn = done.has(`${strategy}|on|${qa.id}`) ? null : await judge(qa, top5On.map((c) => c.text));
+      if (verdictOn) rows.push({
         strategy, arm: 'on', qaId: qa.id,
         top5: top5On.map((c) => ({ doc: c.doc, ordinal: c.ordinal, kind: c.kind })),
         hit: verdictOn.hit, score: verdictOn.score, judgeFallback: verdictOn.fallback,
         rerankFallback: rrFallback, rerankMs, elapsedMs: Date.now() - tOn,
         error: verdictOn.error,
       });
-      process.stderr.write(`[${strategy}] ${qa.id} on  hit=${verdictOn.hit} score=${verdictOn.score} rerankMs=${rerankMs}${rrFallback ? ' (fallback)' : ''}\n`);
+      if (verdictOn) { checkpoint(rows[rows.length - 1]!); process.stderr.write(`[${strategy}] ${qa.id} on  hit=${verdictOn.hit} score=${verdictOn.score} rerankMs=${rerankMs}${rrFallback ? ' (fallback)' : ''}\n`); }
     }
   }
 
