@@ -30,9 +30,8 @@ try { $r = Invoke-WebRequest -Uri 'http://127.0.0.1:3001/login' -UseBasicParsing
 if ($webUp) {
   Write-Log 'OK' 'S3' 'Web :3001 已在运行,跳过'
 } else {
-  Write-Log 'WAIT' 'S3' 'WSL 内拉起 web dev server(:3001,env 从 /tmp/m10logs/env.sh 注入)…'
-  wsl -- bash -c "mkdir -p /tmp/m10logs && cd /home/codex/AI-Workstation && .venv/bin/python /home/codex/code/ai-chat-platform/repo/infra/launcher/fullenv.py > /tmp/m10logs/env.sh" | Out-Null
-  wsl -- bash -c "cd $wslRepo/apps/web && source /tmp/m10logs/env.sh && export PATH=`$HOME/.nvm/versions/node/v24.16.0/bin:`$PATH && nohup pnpm dev -p 3001 > /tmp/m10logs/web3001.log 2>&1 & disown" | Out-Null
+  Write-Log 'WAIT' 'S3' 'WSL 内拉起 web dev server(:3001)…'
+  wsl -- bash "$wslRepo/infra/launcher/wsl-start-web.sh" | Out-Null
   $ok = $false
   foreach ($i in 1..20) {
     Start-Sleep -Seconds 3
@@ -47,7 +46,7 @@ if ($wk -match '^[1-9]') {
   Write-Log 'OK' 'S4' "Worker 已在运行($wk 个进程),跳过"
 } else {
   Write-Log 'WAIT' 'S4' '拉起 worker…'
-  wsl -- bash -c "cd $wslRepo/apps/worker && source /tmp/m10logs/env.sh && export PATH=`$HOME/.nvm/versions/node/v24.16.0/bin:`$PATH && nohup pnpm dev > /tmp/m10logs/worker.log 2>&1 & disown" | Out-Null
+  wsl -- bash "$wslRepo/infra/launcher/wsl-start-worker.sh" | Out-Null
   Start-Sleep -Seconds 6
   $wk = (wsl -- bash -c "pgrep -fc 'kb-worker|worker/src' 2>/dev/null || echo 0" | Select-Object -First 1).Trim()
   if ($wk -match '^[1-9]') { Write-Log 'OK' 'S4' "Worker 就绪($wk)" } else { Write-Log 'WARN' 'S4' 'Worker 未起(KB 功能受限,聊天可用)' }
