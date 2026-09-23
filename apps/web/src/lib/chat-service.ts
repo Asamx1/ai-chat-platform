@@ -1,3 +1,5 @@
+import { CHAT_SSE } from './config';
+import type { ChatStreamEvent } from './chat-stream';
 import { quotaProvider } from '@aichat/providers/quota-provider';
 import { prisma } from '@aichat/db';
 import type { Prisma } from '@aichat/db';
@@ -297,7 +299,7 @@ async function executeRunInline(
     });
     await appendEvent(runId, 'run.succeeded', { citations: prompt.citations });
   } catch (err) {
-    const aborted = controller.signal.aborted;
+    const aborted = controller.signal.aborted || err instanceof AbortedError;
     const status = aborted ? 'CANCELLED' : 'FAILED';
     // 先落终态再写事件：若事件写入失败，run 也不会滞留 RUNNING。
     await prisma.orchestrationRun
@@ -343,4 +345,63 @@ export async function stopChat(params: { userId: string; runId: string }): Promi
     data: { cancelRequested: true },
   }).catch(() => {});
   return { ok: true };
+}
+
+/** Follow the durable event log so inline, worker and idempotent replay share execution. */
+export async function* sendChatStream(
+  input: SendChatInput,
+  signal?: AbortSignal,
+): AsyncGenerator<ChatStreamEvent> {
+  if (signal?.aborted) return;
+  const result = await sendChat(input);
+  let terminal = false;
+  let cancellation: Promise<unknown> | undefined;
+  const cancel = () => {
+    if (terminal) return;
+    cancellation ??= stopChat({ userId: input.userId, runId: result.runId }).catch(() => {});
+  };
+  signal?.addEventListener('abort', cancel, { once: true });
+  let after = -1;
+  try {
+    if (signal?.aborted) return;
+    yield { type: 'start', ...result };
+    while (!signal?.aborted) {
+      // Read status first: a terminal snapshot guarantees all preceding deltas are committed.
+      const run = await prisma.orchestrationRun.findUnique({ where: { id: result.runId } });
+      if (!run) throw new ChatNotFoundError('run not found');
+      const events = await prisma.runEvent.findMany({
+        where: { runId: result.runId, seq: { gt: after } },
+        orderBy: { seq: 'asc' }, take: CHAT_SSE.batchSize,
+      });
+      for (const event of events) {
+        if (signal?.aborted) return;
+        after = event.seq;
+        const payload = event.payload as { delta?: string; citations?: unknown };
+        if (event.type === 'provider.delta') yield { type: 'delta', text: payload.delta ?? '' };
+        if (event.type === 'run.succeeded') {
+          terminal = true;
+          yield { type: 'done', ...result, citations: payload.citations };
+          return;
+        }
+      }
+      if (events.length === CHAT_SSE.batchSize) continue;
+      if (['SUCCEEDED', 'FAILED', 'CANCELLED'].includes(run.status)) {
+        terminal = true;
+        if (run.status === 'SUCCEEDED') yield { type: 'done', ...result };
+        else yield { type: 'error', error: run.status === 'CANCELLED' ? '生成已停止' : '生成失败，请稍后重试。', cancelled: run.status === 'CANCELLED' };
+        return;
+      }
+      await new Promise<void>(resolve => {
+        const done = () => { clearTimeout(timer); signal?.removeEventListener('abort', done); resolve(); };
+        const timer = setTimeout(done, CHAT_SSE.pollIntervalMs);
+        signal?.addEventListener('abort', done, { once: true });
+        if (signal?.aborted) done();
+      });
+    }
+  } catch (error) {
+    if (!signal?.aborted) yield { type: 'error', error: error instanceof Error ? error.message : '生成失败' };
+  } finally {
+    signal?.removeEventListener('abort', cancel);
+    if (!terminal) { cancel(); await cancellation; }
+  }
 }

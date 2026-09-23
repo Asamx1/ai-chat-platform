@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import type { ChatMessage } from './types';
 import CitationBadges from './CitationBadges';
+import Markdown from './Markdown';
 
 const STATUS_LABEL: Record<string, string> = {
   streaming: '生成中…',
@@ -35,7 +36,7 @@ export default function MessageStream({
         <div key={m.id} className={`msg-row ${m.role}`}>
           <div>
             <div className="msg-bubble">
-              {m.content || (m.status === 'streaming' ? <span className="thinking" role="status" aria-label="正在思考"><span aria-hidden="true" /><span aria-hidden="true" /><span aria-hidden="true" /></span> : '')}
+              {(m.content ? (m.role === 'assistant' ? <Markdown text={m.content} /> : m.content) : '') || (m.status === 'streaming' ? <span className="thinking" role="status" aria-label="正在思考"><span aria-hidden="true" /><span aria-hidden="true" /><span aria-hidden="true" /></span> : '')}
               {m.role === 'assistant' && <CitationBadges citations={m.citations ?? []} />}
             </div>
             {m.status && (

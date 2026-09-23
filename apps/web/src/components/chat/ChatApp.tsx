@@ -1,5 +1,8 @@
 'use client';
 
+import { CHAT_SSE } from '@/lib/config';
+import { readChatStream } from '@/lib/chat-stream';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ConversationList from '@/components/chat/ConversationList';
 import MessageStream from '@/components/chat/MessageStream';
@@ -37,6 +40,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
   // 协作运行侧栏：进度视图与事件详情
   const [collabRunId, setCollabRunId] = useState<string | null>(null);
   const newConversationRef = useRef<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
   const esRef = useRef<EventSource | null>(null);
   // 当前流式 assistant 消息 id 与待重试的 idempotencyKey
   const assistantIdRef = useRef<string | null>(null);
@@ -84,9 +88,11 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
   }, [activeId]);
 
   // 组件卸载时关流
-  useEffect(() => () => esRef.current?.close(), []);
+  useEffect(() => () => { esRef.current?.close(); abortRef.current?.abort(); }, []);
 
   const closeStream = useCallback(() => {
+    abortRef.current?.abort();
+    abortRef.current = null;
     esRef.current?.close();
     esRef.current = null;
     assistantIdRef.current = null;
@@ -99,25 +105,17 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
       setSending(true);
       setNotice(null);
       try {
-        // ① POST /api/chat/send {conversationId?,content,modelKey,idempotencyKey}
-        //    → {conversationId,messageId,runId}
-        const res = await fetch('/api/chat/send', {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ...(convId ? { conversationId: convId } : {}),
-            content,
-            modelKey,
-            idempotencyKey,
-          }),
+        const controller = new AbortController();
+        abortRef.current = controller;
+        const body = JSON.stringify({
+          ...(convId ? { conversationId: convId } : {}), content, modelKey, idempotencyKey,
         });
-        if (!res.ok) throw new Error(await sendFailure(res));
-        const { conversationId, runId: rid } = (await res.json()) as {
-          conversationId: string;
-          messageId?: string;
-          runId: string;
-        };
+        const request = (stream: boolean) => fetch('/api/chat/send', {
+          method: 'POST', credentials: 'include', signal: controller.signal,
+          headers: { 'Content-Type': 'application/json', Accept: stream ? CHAT_SSE.contentType : 'application/json' },
+          body,
+        });
+        const initialize = (conversationId: string, rid: string) => {
         convId = conversationId;
         if (!activeId) {
           newConversationRef.current = conversationId;
@@ -133,7 +131,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
           // 重试时去掉旧的失败 assistant 气泡
           const base = prev.filter((m) => m.retryIdempotencyKey !== idempotencyKey || m.role !== 'assistant');
           const next: ChatMessage[] = [
-            ...base.filter((m) => m.id !== userId),
+            ...base.filter((m) => m.id !== userId && m.id !== assistantId),
             { id: userId, role: 'user', content },
             { id: assistantId, role: 'assistant', content: '', status: 'streaming' },
           ];
@@ -141,6 +139,46 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
           return next;
         });
         setRunId(rid);
+        return assistantId;
+
+        };
+        let response: Response | undefined;
+        try {
+          response = await request(true);
+          if (response.ok && response.headers.get('content-type')?.includes(CHAT_SSE.contentType) && response.body) {
+            let completed = false;
+            for await (const event of readChatStream(response.body)) {
+              if (event.type === 'start') initialize(event.conversationId, event.runId);
+              else {
+                const mapped: RunEvent = event.type === 'delta'
+                  ? { type: 'provider.delta', payload: { delta: event.text } }
+                  : event.type === 'done'
+                    ? { type: 'run.succeeded', payload: { citations: event.citations } }
+                    : { type: event.cancelled ? 'run.cancelled' : 'error', error: event.error };
+                if (event.type === 'error' && !event.cancelled) setNotice(event.error);
+                const aid = assistantIdRef.current;
+                setMessages(prev => {
+                  const next = prev.map(m => m.id === aid ? applyRunEvent(m, mapped, idempotencyKey) : m);
+                  if (convId) persist(convId, next);
+                  return next;
+                });
+                if (event.type === 'done' || event.type === 'error') completed = true;
+              }
+            }
+            if (!completed) throw new Error('消息流意外结束');
+            closeStream();
+            setSending(false);
+            return;
+          }
+        } catch (error) {
+          if (controller.signal.aborted) throw error;
+          // Replay the same run via the legacy transport, never create another request key.
+          response = undefined;
+        }
+        if (!response?.ok || response.headers.get('content-type')?.includes(CHAT_SSE.contentType)) response = await request(false);
+        if (!response.ok) throw new Error(await sendFailure(response));
+        const { conversationId, runId: rid } = await response.json() as { conversationId: string; runId: string };
+        const assistantId = initialize(conversationId, rid);
 
         // ② EventSource 订阅 GET /api/runs/[runId]/events
         //    断线浏览器自动重连并携带 Last-Event-ID（服务端 15s 心跳）
@@ -177,7 +215,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
       } catch (e) {
         setSending(false);
         closeStream();
-        setNotice(e instanceof Error ? e.message : '发送失败');
+        if (!(e instanceof Error && e.name === 'AbortError')) setNotice(e instanceof Error ? e.message : '发送失败');
       }
     },
     [activeId, modelKey, persist, closeStream],

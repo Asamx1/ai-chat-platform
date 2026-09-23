@@ -1,13 +1,15 @@
+import { CHAT_SSE } from '@/lib/config';
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { ModelResolutionError } from '@aichat/providers';
 import { auth } from '@/lib/auth';
-import { sendChat, ChatNotFoundError } from '@/lib/chat-service';
+import { sendChat, sendChatStream, ChatNotFoundError } from '@/lib/chat-service';
 
 export const maxDuration = 300;
 
 const BodySchema = z.object({
+  stream: z.boolean().optional(),
   conversationId: z.string().min(1).optional(),
   content: z.string().min(1),
   modelKey: z.string().min(1),
@@ -36,14 +38,49 @@ export async function POST(req: Request) {
   }
 
   try {
-    const result = await sendChat({
+    const input = {
       userId: session.user.id,
       content: parsed.data.content,
       modelKey: parsed.data.modelKey,
       idempotencyKey: parsed.data.idempotencyKey,
       conversationId: parsed.data.conversationId ?? undefined,
-    });
-    return NextResponse.json(result);
+    };
+    if (parsed.data.stream || req.headers.get('accept')?.includes(CHAT_SSE.contentType)) {
+      const abort = new AbortController();
+      const onAbort = () => abort.abort();
+      req.signal.addEventListener('abort', onAbort, { once: true });
+      if (req.signal.aborted) abort.abort();
+      const iterator = sendChatStream(input, abort.signal);
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream<Uint8Array>({
+        async start(controller) {
+          const heartbeat = setInterval(() => {
+            if (!abort.signal.aborted) controller.enqueue(encoder.encode(': heartbeat\n\n'));
+          }, CHAT_SSE.heartbeatIntervalMs);
+          try {
+            for await (const event of iterator) {
+              if (abort.signal.aborted) break;
+              controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`));
+            }
+          } catch (error) {
+            if (!abort.signal.aborted) controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+              type: 'error', error: error instanceof Error ? error.message : 'internal error',
+            })}\n\n`));
+          } finally {
+            clearInterval(heartbeat);
+            req.signal.removeEventListener('abort', onAbort);
+            try { controller.close(); } catch { /* Reader already cancelled. */ }
+          }
+        },
+        async cancel() { abort.abort(); await iterator.return(undefined); },
+      });
+      return new Response(stream, { headers: {
+        'content-type': CHAT_SSE.contentType,
+        'cache-control': 'no-cache, no-transform',
+        'x-accel-buffering': 'no',
+      } });
+    }
+    return NextResponse.json(await sendChat(input));
   } catch (err) {
     if (err instanceof ModelResolutionError) {
       return NextResponse.json({ error: err.message, code: err.code }, { status: err.status });

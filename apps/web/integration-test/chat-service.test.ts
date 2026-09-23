@@ -205,3 +205,51 @@ describe('sendChat', () => {
     ).rejects.toBeInstanceOf(chatService.ChatNotFoundError);
   });
 });
+
+describe('sendChatStream', () => {
+  it('streams FakeProvider output after creating the user message and commits only complete output', async () => {
+    chatService.setChatProviderFactory(fakeFactory(['hello streaming world'], 10));
+    const input = { userId, content: 'stream me', modelKey: 'fake-model', idempotencyKey: `itest-sse-${Date.now()}` };
+    let text = '';
+    let done = false;
+    let started: { conversationId: string; messageId: string; runId: string } | undefined;
+    for await (const event of chatService.sendChatStream(input)) {
+      if (event.type === 'start') {
+        started = event;
+        expect(await prisma.message.findUnique({ where: { id: event.messageId } })).not.toBeNull();
+      }
+      if (event.type === 'delta') text += event.text;
+      if (event.type === 'done') done = true;
+      expect(event.type).not.toBe('error');
+    }
+    expect(text).toBe('hello streaming world');
+    expect(done).toBe(true);
+    expect((await chatService.sendChat(input)).runId).toBe(started?.runId);
+    const messages = await prisma.message.findMany({ where: { conversationId: started!.conversationId } });
+    expect(messages).toHaveLength(2);
+    expect(messages.some(message => message.content === text && message.status === 'COMPLETE')).toBe(true);
+  });
+
+  it('aborts FakeProvider mid-stream without persisting partial assistant output', async () => {
+    chatService.setChatProviderFactory(fakeFactory(['a b c d e f g h i j k l m n o p'], 60));
+    const abort = new AbortController();
+    const key = `itest-sse-abort-${Date.now()}`;
+    let started: { conversationId: string; runId: string } | undefined;
+    for await (const event of chatService.sendChatStream({
+      userId, content: 'stop stream', modelKey: 'fake-model', idempotencyKey: key,
+    }, abort.signal)) {
+      if (event.type === 'start') started = event;
+      if (event.type === 'delta') abort.abort();
+      expect(event.type).not.toBe('done');
+    }
+    expect(abort.signal.aborted).toBe(true);
+    // Replaying the same durable log waits for execution cancellation to settle.
+    const events = [];
+    for await (const event of chatService.sendChatStream({
+      userId, content: 'stop stream', modelKey: 'fake-model',
+      idempotencyKey: key,
+    })) events.push(event);
+    expect(events.at(-1)).toMatchObject({ type: 'error', cancelled: true });
+    expect(await prisma.message.count({ where: { conversationId: started!.conversationId } })).toBe(1);
+  });
+});
