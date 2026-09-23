@@ -3,6 +3,7 @@ import * as minio from 'minio';
 import { Worker } from 'node:worker_threads';
 import { prisma } from '@aichat/db';
 import { chunkDocument, embed, embeddingModel, parse, storePlan, PermanentRagError, LeaseLostError, MAX_FILE_BYTES, isStrategyName } from '@aichat/rag';
+import { kbConcurrency } from './lib/config';
 
 type Job = { id: string; attempt: number; mime: string; objectKey: string; model: string; size: number; chunkStrategy: string };
 export async function claimDocument(worker: string): Promise<Job | null> {
@@ -112,25 +113,31 @@ export async function processDocument(job: Job, worker: string): Promise<void> {
       if (count !== 1) controller.abort();
     }).catch(() => controller.abort()).finally(() => { renewing = false; });
   }, 10_000);
+  // Per-phase timings (M12-P2 observability): ms spent in each pipeline stage.
+  const phase = { download: 0, parse: 0, embed: 0, store: 0 };
+  const timed = <T>(key: keyof typeof phase, run: () => Promise<T>): Promise<T> => {
+    const startedAt = Date.now();
+    return run().finally(() => { phase[key] = Date.now() - startedAt; });
+  };
   try {
     if (job.model !== embeddingModel()) throw new PermanentRagError('EMBEDDING_MODEL_MISMATCH');
-    const data = await readObject(job, controller.signal);
-    const parts = await parse(data, job.mime, bytes => parsePdf(bytes, controller.signal));
+    const data = await timed('download', () => readObject(job, controller.signal));
+    const parts = await timed('parse', () => parse(data, job.mime, bytes => parsePdf(bytes, controller.signal)));
     // Dispatch through the registry so Document.chunkStrategy matches the stored chunks;
     // unknown strategies are permanent errors, never silently re-chunked as fixed.
     if (!isStrategyName(job.chunkStrategy)) throw new PermanentRagError('UNKNOWN_CHUNK_STRATEGY');
     const results = chunkDocument({ parts, mime: job.mime }, job.chunkStrategy);
-    const vectors = await embed(results.map(result => result.text), controller.signal, job.model);
+    const vectors = await timed('embed', () => embed(results.map(result => result.text), controller.signal, job.model));
     controller.signal.throwIfAborted();
-    await storePlan(job.id, job.attempt, worker, results, vectors);
+    await timed('store', () => storePlan(job.id, job.attempt, worker, results, vectors));
+    console.log('[kb-worker] processed', JSON.stringify({ id: job.id, chunks: results.length, ...phase }));
   } catch (error) {
     if (!controller.signal.aborted && !(error instanceof LeaseLostError)) await failDocument(job, worker, error);
   } finally { clearInterval(heartbeat); }
 }
 
 export async function runKbWorker(worker: string, stopping: () => boolean, once = false): Promise<void> {
-  const configured = Number(process.env.KB_CONCURRENCY);
-  const concurrency = Number.isSafeInteger(configured) && configured > 0 ? Math.min(configured, 8) : 2;
+  const concurrency = kbConcurrency();
   const loop = async (owner: string): Promise<void> => {
     // Probe and document failures affect only this independent loop.
     let probed = false;

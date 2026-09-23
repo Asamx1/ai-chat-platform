@@ -38,26 +38,35 @@ describe('parse', () => {
   });
 });
 describe('embed', () => {
-  it('batches 64 sequentially using the Ollama protocol without waiting between batches', async () => {
-    vi.useFakeTimers();
+  it('defaults to batches of 16 with 2 in flight, preserving order across the Ollama protocol', async () => {
     vi.stubEnv('EMBED_BATCH', '');
+    vi.stubEnv('EMBED_CONCURRENCY', '');
     vi.stubEnv('OLLAMA_NUM_PARALLEL', '');
+    const inFlight: number[] = [];
+    let maxInFlight = 0;
     const fetcher = vi.fn(async (_url, init) => {
       const body = JSON.parse(init.body);
       expect(body.truncate).toBe(false);
       expect(body.keep_alive).toBe('30m');
       expect(body.num_parallel).toBe(4);
-      return Response.json({ embeddings: body.input.map(vector) });
+      inFlight.push(1);
+      maxInFlight = Math.max(maxInFlight, inFlight.length);
+      await Promise.resolve();
+      inFlight.pop();
+      return Response.json({ embeddings: body.input.map((text: string) => Array(1024).fill(Number(text) + 1)) });
     });
     vi.stubGlobal('fetch', fetcher);
-    expect(await embed(Array(65).fill('text'), new AbortController().signal)).toHaveLength(65);
-    expect(fetcher).toHaveBeenCalledTimes(2);
-    expect(JSON.parse(fetcher.mock.calls[0]![1].body).input).toHaveLength(64);
-    expect(JSON.parse(fetcher.mock.calls[1]![1].body).input).toHaveLength(1);
+    const texts = Array.from({ length: 33 }, (_, i) => String(i));
+    const vectors = await embed(texts, new AbortController().signal);
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(maxInFlight).toBe(2);
+    expect(vectors.map(v => v[0])).toEqual(texts.map(text => Number(text) + 1));
+    const sizes = fetcher.mock.calls.map(call => JSON.parse(call[1].body).input.length);
+    expect(sizes).toEqual([16, 16, 1]);
   });
   it.each([
-    ['3', 3], ['1', 1], ['0', 64], ['-1', 64], ['1.5', 64],
-    ['invalid', 64], ['Infinity', 64], ['9007199254740992', 64],
+    ['3', 3], ['1', 1], ['0', 16], ['-1', 16], ['1.5', 16],
+    ['invalid', 16], ['Infinity', 16], ['9007199254740992', 16],
   ])('uses EMBED_BATCH=%s with a safe positive fallback', async (value, size) => {
     vi.stubEnv('EMBED_BATCH', value);
     vi.stubEnv('OLLAMA_NUM_PARALLEL', '2');
