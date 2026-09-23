@@ -66,9 +66,9 @@ export function resolveAuthOriginConfig(
       if (env.NODE_ENV === 'production' && !isLocalSmoke) {
         throw new Error('BETTER_AUTH_URL must use HTTPS in production');
       }
-      if (!isLocalSmoke || !isLoopback) {
+      if (!isLoopback) {
         throw new Error(
-          'HTTP BETTER_AUTH_URL is allowed only for local smoke loopback origins',
+          'HTTP BETTER_AUTH_URL must use a loopback origin (HTTPS required otherwise)',
         );
       }
     }

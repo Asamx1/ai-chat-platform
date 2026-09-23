@@ -48,6 +48,15 @@ describe('resolveAuthOriginConfig', () => {
     })).toThrow(/BETTER_AUTH_URL.*HTTPS/);
   });
 
+  it('allows an explicit loopback HTTP URL in development without smoke mode', () => {
+    const config = resolveAuthOriginConfig({
+      BETTER_AUTH_URL: 'http://localhost:3001',
+      NODE_ENV: 'development',
+    });
+    expect(config.baseURL).toBe('http://localhost:3001');
+    expect(config.trustedOrigins).toContain('http://localhost:3001');
+  });
+
   it('rejects non-loopback HTTP even in local smoke mode', () => {
     expect(() => resolveAuthOriginConfig({
       AICHAT_LOCAL_SMOKE: '1',
