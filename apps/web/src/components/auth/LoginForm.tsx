@@ -82,7 +82,7 @@ export default function LoginForm() {
         </form>
 
         <p className="login-hint">
-          演示账号：<strong>admin@example.com</strong>
+          演示账号：<strong>demo@example.com / demo12345</strong>
         </p>
       </section>
     </div>

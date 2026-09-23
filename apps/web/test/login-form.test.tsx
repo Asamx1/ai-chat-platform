@@ -46,7 +46,7 @@ describe('LoginForm', () => {
     expect(markup).toContain('<button');
     expect(markup).toContain('type="submit"');
     expect(markup).toContain('aria-live="polite"');
-    expect(markup).toContain('admin@example.com');
+    expect(markup).toContain('demo@example.com');
   });
 });
 
