@@ -18,7 +18,7 @@ Enter-Stage 'S1+S2'
 # ---------- S1 ∥ S2:容器 / Ollama(互不依赖,并行) ----------
 Enter-Stage 'S1'
 $jobS1 = Start-Job -ScriptBlock {
-  wsl -- bash -c "docker start aichat-postgres aichat-minio 2>/dev/null; sleep 3; docker inspect -f '{{.State.Status}}' aichat-postgres; docker inspect -f '{{.State.Status}}' aichat-minio"
+  wsl -- bash -c "docker start aichat-postgres aichat-minio >/dev/null 2>&1; sleep 3; docker inspect -f '{{.State.Status}}' aichat-postgres; docker inspect -f '{{.State.Status}}' aichat-minio"
 }
 Write-Log 'WAIT' 'S1' '启动 docker 容器(aichat-postgres / aichat-minio)…[并行]'
 $s1Fail = $false
@@ -92,7 +92,7 @@ if ($wkUp) {
 # ---------- S5: 演示数据保险 ----------
 Enter-Stage 'S5'
 Write-Log 'WAIT' 'S5' '演示数据检查(幂等 loader,缺了自动补)…'
-wsl -- bash -c "cd $wslRepo && export PATH=`$HOME/.nvm/versions/node/v24.16.0/bin:`$PATH && timeout 120 npx tsx experiments/demo-seed.mts 2>&1 | tail -2" | ForEach-Object { Write-Output "  $_" }
+wsl -- bash -c "cd $wslRepo && export PATH=/home/codex/.nvm/versions/node/v24.16.0/bin:/usr/local/bin:/usr/bin:/bin && timeout 120 npx tsx experiments/demo-seed.mts 2>&1 | tail -2" | ForEach-Object { Write-Output "  $_" }
 Write-Log 'OK' 'S5' "演示数据就绪($(Exit-Stage 'S5'))"
 
 # ---------- S6: 预热 ∥ 打开浏览器 ----------
@@ -100,6 +100,6 @@ Write-Log 'OK' 'S5' "演示数据就绪($(Exit-Stage 'S5'))"
 Start-Process 'http://localhost:3001'
 Write-Log 'OK' 'S6' '浏览器已打开 http://localhost:3001(登录 demo@example.com / demo12345)'
 
-wsl -- bash -c "setsid bash /home/codex/code/ai-chat-platform/repo/infra/launcher/wsl-warmup.sh >/tmp/m10logs/warmup.log 2>&1 </dev/null &" | Out-Null
+wsl -- bash -c "tmux kill-session -t aichat-warmup 2>/dev/null; tmux new-session -d -s aichat-warmup 'bash /home/codex/code/ai-chat-platform/repo/infra/launcher/wsl-warmup.sh > /tmp/m10logs/warmup.log 2>&1'" | Out-Null
 Write-Log 'OK' 'S6' '预热已后台启动:/login / /settings /kb /api/models(状态见控制台 Web预热 灯)'
 exit 0
