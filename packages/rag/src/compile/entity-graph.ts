@@ -6,6 +6,7 @@ import { storeGraph } from '../graph/store-graph';
 import type { GraphSource } from '../graph/store-graph';
 import type { CompileJobRow } from './compile-job';
 import { pauseForBudget } from './compile-job';
+import { enqueueEntityPages } from './entity-page';
 
 /** Explicit opt-in enqueue; one KB-wide job per generation and ontology snapshot. */
 export async function enqueueEntityGraph(kbId: string, generationId: string, sourceVersionId: string): Promise<string> {
@@ -54,6 +55,7 @@ export async function compileEntityGraph(job: CompileJobRow, signal: AbortSignal
     }
   }
   signal.throwIfAborted();
+  await enqueueEntityPages(job.kbId, job.generationId, job.sourceVersionId);
   const finished = await prisma.$executeRawUnsafe(`UPDATE "CompileJob" SET status='SUCCEEDED',"leaseOwner"=NULL,"leaseExpiresAt"=NULL,"lastError"=NULL,"updatedAt"=clock_timestamp()
     WHERE id=$1 AND attempt=$2 AND "leaseOwner"=$3 AND status='RUNNING' AND "leaseExpiresAt">clock_timestamp()`, job.id, job.attempt, job.leaseOwner);
   if (!finished) throw new Error('COMPILE_LEASE_LOST');

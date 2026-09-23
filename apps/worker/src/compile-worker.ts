@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import * as minio from 'minio';
 import { prisma } from '@aichat/db';
-import { claimCompileJob, consumeCompileOutbox, compileSummary, compileEntityGraph, failCompileJob, pauseForBudget, renewCompileJob, type CompileJobRow, type SourceChunk } from '@aichat/rag/compile';
+import { claimCompileJob, consumeCompileOutbox, compileSummary, compileEntityGraph, entityPageKey, loadEntityPage, renderEntityPage, failCompileJob, pauseForBudget, renewCompileJob, type CompileJobRow, type SourceChunk } from '@aichat/rag/compile';
 import { embed, embeddingModel } from '@aichat/rag';
 
 const reservationUsd = 0.05;
@@ -37,6 +37,30 @@ export async function processCompileJob(job: CompileJobRow): Promise<void> {
   const started = Date.now();
   try {
     if (job.artifactType === 'ENTITY_GRAPH') { await compileEntityGraph(job, controller.signal, reserveCompileBudget); return; }
+    if (job.artifactType === 'ENTITY_PAGE') {
+      const page = await loadEntityPage(job);
+      const markdown = renderEntityPage(page.entity, page.relations, page.facts);
+      const bytes = Buffer.from(markdown, 'utf8');
+      const key = entityPageKey(job.kbId, job.generationId, page.entityId);
+      const { client, bucket } = storage();
+      controller.signal.throwIfAborted();
+      await client.putObject(bucket, key, bytes, bytes.length, { 'Content-Type': 'text/markdown' });
+      const [vector] = await embed([markdown], controller.signal, embeddingModel());
+      if (!vector) throw new Error('EMBEDDING_MISSING');
+      await prisma.$transaction(async tx => {
+        const valid = await tx.$queryRawUnsafe<{ id: string }[]>(`SELECT id FROM "CompileJob" WHERE id=$1 AND attempt=$2 AND "leaseOwner"=$3 AND status='RUNNING' AND "leaseExpiresAt">clock_timestamp() FOR UPDATE`, job.id, job.attempt, job.leaseOwner);
+        if (!valid.length) throw new Error('COMPILE_LEASE_LOST');
+        const artifactId = `wiki-entity-${job.kbId}-${job.generationId}-${page.entityId}`;
+        await tx.$executeRawUnsafe(`INSERT INTO "Document" (id,"kbId",name,kind,mime,"objectKey",model,size,"chunkCount","chunkStrategy",status,attempt,"createdAt","updatedAt")
+          VALUES ($1,$2,$3,'WIKI_ENTITY','text/markdown',$4,$5,$6,1,'fixed','READY',0,clock_timestamp(),clock_timestamp()) ON CONFLICT (id) DO NOTHING`, artifactId, job.kbId, page.entity.canonicalName, key, embeddingModel(), bytes.length);
+        await tx.$executeRawUnsafe(`INSERT INTO "Chunk" (id,"kbId","generationId","documentId",kind,ordinal,start,"end",text,embedding)
+          VALUES ($1,$2,$3,$4,'STANDALONE',0,0,$5,$6,$7::vector(1024)) ON CONFLICT DO NOTHING`, `wiki-entity-chunk-${job.kbId}-${job.generationId}-${page.entityId}`, job.kbId, job.generationId, artifactId, markdown.length, markdown, JSON.stringify(vector));
+        await tx.$executeRawUnsafe(`UPDATE "DerivedFact" SET "wikidocId"=$4 WHERE "kbId"=$1 AND "generationId"=$2 AND ("entityId"=$3 OR "relationId" IN
+          (SELECT id FROM "EntityRelation" WHERE "kbId"=$1 AND "generationId"=$2 AND ("subjectId"=$3 OR "objectId"=$3))) AND "wikidocId" IS NULL`, job.kbId, job.generationId, page.entityId, artifactId);
+        await tx.$executeRawUnsafe(`UPDATE "CompileJob" SET status='SUCCEEDED',"artifactDocumentId"=$4,"leaseOwner"=NULL,"leaseExpiresAt"=NULL,"lastError"=NULL,"updatedAt"=clock_timestamp() WHERE id=$1 AND attempt=$2 AND "leaseOwner"=$3`, job.id, job.attempt, job.leaseOwner, artifactId);
+      });
+      return;
+    }
     const [existing] = await prisma.$queryRawUnsafe<{ artifactDocumentId: string | null }[]>(`SELECT "artifactDocumentId" FROM "CompileJob" WHERE id=$1`, job.id);
     if (existing?.artifactDocumentId) {
       await prisma.$executeRawUnsafe(`UPDATE "CompileJob" SET status='SUCCEEDED',"leaseOwner"=NULL,"leaseExpiresAt"=NULL WHERE id=$1 AND attempt=$2 AND "leaseOwner"=$3 AND status='RUNNING'`, job.id, job.attempt, job.leaseOwner);
