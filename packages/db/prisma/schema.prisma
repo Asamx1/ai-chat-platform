@@ -338,6 +338,12 @@ model KnowledgeBase {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   documents Document[]
+  activeGenerationId String? @unique
+  activeGeneration IndexGeneration? @relation("ActiveGeneration", fields: [activeGenerationId], references: [id], onDelete: SetNull)
+  generations IndexGeneration[] @relation("KbGenerations")
+  sourceVersions SourceVersion[]
+  compileJobs CompileJob[]
+  chunks Chunk[]
   conversations ConversationKnowledgeBase[]
   @@index([userId, updatedAt])
 }
@@ -361,12 +367,19 @@ model Document {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   chunks Chunk[]
+  sourceVersionId String?
+  sourceVersion SourceVersion? @relation("CurrentSourceVersion", fields: [sourceVersionId], references: [id], onDelete: SetNull)
+  sourceVersions SourceVersion[] @relation("DocumentVersions")
   @@index([kbId, createdAt])
   @@index([status, leaseExpiresAt])
 }
 
 model Chunk {
   id String @id @default(cuid())
+  kbId String
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  generationId String?
+  generation IndexGeneration? @relation(fields: [generationId], references: [id], onDelete: Cascade)
   documentId String
   document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   parentId String?
@@ -384,7 +397,8 @@ model Chunk {
   tsv Unsupported("tsvector")?
   embedding Unsupported("vector(1024)")
   createdAt DateTime @default(now())
-  @@unique([documentId, ordinal])
+  @@unique([documentId, generationId, ordinal])
+  @@index([kbId, generationId])
   @@index([parentId], map: "Chunk_parentId_idx")
   // GIN index chunk_tsv_idx ON (tsv) also lives only in the migration SQL; Prisma cannot index
   // Unsupported columns.
@@ -407,4 +421,67 @@ model UserModelQuota {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   model ModelRegistry @relation(fields: [modelId], references: [id], onDelete: Cascade)
   @@unique([userId, modelId])
+}
+
+
+enum IndexGenerationStatus {
+  BUILDING
+  ACTIVE
+  RETIRED
+  FAILED
+}
+
+model SourceVersion {
+  id String @id @default(cuid())
+  kbId String
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  documentId String
+  document Document @relation("DocumentVersions", fields: [documentId], references: [id], onDelete: Cascade)
+  currentDocuments Document[] @relation("CurrentSourceVersion")
+  contentHash String
+  parserVersion String
+  normalizerVersion String
+  createdAt DateTime @default(now())
+  compileJobs CompileJob[]
+  @@unique([documentId, contentHash])
+}
+
+model IndexGeneration {
+  id String @id @default(cuid())
+  kbId String
+  kb KnowledgeBase @relation("KbGenerations", fields: [kbId], references: [id], onDelete: Cascade)
+  activeFor KnowledgeBase? @relation("ActiveGeneration")
+  status IndexGenerationStatus @default(BUILDING)
+  configSnapshot Json
+  documentCount Int @default(0)
+  chunkCount Int @default(0)
+  createdAt DateTime @default(now())
+  activatedAt DateTime?
+  retiredAt DateTime?
+  chunks Chunk[]
+  compileJobs CompileJob[]
+  @@index([kbId, status])
+}
+
+model CompileJob {
+  id String @id @default(cuid())
+  kbId String
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  sourceVersionId String
+  sourceVersion SourceVersion @relation(fields: [sourceVersionId], references: [id], onDelete: Cascade)
+  generationId String
+  generation IndexGeneration @relation(fields: [generationId], references: [id], onDelete: Cascade)
+  artifactType String
+  model String
+  promptVersion String
+  schemaVersion String
+  status String @default("PENDING")
+  attempt Int @default(0)
+  maxAttempts Int @default(2)
+  idempotencyKey String @unique
+  leaseOwner String?
+  leaseExpiresAt DateTime?
+  lastError String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

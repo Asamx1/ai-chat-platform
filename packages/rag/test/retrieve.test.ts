@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 const { query, embedding } = vi.hoisted(() => ({ query: vi.fn().mockResolvedValue([]), embedding: Array(1024).fill(0.1) }));
-vi.mock('@aichat/db', () => ({ prisma: { $queryRawUnsafe: query } }));
+vi.mock('@aichat/db', () => ({ prisma: { $queryRawUnsafe: query, knowledgeBase: { findMany: vi.fn(async () => [{ id: 'kb', activeGenerationId: null }]) } } }));
 vi.mock('../src/embed', async importOriginal => ({
   ...await importOriginal<typeof import('../src/embed')>(), embed: vi.fn(async () => [embedding]),
 }));
@@ -63,9 +63,9 @@ it('defaults to hybrid, MMR and authorized parent expansion without returning em
   expect(await retrieve('owner', 'conversation', 'search text')).toEqual([
     { ...publicHit('parent context'), ordinal: 9 },
   ]);
-  const [sql, , owner, conversation, , text] = query.mock.calls[1]!;
-  expect(sql).toContain("c.tsv @@ plainto_tsquery('pg_catalog.simple', $5)");
-  expect(sql).toContain("ts_rank(c.tsv, plainto_tsquery('pg_catalog.simple', $5)) DESC");
+  const [sql, , owner, conversation, , , text] = query.mock.calls[1]!;
+  expect(sql).toContain("c.tsv @@ plainto_tsquery('pg_catalog.simple', $6)");
+  expect(sql).toContain("ts_rank(c.tsv, plainto_tsquery('pg_catalog.simple', $6)) DESC");
   expect(sql).toContain('k."userId"=$2 AND v."ownerId"=$2');
   expect(sql).toContain("d.status='READY' AND d.model=$4");
   expect([owner, conversation, text]).toEqual(['owner', 'conversation', 'search text']);
@@ -191,4 +191,30 @@ it('does not call rewrite when RAG_REWRITE is 0', async () => {
   const spy = vi.spyOn(rewriteModule, 'rewriteQuery');
   await retrieve('owner', 'conversation', 'query');
   expect(spy).not.toHaveBeenCalled();
+});
+
+it('captures generation pointers once and shares them across vector, lexical and parent reads', async () => {
+  const { prisma } = await import('@aichat/db');
+  const snapshot = [{ id: 'kb', activeGenerationId: 'g1' }];
+  vi.mocked(prisma.knowledgeBase.findMany).mockResolvedValueOnce(snapshot as never);
+  vi.stubEnv('RAG_HYBRID', '1');
+  vi.stubEnv('RAG_SMALL2BIG', '1');
+  const child = { ...candidate('child'), parentId: 'parent' };
+  query.mockResolvedValueOnce([child]).mockResolvedValueOnce([child])
+    .mockResolvedValueOnce([{ ...candidate('parent'), text: 'context' }]);
+  expect(await retrieve('owner', 'conversation', 'query')).toEqual([publicHit('context')]);
+  for (const [sql, , , , , generations] of query.mock.calls) {
+    expect(sql).toContain('c."generationId"=snapshot."activeGenerationId"');
+    expect(generations).toBe(JSON.stringify(snapshot));
+  }
+});
+
+it('retains the captured generation on the pure-vector error fallback', async () => {
+  const { prisma } = await import('@aichat/db');
+  vi.mocked(prisma.knowledgeBase.findMany).mockResolvedValueOnce([{ id: 'kb', activeGenerationId: 'old' }] as never);
+  vi.stubEnv('RAG_MMR', '1');
+  query.mockRejectedValueOnce(new Error('enhanced failure')).mockResolvedValueOnce([publicHit('old chunk')]);
+  expect(await retrieve('owner', 'conversation', 'query')).toEqual([publicHit('old chunk')]);
+  expect(query.mock.calls[0]![5]).toBe(query.mock.calls[1]![5]);
+  expect(query.mock.calls[1]![0]).toContain('snapshot."activeGenerationId" IS NULL');
 });

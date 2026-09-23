@@ -129,7 +129,7 @@ export async function processDocument(job: Job, worker: string): Promise<void> {
     const results = chunkDocument({ parts, mime: job.mime }, job.chunkStrategy);
     const vectors = await timed('embed', () => embed(results.map(result => result.text), controller.signal, job.model));
     controller.signal.throwIfAborted();
-    await timed('store', () => storePlan(job.id, job.attempt, worker, results, vectors));
+    await timed('store', () => storePlan(job.id, job.attempt, worker, results, vectors, undefined, parts.map(part => part.text).join('\n')));
     console.log('[kb-worker] processed', JSON.stringify({ id: job.id, chunks: results.length, ...phase }));
   } catch (error) {
     if (!controller.signal.aborted && !(error instanceof LeaseLostError)) await failDocument(job, worker, error);

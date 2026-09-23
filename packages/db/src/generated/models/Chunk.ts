@@ -40,6 +40,8 @@ export type ChunkSumAggregateOutputType = {
 
 export type ChunkMinAggregateOutputType = {
   id: string | null
+  kbId: string | null
+  generationId: string | null
   documentId: string | null
   parentId: string | null
   headingPath: string | null
@@ -53,6 +55,8 @@ export type ChunkMinAggregateOutputType = {
 
 export type ChunkMaxAggregateOutputType = {
   id: string | null
+  kbId: string | null
+  generationId: string | null
   documentId: string | null
   parentId: string | null
   headingPath: string | null
@@ -66,6 +70,8 @@ export type ChunkMaxAggregateOutputType = {
 
 export type ChunkCountAggregateOutputType = {
   id: number
+  kbId: number
+  generationId: number
   documentId: number
   parentId: number
   headingPath: number
@@ -93,6 +99,8 @@ export type ChunkSumAggregateInputType = {
 
 export type ChunkMinAggregateInputType = {
   id?: true
+  kbId?: true
+  generationId?: true
   documentId?: true
   parentId?: true
   headingPath?: true
@@ -106,6 +114,8 @@ export type ChunkMinAggregateInputType = {
 
 export type ChunkMaxAggregateInputType = {
   id?: true
+  kbId?: true
+  generationId?: true
   documentId?: true
   parentId?: true
   headingPath?: true
@@ -119,6 +129,8 @@ export type ChunkMaxAggregateInputType = {
 
 export type ChunkCountAggregateInputType = {
   id?: true
+  kbId?: true
+  generationId?: true
   documentId?: true
   parentId?: true
   headingPath?: true
@@ -219,6 +231,8 @@ export type ChunkGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type ChunkGroupByOutputType = {
   id: string
+  kbId: string
+  generationId: string | null
   documentId: string
   parentId: string | null
   headingPath: string | null
@@ -255,6 +269,8 @@ export type ChunkWhereInput = {
   OR?: Prisma.ChunkWhereInput[]
   NOT?: Prisma.ChunkWhereInput | Prisma.ChunkWhereInput[]
   id?: Prisma.StringFilter<"Chunk"> | string
+  kbId?: Prisma.StringFilter<"Chunk"> | string
+  generationId?: Prisma.StringNullableFilter<"Chunk"> | string | null
   documentId?: Prisma.StringFilter<"Chunk"> | string
   parentId?: Prisma.StringNullableFilter<"Chunk"> | string | null
   headingPath?: Prisma.StringNullableFilter<"Chunk"> | string | null
@@ -264,6 +280,8 @@ export type ChunkWhereInput = {
   end?: Prisma.IntFilter<"Chunk"> | number
   text?: Prisma.StringFilter<"Chunk"> | string
   createdAt?: Prisma.DateTimeFilter<"Chunk"> | Date | string
+  kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
+  generation?: Prisma.XOR<Prisma.IndexGenerationNullableScalarRelationFilter, Prisma.IndexGenerationWhereInput> | null
   document?: Prisma.XOR<Prisma.DocumentScalarRelationFilter, Prisma.DocumentWhereInput>
   parent?: Prisma.XOR<Prisma.ChunkNullableScalarRelationFilter, Prisma.ChunkWhereInput> | null
   children?: Prisma.ChunkListRelationFilter
@@ -271,6 +289,8 @@ export type ChunkWhereInput = {
 
 export type ChunkOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  kbId?: Prisma.SortOrder
+  generationId?: Prisma.SortOrderInput | Prisma.SortOrder
   documentId?: Prisma.SortOrder
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   headingPath?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -280,6 +300,8 @@ export type ChunkOrderByWithRelationInput = {
   end?: Prisma.SortOrder
   text?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  kb?: Prisma.KnowledgeBaseOrderByWithRelationInput
+  generation?: Prisma.IndexGenerationOrderByWithRelationInput
   document?: Prisma.DocumentOrderByWithRelationInput
   parent?: Prisma.ChunkOrderByWithRelationInput
   children?: Prisma.ChunkOrderByRelationAggregateInput
@@ -287,10 +309,12 @@ export type ChunkOrderByWithRelationInput = {
 
 export type ChunkWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  documentId_ordinal?: Prisma.ChunkDocumentIdOrdinalCompoundUniqueInput
+  documentId_generationId_ordinal?: Prisma.ChunkDocumentIdGenerationIdOrdinalCompoundUniqueInput
   AND?: Prisma.ChunkWhereInput | Prisma.ChunkWhereInput[]
   OR?: Prisma.ChunkWhereInput[]
   NOT?: Prisma.ChunkWhereInput | Prisma.ChunkWhereInput[]
+  kbId?: Prisma.StringFilter<"Chunk"> | string
+  generationId?: Prisma.StringNullableFilter<"Chunk"> | string | null
   documentId?: Prisma.StringFilter<"Chunk"> | string
   parentId?: Prisma.StringNullableFilter<"Chunk"> | string | null
   headingPath?: Prisma.StringNullableFilter<"Chunk"> | string | null
@@ -300,13 +324,17 @@ export type ChunkWhereUniqueInput = Prisma.AtLeast<{
   end?: Prisma.IntFilter<"Chunk"> | number
   text?: Prisma.StringFilter<"Chunk"> | string
   createdAt?: Prisma.DateTimeFilter<"Chunk"> | Date | string
+  kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
+  generation?: Prisma.XOR<Prisma.IndexGenerationNullableScalarRelationFilter, Prisma.IndexGenerationWhereInput> | null
   document?: Prisma.XOR<Prisma.DocumentScalarRelationFilter, Prisma.DocumentWhereInput>
   parent?: Prisma.XOR<Prisma.ChunkNullableScalarRelationFilter, Prisma.ChunkWhereInput> | null
   children?: Prisma.ChunkListRelationFilter
-}, "id" | "documentId_ordinal">
+}, "id" | "documentId_generationId_ordinal">
 
 export type ChunkOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  kbId?: Prisma.SortOrder
+  generationId?: Prisma.SortOrderInput | Prisma.SortOrder
   documentId?: Prisma.SortOrder
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   headingPath?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -328,6 +356,8 @@ export type ChunkScalarWhereWithAggregatesInput = {
   OR?: Prisma.ChunkScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ChunkScalarWhereWithAggregatesInput | Prisma.ChunkScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Chunk"> | string
+  kbId?: Prisma.StringWithAggregatesFilter<"Chunk"> | string
+  generationId?: Prisma.StringNullableWithAggregatesFilter<"Chunk"> | string | null
   documentId?: Prisma.StringWithAggregatesFilter<"Chunk"> | string
   parentId?: Prisma.StringNullableWithAggregatesFilter<"Chunk"> | string | null
   headingPath?: Prisma.StringNullableWithAggregatesFilter<"Chunk"> | string | null
@@ -348,6 +378,8 @@ export type ChunkUpdateInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
+  generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
   parent?: Prisma.ChunkUpdateOneWithoutChildrenNestedInput
   children?: Prisma.ChunkUpdateManyWithoutParentNestedInput
@@ -355,6 +387,8 @@ export type ChunkUpdateInput = {
 
 export type ChunkUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -380,6 +414,8 @@ export type ChunkUpdateManyMutationInput = {
 
 export type ChunkUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -406,13 +442,16 @@ export type ChunkNullableScalarRelationFilter = {
   isNot?: Prisma.ChunkWhereInput | null
 }
 
-export type ChunkDocumentIdOrdinalCompoundUniqueInput = {
+export type ChunkDocumentIdGenerationIdOrdinalCompoundUniqueInput = {
   documentId: string
+  generationId: string
   ordinal: number
 }
 
 export type ChunkCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  kbId?: Prisma.SortOrder
+  generationId?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   headingPath?: Prisma.SortOrder
@@ -432,6 +471,8 @@ export type ChunkAvgOrderByAggregateInput = {
 
 export type ChunkMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  kbId?: Prisma.SortOrder
+  generationId?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   headingPath?: Prisma.SortOrder
@@ -445,6 +486,8 @@ export type ChunkMaxOrderByAggregateInput = {
 
 export type ChunkMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  kbId?: Prisma.SortOrder
+  generationId?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   headingPath?: Prisma.SortOrder
@@ -460,6 +503,34 @@ export type ChunkSumOrderByAggregateInput = {
   ordinal?: Prisma.SortOrder
   start?: Prisma.SortOrder
   end?: Prisma.SortOrder
+}
+
+export type ChunkCreateNestedManyWithoutKbInput = {
+  connect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+}
+
+export type ChunkUncheckedCreateNestedManyWithoutKbInput = {
+  connect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+}
+
+export type ChunkUpdateManyWithoutKbNestedInput = {
+  set?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  disconnect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  delete?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  connect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  update?: Prisma.ChunkUpdateWithWhereUniqueWithoutKbInput | Prisma.ChunkUpdateWithWhereUniqueWithoutKbInput[]
+  updateMany?: Prisma.ChunkUpdateManyWithWhereWithoutKbInput | Prisma.ChunkUpdateManyWithWhereWithoutKbInput[]
+  deleteMany?: Prisma.ChunkScalarWhereInput | Prisma.ChunkScalarWhereInput[]
+}
+
+export type ChunkUncheckedUpdateManyWithoutKbNestedInput = {
+  set?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  disconnect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  delete?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  connect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  update?: Prisma.ChunkUpdateWithWhereUniqueWithoutKbInput | Prisma.ChunkUpdateWithWhereUniqueWithoutKbInput[]
+  updateMany?: Prisma.ChunkUpdateManyWithWhereWithoutKbInput | Prisma.ChunkUpdateManyWithWhereWithoutKbInput[]
+  deleteMany?: Prisma.ChunkScalarWhereInput | Prisma.ChunkScalarWhereInput[]
 }
 
 export type ChunkCreateNestedManyWithoutDocumentInput = {
@@ -517,14 +588,42 @@ export type ChunkUncheckedUpdateManyWithoutParentNestedInput = {
   deleteMany?: Prisma.ChunkScalarWhereInput | Prisma.ChunkScalarWhereInput[]
 }
 
-export type ChunkUpdateWithWhereUniqueWithoutDocumentInput = {
-  where: Prisma.ChunkWhereUniqueInput
-  data: Prisma.XOR<Prisma.ChunkUpdateWithoutDocumentInput, Prisma.ChunkUncheckedUpdateWithoutDocumentInput>
+export type ChunkCreateNestedManyWithoutGenerationInput = {
+  connect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
 }
 
-export type ChunkUpdateManyWithWhereWithoutDocumentInput = {
+export type ChunkUncheckedCreateNestedManyWithoutGenerationInput = {
+  connect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+}
+
+export type ChunkUpdateManyWithoutGenerationNestedInput = {
+  set?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  disconnect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  delete?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  connect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  update?: Prisma.ChunkUpdateWithWhereUniqueWithoutGenerationInput | Prisma.ChunkUpdateWithWhereUniqueWithoutGenerationInput[]
+  updateMany?: Prisma.ChunkUpdateManyWithWhereWithoutGenerationInput | Prisma.ChunkUpdateManyWithWhereWithoutGenerationInput[]
+  deleteMany?: Prisma.ChunkScalarWhereInput | Prisma.ChunkScalarWhereInput[]
+}
+
+export type ChunkUncheckedUpdateManyWithoutGenerationNestedInput = {
+  set?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  disconnect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  delete?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  connect?: Prisma.ChunkWhereUniqueInput | Prisma.ChunkWhereUniqueInput[]
+  update?: Prisma.ChunkUpdateWithWhereUniqueWithoutGenerationInput | Prisma.ChunkUpdateWithWhereUniqueWithoutGenerationInput[]
+  updateMany?: Prisma.ChunkUpdateManyWithWhereWithoutGenerationInput | Prisma.ChunkUpdateManyWithWhereWithoutGenerationInput[]
+  deleteMany?: Prisma.ChunkScalarWhereInput | Prisma.ChunkScalarWhereInput[]
+}
+
+export type ChunkUpdateWithWhereUniqueWithoutKbInput = {
+  where: Prisma.ChunkWhereUniqueInput
+  data: Prisma.XOR<Prisma.ChunkUpdateWithoutKbInput, Prisma.ChunkUncheckedUpdateWithoutKbInput>
+}
+
+export type ChunkUpdateManyWithWhereWithoutKbInput = {
   where: Prisma.ChunkScalarWhereInput
-  data: Prisma.XOR<Prisma.ChunkUpdateManyMutationInput, Prisma.ChunkUncheckedUpdateManyWithoutDocumentInput>
+  data: Prisma.XOR<Prisma.ChunkUpdateManyMutationInput, Prisma.ChunkUncheckedUpdateManyWithoutKbInput>
 }
 
 export type ChunkScalarWhereInput = {
@@ -532,6 +631,8 @@ export type ChunkScalarWhereInput = {
   OR?: Prisma.ChunkScalarWhereInput[]
   NOT?: Prisma.ChunkScalarWhereInput | Prisma.ChunkScalarWhereInput[]
   id?: Prisma.StringFilter<"Chunk"> | string
+  kbId?: Prisma.StringFilter<"Chunk"> | string
+  generationId?: Prisma.StringNullableFilter<"Chunk"> | string | null
   documentId?: Prisma.StringFilter<"Chunk"> | string
   parentId?: Prisma.StringNullableFilter<"Chunk"> | string | null
   headingPath?: Prisma.StringNullableFilter<"Chunk"> | string | null
@@ -541,6 +642,16 @@ export type ChunkScalarWhereInput = {
   end?: Prisma.IntFilter<"Chunk"> | number
   text?: Prisma.StringFilter<"Chunk"> | string
   createdAt?: Prisma.DateTimeFilter<"Chunk"> | Date | string
+}
+
+export type ChunkUpdateWithWhereUniqueWithoutDocumentInput = {
+  where: Prisma.ChunkWhereUniqueInput
+  data: Prisma.XOR<Prisma.ChunkUpdateWithoutDocumentInput, Prisma.ChunkUncheckedUpdateWithoutDocumentInput>
+}
+
+export type ChunkUpdateManyWithWhereWithoutDocumentInput = {
+  where: Prisma.ChunkScalarWhereInput
+  data: Prisma.XOR<Prisma.ChunkUpdateManyMutationInput, Prisma.ChunkUncheckedUpdateManyWithoutDocumentInput>
 }
 
 export type ChunkUpdateToOneWithWhereWithoutChildrenInput = {
@@ -557,12 +668,16 @@ export type ChunkUpdateWithoutChildrenInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
+  generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
   parent?: Prisma.ChunkUpdateOneWithoutChildrenNestedInput
 }
 
 export type ChunkUncheckedUpdateWithoutChildrenInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -584,6 +699,60 @@ export type ChunkUpdateManyWithWhereWithoutParentInput = {
   data: Prisma.XOR<Prisma.ChunkUpdateManyMutationInput, Prisma.ChunkUncheckedUpdateManyWithoutParentInput>
 }
 
+export type ChunkUpdateWithWhereUniqueWithoutGenerationInput = {
+  where: Prisma.ChunkWhereUniqueInput
+  data: Prisma.XOR<Prisma.ChunkUpdateWithoutGenerationInput, Prisma.ChunkUncheckedUpdateWithoutGenerationInput>
+}
+
+export type ChunkUpdateManyWithWhereWithoutGenerationInput = {
+  where: Prisma.ChunkScalarWhereInput
+  data: Prisma.XOR<Prisma.ChunkUpdateManyMutationInput, Prisma.ChunkUncheckedUpdateManyWithoutGenerationInput>
+}
+
+export type ChunkUpdateWithoutKbInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  start?: Prisma.IntFieldUpdateOperationsInput | number
+  end?: Prisma.IntFieldUpdateOperationsInput | number
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
+  document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
+  parent?: Prisma.ChunkUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.ChunkUpdateManyWithoutParentNestedInput
+}
+
+export type ChunkUncheckedUpdateWithoutKbInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  start?: Prisma.IntFieldUpdateOperationsInput | number
+  end?: Prisma.IntFieldUpdateOperationsInput | number
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  children?: Prisma.ChunkUncheckedUpdateManyWithoutParentNestedInput
+}
+
+export type ChunkUncheckedUpdateManyWithoutKbInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  start?: Prisma.IntFieldUpdateOperationsInput | number
+  end?: Prisma.IntFieldUpdateOperationsInput | number
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type ChunkUpdateWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -593,12 +762,16 @@ export type ChunkUpdateWithoutDocumentInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
+  generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
   parent?: Prisma.ChunkUpdateOneWithoutChildrenNestedInput
   children?: Prisma.ChunkUpdateManyWithoutParentNestedInput
 }
 
 export type ChunkUncheckedUpdateWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kind?: Prisma.StringFieldUpdateOperationsInput | string
@@ -612,6 +785,8 @@ export type ChunkUncheckedUpdateWithoutDocumentInput = {
 
 export type ChunkUncheckedUpdateManyWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kind?: Prisma.StringFieldUpdateOperationsInput | string
@@ -631,12 +806,16 @@ export type ChunkUpdateWithoutParentInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
+  generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
   children?: Prisma.ChunkUpdateManyWithoutParentNestedInput
 }
 
 export type ChunkUncheckedUpdateWithoutParentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
   headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kind?: Prisma.StringFieldUpdateOperationsInput | string
@@ -650,7 +829,53 @@ export type ChunkUncheckedUpdateWithoutParentInput = {
 
 export type ChunkUncheckedUpdateManyWithoutParentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  start?: Prisma.IntFieldUpdateOperationsInput | number
+  end?: Prisma.IntFieldUpdateOperationsInput | number
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ChunkUpdateWithoutGenerationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  start?: Prisma.IntFieldUpdateOperationsInput | number
+  end?: Prisma.IntFieldUpdateOperationsInput | number
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
+  document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
+  parent?: Prisma.ChunkUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.ChunkUpdateManyWithoutParentNestedInput
+}
+
+export type ChunkUncheckedUpdateWithoutGenerationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  start?: Prisma.IntFieldUpdateOperationsInput | number
+  end?: Prisma.IntFieldUpdateOperationsInput | number
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  children?: Prisma.ChunkUncheckedUpdateManyWithoutParentNestedInput
+}
+
+export type ChunkUncheckedUpdateManyWithoutGenerationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kind?: Prisma.StringFieldUpdateOperationsInput | string
   ordinal?: Prisma.IntFieldUpdateOperationsInput | number
@@ -693,6 +918,8 @@ export type ChunkCountOutputTypeCountChildrenArgs<ExtArgs extends runtime.Types.
 
 export type ChunkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  kbId?: boolean
+  generationId?: boolean
   documentId?: boolean
   parentId?: boolean
   headingPath?: boolean
@@ -702,6 +929,8 @@ export type ChunkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   end?: boolean
   text?: boolean
   createdAt?: boolean
+  kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
+  generation?: boolean | Prisma.Chunk$generationArgs<ExtArgs>
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Chunk$parentArgs<ExtArgs>
   children?: boolean | Prisma.Chunk$childrenArgs<ExtArgs>
@@ -711,6 +940,8 @@ export type ChunkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 
 export type ChunkSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  kbId?: boolean
+  generationId?: boolean
   documentId?: boolean
   parentId?: boolean
   headingPath?: boolean
@@ -720,12 +951,16 @@ export type ChunkSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   end?: boolean
   text?: boolean
   createdAt?: boolean
+  kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
+  generation?: boolean | Prisma.Chunk$generationArgs<ExtArgs>
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Chunk$parentArgs<ExtArgs>
 }, ExtArgs["result"]["chunk"]>
 
 export type ChunkSelectScalar = {
   id?: boolean
+  kbId?: boolean
+  generationId?: boolean
   documentId?: boolean
   parentId?: boolean
   headingPath?: boolean
@@ -737,14 +972,18 @@ export type ChunkSelectScalar = {
   createdAt?: boolean
 }
 
-export type ChunkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "documentId" | "parentId" | "headingPath" | "kind" | "ordinal" | "start" | "end" | "text" | "createdAt", ExtArgs["result"]["chunk"]>
+export type ChunkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "generationId" | "documentId" | "parentId" | "headingPath" | "kind" | "ordinal" | "start" | "end" | "text" | "createdAt", ExtArgs["result"]["chunk"]>
 export type ChunkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
+  generation?: boolean | Prisma.Chunk$generationArgs<ExtArgs>
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Chunk$parentArgs<ExtArgs>
   children?: boolean | Prisma.Chunk$childrenArgs<ExtArgs>
   _count?: boolean | Prisma.ChunkCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ChunkIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
+  generation?: boolean | Prisma.Chunk$generationArgs<ExtArgs>
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Chunk$parentArgs<ExtArgs>
 }
@@ -752,12 +991,16 @@ export type ChunkIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $ChunkPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Chunk"
   objects: {
+    kb: Prisma.$KnowledgeBasePayload<ExtArgs>
+    generation: Prisma.$IndexGenerationPayload<ExtArgs> | null
     document: Prisma.$DocumentPayload<ExtArgs>
     parent: Prisma.$ChunkPayload<ExtArgs> | null
     children: Prisma.$ChunkPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    kbId: string
+    generationId: string | null
     documentId: string
     parentId: string | null
     headingPath: string | null
@@ -1090,6 +1333,8 @@ readonly fields: ChunkFieldRefs;
  */
 export interface Prisma__ChunkClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  kb<T extends Prisma.KnowledgeBaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBaseDefaultArgs<ExtArgs>>): Prisma.Prisma__KnowledgeBaseClient<runtime.Types.Result.GetResult<Prisma.$KnowledgeBasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  generation<T extends Prisma.Chunk$generationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chunk$generationArgs<ExtArgs>>): Prisma.Prisma__IndexGenerationClient<runtime.Types.Result.GetResult<Prisma.$IndexGenerationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   document<T extends Prisma.DocumentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentClient<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   parent<T extends Prisma.Chunk$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chunk$parentArgs<ExtArgs>>): Prisma.Prisma__ChunkClient<runtime.Types.Result.GetResult<Prisma.$ChunkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   children<T extends Prisma.Chunk$childrenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chunk$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1123,6 +1368,8 @@ export interface Prisma__ChunkClient<T, Null = never, ExtArgs extends runtime.Ty
  */
 export interface ChunkFieldRefs {
   readonly id: Prisma.FieldRef<"Chunk", 'String'>
+  readonly kbId: Prisma.FieldRef<"Chunk", 'String'>
+  readonly generationId: Prisma.FieldRef<"Chunk", 'String'>
   readonly documentId: Prisma.FieldRef<"Chunk", 'String'>
   readonly parentId: Prisma.FieldRef<"Chunk", 'String'>
   readonly headingPath: Prisma.FieldRef<"Chunk", 'String'>
@@ -1439,6 +1686,25 @@ export type ChunkDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Chunks to delete.
    */
   limit?: number
+}
+
+/**
+ * Chunk.generation
+ */
+export type Chunk$generationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IndexGeneration
+   */
+  select?: Prisma.IndexGenerationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IndexGeneration
+   */
+  omit?: Prisma.IndexGenerationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IndexGenerationInclude<ExtArgs> | null
+  where?: Prisma.IndexGenerationWhereInput
 }
 
 /**

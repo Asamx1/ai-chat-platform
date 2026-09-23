@@ -69,7 +69,9 @@ const scope = `FROM "Chunk" c JOIN "Document" d ON d.id=c."documentId"
      JOIN "KnowledgeBase" k ON k.id=d."kbId"
      JOIN "ConversationKnowledgeBase" m ON m."kbId"=k.id
      JOIN "Conversation" v ON v.id=m."conversationId"
-     WHERE k."userId"=$2 AND v."ownerId"=$2 AND v.id=$3 AND d.status='READY' AND d.model=$4`;
+     WHERE k."userId"=$2 AND v."ownerId"=$2 AND v.id=$3 AND d.status='READY' AND d.model=$4
+     AND EXISTS (SELECT 1 FROM jsonb_to_recordset($5::jsonb) AS snapshot(id text, "activeGenerationId" text)
+       WHERE snapshot.id=k.id AND (snapshot."activeGenerationId" IS NULL OR c."generationId"=snapshot."activeGenerationId"))`;
 const projection = `c."documentId",c.ordinal,d.name,c.text,c."headingPath",c.embedding <=> $1::vector(1024) AS distance`;
 const retrievalKinds = ` AND (c.kind IS NULL OR c.kind IN ('CHILD','STANDALONE'))`;
 
@@ -89,6 +91,11 @@ function hitOnly(hit: Hit): Hit {
 
 export async function retrieve(userId: string, conversationId: string, query: string): Promise<Hit[]> {
   const deadline = Date.now() + 3_000;
+  const generations = await beforeDeadline(prisma.knowledgeBase.findMany({
+    where: { userId, conversations: { some: { conversationId, conversation: { ownerId: userId } } } },
+    select: { id: true, activeGenerationId: true },
+  }), deadline);
+  const snapshot = JSON.stringify(generations);
   const model = embeddingModel();
   const rewrite = process.env.RAG_REWRITE !== '0';
   const rerankEnabled = process.env.RAG_RERANK !== '0';
@@ -99,7 +106,7 @@ export async function retrieve(userId: string, conversationId: string, query: st
   for (const embedding of embeddings) validateVector(embedding);
   const [vector] = embeddings;
   validateVector(vector);
-  const args = [JSON.stringify(vector), userId, conversationId, model];
+  const args = [JSON.stringify(vector), userId, conversationId, model, snapshot];
   const hybrid = process.env.RAG_HYBRID !== '0';
   const mmr = process.env.RAG_MMR !== '0';
   const small2big = process.env.RAG_SMALL2BIG !== '0';
@@ -115,13 +122,13 @@ export async function retrieve(userId: string, conversationId: string, query: st
     const columns = `${projection},c.id AS "chunkId",c."parentId",c.kind,c.embedding::text AS embedding`;
     const vectorSearch = Promise.all(embeddings.map((embedding, index) => beforeDeadline(prisma.$queryRawUnsafe<Candidate[]>(
       `SELECT ${columns} ${scope}${retrievalKinds} ORDER BY distance,c.id LIMIT 20`,
-      JSON.stringify(embedding), userId, conversationId, model), enhancedDeadline)
+      JSON.stringify(embedding), userId, conversationId, model, snapshot), enhancedDeadline)
       .then(rows => { if (index === 0) baseline = rows.slice(0, 5).map(hitOnly); return rows; }))).then(mergeBestRank);
     const lexicalSearch = hybrid
       ? beforeDeadline(prisma.$queryRawUnsafe<Candidate[]>(
         `SELECT ${columns} ${scope}${retrievalKinds}
-         AND c.tsv @@ plainto_tsquery('pg_catalog.simple', $5)
-         ORDER BY ts_rank(c.tsv, plainto_tsquery('pg_catalog.simple', $5)) DESC,c.id LIMIT 20`,
+         AND c.tsv @@ plainto_tsquery('pg_catalog.simple', $6)
+         ORDER BY ts_rank(c.tsv, plainto_tsquery('pg_catalog.simple', $6)) DESC,c.id LIMIT 20`,
         ...args, query), enhancedDeadline)
       : Promise.resolve<Candidate[]>([]);
     // Wait for vector even if lexical fails, so its baseline remains available.
@@ -142,7 +149,7 @@ export async function retrieve(userId: string, conversationId: string, query: st
     const parentIds = [...new Set(ranked.filter(hit => hit.kind === 'CHILD' && hit.parentId != null).map(hit => hit.parentId!))];
     const parents = parentIds.length ? await beforeDeadline(prisma.$queryRawUnsafe<(Hit & { chunkId: string })[]>(
       `SELECT ${projection},c.id AS "chunkId" ${scope}
-       AND c.kind='PARENT' AND c.id=ANY($5::text[])`, ...args, parentIds), enhancedDeadline) : [];
+       AND c.kind='PARENT' AND c.id=ANY($6::text[])`, ...args, parentIds), enhancedDeadline) : [];
     const parentMap = new Map(parents.map(parent => [parent.chunkId, parent]));
     const seen = new Set<string>();
     const hits: Hit[] = [];

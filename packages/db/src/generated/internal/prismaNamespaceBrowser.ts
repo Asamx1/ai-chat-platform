@@ -73,7 +73,10 @@ export const ModelName = {
   Document: 'Document',
   Chunk: 'Chunk',
   ConversationKnowledgeBase: 'ConversationKnowledgeBase',
-  UserModelQuota: 'UserModelQuota'
+  UserModelQuota: 'UserModelQuota',
+  SourceVersion: 'SourceVersion',
+  IndexGeneration: 'IndexGeneration',
+  CompileJob: 'CompileJob'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -355,7 +358,8 @@ export const KnowledgeBaseScalarFieldEnum = {
   userId: 'userId',
   name: 'name',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  activeGenerationId: 'activeGenerationId'
 } as const
 
 export type KnowledgeBaseScalarFieldEnum = (typeof KnowledgeBaseScalarFieldEnum)[keyof typeof KnowledgeBaseScalarFieldEnum]
@@ -377,7 +381,8 @@ export const DocumentScalarFieldEnum = {
   leaseOwner: 'leaseOwner',
   leaseExpiresAt: 'leaseExpiresAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  sourceVersionId: 'sourceVersionId'
 } as const
 
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
@@ -385,6 +390,8 @@ export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typ
 
 export const ChunkScalarFieldEnum = {
   id: 'id',
+  kbId: 'kbId',
+  generationId: 'generationId',
   documentId: 'documentId',
   parentId: 'parentId',
   headingPath: 'headingPath',
@@ -415,6 +422,57 @@ export const UserModelQuotaScalarFieldEnum = {
 } as const
 
 export type UserModelQuotaScalarFieldEnum = (typeof UserModelQuotaScalarFieldEnum)[keyof typeof UserModelQuotaScalarFieldEnum]
+
+
+export const SourceVersionScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  documentId: 'documentId',
+  contentHash: 'contentHash',
+  parserVersion: 'parserVersion',
+  normalizerVersion: 'normalizerVersion',
+  createdAt: 'createdAt'
+} as const
+
+export type SourceVersionScalarFieldEnum = (typeof SourceVersionScalarFieldEnum)[keyof typeof SourceVersionScalarFieldEnum]
+
+
+export const IndexGenerationScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  status: 'status',
+  configSnapshot: 'configSnapshot',
+  documentCount: 'documentCount',
+  chunkCount: 'chunkCount',
+  createdAt: 'createdAt',
+  activatedAt: 'activatedAt',
+  retiredAt: 'retiredAt'
+} as const
+
+export type IndexGenerationScalarFieldEnum = (typeof IndexGenerationScalarFieldEnum)[keyof typeof IndexGenerationScalarFieldEnum]
+
+
+export const CompileJobScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  sourceVersionId: 'sourceVersionId',
+  generationId: 'generationId',
+  artifactType: 'artifactType',
+  model: 'model',
+  promptVersion: 'promptVersion',
+  schemaVersion: 'schemaVersion',
+  status: 'status',
+  attempt: 'attempt',
+  maxAttempts: 'maxAttempts',
+  idempotencyKey: 'idempotencyKey',
+  leaseOwner: 'leaseOwner',
+  leaseExpiresAt: 'leaseExpiresAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CompileJobScalarFieldEnum = (typeof CompileJobScalarFieldEnum)[keyof typeof CompileJobScalarFieldEnum]
 
 
 export const SortOrder = {

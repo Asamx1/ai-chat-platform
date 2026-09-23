@@ -67,3 +67,13 @@ export const DocumentStatus = {
 } as const
 
 export type DocumentStatus = (typeof DocumentStatus)[keyof typeof DocumentStatus]
+
+
+export const IndexGenerationStatus = {
+  BUILDING: 'BUILDING',
+  ACTIVE: 'ACTIVE',
+  RETIRED: 'RETIRED',
+  FAILED: 'FAILED'
+} as const
+
+export type IndexGenerationStatus = (typeof IndexGenerationStatus)[keyof typeof IndexGenerationStatus]

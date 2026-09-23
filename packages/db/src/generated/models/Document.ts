@@ -55,6 +55,7 @@ export type DocumentMinAggregateOutputType = {
   leaseExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  sourceVersionId: string | null
 }
 
 export type DocumentMaxAggregateOutputType = {
@@ -74,6 +75,7 @@ export type DocumentMaxAggregateOutputType = {
   leaseExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  sourceVersionId: string | null
 }
 
 export type DocumentCountAggregateOutputType = {
@@ -93,6 +95,7 @@ export type DocumentCountAggregateOutputType = {
   leaseExpiresAt: number
   createdAt: number
   updatedAt: number
+  sourceVersionId: number
   _all: number
 }
 
@@ -126,6 +129,7 @@ export type DocumentMinAggregateInputType = {
   leaseExpiresAt?: true
   createdAt?: true
   updatedAt?: true
+  sourceVersionId?: true
 }
 
 export type DocumentMaxAggregateInputType = {
@@ -145,6 +149,7 @@ export type DocumentMaxAggregateInputType = {
   leaseExpiresAt?: true
   createdAt?: true
   updatedAt?: true
+  sourceVersionId?: true
 }
 
 export type DocumentCountAggregateInputType = {
@@ -164,6 +169,7 @@ export type DocumentCountAggregateInputType = {
   leaseExpiresAt?: true
   createdAt?: true
   updatedAt?: true
+  sourceVersionId?: true
   _all?: true
 }
 
@@ -270,6 +276,7 @@ export type DocumentGroupByOutputType = {
   leaseExpiresAt: Date | null
   createdAt: Date
   updatedAt: Date
+  sourceVersionId: string | null
   _count: DocumentCountAggregateOutputType | null
   _avg: DocumentAvgAggregateOutputType | null
   _sum: DocumentSumAggregateOutputType | null
@@ -312,8 +319,11 @@ export type DocumentWhereInput = {
   leaseExpiresAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
+  sourceVersionId?: Prisma.StringNullableFilter<"Document"> | string | null
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   chunks?: Prisma.ChunkListRelationFilter
+  sourceVersion?: Prisma.XOR<Prisma.SourceVersionNullableScalarRelationFilter, Prisma.SourceVersionWhereInput> | null
+  sourceVersions?: Prisma.SourceVersionListRelationFilter
 }
 
 export type DocumentOrderByWithRelationInput = {
@@ -333,8 +343,11 @@ export type DocumentOrderByWithRelationInput = {
   leaseExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceVersionId?: Prisma.SortOrderInput | Prisma.SortOrder
   kb?: Prisma.KnowledgeBaseOrderByWithRelationInput
   chunks?: Prisma.ChunkOrderByRelationAggregateInput
+  sourceVersion?: Prisma.SourceVersionOrderByWithRelationInput
+  sourceVersions?: Prisma.SourceVersionOrderByRelationAggregateInput
 }
 
 export type DocumentWhereUniqueInput = Prisma.AtLeast<{
@@ -357,8 +370,11 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   leaseExpiresAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
+  sourceVersionId?: Prisma.StringNullableFilter<"Document"> | string | null
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   chunks?: Prisma.ChunkListRelationFilter
+  sourceVersion?: Prisma.XOR<Prisma.SourceVersionNullableScalarRelationFilter, Prisma.SourceVersionWhereInput> | null
+  sourceVersions?: Prisma.SourceVersionListRelationFilter
 }, "id" | "objectKey">
 
 export type DocumentOrderByWithAggregationInput = {
@@ -378,6 +394,7 @@ export type DocumentOrderByWithAggregationInput = {
   leaseExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceVersionId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.DocumentCountOrderByAggregateInput
   _avg?: Prisma.DocumentAvgOrderByAggregateInput
   _max?: Prisma.DocumentMaxOrderByAggregateInput
@@ -405,6 +422,7 @@ export type DocumentScalarWhereWithAggregatesInput = {
   leaseExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Document"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
+  sourceVersionId?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
 }
 
 export type DocumentCreateInput = {
@@ -425,6 +443,8 @@ export type DocumentCreateInput = {
   updatedAt?: Date | string
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
+  sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateInput = {
@@ -444,7 +464,9 @@ export type DocumentUncheckedCreateInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceVersionId?: string | null
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUpdateInput = {
@@ -465,6 +487,8 @@ export type DocumentUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateInput = {
@@ -484,7 +508,9 @@ export type DocumentUncheckedUpdateInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentCreateManyInput = {
@@ -504,6 +530,7 @@ export type DocumentCreateManyInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceVersionId?: string | null
 }
 
 export type DocumentUpdateManyMutationInput = {
@@ -541,6 +568,7 @@ export type DocumentUncheckedUpdateManyInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DocumentListRelationFilter = {
@@ -570,6 +598,7 @@ export type DocumentCountOrderByAggregateInput = {
   leaseExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceVersionId?: Prisma.SortOrder
 }
 
 export type DocumentAvgOrderByAggregateInput = {
@@ -595,6 +624,7 @@ export type DocumentMaxOrderByAggregateInput = {
   leaseExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceVersionId?: Prisma.SortOrder
 }
 
 export type DocumentMinOrderByAggregateInput = {
@@ -614,6 +644,7 @@ export type DocumentMinOrderByAggregateInput = {
   leaseExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceVersionId?: Prisma.SortOrder
 }
 
 export type DocumentSumOrderByAggregateInput = {
@@ -681,6 +712,62 @@ export type DocumentUpdateOneRequiredWithoutChunksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutChunksInput, Prisma.DocumentUpdateWithoutChunksInput>, Prisma.DocumentUncheckedUpdateWithoutChunksInput>
 }
 
+export type DocumentCreateNestedOneWithoutSourceVersionsInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSourceVersionsInput, Prisma.DocumentUncheckedCreateWithoutSourceVersionsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSourceVersionsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentCreateNestedManyWithoutSourceVersionInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSourceVersionInput, Prisma.DocumentUncheckedCreateWithoutSourceVersionInput> | Prisma.DocumentCreateWithoutSourceVersionInput[] | Prisma.DocumentUncheckedCreateWithoutSourceVersionInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSourceVersionInput | Prisma.DocumentCreateOrConnectWithoutSourceVersionInput[]
+  createMany?: Prisma.DocumentCreateManySourceVersionInputEnvelope
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+}
+
+export type DocumentUncheckedCreateNestedManyWithoutSourceVersionInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSourceVersionInput, Prisma.DocumentUncheckedCreateWithoutSourceVersionInput> | Prisma.DocumentCreateWithoutSourceVersionInput[] | Prisma.DocumentUncheckedCreateWithoutSourceVersionInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSourceVersionInput | Prisma.DocumentCreateOrConnectWithoutSourceVersionInput[]
+  createMany?: Prisma.DocumentCreateManySourceVersionInputEnvelope
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+}
+
+export type DocumentUpdateOneRequiredWithoutSourceVersionsNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSourceVersionsInput, Prisma.DocumentUncheckedCreateWithoutSourceVersionsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSourceVersionsInput
+  upsert?: Prisma.DocumentUpsertWithoutSourceVersionsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutSourceVersionsInput, Prisma.DocumentUpdateWithoutSourceVersionsInput>, Prisma.DocumentUncheckedUpdateWithoutSourceVersionsInput>
+}
+
+export type DocumentUpdateManyWithoutSourceVersionNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSourceVersionInput, Prisma.DocumentUncheckedCreateWithoutSourceVersionInput> | Prisma.DocumentCreateWithoutSourceVersionInput[] | Prisma.DocumentUncheckedCreateWithoutSourceVersionInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSourceVersionInput | Prisma.DocumentCreateOrConnectWithoutSourceVersionInput[]
+  upsert?: Prisma.DocumentUpsertWithWhereUniqueWithoutSourceVersionInput | Prisma.DocumentUpsertWithWhereUniqueWithoutSourceVersionInput[]
+  createMany?: Prisma.DocumentCreateManySourceVersionInputEnvelope
+  set?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  disconnect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  delete?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  update?: Prisma.DocumentUpdateWithWhereUniqueWithoutSourceVersionInput | Prisma.DocumentUpdateWithWhereUniqueWithoutSourceVersionInput[]
+  updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutSourceVersionInput | Prisma.DocumentUpdateManyWithWhereWithoutSourceVersionInput[]
+  deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
+}
+
+export type DocumentUncheckedUpdateManyWithoutSourceVersionNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSourceVersionInput, Prisma.DocumentUncheckedCreateWithoutSourceVersionInput> | Prisma.DocumentCreateWithoutSourceVersionInput[] | Prisma.DocumentUncheckedCreateWithoutSourceVersionInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSourceVersionInput | Prisma.DocumentCreateOrConnectWithoutSourceVersionInput[]
+  upsert?: Prisma.DocumentUpsertWithWhereUniqueWithoutSourceVersionInput | Prisma.DocumentUpsertWithWhereUniqueWithoutSourceVersionInput[]
+  createMany?: Prisma.DocumentCreateManySourceVersionInputEnvelope
+  set?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  disconnect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  delete?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  update?: Prisma.DocumentUpdateWithWhereUniqueWithoutSourceVersionInput | Prisma.DocumentUpdateWithWhereUniqueWithoutSourceVersionInput[]
+  updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutSourceVersionInput | Prisma.DocumentUpdateManyWithWhereWithoutSourceVersionInput[]
+  deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
+}
+
 export type DocumentCreateWithoutKbInput = {
   id?: string
   name: string
@@ -698,6 +785,8 @@ export type DocumentCreateWithoutKbInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
+  sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutKbInput = {
@@ -716,7 +805,9 @@ export type DocumentUncheckedCreateWithoutKbInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceVersionId?: string | null
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutKbInput = {
@@ -765,6 +856,7 @@ export type DocumentScalarWhereInput = {
   leaseExpiresAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
+  sourceVersionId?: Prisma.StringNullableFilter<"Document"> | string | null
 }
 
 export type DocumentCreateWithoutChunksInput = {
@@ -784,6 +876,8 @@ export type DocumentCreateWithoutChunksInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
+  sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutChunksInput = {
@@ -803,6 +897,8 @@ export type DocumentUncheckedCreateWithoutChunksInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceVersionId?: string | null
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutChunksInput = {
@@ -838,6 +934,8 @@ export type DocumentUpdateWithoutChunksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutChunksInput = {
@@ -857,6 +955,176 @@ export type DocumentUncheckedUpdateWithoutChunksInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentCreateWithoutSourceVersionsInput = {
+  id?: string
+  name: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
+  sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+}
+
+export type DocumentUncheckedCreateWithoutSourceVersionsInput = {
+  id?: string
+  kbId: string
+  name: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sourceVersionId?: string | null
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutSourceVersionsInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSourceVersionsInput, Prisma.DocumentUncheckedCreateWithoutSourceVersionsInput>
+}
+
+export type DocumentCreateWithoutSourceVersionInput = {
+  id?: string
+  name: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutSourceVersionInput = {
+  id?: string
+  kbId: string
+  name: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutSourceVersionInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSourceVersionInput, Prisma.DocumentUncheckedCreateWithoutSourceVersionInput>
+}
+
+export type DocumentCreateManySourceVersionInputEnvelope = {
+  data: Prisma.DocumentCreateManySourceVersionInput | Prisma.DocumentCreateManySourceVersionInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentUpsertWithoutSourceVersionsInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutSourceVersionsInput, Prisma.DocumentUncheckedUpdateWithoutSourceVersionsInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSourceVersionsInput, Prisma.DocumentUncheckedCreateWithoutSourceVersionsInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutSourceVersionsInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutSourceVersionsInput, Prisma.DocumentUncheckedUpdateWithoutSourceVersionsInput>
+}
+
+export type DocumentUpdateWithoutSourceVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutSourceVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUpsertWithWhereUniqueWithoutSourceVersionInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutSourceVersionInput, Prisma.DocumentUncheckedUpdateWithoutSourceVersionInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSourceVersionInput, Prisma.DocumentUncheckedCreateWithoutSourceVersionInput>
+}
+
+export type DocumentUpdateWithWhereUniqueWithoutSourceVersionInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutSourceVersionInput, Prisma.DocumentUncheckedUpdateWithoutSourceVersionInput>
+}
+
+export type DocumentUpdateManyWithWhereWithoutSourceVersionInput = {
+  where: Prisma.DocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutSourceVersionInput>
 }
 
 export type DocumentCreateManyKbInput = {
@@ -875,6 +1143,7 @@ export type DocumentCreateManyKbInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceVersionId?: string | null
 }
 
 export type DocumentUpdateWithoutKbInput = {
@@ -894,6 +1163,8 @@ export type DocumentUpdateWithoutKbInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutKbInput = {
@@ -912,11 +1183,94 @@ export type DocumentUncheckedUpdateWithoutKbInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateManyWithoutKbInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type DocumentCreateManySourceVersionInput = {
+  id?: string
+  kbId: string
+  name: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DocumentUpdateWithoutSourceVersionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutSourceVersionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateManyWithoutSourceVersionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
@@ -940,10 +1294,12 @@ export type DocumentUncheckedUpdateManyWithoutKbInput = {
 
 export type DocumentCountOutputType = {
   chunks: number
+  sourceVersions: number
 }
 
 export type DocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   chunks?: boolean | DocumentCountOutputTypeCountChunksArgs
+  sourceVersions?: boolean | DocumentCountOutputTypeCountSourceVersionsArgs
 }
 
 /**
@@ -961,6 +1317,13 @@ export type DocumentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
  */
 export type DocumentCountOutputTypeCountChunksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ChunkWhereInput
+}
+
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountSourceVersionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SourceVersionWhereInput
 }
 
 
@@ -981,8 +1344,11 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   leaseExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceVersionId?: boolean
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>
+  sourceVersion?: boolean | Prisma.Document$sourceVersionArgs<ExtArgs>
+  sourceVersions?: boolean | Prisma.Document$sourceVersionsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
@@ -1003,7 +1369,9 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   leaseExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceVersionId?: boolean
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
+  sourceVersion?: boolean | Prisma.Document$sourceVersionArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
 export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1023,7 +1391,9 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   leaseExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceVersionId?: boolean
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
+  sourceVersion?: boolean | Prisma.Document$sourceVersionArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
 export type DocumentSelectScalar = {
@@ -1043,19 +1413,24 @@ export type DocumentSelectScalar = {
   leaseExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceVersionId?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "name" | "mime" | "objectKey" | "model" | "size" | "chunkCount" | "chunkStrategy" | "status" | "error" | "attempt" | "leaseOwner" | "leaseExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "name" | "mime" | "objectKey" | "model" | "size" | "chunkCount" | "chunkStrategy" | "status" | "error" | "attempt" | "leaseOwner" | "leaseExpiresAt" | "createdAt" | "updatedAt" | "sourceVersionId", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>
+  sourceVersion?: boolean | Prisma.Document$sourceVersionArgs<ExtArgs>
+  sourceVersions?: boolean | Prisma.Document$sourceVersionsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
+  sourceVersion?: boolean | Prisma.Document$sourceVersionArgs<ExtArgs>
 }
 export type DocumentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
+  sourceVersion?: boolean | Prisma.Document$sourceVersionArgs<ExtArgs>
 }
 
 export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1063,6 +1438,8 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     kb: Prisma.$KnowledgeBasePayload<ExtArgs>
     chunks: Prisma.$ChunkPayload<ExtArgs>[]
+    sourceVersion: Prisma.$SourceVersionPayload<ExtArgs> | null
+    sourceVersions: Prisma.$SourceVersionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1081,6 +1458,7 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     leaseExpiresAt: Date | null
     createdAt: Date
     updatedAt: Date
+    sourceVersionId: string | null
   }, ExtArgs["result"]["document"]>
   composites: {}
 }
@@ -1477,6 +1855,8 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   kb<T extends Prisma.KnowledgeBaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBaseDefaultArgs<ExtArgs>>): Prisma.Prisma__KnowledgeBaseClient<runtime.Types.Result.GetResult<Prisma.$KnowledgeBasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   chunks<T extends Prisma.Document$chunksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$chunksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sourceVersion<T extends Prisma.Document$sourceVersionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$sourceVersionArgs<ExtArgs>>): Prisma.Prisma__SourceVersionClient<runtime.Types.Result.GetResult<Prisma.$SourceVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  sourceVersions<T extends Prisma.Document$sourceVersionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$sourceVersionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SourceVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1522,6 +1902,7 @@ export interface DocumentFieldRefs {
   readonly leaseExpiresAt: Prisma.FieldRef<"Document", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Document", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Document", 'DateTime'>
+  readonly sourceVersionId: Prisma.FieldRef<"Document", 'String'>
 }
     
 
@@ -1939,6 +2320,49 @@ export type Document$chunksArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ChunkScalarFieldEnum | Prisma.ChunkScalarFieldEnum[]
+}
+
+/**
+ * Document.sourceVersion
+ */
+export type Document$sourceVersionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SourceVersion
+   */
+  select?: Prisma.SourceVersionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SourceVersion
+   */
+  omit?: Prisma.SourceVersionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SourceVersionInclude<ExtArgs> | null
+  where?: Prisma.SourceVersionWhereInput
+}
+
+/**
+ * Document.sourceVersions
+ */
+export type Document$sourceVersionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SourceVersion
+   */
+  select?: Prisma.SourceVersionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SourceVersion
+   */
+  omit?: Prisma.SourceVersionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SourceVersionInclude<ExtArgs> | null
+  where?: Prisma.SourceVersionWhereInput
+  orderBy?: Prisma.SourceVersionOrderByWithRelationInput | Prisma.SourceVersionOrderByWithRelationInput[]
+  cursor?: Prisma.SourceVersionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SourceVersionScalarFieldEnum | Prisma.SourceVersionScalarFieldEnum[]
 }
 
 /**

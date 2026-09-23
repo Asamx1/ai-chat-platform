@@ -154,3 +154,18 @@ export type ConversationKnowledgeBase = Prisma.ConversationKnowledgeBaseModel
  * 
  */
 export type UserModelQuota = Prisma.UserModelQuotaModel
+/**
+ * Model SourceVersion
+ * 
+ */
+export type SourceVersion = Prisma.SourceVersionModel
+/**
+ * Model IndexGeneration
+ * 
+ */
+export type IndexGeneration = Prisma.IndexGenerationModel
+/**
+ * Model CompileJob
+ * 
+ */
+export type CompileJob = Prisma.CompileJobModel

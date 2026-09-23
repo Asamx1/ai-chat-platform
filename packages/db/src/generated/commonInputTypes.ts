@@ -433,6 +433,23 @@ export type EnumDocumentStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumDocumentStatusFilter<$PrismaModel>
 }
 
+export type EnumIndexGenerationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.IndexGenerationStatus | Prisma.EnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.IndexGenerationStatus[] | Prisma.ListEnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.IndexGenerationStatus[] | Prisma.ListEnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumIndexGenerationStatusFilter<$PrismaModel> | $Enums.IndexGenerationStatus
+}
+
+export type EnumIndexGenerationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.IndexGenerationStatus | Prisma.EnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.IndexGenerationStatus[] | Prisma.ListEnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.IndexGenerationStatus[] | Prisma.ListEnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumIndexGenerationStatusWithAggregatesFilter<$PrismaModel> | $Enums.IndexGenerationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumIndexGenerationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumIndexGenerationStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -809,6 +826,23 @@ export type NestedEnumDocumentStatusWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumDocumentStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumDocumentStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumIndexGenerationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.IndexGenerationStatus | Prisma.EnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.IndexGenerationStatus[] | Prisma.ListEnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.IndexGenerationStatus[] | Prisma.ListEnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumIndexGenerationStatusFilter<$PrismaModel> | $Enums.IndexGenerationStatus
+}
+
+export type NestedEnumIndexGenerationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.IndexGenerationStatus | Prisma.EnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.IndexGenerationStatus[] | Prisma.ListEnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.IndexGenerationStatus[] | Prisma.ListEnumIndexGenerationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumIndexGenerationStatusWithAggregatesFilter<$PrismaModel> | $Enums.IndexGenerationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumIndexGenerationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumIndexGenerationStatusFilter<$PrismaModel>
 }
 
 
