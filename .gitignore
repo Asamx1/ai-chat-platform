@@ -29,3 +29,11 @@ apps/web/tsconfig.tsbuildinfo
 infra/launcher/*.pid
 infra/launcher/*.log
 tsconfig.tsbuildinfo
+
+# gpu-scheduler stray build artifacts (tsc leak from vitest runs)
+packages/gpu-scheduler/src/*.js
+packages/gpu-scheduler/src/*.js.map
+packages/gpu-scheduler/src/*.d.ts
+packages/gpu-scheduler/test/*.js
+packages/gpu-scheduler/test/*.js.map
+packages/gpu-scheduler/test/*.d.ts
