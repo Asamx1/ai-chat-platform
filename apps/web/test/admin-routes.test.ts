@@ -99,8 +99,14 @@ describe('admin contracts', () => {
   });
   it('locks quota writes and supports upsert zero and idempotent delete', async () => {
     expect((await PUT(request('quotas/u/m', 'PUT', { dailyLimit: 0 }), context)).status).toBe(200);
-    expect(mocks.db.$queryRawUnsafe).toHaveBeenCalledWith(expect.stringContaining('pg_advisory_xact_lock'), JSON.stringify(['u', 'm']));
+    expect(mocks.db.$executeRawUnsafe).toHaveBeenCalledWith(expect.stringContaining('pg_advisory_xact_lock'), JSON.stringify(['u', 'm']));
+    expect(mocks.db.userModelQuota.upsert).toHaveBeenCalledWith({
+      where: { userId_modelId: { userId: 'u', modelId: 'm' } },
+      create: { userId: 'u', modelId: 'm', dailyLimit: 0 }, update: { dailyLimit: 0 },
+    });
     expect((await DELETE(request('quotas/u/m', 'DELETE'), context)).status).toBe(204);
+    expect((await DELETE(request('quotas/u/m', 'DELETE'), context)).status).toBe(204);
+    expect(mocks.db.userModelQuota.deleteMany).toHaveBeenCalledWith({ where: { userId: 'u', modelId: 'm' } });
   });
   it('returns 404 for missing quota user/model', async () => {
     mocks.db.modelRegistry.findUnique.mockResolvedValue(null);

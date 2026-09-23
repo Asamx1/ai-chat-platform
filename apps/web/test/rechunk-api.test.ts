@@ -1,5 +1,5 @@
 import { beforeEach, expect, it, vi } from 'vitest';
-const { getSession, queryRaw, executeRaw, transaction, getStrategy } = vi.hoisted(() => ({
+const mocks = vi.hoisted(() => ({
   getSession: vi.fn(),
   queryRaw: vi.fn(),
   executeRaw: vi.fn(),
@@ -10,11 +10,12 @@ const { getSession, queryRaw, executeRaw, transaction, getStrategy } = vi.hoiste
   }),
 }));
 vi.mock('next/headers', () => ({ headers: async () => new Headers() }));
-vi.mock('@/lib/auth', () => ({ auth: { api: { getSession } } }));
-vi.mock('@aichat/db', () => ({ prisma: { $queryRaw: queryRaw, $executeRaw: executeRaw, $transaction } }));
-vi.mock('@aichat/rag', () => ({ getStrategy }));
+vi.mock('@/lib/auth', () => ({ auth: { api: { getSession: mocks.getSession } } }));
+vi.mock('@aichat/db', () => ({ prisma: { $queryRaw: mocks.queryRaw, $executeRaw: mocks.executeRaw, $transaction: mocks.transaction } }));
+vi.mock('@aichat/rag', () => ({ getStrategy: mocks.getStrategy }));
 import { POST } from '../src/app/api/kb/[id]/rechunk/route';
 
+const { getSession, queryRaw, executeRaw, transaction, getStrategy } = mocks;
 const context = { params: Promise.resolve({ id: 'doc-1' }) };
 const request = (body: unknown): Request =>
   new Request('http://localhost/api/kb/doc-1/rechunk', { method: 'POST', body: JSON.stringify(body) });
@@ -59,12 +60,12 @@ it('deletes old chunks and requeues the document through the existing queue', as
   expect(res.status).toBe(202);
   expect(await res.json()).toEqual({ id: 'doc-1', status: 'PENDING', chunkStrategy: 'structure' });
   expect(queryRaw.mock.calls[0]![0].join('')).toContain('FOR UPDATE OF d');
-  expect(queryRaw.mock.calls[0]![1]).toEqual(['doc-1', 'user-a']);
+  expect(queryRaw.mock.calls[0]!.slice(1)).toEqual(['doc-1', 'user-a']);
   const sql = executeRaw.mock.calls.map(call => call[0].join(''));
   expect(sql[0]).toContain('DELETE FROM "Chunk"');
   expect(sql[1]).toContain(`status='PENDING'`);
   expect(sql[1]).toContain('"chunkStrategy"');
-  expect(executeRaw.mock.calls[1]![1]).toEqual(['structure', 'doc-1']);
+  expect(executeRaw.mock.calls[1]!.slice(1)).toEqual(['structure', 'doc-1']);
 });
 
 it('is idempotent: repeating the same request replays the same writes', async () => {

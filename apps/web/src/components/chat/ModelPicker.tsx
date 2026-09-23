@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-const STORAGE_KEY = 'chat:modelKey';
+export const STORAGE_KEY = 'chat:modelKey';
 // 本地 Ollama 模型：仅作为 /api/models 不可用时的兜底选项（CollabLauncher 也复用）
 export const MODEL_OPTIONS = ['qwen3:0.6b', 'qwen3.6:latest'];
 
@@ -20,7 +20,7 @@ interface ModelOption {
 let cache: { at: number; models: string[] } | null = null;
 const CACHE_TTL = 30_000;
 
-async function fetchModelOptions(): Promise<string[]> {
+export async function fetchModelOptions(): Promise<string[]> {
   if (cache && Date.now() - cache.at < CACHE_TTL) return cache.models;
   try {
     const res = await fetch('/api/models', { credentials: 'include' });
