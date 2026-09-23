@@ -2,7 +2,7 @@ import { createRequire } from 'node:module';
 import * as minio from 'minio';
 import { Worker } from 'node:worker_threads';
 import { prisma } from '@aichat/db';
-import { chunkDocument, embed, embeddingModel, parse, storePlan, PermanentRagError, LeaseLostError, MAX_FILE_BYTES, isStrategyName } from '@aichat/rag';
+import { embed, embeddingModel, parse, planChunksAsync, writeUnlessAborted, storePlan, PermanentRagError, LeaseLostError, MAX_FILE_BYTES, isStrategyName, DEFAULT_CHUNK_CONFIG, type PlanStats } from '@aichat/rag';
 import { kbConcurrency } from './lib/config';
 
 type Job = { id: string; attempt: number; mime: string; objectKey: string; model: string; size: number; chunkStrategy: string };
@@ -114,7 +114,7 @@ export async function processDocument(job: Job, worker: string): Promise<void> {
     }).catch(() => controller.abort()).finally(() => { renewing = false; });
   }, 10_000);
   // Per-phase timings (M12-P2 observability): ms spent in each pipeline stage.
-  const phase = { download: 0, parse: 0, embed: 0, store: 0 };
+  const phase = { download: 0, parse: 0, plan: 0, embed: 0, store: 0 };
   const timed = <T>(key: keyof typeof phase, run: () => Promise<T>): Promise<T> => {
     const startedAt = Date.now();
     return run().finally(() => { phase[key] = Date.now() - startedAt; });
@@ -126,11 +126,19 @@ export async function processDocument(job: Job, worker: string): Promise<void> {
     // Dispatch through the registry so Document.chunkStrategy matches the stored chunks;
     // unknown strategies are permanent errors, never silently re-chunked as fixed.
     if (!isStrategyName(job.chunkStrategy)) throw new PermanentRagError('UNKNOWN_CHUNK_STRATEGY');
-    const results = chunkDocument({ parts, mime: job.mime }, job.chunkStrategy);
+    let planStats: PlanStats | undefined;
+    const results = await timed('plan', () => planChunksAsync({ parts, mime: job.mime }, job.chunkStrategy, DEFAULT_CHUNK_CONFIG, {
+      embedBatch: texts => embed(texts, controller.signal, job.model),
+      signal: controller.signal,
+      embeddingModel: job.model,
+      onStats: stats => { planStats = stats; },
+    }));
     const vectors = await timed('embed', () => embed(results.map(result => result.text), controller.signal, job.model));
     controller.signal.throwIfAborted();
-    await timed('store', () => storePlan(job.id, job.attempt, worker, results, vectors, undefined, parts.map(part => part.text).join('\n')));
-    console.log('[kb-worker] processed', JSON.stringify({ id: job.id, chunks: results.length, ...phase }));
+    await timed('store', () => writeUnlessAborted(controller.signal, () => storePlan(job.id, job.attempt, worker, results, vectors, undefined, parts.map(part => part.text).join('\n'),
+      planStats?.effectiveStrategy === 'structure' && job.chunkStrategy === 'semantic' ? 'structure(fallback:semantic)' : undefined)));
+    console.log('[kb-worker] processed', JSON.stringify({ id: job.id, chunks: results.length, requestedStrategy: job.chunkStrategy,
+      effectiveStrategy: planStats?.effectiveStrategy ?? job.chunkStrategy, degradeReason: planStats?.degradeReason, planStats, ...phase }));
   } catch (error) {
     if (!controller.signal.aborted && !(error instanceof LeaseLostError)) await failDocument(job, worker, error);
   } finally { clearInterval(heartbeat); }

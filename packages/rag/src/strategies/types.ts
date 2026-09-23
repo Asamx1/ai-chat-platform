@@ -5,7 +5,7 @@ export function normalize(text: string): string {
   return text.replace(/\r\n?/g, '\n').replace(/\0/g, '');
 }
 
-export type StrategyName = 'fixed' | 'recursive' | 'structure';
+export type StrategyName = 'fixed' | 'recursive' | 'structure' | 'semantic';
 
 /**
  * All sizes are Unicode code point counts over the normalized, newline-joined text,
@@ -20,6 +20,10 @@ export type ChunkConfig = {
   fixedSize: number;
   fixedOverlap: number;
   parentChild: boolean;
+  /** Cosine similarity below this value confirms a semantic boundary. */
+  semanticThreshold?: number;
+  /** Number of adjacent units on each side of a candidate boundary. */
+  semanticNeighborhood?: number;
 };
 
 export type ChunkInput = { parts: Part[]; mime: string };
@@ -43,6 +47,26 @@ export type ChunkStrategy = {
   chunk(doc: ChunkInput, config: Readonly<ChunkConfig>): ChunkResult[];
 };
 
+export type PlanStats = {
+  strategy: string;
+  requestedStrategy: string;
+  effectiveStrategy: string;
+  units: number;
+  boundaries: number;
+  mergedBoundaries: number;
+  degradeReason?: string;
+  timings: { embedMs: number; planMs: number };
+};
+
+export type PlanContext = {
+  embedBatch(texts: string[]): Promise<number[][]>;
+  signal?: AbortSignal;
+  embeddingModel: string;
+  onStats?: (stats: PlanStats) => void;
+};
+
+export type PlanChunksAsync = (input: ChunkInput, strategy: string, config: ChunkConfig, context: PlanContext) => Promise<ChunkResult[]>;
+
 export const DEFAULT_CHUNK_CONFIG: ChunkConfig = {
   childMin: 128,
   childTarget: 256,
@@ -63,6 +87,8 @@ export function validateChunkConfig(config: Readonly<ChunkConfig>): void {
   }
   if (!(0 <= childOverlap && childOverlap < childMin)) throw new RangeError('Invalid chunk config');
   if (!(fixedSize > 0 && 0 <= fixedOverlap && fixedOverlap < fixedSize)) throw new RangeError('Invalid chunk window');
+  if (config.semanticThreshold !== undefined && (!Number.isFinite(config.semanticThreshold) || config.semanticThreshold < -1 || config.semanticThreshold > 1)) throw new RangeError('Invalid semanticThreshold');
+  if (config.semanticNeighborhood !== undefined && (!Number.isSafeInteger(config.semanticNeighborhood) || config.semanticNeighborhood < 1)) throw new RangeError('Invalid semanticNeighborhood');
 }
 
 /** Normalized full text exactly as the legacy pipeline would join it. */

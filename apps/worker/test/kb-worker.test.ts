@@ -1,11 +1,14 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
-const { query, execute, storePlan, chunkDocument } = vi.hoisted(() => ({ query: vi.fn(), execute: vi.fn(), storePlan: vi.fn(), chunkDocument: vi.fn() }));
+const { query, execute, storePlan, chunkDocument, planChunksAsync, writeUnlessAbortedImpl } = vi.hoisted(() => ({ query: vi.fn(), execute: vi.fn(), storePlan: vi.fn(), chunkDocument: vi.fn(), planChunksAsync: vi.fn(), writeUnlessAbortedImpl: vi.fn() }));
 vi.mock('@aichat/db', () => ({ prisma: { $queryRawUnsafe: query, $executeRawUnsafe: execute } }));
 vi.mock('@aichat/rag', async () => ({
   ...await import('../../../packages/rag/src/parse'), ...await import('../../../packages/rag/src/embed'),
   ...await import('../../../packages/rag/src/strategies/registry'),
+  ...await import('../../../packages/rag/src/strategies/types'),
   chunkDocument,
+  planChunksAsync,
+  writeUnlessAborted: (signal: AbortSignal, run: () => Promise<unknown>) => { if (writeUnlessAbortedImpl.getMockImplementation()) return writeUnlessAbortedImpl(signal, run); signal.throwIfAborted(); return run(); },
   storePlan, LeaseLostError: class extends Error {},
 }));
 vi.mock('minio', () => ({
@@ -28,6 +31,7 @@ const response = (input: string[]) => Response.json({ embeddings: input.map(() =
 beforeEach(() => {
   vi.clearAllMocks();
   chunkDocument.mockReset().mockImplementation(({ parts }: { parts: { text: string }[] }) => parts);
+  planChunksAsync.mockReset().mockImplementation(async ({ parts }: { parts: unknown[] }) => parts as never);
   vi.stubEnv('KB_CONCURRENCY', '2');
   vi.stubEnv('EMBEDDING_MODEL', 'bge-m3:latest');
   vi.stubEnv('S3_ENDPOINT', 'http://localhost:9000');
@@ -135,7 +139,7 @@ it('rejects unknown chunk strategies permanently before chunking', async () => {
 });
 
 it.each([[1, 'PENDING'], [3, 'FAILED']])('preserves chunk failures and retry budget at attempt %s', async (attempt, status) => {
-  chunkDocument.mockImplementationOnce(() => { throw new Error('chunk internal failure'); });
+  planChunksAsync.mockImplementationOnce(() => { throw new Error('chunk internal failure'); });
   await processDocument({ ...job('bad'), attempt }, 'worker');
   expect(execute.mock.calls[0]!.slice(4)).toEqual([status, 'chunk internal failure']);
   expect(storePlan).not.toHaveBeenCalled();

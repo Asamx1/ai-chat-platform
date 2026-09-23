@@ -131,7 +131,7 @@ export async function store(id: string, attempt: number, worker: string, slices:
  */
 export async function storePlan(
   id: string, attempt: number, worker: string, plan: ChunkResult[], vectors: number[][],
-  generationId?: string, normText?: string,
+  generationId?: string, normText?: string, effectiveChunkStrategy?: string,
 ): Promise<void> {
   if (!plan.length || plan.length !== vectors.length) throw new PermanentRagError('INVALID_CHUNKS');
   vectors.forEach(validateVector);
@@ -168,10 +168,10 @@ export async function storePlan(
       if (result.kind !== 'PARENT') await insert(result, index);
     }
     const count = await tx.$executeRawUnsafe(
-      `UPDATE "Document" SET status='READY',"chunkCount"=$4,error=NULL,"leaseOwner"=NULL,
+      `UPDATE "Document" SET status='READY',"chunkCount"=$4,"chunkStrategy"=COALESCE($5,"chunkStrategy"),error=NULL,"leaseOwner"=NULL,
        "leaseExpiresAt"=NULL,"updatedAt"=clock_timestamp()
        WHERE id=$1 AND attempt=$2 AND "leaseOwner"=$3 AND status='PROCESSING'
-       AND "leaseExpiresAt">clock_timestamp()`, id, attempt, worker, plan.length);
+       AND "leaseExpiresAt">clock_timestamp()`, id, attempt, worker, plan.length, effectiveChunkStrategy ?? null);
     if (count !== 1) throw new LeaseLostError('LEASE_LOST');
     if (targetId) await tx.$executeRawUnsafe(
       `UPDATE "IndexGeneration" g SET
