@@ -76,7 +76,10 @@ export const ModelName = {
   UserModelQuota: 'UserModelQuota',
   SourceVersion: 'SourceVersion',
   IndexGeneration: 'IndexGeneration',
-  CompileJob: 'CompileJob'
+  CompileJob: 'CompileJob',
+  CompileOutbox: 'CompileOutbox',
+  CompileCostLedger: 'CompileCostLedger',
+  SummaryFact: 'SummaryFact'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -369,6 +372,7 @@ export const DocumentScalarFieldEnum = {
   id: 'id',
   kbId: 'kbId',
   name: 'name',
+  kind: 'kind',
   mime: 'mime',
   objectKey: 'objectKey',
   model: 'model',
@@ -469,10 +473,59 @@ export const CompileJobScalarFieldEnum = {
   leaseExpiresAt: 'leaseExpiresAt',
   lastError: 'lastError',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  artifactDocumentId: 'artifactDocumentId'
 } as const
 
 export type CompileJobScalarFieldEnum = (typeof CompileJobScalarFieldEnum)[keyof typeof CompileJobScalarFieldEnum]
+
+
+export const CompileOutboxScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  documentId: 'documentId',
+  sourceVersionId: 'sourceVersionId',
+  generationId: 'generationId',
+  eventType: 'eventType',
+  createdAt: 'createdAt',
+  processedAt: 'processedAt'
+} as const
+
+export type CompileOutboxScalarFieldEnum = (typeof CompileOutboxScalarFieldEnum)[keyof typeof CompileOutboxScalarFieldEnum]
+
+
+export const CompileCostLedgerScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  compileJobId: 'compileJobId',
+  model: 'model',
+  operation: 'operation',
+  inputTokens: 'inputTokens',
+  outputTokens: 'outputTokens',
+  costUsd: 'costUsd',
+  priceVersion: 'priceVersion',
+  attempt: 'attempt',
+  status: 'status',
+  elapsedMs: 'elapsedMs',
+  requestDedupKey: 'requestDedupKey',
+  createdAt: 'createdAt'
+} as const
+
+export type CompileCostLedgerScalarFieldEnum = (typeof CompileCostLedgerScalarFieldEnum)[keyof typeof CompileCostLedgerScalarFieldEnum]
+
+
+export const SummaryFactScalarFieldEnum = {
+  id: 'id',
+  summaryDocumentId: 'summaryDocumentId',
+  sourceDocumentId: 'sourceDocumentId',
+  sourceChunkId: 'sourceChunkId',
+  claim: 'claim',
+  quote: 'quote',
+  spanStart: 'spanStart',
+  spanEnd: 'spanEnd'
+} as const
+
+export type SummaryFactScalarFieldEnum = (typeof SummaryFactScalarFieldEnum)[keyof typeof SummaryFactScalarFieldEnum]
 
 
 export const SortOrder = {

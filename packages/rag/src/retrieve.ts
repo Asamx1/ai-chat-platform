@@ -2,7 +2,7 @@ import { prisma } from '@aichat/db';
 import { embed, embeddingModel, validateVector } from './embed';
 import { rerank } from './rerank';
 import { rewriteQuery } from './rewrite';
-export type Hit = { documentId: string; ordinal: number; name: string; text: string; distance: number; headingPath?: string | null };
+export type Hit = { documentId: string; ordinal: number; name: string; text: string; distance: number; headingPath?: string | null; documentKind?: string };
 export type Candidate = Hit & { chunkId: string; parentId: string | null; kind: string | null; embedding: string };
 
 /** Rewrite lists contribute their best rank, not extra RRF votes. Ties retain list order. */
@@ -72,7 +72,7 @@ const scope = `FROM "Chunk" c JOIN "Document" d ON d.id=c."documentId"
      WHERE k."userId"=$2 AND v."ownerId"=$2 AND v.id=$3 AND d.status='READY' AND d.model=$4
      AND EXISTS (SELECT 1 FROM jsonb_to_recordset($5::jsonb) AS snapshot(id text, "activeGenerationId" text)
        WHERE snapshot.id=k.id AND (snapshot."activeGenerationId" IS NULL OR c."generationId"=snapshot."activeGenerationId"))`;
-const projection = `c."documentId",c.ordinal,d.name,c.text,c."headingPath",c.embedding <=> $1::vector(1024) AS distance`;
+const projection = `c."documentId",c.ordinal,d.name,c.text,c."headingPath",d.kind AS "documentKind",c.embedding <=> $1::vector(1024) AS distance`;
 const retrievalKinds = ` AND (c.kind IS NULL OR c.kind IN ('CHILD','STANDALONE'))`;
 
 async function beforeDeadline<T>(work: PromiseLike<T>, deadline: number): Promise<T> {
@@ -89,7 +89,38 @@ function hitOnly(hit: Hit): Hit {
     ...(hit.headingPath !== undefined ? { headingPath: hit.headingPath } : {}) };
 }
 
-export async function retrieve(userId: string, conversationId: string, query: string): Promise<Hit[]> {
+export type RetrieveOptions = { includeKinds?: readonly ('SOURCE' | 'WIKI_SUMMARY' | 'WIKI_ENTITY')[] };
+export function allowedKinds(options?: RetrieveOptions): string[] {
+  if (process.env.RAG_WIKI !== 'true') return ['SOURCE'];
+  const requested = options?.includeKinds ?? ['SOURCE'];
+  return [...new Set(requested.filter(kind => kind === 'SOURCE' || kind === 'WIKI_SUMMARY'))];
+}
+
+async function sourceEvidence(hits: Hit[], userId: string, conversationId: string, snapshot: string, deadline: number): Promise<Hit[]> {
+  const result: Hit[] = [];
+  for (const hit of hits) {
+    if (hit.documentKind !== 'WIKI_SUMMARY') { result.push(hitOnly(hit)); continue; }
+    const facts = await beforeDeadline(prisma.$queryRawUnsafe<(Hit & { quote: string; spanStart: number; spanEnd: number })[]>(
+      `SELECT s."documentId",s.ordinal,d.name,s.text,f.quote,f."spanStart",f."spanEnd",$1::float AS distance
+       FROM "SummaryFact" f JOIN "Document" summary ON summary.id=f."summaryDocumentId"
+       JOIN "CompileJob" j ON j."artifactDocumentId"=summary.id
+       JOIN "Chunk" s ON s.id=f."sourceChunkId" JOIN "Document" d ON d.id=s."documentId"
+       JOIN "KnowledgeBase" k ON k.id=d."kbId" JOIN "ConversationKnowledgeBase" m ON m."kbId"=k.id
+       JOIN "Conversation" v ON v.id=m."conversationId"
+       WHERE summary.id=$2 AND d.kind='SOURCE' AND d.status='READY' AND d."sourceVersionId"=j."sourceVersionId"
+       AND s."generationId"=j."generationId" AND k."userId"=$3 AND v."ownerId"=$3 AND v.id=$4
+       AND EXISTS (SELECT 1 FROM jsonb_to_recordset($5::jsonb) AS snap(id text,"activeGenerationId" text)
+         WHERE snap.id=k.id AND (snap."activeGenerationId" IS NULL OR s."generationId"=snap."activeGenerationId"))
+       ORDER BY f.id LIMIT 5`, hit.distance, hit.documentId, userId, conversationId, snapshot), deadline);
+    const valid = facts.find(f => f.spanStart >= 0 && f.spanEnd > f.spanStart &&
+      f.text.slice(f.spanStart, f.spanEnd) === f.quote);
+    if (valid) result.push({ documentId: valid.documentId, ordinal: valid.ordinal, name: valid.name,
+      text: valid.quote, distance: hit.distance });
+  }
+  return result;
+}
+
+export async function retrieve(userId: string, conversationId: string, query: string, options?: RetrieveOptions): Promise<Hit[]> {
   const deadline = Date.now() + 3_000;
   const generations = await beforeDeadline(prisma.knowledgeBase.findMany({
     where: { userId, conversations: { some: { conversationId, conversation: { ownerId: userId } } } },
@@ -106,13 +137,17 @@ export async function retrieve(userId: string, conversationId: string, query: st
   for (const embedding of embeddings) validateVector(embedding);
   const [vector] = embeddings;
   validateVector(vector);
+  const kinds = allowedKinds(options);
+  if (!kinds.length) return [];
   const args = [JSON.stringify(vector), userId, conversationId, model, snapshot];
+  const scoped = `${scope} AND d.kind IN (${kinds.map(kind => `'${kind}'`).join(',')})`;
+  const finish = (hits: Hit[]) => sourceEvidence(hits, userId, conversationId, snapshot, deadline);
   const hybrid = process.env.RAG_HYBRID !== '0';
   const mmr = process.env.RAG_MMR !== '0';
   const small2big = process.env.RAG_SMALL2BIG !== '0';
   const pureVector = () => beforeDeadline(prisma.$queryRawUnsafe<Hit[]>(
-    `SELECT ${projection} ${scope}${retrievalKinds} ORDER BY distance,c.id LIMIT 5`, ...args), deadline);
-  if (!hybrid && !mmr && !small2big && !rewrite && !rerankEnabled) return pureVector();
+    `SELECT ${projection} ${scoped}${retrievalKinds} ORDER BY distance,c.id LIMIT 5`, ...args), deadline);
+  if (!hybrid && !mmr && !small2big && !rewrite && !rerankEnabled) return finish(await pureVector());
 
   let baseline: Hit[] | undefined;
   // Reserve time for a baseline retry if enhanced SQL fails. Timers bound caller waiting,
@@ -121,12 +156,12 @@ export async function retrieve(userId: string, conversationId: string, query: st
   try {
     const columns = `${projection},c.id AS "chunkId",c."parentId",c.kind,c.embedding::text AS embedding`;
     const vectorSearch = Promise.all(embeddings.map((embedding, index) => beforeDeadline(prisma.$queryRawUnsafe<Candidate[]>(
-      `SELECT ${columns} ${scope}${retrievalKinds} ORDER BY distance,c.id LIMIT 20`,
+      `SELECT ${columns} ${scoped}${retrievalKinds} ORDER BY distance,c.id LIMIT 20`,
       JSON.stringify(embedding), userId, conversationId, model, snapshot), enhancedDeadline)
-      .then(rows => { if (index === 0) baseline = rows.slice(0, 5).map(hitOnly); return rows; }))).then(mergeBestRank);
+      .then(rows => { if (index === 0) baseline = rows.slice(0, 5); return rows; }))).then(mergeBestRank);
     const lexicalSearch = hybrid
       ? beforeDeadline(prisma.$queryRawUnsafe<Candidate[]>(
-        `SELECT ${columns} ${scope}${retrievalKinds}
+        `SELECT ${columns} ${scoped}${retrievalKinds}
          AND c.tsv @@ plainto_tsquery('pg_catalog.simple', $6)
          ORDER BY ts_rank(c.tsv, plainto_tsquery('pg_catalog.simple', $6)) DESC,c.id LIMIT 20`,
         ...args, query), enhancedDeadline)
@@ -145,10 +180,10 @@ export async function retrieve(userId: string, conversationId: string, query: st
     }
     const remaining = deadline - Date.now();
     if (rerankEnabled && remaining >= 1_000) ranked = await rerank(query, ranked, remaining - 200);
-    if (!small2big) return ranked.slice(0, 5).map(hitOnly);
+    if (!small2big) return finish(ranked.slice(0, 5));
     const parentIds = [...new Set(ranked.filter(hit => hit.kind === 'CHILD' && hit.parentId != null).map(hit => hit.parentId!))];
     const parents = parentIds.length ? await beforeDeadline(prisma.$queryRawUnsafe<(Hit & { chunkId: string })[]>(
-      `SELECT ${projection},c.id AS "chunkId" ${scope}
+      `SELECT ${projection},c.id AS "chunkId" ${scoped}
        AND c.kind='PARENT' AND c.id=ANY($6::text[])`, ...args, parentIds), enhancedDeadline) : [];
     const parentMap = new Map(parents.map(parent => [parent.chunkId, parent]));
     const seen = new Set<string>();
@@ -159,12 +194,12 @@ export async function retrieve(userId: string, conversationId: string, query: st
       const key = context?.chunkId ?? child.chunkId;
       if (seen.has(key)) continue;
       seen.add(key);
-      hits.push(hitOnly({ ...(context ?? child), distance: child.distance }));
+      hits.push({ ...(context ?? child), distance: child.distance });
       if (hits.length === 5) break;
     }
-    return hits;
+    return finish(hits);
   } catch {
     // Enhancement failures skip both diversification and parent expansion.
-    return baseline ?? pureVector();
+    return finish(baseline ?? await pureVector());
   }
 }

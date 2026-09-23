@@ -42,6 +42,7 @@ export type DocumentMinAggregateOutputType = {
   id: string | null
   kbId: string | null
   name: string | null
+  kind: string | null
   mime: string | null
   objectKey: string | null
   model: string | null
@@ -62,6 +63,7 @@ export type DocumentMaxAggregateOutputType = {
   id: string | null
   kbId: string | null
   name: string | null
+  kind: string | null
   mime: string | null
   objectKey: string | null
   model: string | null
@@ -82,6 +84,7 @@ export type DocumentCountAggregateOutputType = {
   id: number
   kbId: number
   name: number
+  kind: number
   mime: number
   objectKey: number
   model: number
@@ -116,6 +119,7 @@ export type DocumentMinAggregateInputType = {
   id?: true
   kbId?: true
   name?: true
+  kind?: true
   mime?: true
   objectKey?: true
   model?: true
@@ -136,6 +140,7 @@ export type DocumentMaxAggregateInputType = {
   id?: true
   kbId?: true
   name?: true
+  kind?: true
   mime?: true
   objectKey?: true
   model?: true
@@ -156,6 +161,7 @@ export type DocumentCountAggregateInputType = {
   id?: true
   kbId?: true
   name?: true
+  kind?: true
   mime?: true
   objectKey?: true
   model?: true
@@ -263,6 +269,7 @@ export type DocumentGroupByOutputType = {
   id: string
   kbId: string
   name: string
+  kind: string
   mime: string
   objectKey: string
   model: string
@@ -306,6 +313,7 @@ export type DocumentWhereInput = {
   id?: Prisma.StringFilter<"Document"> | string
   kbId?: Prisma.StringFilter<"Document"> | string
   name?: Prisma.StringFilter<"Document"> | string
+  kind?: Prisma.StringFilter<"Document"> | string
   mime?: Prisma.StringFilter<"Document"> | string
   objectKey?: Prisma.StringFilter<"Document"> | string
   model?: Prisma.StringFilter<"Document"> | string
@@ -324,12 +332,16 @@ export type DocumentWhereInput = {
   chunks?: Prisma.ChunkListRelationFilter
   sourceVersion?: Prisma.XOR<Prisma.SourceVersionNullableScalarRelationFilter, Prisma.SourceVersionWhereInput> | null
   sourceVersions?: Prisma.SourceVersionListRelationFilter
+  summaryFacts?: Prisma.SummaryFactListRelationFilter
+  sourceFacts?: Prisma.SummaryFactListRelationFilter
+  compileArtifacts?: Prisma.CompileJobListRelationFilter
 }
 
 export type DocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   kbId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
   mime?: Prisma.SortOrder
   objectKey?: Prisma.SortOrder
   model?: Prisma.SortOrder
@@ -348,6 +360,9 @@ export type DocumentOrderByWithRelationInput = {
   chunks?: Prisma.ChunkOrderByRelationAggregateInput
   sourceVersion?: Prisma.SourceVersionOrderByWithRelationInput
   sourceVersions?: Prisma.SourceVersionOrderByRelationAggregateInput
+  summaryFacts?: Prisma.SummaryFactOrderByRelationAggregateInput
+  sourceFacts?: Prisma.SummaryFactOrderByRelationAggregateInput
+  compileArtifacts?: Prisma.CompileJobOrderByRelationAggregateInput
 }
 
 export type DocumentWhereUniqueInput = Prisma.AtLeast<{
@@ -358,6 +373,7 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   kbId?: Prisma.StringFilter<"Document"> | string
   name?: Prisma.StringFilter<"Document"> | string
+  kind?: Prisma.StringFilter<"Document"> | string
   mime?: Prisma.StringFilter<"Document"> | string
   model?: Prisma.StringFilter<"Document"> | string
   size?: Prisma.IntFilter<"Document"> | number
@@ -375,12 +391,16 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   chunks?: Prisma.ChunkListRelationFilter
   sourceVersion?: Prisma.XOR<Prisma.SourceVersionNullableScalarRelationFilter, Prisma.SourceVersionWhereInput> | null
   sourceVersions?: Prisma.SourceVersionListRelationFilter
+  summaryFacts?: Prisma.SummaryFactListRelationFilter
+  sourceFacts?: Prisma.SummaryFactListRelationFilter
+  compileArtifacts?: Prisma.CompileJobListRelationFilter
 }, "id" | "objectKey">
 
 export type DocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   kbId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
   mime?: Prisma.SortOrder
   objectKey?: Prisma.SortOrder
   model?: Prisma.SortOrder
@@ -409,6 +429,7 @@ export type DocumentScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Document"> | string
   kbId?: Prisma.StringWithAggregatesFilter<"Document"> | string
   name?: Prisma.StringWithAggregatesFilter<"Document"> | string
+  kind?: Prisma.StringWithAggregatesFilter<"Document"> | string
   mime?: Prisma.StringWithAggregatesFilter<"Document"> | string
   objectKey?: Prisma.StringWithAggregatesFilter<"Document"> | string
   model?: Prisma.StringWithAggregatesFilter<"Document"> | string
@@ -428,6 +449,7 @@ export type DocumentScalarWhereWithAggregatesInput = {
 export type DocumentCreateInput = {
   id?: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -445,12 +467,16 @@ export type DocumentCreateInput = {
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobCreateNestedManyWithoutArtifactDocumentInput
 }
 
 export type DocumentUncheckedCreateInput = {
   id?: string
   kbId: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -467,11 +493,15 @@ export type DocumentUncheckedCreateInput = {
   sourceVersionId?: string | null
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput
 }
 
 export type DocumentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -489,12 +519,16 @@ export type DocumentUpdateInput = {
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUpdateManyWithoutArtifactDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   kbId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -511,12 +545,16 @@ export type DocumentUncheckedUpdateInput = {
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
 }
 
 export type DocumentCreateManyInput = {
   id?: string
   kbId: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -536,6 +574,7 @@ export type DocumentCreateManyInput = {
 export type DocumentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -555,6 +594,7 @@ export type DocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   kbId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -585,6 +625,7 @@ export type DocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   kbId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
   mime?: Prisma.SortOrder
   objectKey?: Prisma.SortOrder
   model?: Prisma.SortOrder
@@ -611,6 +652,7 @@ export type DocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   kbId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
   mime?: Prisma.SortOrder
   objectKey?: Prisma.SortOrder
   model?: Prisma.SortOrder
@@ -631,6 +673,7 @@ export type DocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   kbId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
   mime?: Prisma.SortOrder
   objectKey?: Prisma.SortOrder
   model?: Prisma.SortOrder
@@ -656,6 +699,11 @@ export type DocumentSumOrderByAggregateInput = {
 export type DocumentScalarRelationFilter = {
   is?: Prisma.DocumentWhereInput
   isNot?: Prisma.DocumentWhereInput
+}
+
+export type DocumentNullableScalarRelationFilter = {
+  is?: Prisma.DocumentWhereInput | null
+  isNot?: Prisma.DocumentWhereInput | null
 }
 
 export type DocumentCreateNestedManyWithoutKbInput = {
@@ -768,9 +816,54 @@ export type DocumentUncheckedUpdateManyWithoutSourceVersionNestedInput = {
   deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
 }
 
+export type DocumentCreateNestedOneWithoutCompileArtifactsInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutCompileArtifactsInput, Prisma.DocumentUncheckedCreateWithoutCompileArtifactsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutCompileArtifactsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentUpdateOneWithoutCompileArtifactsNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutCompileArtifactsInput, Prisma.DocumentUncheckedCreateWithoutCompileArtifactsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutCompileArtifactsInput
+  upsert?: Prisma.DocumentUpsertWithoutCompileArtifactsInput
+  disconnect?: Prisma.DocumentWhereInput | boolean
+  delete?: Prisma.DocumentWhereInput | boolean
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutCompileArtifactsInput, Prisma.DocumentUpdateWithoutCompileArtifactsInput>, Prisma.DocumentUncheckedUpdateWithoutCompileArtifactsInput>
+}
+
+export type DocumentCreateNestedOneWithoutSummaryFactsInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSummaryFactsInput, Prisma.DocumentUncheckedCreateWithoutSummaryFactsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSummaryFactsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentCreateNestedOneWithoutSourceFactsInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSourceFactsInput, Prisma.DocumentUncheckedCreateWithoutSourceFactsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSourceFactsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentUpdateOneRequiredWithoutSummaryFactsNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSummaryFactsInput, Prisma.DocumentUncheckedCreateWithoutSummaryFactsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSummaryFactsInput
+  upsert?: Prisma.DocumentUpsertWithoutSummaryFactsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutSummaryFactsInput, Prisma.DocumentUpdateWithoutSummaryFactsInput>, Prisma.DocumentUncheckedUpdateWithoutSummaryFactsInput>
+}
+
+export type DocumentUpdateOneRequiredWithoutSourceFactsNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutSourceFactsInput, Prisma.DocumentUncheckedCreateWithoutSourceFactsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutSourceFactsInput
+  upsert?: Prisma.DocumentUpsertWithoutSourceFactsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutSourceFactsInput, Prisma.DocumentUpdateWithoutSourceFactsInput>, Prisma.DocumentUncheckedUpdateWithoutSourceFactsInput>
+}
+
 export type DocumentCreateWithoutKbInput = {
   id?: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -787,11 +880,15 @@ export type DocumentCreateWithoutKbInput = {
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobCreateNestedManyWithoutArtifactDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutKbInput = {
   id?: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -808,6 +905,9 @@ export type DocumentUncheckedCreateWithoutKbInput = {
   sourceVersionId?: string | null
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutKbInput = {
@@ -843,6 +943,7 @@ export type DocumentScalarWhereInput = {
   id?: Prisma.StringFilter<"Document"> | string
   kbId?: Prisma.StringFilter<"Document"> | string
   name?: Prisma.StringFilter<"Document"> | string
+  kind?: Prisma.StringFilter<"Document"> | string
   mime?: Prisma.StringFilter<"Document"> | string
   objectKey?: Prisma.StringFilter<"Document"> | string
   model?: Prisma.StringFilter<"Document"> | string
@@ -862,6 +963,7 @@ export type DocumentScalarWhereInput = {
 export type DocumentCreateWithoutChunksInput = {
   id?: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -878,12 +980,16 @@ export type DocumentCreateWithoutChunksInput = {
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobCreateNestedManyWithoutArtifactDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutChunksInput = {
   id?: string
   kbId: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -899,6 +1005,9 @@ export type DocumentUncheckedCreateWithoutChunksInput = {
   updatedAt?: Date | string
   sourceVersionId?: string | null
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutChunksInput = {
@@ -920,6 +1029,7 @@ export type DocumentUpdateToOneWithWhereWithoutChunksInput = {
 export type DocumentUpdateWithoutChunksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -936,12 +1046,16 @@ export type DocumentUpdateWithoutChunksInput = {
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUpdateManyWithoutArtifactDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutChunksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   kbId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -957,11 +1071,15 @@ export type DocumentUncheckedUpdateWithoutChunksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
 }
 
 export type DocumentCreateWithoutSourceVersionsInput = {
   id?: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -978,12 +1096,16 @@ export type DocumentCreateWithoutSourceVersionsInput = {
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+  summaryFacts?: Prisma.SummaryFactCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobCreateNestedManyWithoutArtifactDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutSourceVersionsInput = {
   id?: string
   kbId: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -999,6 +1121,9 @@ export type DocumentUncheckedCreateWithoutSourceVersionsInput = {
   updatedAt?: Date | string
   sourceVersionId?: string | null
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutSourceVersionsInput = {
@@ -1009,6 +1134,7 @@ export type DocumentCreateOrConnectWithoutSourceVersionsInput = {
 export type DocumentCreateWithoutSourceVersionInput = {
   id?: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -1025,12 +1151,16 @@ export type DocumentCreateWithoutSourceVersionInput = {
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobCreateNestedManyWithoutArtifactDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutSourceVersionInput = {
   id?: string
   kbId: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -1046,6 +1176,9 @@ export type DocumentUncheckedCreateWithoutSourceVersionInput = {
   updatedAt?: Date | string
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutSourceVersionInput = {
@@ -1072,6 +1205,7 @@ export type DocumentUpdateToOneWithWhereWithoutSourceVersionsInput = {
 export type DocumentUpdateWithoutSourceVersionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1088,12 +1222,16 @@ export type DocumentUpdateWithoutSourceVersionsInput = {
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+  summaryFacts?: Prisma.SummaryFactUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUpdateManyWithoutArtifactDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutSourceVersionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   kbId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1109,6 +1247,9 @@ export type DocumentUncheckedUpdateWithoutSourceVersionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
 }
 
 export type DocumentUpsertWithWhereUniqueWithoutSourceVersionInput = {
@@ -1127,9 +1268,358 @@ export type DocumentUpdateManyWithWhereWithoutSourceVersionInput = {
   data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutSourceVersionInput>
 }
 
+export type DocumentCreateWithoutCompileArtifactsInput = {
+  id?: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
+  sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactCreateNestedManyWithoutSourceDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutCompileArtifactsInput = {
+  id?: string
+  kbId: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sourceVersionId?: string | null
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutCompileArtifactsInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutCompileArtifactsInput, Prisma.DocumentUncheckedCreateWithoutCompileArtifactsInput>
+}
+
+export type DocumentUpsertWithoutCompileArtifactsInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutCompileArtifactsInput, Prisma.DocumentUncheckedUpdateWithoutCompileArtifactsInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutCompileArtifactsInput, Prisma.DocumentUncheckedCreateWithoutCompileArtifactsInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutCompileArtifactsInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutCompileArtifactsInput, Prisma.DocumentUncheckedUpdateWithoutCompileArtifactsInput>
+}
+
+export type DocumentUpdateWithoutCompileArtifactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutCompileArtifactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
+}
+
+export type DocumentCreateWithoutSummaryFactsInput = {
+  id?: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
+  sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+  sourceFacts?: Prisma.SummaryFactCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobCreateNestedManyWithoutArtifactDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutSummaryFactsInput = {
+  id?: string
+  kbId: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sourceVersionId?: string | null
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+  sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutSummaryFactsInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSummaryFactsInput, Prisma.DocumentUncheckedCreateWithoutSummaryFactsInput>
+}
+
+export type DocumentCreateWithoutSourceFactsInput = {
+  id?: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
+  sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactCreateNestedManyWithoutSummaryDocumentInput
+  compileArtifacts?: Prisma.CompileJobCreateNestedManyWithoutArtifactDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutSourceFactsInput = {
+  id?: string
+  kbId: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sourceVersionId?: string | null
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
+  compileArtifacts?: Prisma.CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutSourceFactsInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSourceFactsInput, Prisma.DocumentUncheckedCreateWithoutSourceFactsInput>
+}
+
+export type DocumentUpsertWithoutSummaryFactsInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutSummaryFactsInput, Prisma.DocumentUncheckedUpdateWithoutSummaryFactsInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSummaryFactsInput, Prisma.DocumentUncheckedCreateWithoutSummaryFactsInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutSummaryFactsInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutSummaryFactsInput, Prisma.DocumentUncheckedUpdateWithoutSummaryFactsInput>
+}
+
+export type DocumentUpdateWithoutSummaryFactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUpdateManyWithoutArtifactDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutSummaryFactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
+}
+
+export type DocumentUpsertWithoutSourceFactsInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutSourceFactsInput, Prisma.DocumentUncheckedUpdateWithoutSourceFactsInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutSourceFactsInput, Prisma.DocumentUncheckedCreateWithoutSourceFactsInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutSourceFactsInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutSourceFactsInput, Prisma.DocumentUncheckedUpdateWithoutSourceFactsInput>
+}
+
+export type DocumentUpdateWithoutSourceFactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUpdateManyWithoutSummaryDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUpdateManyWithoutArtifactDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutSourceFactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
+}
+
 export type DocumentCreateManyKbInput = {
   id?: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -1149,6 +1639,7 @@ export type DocumentCreateManyKbInput = {
 export type DocumentUpdateWithoutKbInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1165,11 +1656,15 @@ export type DocumentUpdateWithoutKbInput = {
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUpdateManyWithoutArtifactDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutKbInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1186,11 +1681,15 @@ export type DocumentUncheckedUpdateWithoutKbInput = {
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateManyWithoutKbInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1211,6 +1710,7 @@ export type DocumentCreateManySourceVersionInput = {
   id?: string
   kbId: string
   name: string
+  kind?: string
   mime: string
   objectKey: string
   model: string
@@ -1229,6 +1729,7 @@ export type DocumentCreateManySourceVersionInput = {
 export type DocumentUpdateWithoutSourceVersionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1245,12 +1746,16 @@ export type DocumentUpdateWithoutSourceVersionInput = {
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUpdateManyWithoutArtifactDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutSourceVersionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   kbId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1266,12 +1771,16 @@ export type DocumentUncheckedUpdateWithoutSourceVersionInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateManyWithoutSourceVersionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   kbId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
   mime?: Prisma.StringFieldUpdateOperationsInput | string
   objectKey?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1295,11 +1804,17 @@ export type DocumentUncheckedUpdateManyWithoutSourceVersionInput = {
 export type DocumentCountOutputType = {
   chunks: number
   sourceVersions: number
+  summaryFacts: number
+  sourceFacts: number
+  compileArtifacts: number
 }
 
 export type DocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   chunks?: boolean | DocumentCountOutputTypeCountChunksArgs
   sourceVersions?: boolean | DocumentCountOutputTypeCountSourceVersionsArgs
+  summaryFacts?: boolean | DocumentCountOutputTypeCountSummaryFactsArgs
+  sourceFacts?: boolean | DocumentCountOutputTypeCountSourceFactsArgs
+  compileArtifacts?: boolean | DocumentCountOutputTypeCountCompileArtifactsArgs
 }
 
 /**
@@ -1326,11 +1841,33 @@ export type DocumentCountOutputTypeCountSourceVersionsArgs<ExtArgs extends runti
   where?: Prisma.SourceVersionWhereInput
 }
 
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountSummaryFactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SummaryFactWhereInput
+}
+
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountSourceFactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SummaryFactWhereInput
+}
+
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountCompileArtifactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompileJobWhereInput
+}
+
 
 export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   kbId?: boolean
   name?: boolean
+  kind?: boolean
   mime?: boolean
   objectKey?: boolean
   model?: boolean
@@ -1349,6 +1886,9 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>
   sourceVersion?: boolean | Prisma.Document$sourceVersionArgs<ExtArgs>
   sourceVersions?: boolean | Prisma.Document$sourceVersionsArgs<ExtArgs>
+  summaryFacts?: boolean | Prisma.Document$summaryFactsArgs<ExtArgs>
+  sourceFacts?: boolean | Prisma.Document$sourceFactsArgs<ExtArgs>
+  compileArtifacts?: boolean | Prisma.Document$compileArtifactsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
@@ -1356,6 +1896,7 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   kbId?: boolean
   name?: boolean
+  kind?: boolean
   mime?: boolean
   objectKey?: boolean
   model?: boolean
@@ -1378,6 +1919,7 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   kbId?: boolean
   name?: boolean
+  kind?: boolean
   mime?: boolean
   objectKey?: boolean
   model?: boolean
@@ -1400,6 +1942,7 @@ export type DocumentSelectScalar = {
   id?: boolean
   kbId?: boolean
   name?: boolean
+  kind?: boolean
   mime?: boolean
   objectKey?: boolean
   model?: boolean
@@ -1416,12 +1959,15 @@ export type DocumentSelectScalar = {
   sourceVersionId?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "name" | "mime" | "objectKey" | "model" | "size" | "chunkCount" | "chunkStrategy" | "status" | "error" | "attempt" | "leaseOwner" | "leaseExpiresAt" | "createdAt" | "updatedAt" | "sourceVersionId", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "name" | "kind" | "mime" | "objectKey" | "model" | "size" | "chunkCount" | "chunkStrategy" | "status" | "error" | "attempt" | "leaseOwner" | "leaseExpiresAt" | "createdAt" | "updatedAt" | "sourceVersionId", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>
   sourceVersion?: boolean | Prisma.Document$sourceVersionArgs<ExtArgs>
   sourceVersions?: boolean | Prisma.Document$sourceVersionsArgs<ExtArgs>
+  summaryFacts?: boolean | Prisma.Document$summaryFactsArgs<ExtArgs>
+  sourceFacts?: boolean | Prisma.Document$sourceFactsArgs<ExtArgs>
+  compileArtifacts?: boolean | Prisma.Document$compileArtifactsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1440,11 +1986,15 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     chunks: Prisma.$ChunkPayload<ExtArgs>[]
     sourceVersion: Prisma.$SourceVersionPayload<ExtArgs> | null
     sourceVersions: Prisma.$SourceVersionPayload<ExtArgs>[]
+    summaryFacts: Prisma.$SummaryFactPayload<ExtArgs>[]
+    sourceFacts: Prisma.$SummaryFactPayload<ExtArgs>[]
+    compileArtifacts: Prisma.$CompileJobPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     kbId: string
     name: string
+    kind: string
     mime: string
     objectKey: string
     model: string
@@ -1857,6 +2407,9 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
   chunks<T extends Prisma.Document$chunksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$chunksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sourceVersion<T extends Prisma.Document$sourceVersionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$sourceVersionArgs<ExtArgs>>): Prisma.Prisma__SourceVersionClient<runtime.Types.Result.GetResult<Prisma.$SourceVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   sourceVersions<T extends Prisma.Document$sourceVersionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$sourceVersionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SourceVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  summaryFacts<T extends Prisma.Document$summaryFactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$summaryFactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SummaryFactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sourceFacts<T extends Prisma.Document$sourceFactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$sourceFactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SummaryFactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  compileArtifacts<T extends Prisma.Document$compileArtifactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$compileArtifactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompileJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1889,6 +2442,7 @@ export interface DocumentFieldRefs {
   readonly id: Prisma.FieldRef<"Document", 'String'>
   readonly kbId: Prisma.FieldRef<"Document", 'String'>
   readonly name: Prisma.FieldRef<"Document", 'String'>
+  readonly kind: Prisma.FieldRef<"Document", 'String'>
   readonly mime: Prisma.FieldRef<"Document", 'String'>
   readonly objectKey: Prisma.FieldRef<"Document", 'String'>
   readonly model: Prisma.FieldRef<"Document", 'String'>
@@ -2363,6 +2917,78 @@ export type Document$sourceVersionsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.SourceVersionScalarFieldEnum | Prisma.SourceVersionScalarFieldEnum[]
+}
+
+/**
+ * Document.summaryFacts
+ */
+export type Document$summaryFactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SummaryFact
+   */
+  select?: Prisma.SummaryFactSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SummaryFact
+   */
+  omit?: Prisma.SummaryFactOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SummaryFactInclude<ExtArgs> | null
+  where?: Prisma.SummaryFactWhereInput
+  orderBy?: Prisma.SummaryFactOrderByWithRelationInput | Prisma.SummaryFactOrderByWithRelationInput[]
+  cursor?: Prisma.SummaryFactWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SummaryFactScalarFieldEnum | Prisma.SummaryFactScalarFieldEnum[]
+}
+
+/**
+ * Document.sourceFacts
+ */
+export type Document$sourceFactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SummaryFact
+   */
+  select?: Prisma.SummaryFactSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SummaryFact
+   */
+  omit?: Prisma.SummaryFactOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SummaryFactInclude<ExtArgs> | null
+  where?: Prisma.SummaryFactWhereInput
+  orderBy?: Prisma.SummaryFactOrderByWithRelationInput | Prisma.SummaryFactOrderByWithRelationInput[]
+  cursor?: Prisma.SummaryFactWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SummaryFactScalarFieldEnum | Prisma.SummaryFactScalarFieldEnum[]
+}
+
+/**
+ * Document.compileArtifacts
+ */
+export type Document$compileArtifactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CompileJob
+   */
+  select?: Prisma.CompileJobSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CompileJob
+   */
+  omit?: Prisma.CompileJobOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CompileJobInclude<ExtArgs> | null
+  where?: Prisma.CompileJobWhereInput
+  orderBy?: Prisma.CompileJobOrderByWithRelationInput | Prisma.CompileJobOrderByWithRelationInput[]
+  cursor?: Prisma.CompileJobWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CompileJobScalarFieldEnum | Prisma.CompileJobScalarFieldEnum[]
 }
 
 /**

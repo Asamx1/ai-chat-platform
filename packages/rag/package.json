@@ -5,7 +5,8 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./parse": "./src/parse.ts"
+    "./parse": "./src/parse.ts",
+    "./compile": "./src/compile/index.ts"
   },
   "scripts": {
     "test": "vitest run --root ../.. packages/rag/test",
@@ -13,6 +14,7 @@
   },
   "dependencies": {
     "@aichat/db": "workspace:*",
+    "@aichat/crypto": "workspace:*",
     "zod": "4.1.5"
   },
   "devDependencies": {

@@ -169,3 +169,18 @@ export type IndexGeneration = Prisma.IndexGenerationModel
  * 
  */
 export type CompileJob = Prisma.CompileJobModel
+/**
+ * Model CompileOutbox
+ * 
+ */
+export type CompileOutbox = Prisma.CompileOutboxModel
+/**
+ * Model CompileCostLedger
+ * 
+ */
+export type CompileCostLedger = Prisma.CompileCostLedgerModel
+/**
+ * Model SummaryFact
+ * 
+ */
+export type SummaryFact = Prisma.SummaryFactModel

@@ -409,7 +409,10 @@ export const ModelName = {
   UserModelQuota: 'UserModelQuota',
   SourceVersion: 'SourceVersion',
   IndexGeneration: 'IndexGeneration',
-  CompileJob: 'CompileJob'
+  CompileJob: 'CompileJob',
+  CompileOutbox: 'CompileOutbox',
+  CompileCostLedger: 'CompileCostLedger',
+  SummaryFact: 'SummaryFact'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -425,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "provider" | "modelRegistry" | "conversation" | "participant" | "message" | "orchestrationRun" | "runParticipantSnapshot" | "runCheckpoint" | "runEvent" | "providerCall" | "usageLog" | "apiKey" | "shareLink" | "session" | "account" | "verification" | "modelUsageDaily" | "knowledgeBase" | "document" | "chunk" | "conversationKnowledgeBase" | "userModelQuota" | "sourceVersion" | "indexGeneration" | "compileJob"
+    modelProps: "user" | "provider" | "modelRegistry" | "conversation" | "participant" | "message" | "orchestrationRun" | "runParticipantSnapshot" | "runCheckpoint" | "runEvent" | "providerCall" | "usageLog" | "apiKey" | "shareLink" | "session" | "account" | "verification" | "modelUsageDaily" | "knowledgeBase" | "document" | "chunk" | "conversationKnowledgeBase" | "userModelQuota" | "sourceVersion" | "indexGeneration" | "compileJob" | "compileOutbox" | "compileCostLedger" | "summaryFact"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2337,6 +2340,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CompileOutbox: {
+      payload: Prisma.$CompileOutboxPayload<ExtArgs>
+      fields: Prisma.CompileOutboxFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompileOutboxFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompileOutboxFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload>
+        }
+        findFirst: {
+          args: Prisma.CompileOutboxFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompileOutboxFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload>
+        }
+        findMany: {
+          args: Prisma.CompileOutboxFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload>[]
+        }
+        create: {
+          args: Prisma.CompileOutboxCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload>
+        }
+        createMany: {
+          args: Prisma.CompileOutboxCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompileOutboxCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload>[]
+        }
+        delete: {
+          args: Prisma.CompileOutboxDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload>
+        }
+        update: {
+          args: Prisma.CompileOutboxUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload>
+        }
+        deleteMany: {
+          args: Prisma.CompileOutboxDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompileOutboxUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompileOutboxUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload>[]
+        }
+        upsert: {
+          args: Prisma.CompileOutboxUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileOutboxPayload>
+        }
+        aggregate: {
+          args: Prisma.CompileOutboxAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompileOutbox>
+        }
+        groupBy: {
+          args: Prisma.CompileOutboxGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompileOutboxGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompileOutboxCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompileOutboxCountAggregateOutputType> | number
+        }
+      }
+    }
+    CompileCostLedger: {
+      payload: Prisma.$CompileCostLedgerPayload<ExtArgs>
+      fields: Prisma.CompileCostLedgerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompileCostLedgerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompileCostLedgerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload>
+        }
+        findFirst: {
+          args: Prisma.CompileCostLedgerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompileCostLedgerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload>
+        }
+        findMany: {
+          args: Prisma.CompileCostLedgerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload>[]
+        }
+        create: {
+          args: Prisma.CompileCostLedgerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload>
+        }
+        createMany: {
+          args: Prisma.CompileCostLedgerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompileCostLedgerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload>[]
+        }
+        delete: {
+          args: Prisma.CompileCostLedgerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload>
+        }
+        update: {
+          args: Prisma.CompileCostLedgerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload>
+        }
+        deleteMany: {
+          args: Prisma.CompileCostLedgerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompileCostLedgerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompileCostLedgerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload>[]
+        }
+        upsert: {
+          args: Prisma.CompileCostLedgerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompileCostLedgerPayload>
+        }
+        aggregate: {
+          args: Prisma.CompileCostLedgerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompileCostLedger>
+        }
+        groupBy: {
+          args: Prisma.CompileCostLedgerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompileCostLedgerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompileCostLedgerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompileCostLedgerCountAggregateOutputType> | number
+        }
+      }
+    }
+    SummaryFact: {
+      payload: Prisma.$SummaryFactPayload<ExtArgs>
+      fields: Prisma.SummaryFactFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SummaryFactFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SummaryFactFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload>
+        }
+        findFirst: {
+          args: Prisma.SummaryFactFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SummaryFactFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload>
+        }
+        findMany: {
+          args: Prisma.SummaryFactFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload>[]
+        }
+        create: {
+          args: Prisma.SummaryFactCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload>
+        }
+        createMany: {
+          args: Prisma.SummaryFactCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SummaryFactCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload>[]
+        }
+        delete: {
+          args: Prisma.SummaryFactDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload>
+        }
+        update: {
+          args: Prisma.SummaryFactUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload>
+        }
+        deleteMany: {
+          args: Prisma.SummaryFactDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SummaryFactUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SummaryFactUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload>[]
+        }
+        upsert: {
+          args: Prisma.SummaryFactUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SummaryFactPayload>
+        }
+        aggregate: {
+          args: Prisma.SummaryFactAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSummaryFact>
+        }
+        groupBy: {
+          args: Prisma.SummaryFactGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SummaryFactGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SummaryFactCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SummaryFactCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2650,6 +2875,7 @@ export const DocumentScalarFieldEnum = {
   id: 'id',
   kbId: 'kbId',
   name: 'name',
+  kind: 'kind',
   mime: 'mime',
   objectKey: 'objectKey',
   model: 'model',
@@ -2750,10 +2976,59 @@ export const CompileJobScalarFieldEnum = {
   leaseExpiresAt: 'leaseExpiresAt',
   lastError: 'lastError',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  artifactDocumentId: 'artifactDocumentId'
 } as const
 
 export type CompileJobScalarFieldEnum = (typeof CompileJobScalarFieldEnum)[keyof typeof CompileJobScalarFieldEnum]
+
+
+export const CompileOutboxScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  documentId: 'documentId',
+  sourceVersionId: 'sourceVersionId',
+  generationId: 'generationId',
+  eventType: 'eventType',
+  createdAt: 'createdAt',
+  processedAt: 'processedAt'
+} as const
+
+export type CompileOutboxScalarFieldEnum = (typeof CompileOutboxScalarFieldEnum)[keyof typeof CompileOutboxScalarFieldEnum]
+
+
+export const CompileCostLedgerScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  compileJobId: 'compileJobId',
+  model: 'model',
+  operation: 'operation',
+  inputTokens: 'inputTokens',
+  outputTokens: 'outputTokens',
+  costUsd: 'costUsd',
+  priceVersion: 'priceVersion',
+  attempt: 'attempt',
+  status: 'status',
+  elapsedMs: 'elapsedMs',
+  requestDedupKey: 'requestDedupKey',
+  createdAt: 'createdAt'
+} as const
+
+export type CompileCostLedgerScalarFieldEnum = (typeof CompileCostLedgerScalarFieldEnum)[keyof typeof CompileCostLedgerScalarFieldEnum]
+
+
+export const SummaryFactScalarFieldEnum = {
+  id: 'id',
+  summaryDocumentId: 'summaryDocumentId',
+  sourceDocumentId: 'sourceDocumentId',
+  sourceChunkId: 'sourceChunkId',
+  claim: 'claim',
+  quote: 'quote',
+  spanStart: 'spanStart',
+  spanEnd: 'spanEnd'
+} as const
+
+export type SummaryFactScalarFieldEnum = (typeof SummaryFactScalarFieldEnum)[keyof typeof SummaryFactScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2986,6 +3261,20 @@ export type ListEnumIndexGenerationStatusFieldRefInput<$PrismaModel> = FieldRefI
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3103,6 +3392,9 @@ export type GlobalOmitConfig = {
   sourceVersion?: Prisma.SourceVersionOmit
   indexGeneration?: Prisma.IndexGenerationOmit
   compileJob?: Prisma.CompileJobOmit
+  compileOutbox?: Prisma.CompileOutboxOmit
+  compileCostLedger?: Prisma.CompileCostLedgerOmit
+  summaryFact?: Prisma.SummaryFactOmit
 }
 
 /* Types for Logging */

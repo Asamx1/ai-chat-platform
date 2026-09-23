@@ -54,6 +54,7 @@ export type CompileJobMinAggregateOutputType = {
   lastError: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  artifactDocumentId: string | null
 }
 
 export type CompileJobMaxAggregateOutputType = {
@@ -74,6 +75,7 @@ export type CompileJobMaxAggregateOutputType = {
   lastError: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  artifactDocumentId: string | null
 }
 
 export type CompileJobCountAggregateOutputType = {
@@ -94,6 +96,7 @@ export type CompileJobCountAggregateOutputType = {
   lastError: number
   createdAt: number
   updatedAt: number
+  artifactDocumentId: number
   _all: number
 }
 
@@ -126,6 +129,7 @@ export type CompileJobMinAggregateInputType = {
   lastError?: true
   createdAt?: true
   updatedAt?: true
+  artifactDocumentId?: true
 }
 
 export type CompileJobMaxAggregateInputType = {
@@ -146,6 +150,7 @@ export type CompileJobMaxAggregateInputType = {
   lastError?: true
   createdAt?: true
   updatedAt?: true
+  artifactDocumentId?: true
 }
 
 export type CompileJobCountAggregateInputType = {
@@ -166,6 +171,7 @@ export type CompileJobCountAggregateInputType = {
   lastError?: true
   createdAt?: true
   updatedAt?: true
+  artifactDocumentId?: true
   _all?: true
 }
 
@@ -273,6 +279,7 @@ export type CompileJobGroupByOutputType = {
   lastError: string | null
   createdAt: Date
   updatedAt: Date
+  artifactDocumentId: string | null
   _count: CompileJobCountAggregateOutputType | null
   _avg: CompileJobAvgAggregateOutputType | null
   _sum: CompileJobSumAggregateOutputType | null
@@ -316,9 +323,12 @@ export type CompileJobWhereInput = {
   lastError?: Prisma.StringNullableFilter<"CompileJob"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CompileJob"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CompileJob"> | Date | string
+  artifactDocumentId?: Prisma.StringNullableFilter<"CompileJob"> | string | null
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   sourceVersion?: Prisma.XOR<Prisma.SourceVersionScalarRelationFilter, Prisma.SourceVersionWhereInput>
   generation?: Prisma.XOR<Prisma.IndexGenerationScalarRelationFilter, Prisma.IndexGenerationWhereInput>
+  artifactDocument?: Prisma.XOR<Prisma.DocumentNullableScalarRelationFilter, Prisma.DocumentWhereInput> | null
+  costs?: Prisma.CompileCostLedgerListRelationFilter
 }
 
 export type CompileJobOrderByWithRelationInput = {
@@ -339,9 +349,12 @@ export type CompileJobOrderByWithRelationInput = {
   lastError?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  artifactDocumentId?: Prisma.SortOrderInput | Prisma.SortOrder
   kb?: Prisma.KnowledgeBaseOrderByWithRelationInput
   sourceVersion?: Prisma.SourceVersionOrderByWithRelationInput
   generation?: Prisma.IndexGenerationOrderByWithRelationInput
+  artifactDocument?: Prisma.DocumentOrderByWithRelationInput
+  costs?: Prisma.CompileCostLedgerOrderByRelationAggregateInput
 }
 
 export type CompileJobWhereUniqueInput = Prisma.AtLeast<{
@@ -365,9 +378,12 @@ export type CompileJobWhereUniqueInput = Prisma.AtLeast<{
   lastError?: Prisma.StringNullableFilter<"CompileJob"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CompileJob"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CompileJob"> | Date | string
+  artifactDocumentId?: Prisma.StringNullableFilter<"CompileJob"> | string | null
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   sourceVersion?: Prisma.XOR<Prisma.SourceVersionScalarRelationFilter, Prisma.SourceVersionWhereInput>
   generation?: Prisma.XOR<Prisma.IndexGenerationScalarRelationFilter, Prisma.IndexGenerationWhereInput>
+  artifactDocument?: Prisma.XOR<Prisma.DocumentNullableScalarRelationFilter, Prisma.DocumentWhereInput> | null
+  costs?: Prisma.CompileCostLedgerListRelationFilter
 }, "id" | "idempotencyKey">
 
 export type CompileJobOrderByWithAggregationInput = {
@@ -388,6 +404,7 @@ export type CompileJobOrderByWithAggregationInput = {
   lastError?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  artifactDocumentId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CompileJobCountOrderByAggregateInput
   _avg?: Prisma.CompileJobAvgOrderByAggregateInput
   _max?: Prisma.CompileJobMaxOrderByAggregateInput
@@ -416,6 +433,7 @@ export type CompileJobScalarWhereWithAggregatesInput = {
   lastError?: Prisma.StringNullableWithAggregatesFilter<"CompileJob"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CompileJob"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"CompileJob"> | Date | string
+  artifactDocumentId?: Prisma.StringNullableWithAggregatesFilter<"CompileJob"> | string | null
 }
 
 export type CompileJobCreateInput = {
@@ -436,6 +454,8 @@ export type CompileJobCreateInput = {
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutCompileJobsInput
   sourceVersion: Prisma.SourceVersionCreateNestedOneWithoutCompileJobsInput
   generation: Prisma.IndexGenerationCreateNestedOneWithoutCompileJobsInput
+  artifactDocument?: Prisma.DocumentCreateNestedOneWithoutCompileArtifactsInput
+  costs?: Prisma.CompileCostLedgerCreateNestedManyWithoutCompileJobInput
 }
 
 export type CompileJobUncheckedCreateInput = {
@@ -456,6 +476,8 @@ export type CompileJobUncheckedCreateInput = {
   lastError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  artifactDocumentId?: string | null
+  costs?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutCompileJobInput
 }
 
 export type CompileJobUpdateInput = {
@@ -476,6 +498,8 @@ export type CompileJobUpdateInput = {
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutCompileJobsNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneRequiredWithoutCompileJobsNestedInput
   generation?: Prisma.IndexGenerationUpdateOneRequiredWithoutCompileJobsNestedInput
+  artifactDocument?: Prisma.DocumentUpdateOneWithoutCompileArtifactsNestedInput
+  costs?: Prisma.CompileCostLedgerUpdateManyWithoutCompileJobNestedInput
 }
 
 export type CompileJobUncheckedUpdateInput = {
@@ -496,6 +520,8 @@ export type CompileJobUncheckedUpdateInput = {
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  artifactDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  costs?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutCompileJobNestedInput
 }
 
 export type CompileJobCreateManyInput = {
@@ -516,6 +542,7 @@ export type CompileJobCreateManyInput = {
   lastError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  artifactDocumentId?: string | null
 }
 
 export type CompileJobUpdateManyMutationInput = {
@@ -553,6 +580,7 @@ export type CompileJobUncheckedUpdateManyInput = {
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  artifactDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CompileJobListRelationFilter = {
@@ -583,6 +611,7 @@ export type CompileJobCountOrderByAggregateInput = {
   lastError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  artifactDocumentId?: Prisma.SortOrder
 }
 
 export type CompileJobAvgOrderByAggregateInput = {
@@ -608,6 +637,7 @@ export type CompileJobMaxOrderByAggregateInput = {
   lastError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  artifactDocumentId?: Prisma.SortOrder
 }
 
 export type CompileJobMinOrderByAggregateInput = {
@@ -628,11 +658,17 @@ export type CompileJobMinOrderByAggregateInput = {
   lastError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  artifactDocumentId?: Prisma.SortOrder
 }
 
 export type CompileJobSumOrderByAggregateInput = {
   attempt?: Prisma.SortOrder
   maxAttempts?: Prisma.SortOrder
+}
+
+export type CompileJobScalarRelationFilter = {
+  is?: Prisma.CompileJobWhereInput
+  isNot?: Prisma.CompileJobWhereInput
 }
 
 export type CompileJobCreateNestedManyWithoutKbInput = {
@@ -674,6 +710,48 @@ export type CompileJobUncheckedUpdateManyWithoutKbNestedInput = {
   connect?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
   update?: Prisma.CompileJobUpdateWithWhereUniqueWithoutKbInput | Prisma.CompileJobUpdateWithWhereUniqueWithoutKbInput[]
   updateMany?: Prisma.CompileJobUpdateManyWithWhereWithoutKbInput | Prisma.CompileJobUpdateManyWithWhereWithoutKbInput[]
+  deleteMany?: Prisma.CompileJobScalarWhereInput | Prisma.CompileJobScalarWhereInput[]
+}
+
+export type CompileJobCreateNestedManyWithoutArtifactDocumentInput = {
+  create?: Prisma.XOR<Prisma.CompileJobCreateWithoutArtifactDocumentInput, Prisma.CompileJobUncheckedCreateWithoutArtifactDocumentInput> | Prisma.CompileJobCreateWithoutArtifactDocumentInput[] | Prisma.CompileJobUncheckedCreateWithoutArtifactDocumentInput[]
+  connectOrCreate?: Prisma.CompileJobCreateOrConnectWithoutArtifactDocumentInput | Prisma.CompileJobCreateOrConnectWithoutArtifactDocumentInput[]
+  createMany?: Prisma.CompileJobCreateManyArtifactDocumentInputEnvelope
+  connect?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
+}
+
+export type CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput = {
+  create?: Prisma.XOR<Prisma.CompileJobCreateWithoutArtifactDocumentInput, Prisma.CompileJobUncheckedCreateWithoutArtifactDocumentInput> | Prisma.CompileJobCreateWithoutArtifactDocumentInput[] | Prisma.CompileJobUncheckedCreateWithoutArtifactDocumentInput[]
+  connectOrCreate?: Prisma.CompileJobCreateOrConnectWithoutArtifactDocumentInput | Prisma.CompileJobCreateOrConnectWithoutArtifactDocumentInput[]
+  createMany?: Prisma.CompileJobCreateManyArtifactDocumentInputEnvelope
+  connect?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
+}
+
+export type CompileJobUpdateManyWithoutArtifactDocumentNestedInput = {
+  create?: Prisma.XOR<Prisma.CompileJobCreateWithoutArtifactDocumentInput, Prisma.CompileJobUncheckedCreateWithoutArtifactDocumentInput> | Prisma.CompileJobCreateWithoutArtifactDocumentInput[] | Prisma.CompileJobUncheckedCreateWithoutArtifactDocumentInput[]
+  connectOrCreate?: Prisma.CompileJobCreateOrConnectWithoutArtifactDocumentInput | Prisma.CompileJobCreateOrConnectWithoutArtifactDocumentInput[]
+  upsert?: Prisma.CompileJobUpsertWithWhereUniqueWithoutArtifactDocumentInput | Prisma.CompileJobUpsertWithWhereUniqueWithoutArtifactDocumentInput[]
+  createMany?: Prisma.CompileJobCreateManyArtifactDocumentInputEnvelope
+  set?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
+  disconnect?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
+  delete?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
+  connect?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
+  update?: Prisma.CompileJobUpdateWithWhereUniqueWithoutArtifactDocumentInput | Prisma.CompileJobUpdateWithWhereUniqueWithoutArtifactDocumentInput[]
+  updateMany?: Prisma.CompileJobUpdateManyWithWhereWithoutArtifactDocumentInput | Prisma.CompileJobUpdateManyWithWhereWithoutArtifactDocumentInput[]
+  deleteMany?: Prisma.CompileJobScalarWhereInput | Prisma.CompileJobScalarWhereInput[]
+}
+
+export type CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput = {
+  create?: Prisma.XOR<Prisma.CompileJobCreateWithoutArtifactDocumentInput, Prisma.CompileJobUncheckedCreateWithoutArtifactDocumentInput> | Prisma.CompileJobCreateWithoutArtifactDocumentInput[] | Prisma.CompileJobUncheckedCreateWithoutArtifactDocumentInput[]
+  connectOrCreate?: Prisma.CompileJobCreateOrConnectWithoutArtifactDocumentInput | Prisma.CompileJobCreateOrConnectWithoutArtifactDocumentInput[]
+  upsert?: Prisma.CompileJobUpsertWithWhereUniqueWithoutArtifactDocumentInput | Prisma.CompileJobUpsertWithWhereUniqueWithoutArtifactDocumentInput[]
+  createMany?: Prisma.CompileJobCreateManyArtifactDocumentInputEnvelope
+  set?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
+  disconnect?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
+  delete?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
+  connect?: Prisma.CompileJobWhereUniqueInput | Prisma.CompileJobWhereUniqueInput[]
+  update?: Prisma.CompileJobUpdateWithWhereUniqueWithoutArtifactDocumentInput | Prisma.CompileJobUpdateWithWhereUniqueWithoutArtifactDocumentInput[]
+  updateMany?: Prisma.CompileJobUpdateManyWithWhereWithoutArtifactDocumentInput | Prisma.CompileJobUpdateManyWithWhereWithoutArtifactDocumentInput[]
   deleteMany?: Prisma.CompileJobScalarWhereInput | Prisma.CompileJobScalarWhereInput[]
 }
 
@@ -761,6 +839,20 @@ export type CompileJobUncheckedUpdateManyWithoutGenerationNestedInput = {
   deleteMany?: Prisma.CompileJobScalarWhereInput | Prisma.CompileJobScalarWhereInput[]
 }
 
+export type CompileJobCreateNestedOneWithoutCostsInput = {
+  create?: Prisma.XOR<Prisma.CompileJobCreateWithoutCostsInput, Prisma.CompileJobUncheckedCreateWithoutCostsInput>
+  connectOrCreate?: Prisma.CompileJobCreateOrConnectWithoutCostsInput
+  connect?: Prisma.CompileJobWhereUniqueInput
+}
+
+export type CompileJobUpdateOneRequiredWithoutCostsNestedInput = {
+  create?: Prisma.XOR<Prisma.CompileJobCreateWithoutCostsInput, Prisma.CompileJobUncheckedCreateWithoutCostsInput>
+  connectOrCreate?: Prisma.CompileJobCreateOrConnectWithoutCostsInput
+  upsert?: Prisma.CompileJobUpsertWithoutCostsInput
+  connect?: Prisma.CompileJobWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CompileJobUpdateToOneWithWhereWithoutCostsInput, Prisma.CompileJobUpdateWithoutCostsInput>, Prisma.CompileJobUncheckedUpdateWithoutCostsInput>
+}
+
 export type CompileJobCreateWithoutKbInput = {
   id?: string
   artifactType: string
@@ -778,6 +870,8 @@ export type CompileJobCreateWithoutKbInput = {
   updatedAt?: Date | string
   sourceVersion: Prisma.SourceVersionCreateNestedOneWithoutCompileJobsInput
   generation: Prisma.IndexGenerationCreateNestedOneWithoutCompileJobsInput
+  artifactDocument?: Prisma.DocumentCreateNestedOneWithoutCompileArtifactsInput
+  costs?: Prisma.CompileCostLedgerCreateNestedManyWithoutCompileJobInput
 }
 
 export type CompileJobUncheckedCreateWithoutKbInput = {
@@ -797,6 +891,8 @@ export type CompileJobUncheckedCreateWithoutKbInput = {
   lastError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  artifactDocumentId?: string | null
+  costs?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutCompileJobInput
 }
 
 export type CompileJobCreateOrConnectWithoutKbInput = {
@@ -846,6 +942,75 @@ export type CompileJobScalarWhereInput = {
   lastError?: Prisma.StringNullableFilter<"CompileJob"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CompileJob"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CompileJob"> | Date | string
+  artifactDocumentId?: Prisma.StringNullableFilter<"CompileJob"> | string | null
+}
+
+export type CompileJobCreateWithoutArtifactDocumentInput = {
+  id?: string
+  artifactType: string
+  model: string
+  promptVersion: string
+  schemaVersion: string
+  status?: string
+  attempt?: number
+  maxAttempts?: number
+  idempotencyKey: string
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  lastError?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutCompileJobsInput
+  sourceVersion: Prisma.SourceVersionCreateNestedOneWithoutCompileJobsInput
+  generation: Prisma.IndexGenerationCreateNestedOneWithoutCompileJobsInput
+  costs?: Prisma.CompileCostLedgerCreateNestedManyWithoutCompileJobInput
+}
+
+export type CompileJobUncheckedCreateWithoutArtifactDocumentInput = {
+  id?: string
+  kbId: string
+  sourceVersionId: string
+  generationId: string
+  artifactType: string
+  model: string
+  promptVersion: string
+  schemaVersion: string
+  status?: string
+  attempt?: number
+  maxAttempts?: number
+  idempotencyKey: string
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  lastError?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  costs?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutCompileJobInput
+}
+
+export type CompileJobCreateOrConnectWithoutArtifactDocumentInput = {
+  where: Prisma.CompileJobWhereUniqueInput
+  create: Prisma.XOR<Prisma.CompileJobCreateWithoutArtifactDocumentInput, Prisma.CompileJobUncheckedCreateWithoutArtifactDocumentInput>
+}
+
+export type CompileJobCreateManyArtifactDocumentInputEnvelope = {
+  data: Prisma.CompileJobCreateManyArtifactDocumentInput | Prisma.CompileJobCreateManyArtifactDocumentInput[]
+  skipDuplicates?: boolean
+}
+
+export type CompileJobUpsertWithWhereUniqueWithoutArtifactDocumentInput = {
+  where: Prisma.CompileJobWhereUniqueInput
+  update: Prisma.XOR<Prisma.CompileJobUpdateWithoutArtifactDocumentInput, Prisma.CompileJobUncheckedUpdateWithoutArtifactDocumentInput>
+  create: Prisma.XOR<Prisma.CompileJobCreateWithoutArtifactDocumentInput, Prisma.CompileJobUncheckedCreateWithoutArtifactDocumentInput>
+}
+
+export type CompileJobUpdateWithWhereUniqueWithoutArtifactDocumentInput = {
+  where: Prisma.CompileJobWhereUniqueInput
+  data: Prisma.XOR<Prisma.CompileJobUpdateWithoutArtifactDocumentInput, Prisma.CompileJobUncheckedUpdateWithoutArtifactDocumentInput>
+}
+
+export type CompileJobUpdateManyWithWhereWithoutArtifactDocumentInput = {
+  where: Prisma.CompileJobScalarWhereInput
+  data: Prisma.XOR<Prisma.CompileJobUpdateManyMutationInput, Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentInput>
 }
 
 export type CompileJobCreateWithoutSourceVersionInput = {
@@ -865,6 +1030,8 @@ export type CompileJobCreateWithoutSourceVersionInput = {
   updatedAt?: Date | string
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutCompileJobsInput
   generation: Prisma.IndexGenerationCreateNestedOneWithoutCompileJobsInput
+  artifactDocument?: Prisma.DocumentCreateNestedOneWithoutCompileArtifactsInput
+  costs?: Prisma.CompileCostLedgerCreateNestedManyWithoutCompileJobInput
 }
 
 export type CompileJobUncheckedCreateWithoutSourceVersionInput = {
@@ -884,6 +1051,8 @@ export type CompileJobUncheckedCreateWithoutSourceVersionInput = {
   lastError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  artifactDocumentId?: string | null
+  costs?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutCompileJobInput
 }
 
 export type CompileJobCreateOrConnectWithoutSourceVersionInput = {
@@ -929,6 +1098,8 @@ export type CompileJobCreateWithoutGenerationInput = {
   updatedAt?: Date | string
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutCompileJobsInput
   sourceVersion: Prisma.SourceVersionCreateNestedOneWithoutCompileJobsInput
+  artifactDocument?: Prisma.DocumentCreateNestedOneWithoutCompileArtifactsInput
+  costs?: Prisma.CompileCostLedgerCreateNestedManyWithoutCompileJobInput
 }
 
 export type CompileJobUncheckedCreateWithoutGenerationInput = {
@@ -948,6 +1119,8 @@ export type CompileJobUncheckedCreateWithoutGenerationInput = {
   lastError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  artifactDocumentId?: string | null
+  costs?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutCompileJobInput
 }
 
 export type CompileJobCreateOrConnectWithoutGenerationInput = {
@@ -976,6 +1149,106 @@ export type CompileJobUpdateManyWithWhereWithoutGenerationInput = {
   data: Prisma.XOR<Prisma.CompileJobUpdateManyMutationInput, Prisma.CompileJobUncheckedUpdateManyWithoutGenerationInput>
 }
 
+export type CompileJobCreateWithoutCostsInput = {
+  id?: string
+  artifactType: string
+  model: string
+  promptVersion: string
+  schemaVersion: string
+  status?: string
+  attempt?: number
+  maxAttempts?: number
+  idempotencyKey: string
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  lastError?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutCompileJobsInput
+  sourceVersion: Prisma.SourceVersionCreateNestedOneWithoutCompileJobsInput
+  generation: Prisma.IndexGenerationCreateNestedOneWithoutCompileJobsInput
+  artifactDocument?: Prisma.DocumentCreateNestedOneWithoutCompileArtifactsInput
+}
+
+export type CompileJobUncheckedCreateWithoutCostsInput = {
+  id?: string
+  kbId: string
+  sourceVersionId: string
+  generationId: string
+  artifactType: string
+  model: string
+  promptVersion: string
+  schemaVersion: string
+  status?: string
+  attempt?: number
+  maxAttempts?: number
+  idempotencyKey: string
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  lastError?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  artifactDocumentId?: string | null
+}
+
+export type CompileJobCreateOrConnectWithoutCostsInput = {
+  where: Prisma.CompileJobWhereUniqueInput
+  create: Prisma.XOR<Prisma.CompileJobCreateWithoutCostsInput, Prisma.CompileJobUncheckedCreateWithoutCostsInput>
+}
+
+export type CompileJobUpsertWithoutCostsInput = {
+  update: Prisma.XOR<Prisma.CompileJobUpdateWithoutCostsInput, Prisma.CompileJobUncheckedUpdateWithoutCostsInput>
+  create: Prisma.XOR<Prisma.CompileJobCreateWithoutCostsInput, Prisma.CompileJobUncheckedCreateWithoutCostsInput>
+  where?: Prisma.CompileJobWhereInput
+}
+
+export type CompileJobUpdateToOneWithWhereWithoutCostsInput = {
+  where?: Prisma.CompileJobWhereInput
+  data: Prisma.XOR<Prisma.CompileJobUpdateWithoutCostsInput, Prisma.CompileJobUncheckedUpdateWithoutCostsInput>
+}
+
+export type CompileJobUpdateWithoutCostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  artifactType?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  promptVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  schemaVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutCompileJobsNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneRequiredWithoutCompileJobsNestedInput
+  generation?: Prisma.IndexGenerationUpdateOneRequiredWithoutCompileJobsNestedInput
+  artifactDocument?: Prisma.DocumentUpdateOneWithoutCompileArtifactsNestedInput
+}
+
+export type CompileJobUncheckedUpdateWithoutCostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceVersionId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.StringFieldUpdateOperationsInput | string
+  artifactType?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  promptVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  schemaVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  artifactDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
 export type CompileJobCreateManyKbInput = {
   id?: string
   sourceVersionId: string
@@ -993,6 +1266,7 @@ export type CompileJobCreateManyKbInput = {
   lastError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  artifactDocumentId?: string | null
 }
 
 export type CompileJobUpdateWithoutKbInput = {
@@ -1012,6 +1286,8 @@ export type CompileJobUpdateWithoutKbInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceVersion?: Prisma.SourceVersionUpdateOneRequiredWithoutCompileJobsNestedInput
   generation?: Prisma.IndexGenerationUpdateOneRequiredWithoutCompileJobsNestedInput
+  artifactDocument?: Prisma.DocumentUpdateOneWithoutCompileArtifactsNestedInput
+  costs?: Prisma.CompileCostLedgerUpdateManyWithoutCompileJobNestedInput
 }
 
 export type CompileJobUncheckedUpdateWithoutKbInput = {
@@ -1031,10 +1307,95 @@ export type CompileJobUncheckedUpdateWithoutKbInput = {
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  artifactDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  costs?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutCompileJobNestedInput
 }
 
 export type CompileJobUncheckedUpdateManyWithoutKbInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceVersionId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.StringFieldUpdateOperationsInput | string
+  artifactType?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  promptVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  schemaVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  artifactDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type CompileJobCreateManyArtifactDocumentInput = {
+  id?: string
+  kbId: string
+  sourceVersionId: string
+  generationId: string
+  artifactType: string
+  model: string
+  promptVersion: string
+  schemaVersion: string
+  status?: string
+  attempt?: number
+  maxAttempts?: number
+  idempotencyKey: string
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  lastError?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CompileJobUpdateWithoutArtifactDocumentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  artifactType?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  promptVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  schemaVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutCompileJobsNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneRequiredWithoutCompileJobsNestedInput
+  generation?: Prisma.IndexGenerationUpdateOneRequiredWithoutCompileJobsNestedInput
+  costs?: Prisma.CompileCostLedgerUpdateManyWithoutCompileJobNestedInput
+}
+
+export type CompileJobUncheckedUpdateWithoutArtifactDocumentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceVersionId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.StringFieldUpdateOperationsInput | string
+  artifactType?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  promptVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  schemaVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  costs?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutCompileJobNestedInput
+}
+
+export type CompileJobUncheckedUpdateManyWithoutArtifactDocumentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
   sourceVersionId?: Prisma.StringFieldUpdateOperationsInput | string
   generationId?: Prisma.StringFieldUpdateOperationsInput | string
   artifactType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1069,6 +1430,7 @@ export type CompileJobCreateManySourceVersionInput = {
   lastError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  artifactDocumentId?: string | null
 }
 
 export type CompileJobUpdateWithoutSourceVersionInput = {
@@ -1088,6 +1450,8 @@ export type CompileJobUpdateWithoutSourceVersionInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutCompileJobsNestedInput
   generation?: Prisma.IndexGenerationUpdateOneRequiredWithoutCompileJobsNestedInput
+  artifactDocument?: Prisma.DocumentUpdateOneWithoutCompileArtifactsNestedInput
+  costs?: Prisma.CompileCostLedgerUpdateManyWithoutCompileJobNestedInput
 }
 
 export type CompileJobUncheckedUpdateWithoutSourceVersionInput = {
@@ -1107,6 +1471,8 @@ export type CompileJobUncheckedUpdateWithoutSourceVersionInput = {
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  artifactDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  costs?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutCompileJobNestedInput
 }
 
 export type CompileJobUncheckedUpdateManyWithoutSourceVersionInput = {
@@ -1126,6 +1492,7 @@ export type CompileJobUncheckedUpdateManyWithoutSourceVersionInput = {
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  artifactDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CompileJobCreateManyGenerationInput = {
@@ -1145,6 +1512,7 @@ export type CompileJobCreateManyGenerationInput = {
   lastError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  artifactDocumentId?: string | null
 }
 
 export type CompileJobUpdateWithoutGenerationInput = {
@@ -1164,6 +1532,8 @@ export type CompileJobUpdateWithoutGenerationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutCompileJobsNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneRequiredWithoutCompileJobsNestedInput
+  artifactDocument?: Prisma.DocumentUpdateOneWithoutCompileArtifactsNestedInput
+  costs?: Prisma.CompileCostLedgerUpdateManyWithoutCompileJobNestedInput
 }
 
 export type CompileJobUncheckedUpdateWithoutGenerationInput = {
@@ -1183,6 +1553,8 @@ export type CompileJobUncheckedUpdateWithoutGenerationInput = {
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  artifactDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  costs?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutCompileJobNestedInput
 }
 
 export type CompileJobUncheckedUpdateManyWithoutGenerationInput = {
@@ -1202,8 +1574,38 @@ export type CompileJobUncheckedUpdateManyWithoutGenerationInput = {
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  artifactDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
+
+/**
+ * Count Type CompileJobCountOutputType
+ */
+
+export type CompileJobCountOutputType = {
+  costs: number
+}
+
+export type CompileJobCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  costs?: boolean | CompileJobCountOutputTypeCountCostsArgs
+}
+
+/**
+ * CompileJobCountOutputType without action
+ */
+export type CompileJobCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CompileJobCountOutputType
+   */
+  select?: Prisma.CompileJobCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CompileJobCountOutputType without action
+ */
+export type CompileJobCountOutputTypeCountCostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompileCostLedgerWhereInput
+}
 
 
 export type CompileJobSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1224,9 +1626,13 @@ export type CompileJobSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   lastError?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  artifactDocumentId?: boolean
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   sourceVersion?: boolean | Prisma.SourceVersionDefaultArgs<ExtArgs>
   generation?: boolean | Prisma.IndexGenerationDefaultArgs<ExtArgs>
+  artifactDocument?: boolean | Prisma.CompileJob$artifactDocumentArgs<ExtArgs>
+  costs?: boolean | Prisma.CompileJob$costsArgs<ExtArgs>
+  _count?: boolean | Prisma.CompileJobCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["compileJob"]>
 
 export type CompileJobSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1247,9 +1653,11 @@ export type CompileJobSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   lastError?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  artifactDocumentId?: boolean
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   sourceVersion?: boolean | Prisma.SourceVersionDefaultArgs<ExtArgs>
   generation?: boolean | Prisma.IndexGenerationDefaultArgs<ExtArgs>
+  artifactDocument?: boolean | Prisma.CompileJob$artifactDocumentArgs<ExtArgs>
 }, ExtArgs["result"]["compileJob"]>
 
 export type CompileJobSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1270,9 +1678,11 @@ export type CompileJobSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   lastError?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  artifactDocumentId?: boolean
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   sourceVersion?: boolean | Prisma.SourceVersionDefaultArgs<ExtArgs>
   generation?: boolean | Prisma.IndexGenerationDefaultArgs<ExtArgs>
+  artifactDocument?: boolean | Prisma.CompileJob$artifactDocumentArgs<ExtArgs>
 }, ExtArgs["result"]["compileJob"]>
 
 export type CompileJobSelectScalar = {
@@ -1293,23 +1703,29 @@ export type CompileJobSelectScalar = {
   lastError?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  artifactDocumentId?: boolean
 }
 
-export type CompileJobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "sourceVersionId" | "generationId" | "artifactType" | "model" | "promptVersion" | "schemaVersion" | "status" | "attempt" | "maxAttempts" | "idempotencyKey" | "leaseOwner" | "leaseExpiresAt" | "lastError" | "createdAt" | "updatedAt", ExtArgs["result"]["compileJob"]>
+export type CompileJobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "sourceVersionId" | "generationId" | "artifactType" | "model" | "promptVersion" | "schemaVersion" | "status" | "attempt" | "maxAttempts" | "idempotencyKey" | "leaseOwner" | "leaseExpiresAt" | "lastError" | "createdAt" | "updatedAt" | "artifactDocumentId", ExtArgs["result"]["compileJob"]>
 export type CompileJobInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   sourceVersion?: boolean | Prisma.SourceVersionDefaultArgs<ExtArgs>
   generation?: boolean | Prisma.IndexGenerationDefaultArgs<ExtArgs>
+  artifactDocument?: boolean | Prisma.CompileJob$artifactDocumentArgs<ExtArgs>
+  costs?: boolean | Prisma.CompileJob$costsArgs<ExtArgs>
+  _count?: boolean | Prisma.CompileJobCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CompileJobIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   sourceVersion?: boolean | Prisma.SourceVersionDefaultArgs<ExtArgs>
   generation?: boolean | Prisma.IndexGenerationDefaultArgs<ExtArgs>
+  artifactDocument?: boolean | Prisma.CompileJob$artifactDocumentArgs<ExtArgs>
 }
 export type CompileJobIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   sourceVersion?: boolean | Prisma.SourceVersionDefaultArgs<ExtArgs>
   generation?: boolean | Prisma.IndexGenerationDefaultArgs<ExtArgs>
+  artifactDocument?: boolean | Prisma.CompileJob$artifactDocumentArgs<ExtArgs>
 }
 
 export type $CompileJobPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1318,6 +1734,8 @@ export type $CompileJobPayload<ExtArgs extends runtime.Types.Extensions.Internal
     kb: Prisma.$KnowledgeBasePayload<ExtArgs>
     sourceVersion: Prisma.$SourceVersionPayload<ExtArgs>
     generation: Prisma.$IndexGenerationPayload<ExtArgs>
+    artifactDocument: Prisma.$DocumentPayload<ExtArgs> | null
+    costs: Prisma.$CompileCostLedgerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1337,6 +1755,7 @@ export type $CompileJobPayload<ExtArgs extends runtime.Types.Extensions.Internal
     lastError: string | null
     createdAt: Date
     updatedAt: Date
+    artifactDocumentId: string | null
   }, ExtArgs["result"]["compileJob"]>
   composites: {}
 }
@@ -1734,6 +2153,8 @@ export interface Prisma__CompileJobClient<T, Null = never, ExtArgs extends runti
   kb<T extends Prisma.KnowledgeBaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBaseDefaultArgs<ExtArgs>>): Prisma.Prisma__KnowledgeBaseClient<runtime.Types.Result.GetResult<Prisma.$KnowledgeBasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   sourceVersion<T extends Prisma.SourceVersionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SourceVersionDefaultArgs<ExtArgs>>): Prisma.Prisma__SourceVersionClient<runtime.Types.Result.GetResult<Prisma.$SourceVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   generation<T extends Prisma.IndexGenerationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IndexGenerationDefaultArgs<ExtArgs>>): Prisma.Prisma__IndexGenerationClient<runtime.Types.Result.GetResult<Prisma.$IndexGenerationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  artifactDocument<T extends Prisma.CompileJob$artifactDocumentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompileJob$artifactDocumentArgs<ExtArgs>>): Prisma.Prisma__DocumentClient<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  costs<T extends Prisma.CompileJob$costsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompileJob$costsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompileCostLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1780,6 +2201,7 @@ export interface CompileJobFieldRefs {
   readonly lastError: Prisma.FieldRef<"CompileJob", 'String'>
   readonly createdAt: Prisma.FieldRef<"CompileJob", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"CompileJob", 'DateTime'>
+  readonly artifactDocumentId: Prisma.FieldRef<"CompileJob", 'String'>
 }
     
 
@@ -2173,6 +2595,49 @@ export type CompileJobDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many CompileJobs to delete.
    */
   limit?: number
+}
+
+/**
+ * CompileJob.artifactDocument
+ */
+export type CompileJob$artifactDocumentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Document
+   */
+  select?: Prisma.DocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Document
+   */
+  omit?: Prisma.DocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentInclude<ExtArgs> | null
+  where?: Prisma.DocumentWhereInput
+}
+
+/**
+ * CompileJob.costs
+ */
+export type CompileJob$costsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CompileCostLedger
+   */
+  select?: Prisma.CompileCostLedgerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CompileCostLedger
+   */
+  omit?: Prisma.CompileCostLedgerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CompileCostLedgerInclude<ExtArgs> | null
+  where?: Prisma.CompileCostLedgerWhereInput
+  orderBy?: Prisma.CompileCostLedgerOrderByWithRelationInput | Prisma.CompileCostLedgerOrderByWithRelationInput[]
+  cursor?: Prisma.CompileCostLedgerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CompileCostLedgerScalarFieldEnum | Prisma.CompileCostLedgerScalarFieldEnum[]
 }
 
 /**

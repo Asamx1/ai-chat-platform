@@ -149,8 +149,9 @@ export async function storePlan(
         throw new Error('INVALID_GENERATION');
       }
     }
-    if (normText !== undefined) await attachSourceVersion(tx, document.kbId, id, normText);
-    else if (generationId !== undefined && !document.sourceVersionId) throw new Error('SOURCE_VERSION_REQUIRED');
+    if (document.kind !== undefined && document.kind !== 'SOURCE') throw new Error('SOURCE_REQUIRED');
+    const sourceVersion = normText !== undefined ? await attachSourceVersion(tx, document.kbId, id, normText) : null;
+    if (generationId !== undefined && !sourceVersion && !document.sourceVersionId) throw new Error('SOURCE_VERSION_REQUIRED');
     // Only the compatibility path replaces existing chunks. Explicit builds preserve all old generations.
     if (generationId === undefined) await tx.$executeRawUnsafe('DELETE FROM "Chunk" WHERE "documentId"=$1', id);
     const insert = (result: ChunkResult, index: number): Promise<number> =>
@@ -173,6 +174,11 @@ export async function storePlan(
        WHERE id=$1 AND attempt=$2 AND "leaseOwner"=$3 AND status='PROCESSING'
        AND "leaseExpiresAt">clock_timestamp()`, id, attempt, worker, plan.length, effectiveChunkStrategy ?? null);
     if (count !== 1) throw new LeaseLostError('LEASE_LOST');
+    const versionId = sourceVersion?.id ?? document.sourceVersionId;
+    if (targetId && versionId) await tx.$executeRawUnsafe(
+      `INSERT INTO "CompileOutbox" (id,"kbId","documentId","sourceVersionId","generationId","eventType")
+       VALUES ($1,$2,$3,$4,$5,'SOURCE_READY') ON CONFLICT DO NOTHING`,
+      randomUUID(), document.kbId, id, versionId, targetId);
     if (targetId) await tx.$executeRawUnsafe(
       `UPDATE "IndexGeneration" g SET
        "documentCount"=(SELECT count(DISTINCT "documentId") FROM "Chunk" WHERE "generationId"=g.id),

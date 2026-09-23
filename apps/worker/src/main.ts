@@ -1,5 +1,6 @@
 import os from 'node:os';
 import { runKbWorker } from './kb-worker';
+import { runCompileWorker } from './compile-worker';
 import { claimNextRun } from './lease';
 import { processCollabRun } from './collab-runner';
 
@@ -29,7 +30,8 @@ async function main(): Promise<void> {
   }
 }
 
-Promise.all([main(), runKbWorker(WORKER_ID, () => shuttingDown, WORKER_ONCE)])
+Promise.all([main(), runKbWorker(WORKER_ID, () => shuttingDown, WORKER_ONCE),
+  runCompileWorker(`${WORKER_ID}:compile`, () => shuttingDown, WORKER_ONCE)])
   .then(() => process.exit(0))
   .catch((err) => {
     console.error('[worker] fatal:', err);

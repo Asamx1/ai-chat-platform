@@ -343,6 +343,8 @@ model KnowledgeBase {
   generations IndexGeneration[] @relation("KbGenerations")
   sourceVersions SourceVersion[]
   compileJobs CompileJob[]
+  compileOutbox CompileOutbox[]
+  compileCosts CompileCostLedger[]
   chunks Chunk[]
   conversations ConversationKnowledgeBase[]
   @@index([userId, updatedAt])
@@ -353,6 +355,7 @@ model Document {
   kbId String
   kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
   name String
+  kind String @default("SOURCE") // SOURCE | WIKI_SUMMARY | WIKI_ENTITY
   mime String
   objectKey String @unique
   model String
@@ -370,6 +373,9 @@ model Document {
   sourceVersionId String?
   sourceVersion SourceVersion? @relation("CurrentSourceVersion", fields: [sourceVersionId], references: [id], onDelete: SetNull)
   sourceVersions SourceVersion[] @relation("DocumentVersions")
+  summaryFacts SummaryFact[] @relation("SummaryFacts")
+  sourceFacts SummaryFact[] @relation("SourceFacts")
+  compileArtifacts CompileJob[] @relation("CompileArtifact")
   @@index([kbId, createdAt])
   @@index([status, leaseExpiresAt])
 }
@@ -385,6 +391,7 @@ model Chunk {
   parentId String?
   parent Chunk? @relation("ChildChunks", fields: [parentId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   children Chunk[] @relation("ChildChunks")
+  evidenceFacts SummaryFact[]
   headingPath String? // JSON-serialized string[] produced by the chunker; display metadata only
   kind String @default("CHILD") // PARENT | CHILD | STANDALONE
   ordinal Int
@@ -484,4 +491,56 @@ model CompileJob {
   lastError String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  artifactDocumentId String?
+  artifactDocument Document? @relation("CompileArtifact", fields: [artifactDocumentId], references: [id], onDelete: SetNull)
+  costs CompileCostLedger[]
+}
+
+model CompileOutbox {
+  id String @id @default(cuid())
+  kbId String
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  documentId String
+  sourceVersionId String
+  generationId String
+  eventType String
+  createdAt DateTime @default(now())
+  processedAt DateTime?
+  @@unique([documentId, sourceVersionId, generationId, eventType])
+  @@index([processedAt, createdAt])
+}
+
+model CompileCostLedger {
+  id String @id @default(cuid())
+  kbId String
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  compileJobId String
+  compileJob CompileJob @relation(fields: [compileJobId], references: [id], onDelete: Cascade)
+  model String
+  operation String
+  inputTokens Int?
+  outputTokens Int?
+  costUsd Decimal? @db.Decimal(12, 6)
+  priceVersion String
+  attempt Int
+  status String
+  elapsedMs Int?
+  requestDedupKey String @unique
+  createdAt DateTime @default(now())
+  @@index([kbId, createdAt])
+}
+
+model SummaryFact {
+  id String @id @default(cuid())
+  summaryDocumentId String
+  summaryDocument Document @relation("SummaryFacts", fields: [summaryDocumentId], references: [id], onDelete: Cascade)
+  sourceDocumentId String
+  sourceDocument Document @relation("SourceFacts", fields: [sourceDocumentId], references: [id], onDelete: Cascade)
+  sourceChunkId String
+  sourceChunk Chunk @relation(fields: [sourceChunkId], references: [id], onDelete: Cascade)
+  claim String @db.Text
+  quote String @db.Text
+  spanStart Int
+  spanEnd Int
+  @@index([summaryDocumentId])
 }

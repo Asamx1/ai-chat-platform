@@ -199,9 +199,15 @@ importers:
 
   packages/rag:
     dependencies:
+      '@aichat/crypto':
+        specifier: workspace:*
+        version: link:../crypto
       '@aichat/db':
         specifier: workspace:*
         version: link:../db
+      zod:
+        specifier: 4.1.5
+        version: 4.1.5
     devDependencies:
       typescript:
         specifier: ^5

@@ -10,12 +10,12 @@ export async function claimDocument(worker: string): Promise<Job | null> {
   // Recovery is deliberately restricted to exhausted, expired leases.
   await prisma.$executeRawUnsafe(`UPDATE "Document" SET status='FAILED',error='ATTEMPTS_EXHAUSTED',
     "leaseOwner"=NULL,"leaseExpiresAt"=NULL,"updatedAt"=clock_timestamp()
-    WHERE attempt>=3 AND (status='PENDING' OR (status='PROCESSING' AND
+    WHERE kind='SOURCE' AND attempt>=3 AND (status='PENDING' OR (status='PROCESSING' AND
       ("leaseExpiresAt" IS NULL OR "leaseExpiresAt"<=clock_timestamp())))`);
   const rows = await prisma.$queryRawUnsafe<Job[]>(`UPDATE "Document" SET status='PROCESSING',
     attempt=attempt+1,"leaseOwner"=$1,"leaseExpiresAt"=clock_timestamp()+interval '30 seconds',
     error=NULL,"updatedAt"=clock_timestamp()
-    WHERE id=(SELECT id FROM "Document" WHERE attempt<3 AND
+    WHERE id=(SELECT id FROM "Document" WHERE kind='SOURCE' AND attempt<3 AND
       (status='PENDING' OR (status='PROCESSING' AND
        ("leaseExpiresAt" IS NULL OR "leaseExpiresAt"<=clock_timestamp())))
       ORDER BY "createdAt",id LIMIT 1 FOR UPDATE SKIP LOCKED)

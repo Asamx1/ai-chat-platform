@@ -196,6 +196,8 @@ export type KnowledgeBaseWhereInput = {
   generations?: Prisma.IndexGenerationListRelationFilter
   sourceVersions?: Prisma.SourceVersionListRelationFilter
   compileJobs?: Prisma.CompileJobListRelationFilter
+  compileOutbox?: Prisma.CompileOutboxListRelationFilter
+  compileCosts?: Prisma.CompileCostLedgerListRelationFilter
   chunks?: Prisma.ChunkListRelationFilter
   conversations?: Prisma.ConversationKnowledgeBaseListRelationFilter
 }
@@ -213,6 +215,8 @@ export type KnowledgeBaseOrderByWithRelationInput = {
   generations?: Prisma.IndexGenerationOrderByRelationAggregateInput
   sourceVersions?: Prisma.SourceVersionOrderByRelationAggregateInput
   compileJobs?: Prisma.CompileJobOrderByRelationAggregateInput
+  compileOutbox?: Prisma.CompileOutboxOrderByRelationAggregateInput
+  compileCosts?: Prisma.CompileCostLedgerOrderByRelationAggregateInput
   chunks?: Prisma.ChunkOrderByRelationAggregateInput
   conversations?: Prisma.ConversationKnowledgeBaseOrderByRelationAggregateInput
 }
@@ -233,6 +237,8 @@ export type KnowledgeBaseWhereUniqueInput = Prisma.AtLeast<{
   generations?: Prisma.IndexGenerationListRelationFilter
   sourceVersions?: Prisma.SourceVersionListRelationFilter
   compileJobs?: Prisma.CompileJobListRelationFilter
+  compileOutbox?: Prisma.CompileOutboxListRelationFilter
+  compileCosts?: Prisma.CompileCostLedgerListRelationFilter
   chunks?: Prisma.ChunkListRelationFilter
   conversations?: Prisma.ConversationKnowledgeBaseListRelationFilter
 }, "id" | "activeGenerationId">
@@ -272,6 +278,8 @@ export type KnowledgeBaseCreateInput = {
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
 }
@@ -287,6 +295,8 @@ export type KnowledgeBaseUncheckedCreateInput = {
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
 }
@@ -302,6 +312,8 @@ export type KnowledgeBaseUpdateInput = {
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
 }
@@ -317,6 +329,8 @@ export type KnowledgeBaseUncheckedUpdateInput = {
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
 }
@@ -545,6 +559,34 @@ export type KnowledgeBaseUpdateOneRequiredWithoutCompileJobsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.KnowledgeBaseUpdateToOneWithWhereWithoutCompileJobsInput, Prisma.KnowledgeBaseUpdateWithoutCompileJobsInput>, Prisma.KnowledgeBaseUncheckedUpdateWithoutCompileJobsInput>
 }
 
+export type KnowledgeBaseCreateNestedOneWithoutCompileOutboxInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutCompileOutboxInput, Prisma.KnowledgeBaseUncheckedCreateWithoutCompileOutboxInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutCompileOutboxInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+}
+
+export type KnowledgeBaseUpdateOneRequiredWithoutCompileOutboxNestedInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutCompileOutboxInput, Prisma.KnowledgeBaseUncheckedCreateWithoutCompileOutboxInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutCompileOutboxInput
+  upsert?: Prisma.KnowledgeBaseUpsertWithoutCompileOutboxInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KnowledgeBaseUpdateToOneWithWhereWithoutCompileOutboxInput, Prisma.KnowledgeBaseUpdateWithoutCompileOutboxInput>, Prisma.KnowledgeBaseUncheckedUpdateWithoutCompileOutboxInput>
+}
+
+export type KnowledgeBaseCreateNestedOneWithoutCompileCostsInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutCompileCostsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutCompileCostsInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutCompileCostsInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+}
+
+export type KnowledgeBaseUpdateOneRequiredWithoutCompileCostsNestedInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutCompileCostsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutCompileCostsInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutCompileCostsInput
+  upsert?: Prisma.KnowledgeBaseUpsertWithoutCompileCostsInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KnowledgeBaseUpdateToOneWithWhereWithoutCompileCostsInput, Prisma.KnowledgeBaseUpdateWithoutCompileCostsInput>, Prisma.KnowledgeBaseUncheckedUpdateWithoutCompileCostsInput>
+}
+
 export type KnowledgeBaseCreateWithoutUserInput = {
   id?: string
   name: string
@@ -555,6 +597,8 @@ export type KnowledgeBaseCreateWithoutUserInput = {
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
 }
@@ -569,6 +613,8 @@ export type KnowledgeBaseUncheckedCreateWithoutUserInput = {
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
 }
@@ -621,6 +667,8 @@ export type KnowledgeBaseCreateWithoutDocumentsInput = {
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
 }
@@ -635,6 +683,8 @@ export type KnowledgeBaseUncheckedCreateWithoutDocumentsInput = {
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
 }
@@ -665,6 +715,8 @@ export type KnowledgeBaseUpdateWithoutDocumentsInput = {
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
 }
@@ -679,6 +731,8 @@ export type KnowledgeBaseUncheckedUpdateWithoutDocumentsInput = {
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
 }
@@ -694,6 +748,8 @@ export type KnowledgeBaseCreateWithoutChunksInput = {
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
 }
 
@@ -708,6 +764,8 @@ export type KnowledgeBaseUncheckedCreateWithoutChunksInput = {
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
 }
 
@@ -738,6 +796,8 @@ export type KnowledgeBaseUpdateWithoutChunksInput = {
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
 }
 
@@ -752,6 +812,8 @@ export type KnowledgeBaseUncheckedUpdateWithoutChunksInput = {
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
 }
 
@@ -766,6 +828,8 @@ export type KnowledgeBaseCreateWithoutConversationsInput = {
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
 }
 
@@ -780,6 +844,8 @@ export type KnowledgeBaseUncheckedCreateWithoutConversationsInput = {
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
 }
 
@@ -810,6 +876,8 @@ export type KnowledgeBaseUpdateWithoutConversationsInput = {
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
 }
 
@@ -824,6 +892,8 @@ export type KnowledgeBaseUncheckedUpdateWithoutConversationsInput = {
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
 }
 
@@ -837,6 +907,8 @@ export type KnowledgeBaseCreateWithoutSourceVersionsInput = {
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
 }
@@ -851,6 +923,8 @@ export type KnowledgeBaseUncheckedCreateWithoutSourceVersionsInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
 }
@@ -881,6 +955,8 @@ export type KnowledgeBaseUpdateWithoutSourceVersionsInput = {
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
 }
@@ -895,6 +971,8 @@ export type KnowledgeBaseUncheckedUpdateWithoutSourceVersionsInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
 }
@@ -909,6 +987,8 @@ export type KnowledgeBaseCreateWithoutGenerationsInput = {
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
 }
@@ -923,6 +1003,8 @@ export type KnowledgeBaseUncheckedCreateWithoutGenerationsInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
 }
@@ -942,6 +1024,8 @@ export type KnowledgeBaseCreateWithoutActiveGenerationInput = {
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
 }
@@ -956,6 +1040,8 @@ export type KnowledgeBaseUncheckedCreateWithoutActiveGenerationInput = {
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
 }
@@ -986,6 +1072,8 @@ export type KnowledgeBaseUpdateWithoutGenerationsInput = {
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
 }
@@ -1000,6 +1088,8 @@ export type KnowledgeBaseUncheckedUpdateWithoutGenerationsInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
 }
@@ -1025,6 +1115,8 @@ export type KnowledgeBaseUpdateWithoutActiveGenerationInput = {
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
 }
@@ -1039,6 +1131,8 @@ export type KnowledgeBaseUncheckedUpdateWithoutActiveGenerationInput = {
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
 }
@@ -1053,6 +1147,8 @@ export type KnowledgeBaseCreateWithoutCompileJobsInput = {
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
 }
@@ -1067,6 +1163,8 @@ export type KnowledgeBaseUncheckedCreateWithoutCompileJobsInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
 }
@@ -1097,6 +1195,8 @@ export type KnowledgeBaseUpdateWithoutCompileJobsInput = {
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
 }
@@ -1111,6 +1211,168 @@ export type KnowledgeBaseUncheckedUpdateWithoutCompileJobsInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseCreateWithoutCompileOutboxInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
+  activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
+  generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseUncheckedCreateWithoutCompileOutboxInput = {
+  id?: string
+  userId: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeGenerationId?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
+  generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseCreateOrConnectWithoutCompileOutboxInput = {
+  where: Prisma.KnowledgeBaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutCompileOutboxInput, Prisma.KnowledgeBaseUncheckedCreateWithoutCompileOutboxInput>
+}
+
+export type KnowledgeBaseUpsertWithoutCompileOutboxInput = {
+  update: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutCompileOutboxInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutCompileOutboxInput>
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutCompileOutboxInput, Prisma.KnowledgeBaseUncheckedCreateWithoutCompileOutboxInput>
+  where?: Prisma.KnowledgeBaseWhereInput
+}
+
+export type KnowledgeBaseUpdateToOneWithWhereWithoutCompileOutboxInput = {
+  where?: Prisma.KnowledgeBaseWhereInput
+  data: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutCompileOutboxInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutCompileOutboxInput>
+}
+
+export type KnowledgeBaseUpdateWithoutCompileOutboxInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
+  activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
+  generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseUncheckedUpdateWithoutCompileOutboxInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
+  generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseCreateWithoutCompileCostsInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
+  activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
+  generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseUncheckedCreateWithoutCompileCostsInput = {
+  id?: string
+  userId: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeGenerationId?: string | null
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
+  generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseCreateOrConnectWithoutCompileCostsInput = {
+  where: Prisma.KnowledgeBaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutCompileCostsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutCompileCostsInput>
+}
+
+export type KnowledgeBaseUpsertWithoutCompileCostsInput = {
+  update: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutCompileCostsInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutCompileCostsInput>
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutCompileCostsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutCompileCostsInput>
+  where?: Prisma.KnowledgeBaseWhereInput
+}
+
+export type KnowledgeBaseUpdateToOneWithWhereWithoutCompileCostsInput = {
+  where?: Prisma.KnowledgeBaseWhereInput
+  data: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutCompileCostsInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutCompileCostsInput>
+}
+
+export type KnowledgeBaseUpdateWithoutCompileCostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
+  activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
+  generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseUncheckedUpdateWithoutCompileCostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
+  generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
 }
@@ -1133,6 +1395,8 @@ export type KnowledgeBaseUpdateWithoutUserInput = {
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
 }
@@ -1147,6 +1411,8 @@ export type KnowledgeBaseUncheckedUpdateWithoutUserInput = {
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
 }
@@ -1169,6 +1435,8 @@ export type KnowledgeBaseCountOutputType = {
   generations: number
   sourceVersions: number
   compileJobs: number
+  compileOutbox: number
+  compileCosts: number
   chunks: number
   conversations: number
 }
@@ -1178,6 +1446,8 @@ export type KnowledgeBaseCountOutputTypeSelect<ExtArgs extends runtime.Types.Ext
   generations?: boolean | KnowledgeBaseCountOutputTypeCountGenerationsArgs
   sourceVersions?: boolean | KnowledgeBaseCountOutputTypeCountSourceVersionsArgs
   compileJobs?: boolean | KnowledgeBaseCountOutputTypeCountCompileJobsArgs
+  compileOutbox?: boolean | KnowledgeBaseCountOutputTypeCountCompileOutboxArgs
+  compileCosts?: boolean | KnowledgeBaseCountOutputTypeCountCompileCostsArgs
   chunks?: boolean | KnowledgeBaseCountOutputTypeCountChunksArgs
   conversations?: boolean | KnowledgeBaseCountOutputTypeCountConversationsArgs
 }
@@ -1223,6 +1493,20 @@ export type KnowledgeBaseCountOutputTypeCountCompileJobsArgs<ExtArgs extends run
 /**
  * KnowledgeBaseCountOutputType without action
  */
+export type KnowledgeBaseCountOutputTypeCountCompileOutboxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompileOutboxWhereInput
+}
+
+/**
+ * KnowledgeBaseCountOutputType without action
+ */
+export type KnowledgeBaseCountOutputTypeCountCompileCostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompileCostLedgerWhereInput
+}
+
+/**
+ * KnowledgeBaseCountOutputType without action
+ */
 export type KnowledgeBaseCountOutputTypeCountChunksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ChunkWhereInput
 }
@@ -1248,6 +1532,8 @@ export type KnowledgeBaseSelect<ExtArgs extends runtime.Types.Extensions.Interna
   generations?: boolean | Prisma.KnowledgeBase$generationsArgs<ExtArgs>
   sourceVersions?: boolean | Prisma.KnowledgeBase$sourceVersionsArgs<ExtArgs>
   compileJobs?: boolean | Prisma.KnowledgeBase$compileJobsArgs<ExtArgs>
+  compileOutbox?: boolean | Prisma.KnowledgeBase$compileOutboxArgs<ExtArgs>
+  compileCosts?: boolean | Prisma.KnowledgeBase$compileCostsArgs<ExtArgs>
   chunks?: boolean | Prisma.KnowledgeBase$chunksArgs<ExtArgs>
   conversations?: boolean | Prisma.KnowledgeBase$conversationsArgs<ExtArgs>
   _count?: boolean | Prisma.KnowledgeBaseCountOutputTypeDefaultArgs<ExtArgs>
@@ -1292,6 +1578,8 @@ export type KnowledgeBaseInclude<ExtArgs extends runtime.Types.Extensions.Intern
   generations?: boolean | Prisma.KnowledgeBase$generationsArgs<ExtArgs>
   sourceVersions?: boolean | Prisma.KnowledgeBase$sourceVersionsArgs<ExtArgs>
   compileJobs?: boolean | Prisma.KnowledgeBase$compileJobsArgs<ExtArgs>
+  compileOutbox?: boolean | Prisma.KnowledgeBase$compileOutboxArgs<ExtArgs>
+  compileCosts?: boolean | Prisma.KnowledgeBase$compileCostsArgs<ExtArgs>
   chunks?: boolean | Prisma.KnowledgeBase$chunksArgs<ExtArgs>
   conversations?: boolean | Prisma.KnowledgeBase$conversationsArgs<ExtArgs>
   _count?: boolean | Prisma.KnowledgeBaseCountOutputTypeDefaultArgs<ExtArgs>
@@ -1314,6 +1602,8 @@ export type $KnowledgeBasePayload<ExtArgs extends runtime.Types.Extensions.Inter
     generations: Prisma.$IndexGenerationPayload<ExtArgs>[]
     sourceVersions: Prisma.$SourceVersionPayload<ExtArgs>[]
     compileJobs: Prisma.$CompileJobPayload<ExtArgs>[]
+    compileOutbox: Prisma.$CompileOutboxPayload<ExtArgs>[]
+    compileCosts: Prisma.$CompileCostLedgerPayload<ExtArgs>[]
     chunks: Prisma.$ChunkPayload<ExtArgs>[]
     conversations: Prisma.$ConversationKnowledgeBasePayload<ExtArgs>[]
   }
@@ -1724,6 +2014,8 @@ export interface Prisma__KnowledgeBaseClient<T, Null = never, ExtArgs extends ru
   generations<T extends Prisma.KnowledgeBase$generationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$generationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IndexGenerationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sourceVersions<T extends Prisma.KnowledgeBase$sourceVersionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$sourceVersionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SourceVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   compileJobs<T extends Prisma.KnowledgeBase$compileJobsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$compileJobsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompileJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  compileOutbox<T extends Prisma.KnowledgeBase$compileOutboxArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$compileOutboxArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompileOutboxPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  compileCosts<T extends Prisma.KnowledgeBase$compileCostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$compileCostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompileCostLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chunks<T extends Prisma.KnowledgeBase$chunksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$chunksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conversations<T extends Prisma.KnowledgeBase$conversationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$conversationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationKnowledgeBasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2269,6 +2561,54 @@ export type KnowledgeBase$compileJobsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.CompileJobScalarFieldEnum | Prisma.CompileJobScalarFieldEnum[]
+}
+
+/**
+ * KnowledgeBase.compileOutbox
+ */
+export type KnowledgeBase$compileOutboxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CompileOutbox
+   */
+  select?: Prisma.CompileOutboxSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CompileOutbox
+   */
+  omit?: Prisma.CompileOutboxOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CompileOutboxInclude<ExtArgs> | null
+  where?: Prisma.CompileOutboxWhereInput
+  orderBy?: Prisma.CompileOutboxOrderByWithRelationInput | Prisma.CompileOutboxOrderByWithRelationInput[]
+  cursor?: Prisma.CompileOutboxWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CompileOutboxScalarFieldEnum | Prisma.CompileOutboxScalarFieldEnum[]
+}
+
+/**
+ * KnowledgeBase.compileCosts
+ */
+export type KnowledgeBase$compileCostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CompileCostLedger
+   */
+  select?: Prisma.CompileCostLedgerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CompileCostLedger
+   */
+  omit?: Prisma.CompileCostLedgerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CompileCostLedgerInclude<ExtArgs> | null
+  where?: Prisma.CompileCostLedgerWhereInput
+  orderBy?: Prisma.CompileCostLedgerOrderByWithRelationInput | Prisma.CompileCostLedgerOrderByWithRelationInput[]
+  cursor?: Prisma.CompileCostLedgerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CompileCostLedgerScalarFieldEnum | Prisma.CompileCostLedgerScalarFieldEnum[]
 }
 
 /**
