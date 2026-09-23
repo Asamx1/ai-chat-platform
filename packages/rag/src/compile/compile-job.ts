@@ -24,11 +24,11 @@ export async function consumeCompileOutbox(): Promise<boolean> {
 export async function claimCompileJob(owner: string): Promise<CompileJobRow | null> {
   const [row] = await prisma.$queryRawUnsafe<CompileJobRow[]>(`UPDATE "CompileJob" j SET status='RUNNING',attempt=j.attempt+1,
     "leaseOwner"=$1,"leaseExpiresAt"=clock_timestamp()+interval '90 seconds',"lastError"=NULL,"updatedAt"=clock_timestamp()
-    WHERE j.id=(SELECT id FROM "CompileJob" WHERE attempt<"maxAttempts" AND "artifactType"='SUMMARY'
-      AND EXISTS (SELECT 1 FROM "IndexGeneration" g WHERE g.id="CompileJob"."generationId" AND g.status<>'FAILED') AND
-      ((status='PENDING' AND ("leaseExpiresAt" IS NULL OR "leaseExpiresAt"<=clock_timestamp())) OR
-       (status='RUNNING' AND "leaseExpiresAt"<=clock_timestamp())))
-      ORDER BY "createdAt",id LIMIT 1 FOR UPDATE SKIP LOCKED)
+    WHERE j.id=(SELECT c.id FROM "CompileJob" c WHERE c.attempt<c."maxAttempts" AND c."artifactType"='SUMMARY'
+      AND EXISTS (SELECT 1 FROM "IndexGeneration" g WHERE g.id=c."generationId" AND g.status<>'FAILED') AND
+      ((c.status='PENDING' AND (c."leaseExpiresAt" IS NULL OR c."leaseExpiresAt"<=clock_timestamp())) OR
+       (c.status='RUNNING' AND c."leaseExpiresAt"<=clock_timestamp()))
+      ORDER BY c."createdAt",c.id LIMIT 1 FOR UPDATE OF c SKIP LOCKED)
     RETURNING j.id,j."kbId",j."sourceVersionId",j."generationId",j."artifactType",j.attempt,j."maxAttempts",j."leaseOwner",
       (SELECT "documentId" FROM "SourceVersion" WHERE id=j."sourceVersionId") AS "documentId",
       (SELECT "userId" FROM "KnowledgeBase" WHERE id=j."kbId") AS "userId"`, owner);
