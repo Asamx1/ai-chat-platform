@@ -6,6 +6,7 @@ import {
 } from '@aichat/orchestrator';
 import type {
   CallModel,
+  CollabCallModel,
   OrchestratorSeat,
 } from '@aichat/orchestrator';
 import type { ChatMessage } from '@aichat/providers';
@@ -157,9 +158,13 @@ export async function processCollabRun(
 
   // 单席失败替换（M4 出口项）：席位 callModel 抛错时，找同 role 且
   // seatId 以 '-backup' 结尾的备用席重试一次；无备用则走原有降级/失败路径。
-  const callModelWithSubstitution: CallModel = async (seat, prompt, signal) => {
+  const callModelWithSubstitution: CollabCallModel = async (seat, prompt, signal) => {
+    // collab 策略仍走 (seat, prompt:string, signal) 旧边界(CollabCallModel),
+    // 这里适配到新 CallModel 消息数组边界,消除类型双轨与潜在的 string-as-messages 运行隐患
+    const toMessages = [{ role: 'user' as const, content: prompt }];
+    const opts = signal ? { signal } : undefined;
     try {
-      return await callModel(seat, prompt, signal);
+      return await callModel(seat, toMessages, opts);
     } catch (err) {
       if (err instanceof CollabCancelledError || (err instanceof Error && ['QUOTA_OUTCOME_UNKNOWN', 'QUOTA_CALL_EXISTS'].includes(err.message))) throw err;
       const backup = seats.find(
@@ -167,7 +172,7 @@ export async function processCollabRun(
       );
       if (!backup) throw err;
       await appendEvent(runId, 'collab.seat.substituted', { from: seat.seatId, to: backup.seatId });
-      return callModel(backup, prompt, signal);
+      return callModel(backup, toMessages, opts);
     }
   };
 

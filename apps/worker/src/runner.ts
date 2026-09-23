@@ -119,7 +119,7 @@ async function saveCheckpoint(runId: string, state: RunState, version: number): 
     data: {
       runId,
       version: version + 1,
-      stateJson: state as Prisma.InputJsonValue,
+      stateJson: state as unknown as Prisma.InputJsonValue,
     },
   });
   return version + 1;

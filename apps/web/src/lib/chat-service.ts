@@ -7,7 +7,7 @@ import {
   createMessage,
 } from '@aichat/db';
 import { createResolver } from '@aichat/providers';
-import type { ProviderAdapter } from '@aichat/providers';
+import type { ProviderAdapter, ResolvedModel } from '@aichat/providers';
 import { injectContext, retrieveContext, revalidateContext } from './rag-context';
 import type { RagSnapshot } from './rag-context';
 
@@ -111,6 +111,8 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
   }
 
   const resolved = providerFactory ? undefined : await resolver.resolve(userId, modelKey);
+  // Persist reproducible model metadata, never the decrypted API key.
+  const resolvedSnapshot = resolved ? (({ apiKey: _apiKey, ...snapshot }) => snapshot)(resolved) : undefined;
   const meta = resolved?.degraded ? { degraded: resolved.degraded } : undefined;
   const rag = await retrieveContext(userId, conversationId, content);
   const degradationReasons = [
@@ -140,6 +142,7 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
           modelKey,
           content,
           rag,
+          ...(resolvedSnapshot ? { resolved: resolvedSnapshot } : {}),
           ...(meta ? { meta } : {}),
           contentLength: content.length,
           userMessageId: userMessage.id,
@@ -170,7 +173,8 @@ export async function sendChat(input: SendChatInput): Promise<SendChatResult> {
   // 过渡期：EXECUTION_MODE!=worker 时 setImmediate 内联执行保持 M1 行为。
   if (!useWorker) {
     setImmediate(() => {
-      executeRunInline(runId, conversationId, content, modelKey, userId, rag).catch(() => {});
+      executeRunInline(runId, conversationId, content, modelKey, userId, rag,
+        (run.configSnapshot ?? {}) as { resolved?: Omit<ResolvedModel, 'apiKey'> }, resolved?.apiKey).catch(() => {});
     });
   }
   return { conversationId, messageId: userMessage.id, runId, ...(meta ? { meta } : {}) };
@@ -184,6 +188,8 @@ async function executeRunInline(
   modelKey: string,
   userId: string,
   rag: RagSnapshot,
+  configSnapshot: { resolved?: Omit<ResolvedModel, 'apiKey'> },
+  apiKey?: string,
 ): Promise<void> {
   // 保险：若 worker 已抢先领走该 run（leaseOwner 非空），inline 路径直接退出，避免双执行。
   const leased = await prisma.orchestrationRun.findUnique({
@@ -205,24 +211,26 @@ async function executeRunInline(
 
     await appendEvent(runId, 'run.started', { modelKey });
 
-    const resolved = providerFactory ? undefined : await resolver.resolve(userId, modelKey);
+    const resolved = configSnapshot.resolved ? { ...configSnapshot.resolved, apiKey: apiKey ?? '' } : undefined;
+    const degradationReasons = new Set<string>(resolved?.degraded ? [resolved.degraded.reason] : []);
     const provider = providerFactory ? providerFactory(modelKey) : quotaProvider(prisma, {
-      userId, runId, modelId: modelKey, initial: resolved, attempt: 0, seatId: 'default', invocation: 0,
+      userId, runId, modelId: modelKey, initial: resolved, reuseInitial: true, attempt: 0, seatId: 'default', invocation: 0,
       onResolved: async model => {
         if (model.degraded) {
+          degradationReasons.add(model.degraded.reason);
           await appendEvent(runId, 'run.degraded', { degraded: model.degraded });
           await prisma.orchestrationRun.update({ where: { id: runId }, data: {
-            degraded: true, degradationReasons: [model.degraded.reason],
+            degraded: true, degradationReasons: [...degradationReasons],
           } });
         }
       },
     });
-    if (resolved?.degraded) await appendEvent(runId, 'run.degraded', { degraded: resolved.degraded });
     const currentRag = await revalidateContext(userId, conversationId, rag);
     if (currentRag.status === 'RAG_UNAVAILABLE') {
+      degradationReasons.add('RAG_UNAVAILABLE');
       await appendEvent(runId, 'run.degraded', { reason: 'RAG_UNAVAILABLE' });
       await prisma.orchestrationRun.update({ where: { id: runId }, data: {
-        degraded: true, degradationReasons: [...(resolved?.degraded ? [resolved.degraded.reason] : []), 'RAG_UNAVAILABLE'],
+        degraded: true, degradationReasons: [...degradationReasons],
       } });
     }
     const prompt = injectContext([{ role: 'user', content }], currentRag.hits, provider.capabilities());
@@ -282,9 +290,8 @@ async function executeRunInline(
       await tx.message.create({ data: { conversationId, content: text, status: 'COMPLETE', citations: prompt.citations } });
       await tx.orchestrationRun.update({
         where: { id: runId },
-        data: { status: 'SUCCEEDED', ...(resolved?.degraded ? {
-          degraded: true, degradationReasons: [resolved.degraded.reason,
-            ...(currentRag.status === 'RAG_UNAVAILABLE' ? ['RAG_UNAVAILABLE'] : [])],
+        data: { status: 'SUCCEEDED', ...(degradationReasons.size ? {
+          degraded: true, degradationReasons: [...degradationReasons],
         } : {}) },
       });
     });

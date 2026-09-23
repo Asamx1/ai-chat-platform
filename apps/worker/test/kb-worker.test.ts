@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
-const { query, execute, storePlan } = vi.hoisted(() => ({ query: vi.fn(), execute: vi.fn(), storePlan: vi.fn() }));
+const { query, execute, storePlan, chunkDocument } = vi.hoisted(() => ({ query: vi.fn(), execute: vi.fn(), storePlan: vi.fn(), chunkDocument: vi.fn() }));
 vi.mock('@aichat/db', () => ({ prisma: { $queryRawUnsafe: query, $executeRawUnsafe: execute } }));
 vi.mock('@aichat/rag', async () => ({
   ...await import('../../../packages/rag/src/parse'), ...await import('../../../packages/rag/src/embed'),
-  chunkDocument: ({ parts }: { parts: { text: string }[] }) => parts,
+  ...await import('../../../packages/rag/src/strategies/registry'),
+  chunkDocument,
   storePlan, LeaseLostError: class extends Error {},
 }));
 vi.mock('minio', () => ({
@@ -15,7 +16,7 @@ vi.mock('minio', () => ({
     }
   },
 }));
-import { runKbWorker } from '../src/kb-worker';
+import { processDocument, runKbWorker } from '../src/kb-worker';
 
 function deferred() {
   let resolve!: () => void;
@@ -26,6 +27,7 @@ const job = (id: string) => ({ id, attempt: 1, mime: 'text/plain', objectKey: id
 const response = (input: string[]) => Response.json({ embeddings: input.map(() => Array(1024).fill(0.1)) });
 beforeEach(() => {
   vi.clearAllMocks();
+  chunkDocument.mockReset().mockImplementation(({ parts }: { parts: { text: string }[] }) => parts);
   vi.stubEnv('KB_CONCURRENCY', '2');
   vi.stubEnv('EMBEDDING_MODEL', 'bge-m3:latest');
   vi.stubEnv('S3_ENDPOINT', 'http://localhost:9000');
@@ -123,4 +125,18 @@ it('does not probe or claim when already stopping', async () => {
   await runKbWorker('worker', () => true);
   expect(fetch).not.toHaveBeenCalled();
   expect(query).not.toHaveBeenCalled();
+});
+
+it('rejects unknown chunk strategies permanently before chunking', async () => {
+  await processDocument({ ...job('bad'), chunkStrategy: 'unknown' }, 'worker');
+  expect(chunkDocument).not.toHaveBeenCalled();
+  expect(execute.mock.calls[0]!.slice(4)).toEqual(['FAILED', 'UNKNOWN_CHUNK_STRATEGY']);
+  expect(storePlan).not.toHaveBeenCalled();
+});
+
+it.each([[1, 'PENDING'], [3, 'FAILED']])('preserves chunk failures and retry budget at attempt %s', async (attempt, status) => {
+  chunkDocument.mockImplementationOnce(() => { throw new Error('chunk internal failure'); });
+  await processDocument({ ...job('bad'), attempt }, 'worker');
+  expect(execute.mock.calls[0]!.slice(4)).toEqual([status, 'chunk internal failure']);
+  expect(storePlan).not.toHaveBeenCalled();
 });

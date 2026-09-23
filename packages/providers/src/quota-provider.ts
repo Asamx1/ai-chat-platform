@@ -4,10 +4,12 @@ import { OllamaProvider } from './ollama';
 import { OpenAICompatibleProvider } from './openai-compatible';
 import type { ProviderAdapter, ChatMessage, StreamChatOptions, ProviderStreamEvent } from './ports';
 
-/** All production execution paths use this entry. Queue-time resolve is only a precheck. */
+/** All production execution paths use this entry. Workers resolve again after queueing. */
 export function quotaProvider(db: ResolverStore & QuotaStore, input: {
   userId: string; runId: string; modelId: string; attempt: number; seatId: string; invocation: number;
   initial?: ResolvedModel | undefined;
+  /** Inline execution can reuse its request-time resolution; workers still resolve at execution. */
+  reuseInitial?: boolean;
   onResolved?: (model: ResolvedModel) => Promise<void>;
 }): ProviderAdapter {
   const resolver = createResolver(db);
@@ -27,7 +29,8 @@ export function quotaProvider(db: ResolverStore & QuotaStore, input: {
         yield { type: 'done', finishReason: 'stop' };
         return;
       }
-      let resolved = await resolver.resolve(input.userId, input.modelId);
+      let resolved = input.reuseInitial && input.initial
+        ? input.initial : await resolver.resolve(input.userId, input.modelId);
       let provider = build(resolved);
       let maxTokens = Math.min(opts?.maxTokens ?? provider.capabilities().maxOutput, provider.capabilities().maxOutput);
       if (!Number.isInteger(maxTokens) || maxTokens <= 0) throw new Error('INVALID_MAX_TOKENS');

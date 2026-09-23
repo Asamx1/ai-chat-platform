@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { prisma } from '@aichat/db';
-import { DAILY_CLOUD_TOKEN_LIMIT } from '@aichat/providers';
+import { DAILY_CLOUD_TOKEN_LIMIT, PROVIDER_ENV_KEYS } from '@aichat/providers';
 import { auth } from '@/lib/auth';
 
 export async function GET() {
@@ -19,8 +19,9 @@ export async function GET() {
   return NextResponse.json({
     models: registry.map((model) => {
       const cloud = model.kind === 'cloud';
+      const envKey = Object.hasOwn(PROVIDER_ENV_KEYS, model.providerId) ? PROVIDER_ENV_KEYS[model.providerId] : undefined;
       const keySource = !cloud ? null : configured.has(model.providerId) ? 'db'
-        : model.providerId === 'deepseek' && process.env.DEEPSEEK_API_KEY?.trim() ? 'env' : null;
+        : envKey && process.env[envKey]?.trim() ? 'env' : null;
       const daily = usage.find((row) => row.modelId === model.id);
       const used = (daily?.tokensIn ?? 0) + (daily?.tokensOut ?? 0);
       const capabilities = model.capabilities as { label?: string | undefined; available?: boolean };

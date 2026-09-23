@@ -2,6 +2,10 @@ import { DAILY_CLOUD_TOKEN_LIMIT } from '@aichat/crypto/constants';
 
 export { DAILY_CLOUD_TOKEN_LIMIT };
 
+export const PROVIDER_ENV_KEYS: Readonly<Record<string, string | undefined>> = Object.freeze({
+  deepseek: 'DEEPSEEK_API_KEY',
+});
+
 export interface RegistryModel {
   id: string;
   modelKey: string;
@@ -134,9 +138,10 @@ export function createResolver(
       if (stored) {
         key = await decrypt(stored.ciphertext);
         source = 'db';
-      } else if (row.providerId === 'deepseek' && env.DEEPSEEK_API_KEY) {
-        key = env.DEEPSEEK_API_KEY;
-        source = 'env';
+      } else {
+        const envKey = Object.hasOwn(PROVIDER_ENV_KEYS, row.providerId) ? PROVIDER_ENV_KEYS[row.providerId] : undefined;
+        key = envKey ? env[envKey]?.trim() : undefined;
+        if (key) source = 'env';
       }
       if (!key) return fallback(modelId, 'NO_KEY');
       const usage = await db.modelUsageDaily.findUnique({

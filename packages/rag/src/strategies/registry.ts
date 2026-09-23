@@ -11,6 +11,10 @@ export function registerStrategy(strategy: ChunkStrategy): void {
   registry.set(strategy.name, strategy);
 }
 
+export function isStrategyName(name: string): name is StrategyName {
+  return Array.from(registry.keys()).some(key => key === name);
+}
+
 export function getStrategy(name: StrategyName): ChunkStrategy {
   const strategy = registry.get(name);
   if (!strategy) throw new RangeError(`Unknown chunk strategy: ${name}`);

@@ -27,6 +27,11 @@ function setup(env: Record<string, string> = {}) {
 }
 
 describe('provider resolver', () => {
+  it('treats whitespace env keys as unavailable, matching the model list', async () => {
+    const { resolver } = setup({ DEEPSEEK_API_KEY: '  ' });
+    expect(await resolver.resolve('u', cloud.id)).toMatchObject({ degraded: { reason: 'NO_KEY' } });
+  });
+
   it('prefers the user DB key and Registry URL over env', async () => {
     const { db, decrypt, resolver } = setup({ DEEPSEEK_API_KEY: 'env-secret' });
     db.apiKey.findUnique.mockResolvedValue({ ciphertext: 'encrypted' });

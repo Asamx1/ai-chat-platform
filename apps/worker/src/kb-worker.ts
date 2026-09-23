@@ -2,7 +2,7 @@ import { createRequire } from 'node:module';
 import * as minio from 'minio';
 import { Worker } from 'node:worker_threads';
 import { prisma } from '@aichat/db';
-import { chunkDocument, embed, embeddingModel, parse, storePlan, PermanentRagError, LeaseLostError, MAX_FILE_BYTES, type ChunkResult, type StrategyName } from '@aichat/rag';
+import { chunkDocument, embed, embeddingModel, parse, storePlan, PermanentRagError, LeaseLostError, MAX_FILE_BYTES, isStrategyName } from '@aichat/rag';
 
 type Job = { id: string; attempt: number; mime: string; objectKey: string; model: string; size: number; chunkStrategy: string };
 export async function claimDocument(worker: string): Promise<Job | null> {
@@ -118,12 +118,8 @@ export async function processDocument(job: Job, worker: string): Promise<void> {
     const parts = await parse(data, job.mime, bytes => parsePdf(bytes, controller.signal));
     // Dispatch through the registry so Document.chunkStrategy matches the stored chunks;
     // unknown strategies are permanent errors, never silently re-chunked as fixed.
-    let results: ChunkResult[];
-    try {
-      results = chunkDocument({ parts, mime: job.mime }, job.chunkStrategy as StrategyName);
-    } catch {
-      throw new PermanentRagError('UNKNOWN_CHUNK_STRATEGY');
-    }
+    if (!isStrategyName(job.chunkStrategy)) throw new PermanentRagError('UNKNOWN_CHUNK_STRATEGY');
+    const results = chunkDocument({ parts, mime: job.mime }, job.chunkStrategy);
     const vectors = await embed(results.map(result => result.text), controller.signal, job.model);
     controller.signal.throwIfAborted();
     await storePlan(job.id, job.attempt, worker, results, vectors);
