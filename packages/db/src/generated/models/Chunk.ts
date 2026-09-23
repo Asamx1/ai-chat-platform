@@ -280,6 +280,8 @@ export type ChunkWhereInput = {
   end?: Prisma.IntFilter<"Chunk"> | number
   text?: Prisma.StringFilter<"Chunk"> | string
   createdAt?: Prisma.DateTimeFilter<"Chunk"> | Date | string
+  entityMentions?: Prisma.EntityMentionListRelationFilter
+  relationEvidence?: Prisma.RelationEvidenceListRelationFilter
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   generation?: Prisma.XOR<Prisma.IndexGenerationNullableScalarRelationFilter, Prisma.IndexGenerationWhereInput> | null
   document?: Prisma.XOR<Prisma.DocumentScalarRelationFilter, Prisma.DocumentWhereInput>
@@ -301,6 +303,8 @@ export type ChunkOrderByWithRelationInput = {
   end?: Prisma.SortOrder
   text?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  entityMentions?: Prisma.EntityMentionOrderByRelationAggregateInput
+  relationEvidence?: Prisma.RelationEvidenceOrderByRelationAggregateInput
   kb?: Prisma.KnowledgeBaseOrderByWithRelationInput
   generation?: Prisma.IndexGenerationOrderByWithRelationInput
   document?: Prisma.DocumentOrderByWithRelationInput
@@ -326,6 +330,8 @@ export type ChunkWhereUniqueInput = Prisma.AtLeast<{
   end?: Prisma.IntFilter<"Chunk"> | number
   text?: Prisma.StringFilter<"Chunk"> | string
   createdAt?: Prisma.DateTimeFilter<"Chunk"> | Date | string
+  entityMentions?: Prisma.EntityMentionListRelationFilter
+  relationEvidence?: Prisma.RelationEvidenceListRelationFilter
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   generation?: Prisma.XOR<Prisma.IndexGenerationNullableScalarRelationFilter, Prisma.IndexGenerationWhereInput> | null
   document?: Prisma.XOR<Prisma.DocumentScalarRelationFilter, Prisma.DocumentWhereInput>
@@ -381,6 +387,8 @@ export type ChunkUpdateInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutChunkNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
   generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
@@ -402,6 +410,8 @@ export type ChunkUncheckedUpdateInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutChunkNestedInput
   children?: Prisma.ChunkUncheckedUpdateManyWithoutParentNestedInput
   evidenceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceChunkNestedInput
 }
@@ -635,6 +645,24 @@ export type ChunkUpdateOneRequiredWithoutEvidenceFactsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ChunkUpdateToOneWithWhereWithoutEvidenceFactsInput, Prisma.ChunkUpdateWithoutEvidenceFactsInput>, Prisma.ChunkUncheckedUpdateWithoutEvidenceFactsInput>
 }
 
+export type ChunkCreateNestedOneWithoutEntityMentionsInput = {
+  connect?: Prisma.ChunkWhereUniqueInput
+}
+
+export type ChunkUpdateOneRequiredWithoutEntityMentionsNestedInput = {
+  connect?: Prisma.ChunkWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChunkUpdateToOneWithWhereWithoutEntityMentionsInput, Prisma.ChunkUpdateWithoutEntityMentionsInput>, Prisma.ChunkUncheckedUpdateWithoutEntityMentionsInput>
+}
+
+export type ChunkCreateNestedOneWithoutRelationEvidenceInput = {
+  connect?: Prisma.ChunkWhereUniqueInput
+}
+
+export type ChunkUpdateOneRequiredWithoutRelationEvidenceNestedInput = {
+  connect?: Prisma.ChunkWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChunkUpdateToOneWithWhereWithoutRelationEvidenceInput, Prisma.ChunkUpdateWithoutRelationEvidenceInput>, Prisma.ChunkUncheckedUpdateWithoutRelationEvidenceInput>
+}
+
 export type ChunkUpdateWithWhereUniqueWithoutKbInput = {
   where: Prisma.ChunkWhereUniqueInput
   data: Prisma.XOR<Prisma.ChunkUpdateWithoutKbInput, Prisma.ChunkUncheckedUpdateWithoutKbInput>
@@ -687,6 +715,8 @@ export type ChunkUpdateWithoutChildrenInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutChunkNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
   generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
@@ -707,6 +737,8 @@ export type ChunkUncheckedUpdateWithoutChildrenInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutChunkNestedInput
   evidenceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceChunkNestedInput
 }
 
@@ -744,6 +776,8 @@ export type ChunkUpdateWithoutEvidenceFactsInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutChunkNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
   generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
@@ -764,7 +798,91 @@ export type ChunkUncheckedUpdateWithoutEvidenceFactsInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutChunkNestedInput
   children?: Prisma.ChunkUncheckedUpdateManyWithoutParentNestedInput
+}
+
+export type ChunkUpdateToOneWithWhereWithoutEntityMentionsInput = {
+  where?: Prisma.ChunkWhereInput
+  data: Prisma.XOR<Prisma.ChunkUpdateWithoutEntityMentionsInput, Prisma.ChunkUncheckedUpdateWithoutEntityMentionsInput>
+}
+
+export type ChunkUpdateWithoutEntityMentionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  start?: Prisma.IntFieldUpdateOperationsInput | number
+  end?: Prisma.IntFieldUpdateOperationsInput | number
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutChunkNestedInput
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
+  generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
+  document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
+  parent?: Prisma.ChunkUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.ChunkUpdateManyWithoutParentNestedInput
+  evidenceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceChunkNestedInput
+}
+
+export type ChunkUncheckedUpdateWithoutEntityMentionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  start?: Prisma.IntFieldUpdateOperationsInput | number
+  end?: Prisma.IntFieldUpdateOperationsInput | number
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutChunkNestedInput
+  children?: Prisma.ChunkUncheckedUpdateManyWithoutParentNestedInput
+  evidenceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceChunkNestedInput
+}
+
+export type ChunkUpdateToOneWithWhereWithoutRelationEvidenceInput = {
+  where?: Prisma.ChunkWhereInput
+  data: Prisma.XOR<Prisma.ChunkUpdateWithoutRelationEvidenceInput, Prisma.ChunkUncheckedUpdateWithoutRelationEvidenceInput>
+}
+
+export type ChunkUpdateWithoutRelationEvidenceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  start?: Prisma.IntFieldUpdateOperationsInput | number
+  end?: Prisma.IntFieldUpdateOperationsInput | number
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutChunkNestedInput
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
+  generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
+  document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
+  parent?: Prisma.ChunkUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.ChunkUpdateManyWithoutParentNestedInput
+  evidenceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceChunkNestedInput
+}
+
+export type ChunkUncheckedUpdateWithoutRelationEvidenceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  generationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  headingPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  ordinal?: Prisma.IntFieldUpdateOperationsInput | number
+  start?: Prisma.IntFieldUpdateOperationsInput | number
+  end?: Prisma.IntFieldUpdateOperationsInput | number
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutChunkNestedInput
+  children?: Prisma.ChunkUncheckedUpdateManyWithoutParentNestedInput
+  evidenceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceChunkNestedInput
 }
 
 export type ChunkUpdateWithoutKbInput = {
@@ -776,6 +894,8 @@ export type ChunkUpdateWithoutKbInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutChunkNestedInput
   generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
   parent?: Prisma.ChunkUpdateOneWithoutChildrenNestedInput
@@ -795,6 +915,8 @@ export type ChunkUncheckedUpdateWithoutKbInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutChunkNestedInput
   children?: Prisma.ChunkUncheckedUpdateManyWithoutParentNestedInput
   evidenceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceChunkNestedInput
 }
@@ -822,6 +944,8 @@ export type ChunkUpdateWithoutDocumentInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutChunkNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
   generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
   parent?: Prisma.ChunkUpdateOneWithoutChildrenNestedInput
@@ -841,6 +965,8 @@ export type ChunkUncheckedUpdateWithoutDocumentInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutChunkNestedInput
   children?: Prisma.ChunkUncheckedUpdateManyWithoutParentNestedInput
   evidenceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceChunkNestedInput
 }
@@ -868,6 +994,8 @@ export type ChunkUpdateWithoutParentInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutChunkNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
   generation?: Prisma.IndexGenerationUpdateOneWithoutChunksNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
@@ -887,6 +1015,8 @@ export type ChunkUncheckedUpdateWithoutParentInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutChunkNestedInput
   children?: Prisma.ChunkUncheckedUpdateManyWithoutParentNestedInput
   evidenceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceChunkNestedInput
 }
@@ -914,6 +1044,8 @@ export type ChunkUpdateWithoutGenerationInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutChunkNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutChunksNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutChunksNestedInput
   parent?: Prisma.ChunkUpdateOneWithoutChildrenNestedInput
@@ -933,6 +1065,8 @@ export type ChunkUncheckedUpdateWithoutGenerationInput = {
   end?: Prisma.IntFieldUpdateOperationsInput | number
   text?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutChunkNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutChunkNestedInput
   children?: Prisma.ChunkUncheckedUpdateManyWithoutParentNestedInput
   evidenceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceChunkNestedInput
 }
@@ -957,11 +1091,15 @@ export type ChunkUncheckedUpdateManyWithoutGenerationInput = {
  */
 
 export type ChunkCountOutputType = {
+  entityMentions: number
+  relationEvidence: number
   children: number
   evidenceFacts: number
 }
 
 export type ChunkCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  entityMentions?: boolean | ChunkCountOutputTypeCountEntityMentionsArgs
+  relationEvidence?: boolean | ChunkCountOutputTypeCountRelationEvidenceArgs
   children?: boolean | ChunkCountOutputTypeCountChildrenArgs
   evidenceFacts?: boolean | ChunkCountOutputTypeCountEvidenceFactsArgs
 }
@@ -974,6 +1112,20 @@ export type ChunkCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
    * Select specific fields to fetch from the ChunkCountOutputType
    */
   select?: Prisma.ChunkCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ChunkCountOutputType without action
+ */
+export type ChunkCountOutputTypeCountEntityMentionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EntityMentionWhereInput
+}
+
+/**
+ * ChunkCountOutputType without action
+ */
+export type ChunkCountOutputTypeCountRelationEvidenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RelationEvidenceWhereInput
 }
 
 /**
@@ -1004,6 +1156,8 @@ export type ChunkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   end?: boolean
   text?: boolean
   createdAt?: boolean
+  entityMentions?: boolean | Prisma.Chunk$entityMentionsArgs<ExtArgs>
+  relationEvidence?: boolean | Prisma.Chunk$relationEvidenceArgs<ExtArgs>
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   generation?: boolean | Prisma.Chunk$generationArgs<ExtArgs>
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
@@ -1050,6 +1204,8 @@ export type ChunkSelectScalar = {
 
 export type ChunkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "generationId" | "documentId" | "parentId" | "headingPath" | "kind" | "ordinal" | "start" | "end" | "text" | "createdAt", ExtArgs["result"]["chunk"]>
 export type ChunkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  entityMentions?: boolean | Prisma.Chunk$entityMentionsArgs<ExtArgs>
+  relationEvidence?: boolean | Prisma.Chunk$relationEvidenceArgs<ExtArgs>
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   generation?: boolean | Prisma.Chunk$generationArgs<ExtArgs>
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
@@ -1068,6 +1224,8 @@ export type ChunkIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $ChunkPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Chunk"
   objects: {
+    entityMentions: Prisma.$EntityMentionPayload<ExtArgs>[]
+    relationEvidence: Prisma.$RelationEvidencePayload<ExtArgs>[]
     kb: Prisma.$KnowledgeBasePayload<ExtArgs>
     generation: Prisma.$IndexGenerationPayload<ExtArgs> | null
     document: Prisma.$DocumentPayload<ExtArgs>
@@ -1411,6 +1569,8 @@ readonly fields: ChunkFieldRefs;
  */
 export interface Prisma__ChunkClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  entityMentions<T extends Prisma.Chunk$entityMentionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chunk$entityMentionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityMentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  relationEvidence<T extends Prisma.Chunk$relationEvidenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chunk$relationEvidenceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RelationEvidencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   kb<T extends Prisma.KnowledgeBaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBaseDefaultArgs<ExtArgs>>): Prisma.Prisma__KnowledgeBaseClient<runtime.Types.Result.GetResult<Prisma.$KnowledgeBasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   generation<T extends Prisma.Chunk$generationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chunk$generationArgs<ExtArgs>>): Prisma.Prisma__IndexGenerationClient<runtime.Types.Result.GetResult<Prisma.$IndexGenerationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   document<T extends Prisma.DocumentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentClient<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -1765,6 +1925,54 @@ export type ChunkDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Chunks to delete.
    */
   limit?: number
+}
+
+/**
+ * Chunk.entityMentions
+ */
+export type Chunk$entityMentionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EntityMention
+   */
+  select?: Prisma.EntityMentionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EntityMention
+   */
+  omit?: Prisma.EntityMentionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EntityMentionInclude<ExtArgs> | null
+  where?: Prisma.EntityMentionWhereInput
+  orderBy?: Prisma.EntityMentionOrderByWithRelationInput | Prisma.EntityMentionOrderByWithRelationInput[]
+  cursor?: Prisma.EntityMentionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EntityMentionScalarFieldEnum | Prisma.EntityMentionScalarFieldEnum[]
+}
+
+/**
+ * Chunk.relationEvidence
+ */
+export type Chunk$relationEvidenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RelationEvidence
+   */
+  select?: Prisma.RelationEvidenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RelationEvidence
+   */
+  omit?: Prisma.RelationEvidenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RelationEvidenceInclude<ExtArgs> | null
+  where?: Prisma.RelationEvidenceWhereInput
+  orderBy?: Prisma.RelationEvidenceOrderByWithRelationInput | Prisma.RelationEvidenceOrderByWithRelationInput[]
+  cursor?: Prisma.RelationEvidenceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RelationEvidenceScalarFieldEnum | Prisma.RelationEvidenceScalarFieldEnum[]
 }
 
 /**

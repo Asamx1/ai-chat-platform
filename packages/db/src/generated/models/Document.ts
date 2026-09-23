@@ -328,6 +328,9 @@ export type DocumentWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   sourceVersionId?: Prisma.StringNullableFilter<"Document"> | string | null
+  entityMentions?: Prisma.EntityMentionListRelationFilter
+  relationEvidence?: Prisma.RelationEvidenceListRelationFilter
+  derivedFacts?: Prisma.DerivedFactListRelationFilter
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   chunks?: Prisma.ChunkListRelationFilter
   sourceVersion?: Prisma.XOR<Prisma.SourceVersionNullableScalarRelationFilter, Prisma.SourceVersionWhereInput> | null
@@ -356,6 +359,9 @@ export type DocumentOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sourceVersionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  entityMentions?: Prisma.EntityMentionOrderByRelationAggregateInput
+  relationEvidence?: Prisma.RelationEvidenceOrderByRelationAggregateInput
+  derivedFacts?: Prisma.DerivedFactOrderByRelationAggregateInput
   kb?: Prisma.KnowledgeBaseOrderByWithRelationInput
   chunks?: Prisma.ChunkOrderByRelationAggregateInput
   sourceVersion?: Prisma.SourceVersionOrderByWithRelationInput
@@ -387,6 +393,9 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   sourceVersionId?: Prisma.StringNullableFilter<"Document"> | string | null
+  entityMentions?: Prisma.EntityMentionListRelationFilter
+  relationEvidence?: Prisma.RelationEvidenceListRelationFilter
+  derivedFacts?: Prisma.DerivedFactListRelationFilter
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   chunks?: Prisma.ChunkListRelationFilter
   sourceVersion?: Prisma.XOR<Prisma.SourceVersionNullableScalarRelationFilter, Prisma.SourceVersionWhereInput> | null
@@ -463,6 +472,9 @@ export type DocumentCreateInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutWikidocInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
@@ -491,6 +503,9 @@ export type DocumentUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sourceVersionId?: string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutWikidocInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
   summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
@@ -515,6 +530,9 @@ export type DocumentUpdateInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutWikidocNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
@@ -543,6 +561,9 @@ export type DocumentUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutWikidocNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
   summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
@@ -860,6 +881,50 @@ export type DocumentUpdateOneRequiredWithoutSourceFactsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutSourceFactsInput, Prisma.DocumentUpdateWithoutSourceFactsInput>, Prisma.DocumentUncheckedUpdateWithoutSourceFactsInput>
 }
 
+export type DocumentCreateNestedOneWithoutEntityMentionsInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutEntityMentionsInput, Prisma.DocumentUncheckedCreateWithoutEntityMentionsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutEntityMentionsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentUpdateOneRequiredWithoutEntityMentionsNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutEntityMentionsInput, Prisma.DocumentUncheckedCreateWithoutEntityMentionsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutEntityMentionsInput
+  upsert?: Prisma.DocumentUpsertWithoutEntityMentionsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutEntityMentionsInput, Prisma.DocumentUpdateWithoutEntityMentionsInput>, Prisma.DocumentUncheckedUpdateWithoutEntityMentionsInput>
+}
+
+export type DocumentCreateNestedOneWithoutRelationEvidenceInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutRelationEvidenceInput, Prisma.DocumentUncheckedCreateWithoutRelationEvidenceInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutRelationEvidenceInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentUpdateOneRequiredWithoutRelationEvidenceNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutRelationEvidenceInput, Prisma.DocumentUncheckedCreateWithoutRelationEvidenceInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutRelationEvidenceInput
+  upsert?: Prisma.DocumentUpsertWithoutRelationEvidenceInput
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutRelationEvidenceInput, Prisma.DocumentUpdateWithoutRelationEvidenceInput>, Prisma.DocumentUncheckedUpdateWithoutRelationEvidenceInput>
+}
+
+export type DocumentCreateNestedOneWithoutDerivedFactsInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutDerivedFactsInput, Prisma.DocumentUncheckedCreateWithoutDerivedFactsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutDerivedFactsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentUpdateOneWithoutDerivedFactsNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutDerivedFactsInput, Prisma.DocumentUncheckedCreateWithoutDerivedFactsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutDerivedFactsInput
+  upsert?: Prisma.DocumentUpsertWithoutDerivedFactsInput
+  disconnect?: Prisma.DocumentWhereInput | boolean
+  delete?: Prisma.DocumentWhereInput | boolean
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutDerivedFactsInput, Prisma.DocumentUpdateWithoutDerivedFactsInput>, Prisma.DocumentUncheckedUpdateWithoutDerivedFactsInput>
+}
+
 export type DocumentCreateWithoutKbInput = {
   id?: string
   name: string
@@ -877,6 +942,9 @@ export type DocumentCreateWithoutKbInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutWikidocInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
@@ -903,6 +971,9 @@ export type DocumentUncheckedCreateWithoutKbInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sourceVersionId?: string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutWikidocInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
   summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
@@ -977,6 +1048,9 @@ export type DocumentCreateWithoutChunksInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutWikidocInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
@@ -1004,6 +1078,9 @@ export type DocumentUncheckedCreateWithoutChunksInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sourceVersionId?: string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutWikidocInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
   summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
   sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
@@ -1043,6 +1120,9 @@ export type DocumentUpdateWithoutChunksInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutWikidocNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
@@ -1070,6 +1150,9 @@ export type DocumentUncheckedUpdateWithoutChunksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutWikidocNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
   summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
   sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
@@ -1093,6 +1176,9 @@ export type DocumentCreateWithoutSourceVersionsInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutWikidocInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
@@ -1120,6 +1206,9 @@ export type DocumentUncheckedCreateWithoutSourceVersionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sourceVersionId?: string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutWikidocInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
   summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
   sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
@@ -1148,6 +1237,9 @@ export type DocumentCreateWithoutSourceVersionInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutWikidocInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
@@ -1174,6 +1266,9 @@ export type DocumentUncheckedCreateWithoutSourceVersionInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutWikidocInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
   summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
@@ -1219,6 +1314,9 @@ export type DocumentUpdateWithoutSourceVersionsInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutWikidocNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
@@ -1246,6 +1344,9 @@ export type DocumentUncheckedUpdateWithoutSourceVersionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutWikidocNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
   summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
   sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
@@ -1285,6 +1386,9 @@ export type DocumentCreateWithoutCompileArtifactsInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutWikidocInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
@@ -1312,6 +1416,9 @@ export type DocumentUncheckedCreateWithoutCompileArtifactsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sourceVersionId?: string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutWikidocInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
   summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
@@ -1351,6 +1458,9 @@ export type DocumentUpdateWithoutCompileArtifactsInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutWikidocNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
@@ -1378,6 +1488,9 @@ export type DocumentUncheckedUpdateWithoutCompileArtifactsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutWikidocNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
   summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
@@ -1401,6 +1514,9 @@ export type DocumentCreateWithoutSummaryFactsInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutWikidocInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
@@ -1428,6 +1544,9 @@ export type DocumentUncheckedCreateWithoutSummaryFactsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sourceVersionId?: string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutWikidocInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
   sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
@@ -1456,6 +1575,9 @@ export type DocumentCreateWithoutSourceFactsInput = {
   leaseExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutWikidocInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
   sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
@@ -1483,6 +1605,9 @@ export type DocumentUncheckedCreateWithoutSourceFactsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sourceVersionId?: string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutWikidocInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
   summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
@@ -1522,6 +1647,9 @@ export type DocumentUpdateWithoutSummaryFactsInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutWikidocNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
@@ -1549,6 +1677,9 @@ export type DocumentUncheckedUpdateWithoutSummaryFactsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutWikidocNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
   sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
@@ -1583,6 +1714,9 @@ export type DocumentUpdateWithoutSourceFactsInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutWikidocNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
@@ -1610,9 +1744,396 @@ export type DocumentUncheckedUpdateWithoutSourceFactsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutWikidocNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
   summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
+}
+
+export type DocumentCreateWithoutEntityMentionsInput = {
+  id?: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutWikidocInput
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
+  sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobCreateNestedManyWithoutArtifactDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutEntityMentionsInput = {
+  id?: string
+  kbId: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sourceVersionId?: string | null
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutWikidocInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutEntityMentionsInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutEntityMentionsInput, Prisma.DocumentUncheckedCreateWithoutEntityMentionsInput>
+}
+
+export type DocumentUpsertWithoutEntityMentionsInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutEntityMentionsInput, Prisma.DocumentUncheckedUpdateWithoutEntityMentionsInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutEntityMentionsInput, Prisma.DocumentUncheckedCreateWithoutEntityMentionsInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutEntityMentionsInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutEntityMentionsInput, Prisma.DocumentUncheckedUpdateWithoutEntityMentionsInput>
+}
+
+export type DocumentUpdateWithoutEntityMentionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutWikidocNestedInput
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUpdateManyWithoutArtifactDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutEntityMentionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutWikidocNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
+}
+
+export type DocumentCreateWithoutRelationEvidenceInput = {
+  id?: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutWikidocInput
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
+  sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobCreateNestedManyWithoutArtifactDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutRelationEvidenceInput = {
+  id?: string
+  kbId: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sourceVersionId?: string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutDocumentInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutWikidocInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutRelationEvidenceInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutRelationEvidenceInput, Prisma.DocumentUncheckedCreateWithoutRelationEvidenceInput>
+}
+
+export type DocumentUpsertWithoutRelationEvidenceInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutRelationEvidenceInput, Prisma.DocumentUncheckedUpdateWithoutRelationEvidenceInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutRelationEvidenceInput, Prisma.DocumentUncheckedCreateWithoutRelationEvidenceInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutRelationEvidenceInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutRelationEvidenceInput, Prisma.DocumentUncheckedUpdateWithoutRelationEvidenceInput>
+}
+
+export type DocumentUpdateWithoutRelationEvidenceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutWikidocNestedInput
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUpdateManyWithoutArtifactDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutRelationEvidenceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutWikidocNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
+}
+
+export type DocumentCreateWithoutDerivedFactsInput = {
+  id?: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutDocumentInput
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutDocumentsInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutDocumentInput
+  sourceVersion?: Prisma.SourceVersionCreateNestedOneWithoutCurrentDocumentsInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobCreateNestedManyWithoutArtifactDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutDerivedFactsInput = {
+  id?: string
+  kbId: string
+  name: string
+  kind?: string
+  mime: string
+  objectKey: string
+  model: string
+  size: number
+  chunkCount?: number
+  chunkStrategy?: string
+  status?: $Enums.DocumentStatus
+  error?: string | null
+  attempt?: number
+  leaseOwner?: string | null
+  leaseExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sourceVersionId?: string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutDocumentInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutDocumentInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutDocumentInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutDocumentInput
+  summaryFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSummaryDocumentInput
+  sourceFacts?: Prisma.SummaryFactUncheckedCreateNestedManyWithoutSourceDocumentInput
+  compileArtifacts?: Prisma.CompileJobUncheckedCreateNestedManyWithoutArtifactDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutDerivedFactsInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutDerivedFactsInput, Prisma.DocumentUncheckedCreateWithoutDerivedFactsInput>
+}
+
+export type DocumentUpsertWithoutDerivedFactsInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutDerivedFactsInput, Prisma.DocumentUncheckedUpdateWithoutDerivedFactsInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutDerivedFactsInput, Prisma.DocumentUncheckedCreateWithoutDerivedFactsInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutDerivedFactsInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutDerivedFactsInput, Prisma.DocumentUncheckedUpdateWithoutDerivedFactsInput>
+}
+
+export type DocumentUpdateWithoutDerivedFactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutDocumentNestedInput
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
+  sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUpdateManyWithoutSourceDocumentNestedInput
+  compileArtifacts?: Prisma.CompileJobUpdateManyWithoutArtifactDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutDerivedFactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  mime?: Prisma.StringFieldUpdateOperationsInput | string
+  objectKey?: Prisma.StringFieldUpdateOperationsInput | string
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkStrategy?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  leaseOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutDocumentNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
+  summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
+  sourceFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSourceDocumentNestedInput
   compileArtifacts?: Prisma.CompileJobUncheckedUpdateManyWithoutArtifactDocumentNestedInput
 }
 
@@ -1653,6 +2174,9 @@ export type DocumentUpdateWithoutKbInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutWikidocNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersion?: Prisma.SourceVersionUpdateOneWithoutCurrentDocumentsNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
@@ -1679,6 +2203,9 @@ export type DocumentUncheckedUpdateWithoutKbInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sourceVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutWikidocNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
   summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
@@ -1743,6 +2270,9 @@ export type DocumentUpdateWithoutSourceVersionInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutWikidocNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutDocumentsNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUpdateManyWithoutDocumentNestedInput
@@ -1769,6 +2299,9 @@ export type DocumentUncheckedUpdateWithoutSourceVersionInput = {
   leaseExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutDocumentNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutDocumentNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutWikidocNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutDocumentNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutDocumentNestedInput
   summaryFacts?: Prisma.SummaryFactUncheckedUpdateManyWithoutSummaryDocumentNestedInput
@@ -1802,6 +2335,9 @@ export type DocumentUncheckedUpdateManyWithoutSourceVersionInput = {
  */
 
 export type DocumentCountOutputType = {
+  entityMentions: number
+  relationEvidence: number
+  derivedFacts: number
   chunks: number
   sourceVersions: number
   summaryFacts: number
@@ -1810,6 +2346,9 @@ export type DocumentCountOutputType = {
 }
 
 export type DocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  entityMentions?: boolean | DocumentCountOutputTypeCountEntityMentionsArgs
+  relationEvidence?: boolean | DocumentCountOutputTypeCountRelationEvidenceArgs
+  derivedFacts?: boolean | DocumentCountOutputTypeCountDerivedFactsArgs
   chunks?: boolean | DocumentCountOutputTypeCountChunksArgs
   sourceVersions?: boolean | DocumentCountOutputTypeCountSourceVersionsArgs
   summaryFacts?: boolean | DocumentCountOutputTypeCountSummaryFactsArgs
@@ -1825,6 +2364,27 @@ export type DocumentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the DocumentCountOutputType
    */
   select?: Prisma.DocumentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountEntityMentionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EntityMentionWhereInput
+}
+
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountRelationEvidenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RelationEvidenceWhereInput
+}
+
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountDerivedFactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DerivedFactWhereInput
 }
 
 /**
@@ -1882,6 +2442,9 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   createdAt?: boolean
   updatedAt?: boolean
   sourceVersionId?: boolean
+  entityMentions?: boolean | Prisma.Document$entityMentionsArgs<ExtArgs>
+  relationEvidence?: boolean | Prisma.Document$relationEvidenceArgs<ExtArgs>
+  derivedFacts?: boolean | Prisma.Document$derivedFactsArgs<ExtArgs>
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>
   sourceVersion?: boolean | Prisma.Document$sourceVersionArgs<ExtArgs>
@@ -1961,6 +2524,9 @@ export type DocumentSelectScalar = {
 
 export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "name" | "kind" | "mime" | "objectKey" | "model" | "size" | "chunkCount" | "chunkStrategy" | "status" | "error" | "attempt" | "leaseOwner" | "leaseExpiresAt" | "createdAt" | "updatedAt" | "sourceVersionId", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  entityMentions?: boolean | Prisma.Document$entityMentionsArgs<ExtArgs>
+  relationEvidence?: boolean | Prisma.Document$relationEvidenceArgs<ExtArgs>
+  derivedFacts?: boolean | Prisma.Document$derivedFactsArgs<ExtArgs>
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   chunks?: boolean | Prisma.Document$chunksArgs<ExtArgs>
   sourceVersion?: boolean | Prisma.Document$sourceVersionArgs<ExtArgs>
@@ -1982,6 +2548,9 @@ export type DocumentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Document"
   objects: {
+    entityMentions: Prisma.$EntityMentionPayload<ExtArgs>[]
+    relationEvidence: Prisma.$RelationEvidencePayload<ExtArgs>[]
+    derivedFacts: Prisma.$DerivedFactPayload<ExtArgs>[]
     kb: Prisma.$KnowledgeBasePayload<ExtArgs>
     chunks: Prisma.$ChunkPayload<ExtArgs>[]
     sourceVersion: Prisma.$SourceVersionPayload<ExtArgs> | null
@@ -2403,6 +2972,9 @@ readonly fields: DocumentFieldRefs;
  */
 export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  entityMentions<T extends Prisma.Document$entityMentionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$entityMentionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityMentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  relationEvidence<T extends Prisma.Document$relationEvidenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$relationEvidenceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RelationEvidencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  derivedFacts<T extends Prisma.Document$derivedFactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$derivedFactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DerivedFactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   kb<T extends Prisma.KnowledgeBaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBaseDefaultArgs<ExtArgs>>): Prisma.Prisma__KnowledgeBaseClient<runtime.Types.Result.GetResult<Prisma.$KnowledgeBasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   chunks<T extends Prisma.Document$chunksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$chunksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sourceVersion<T extends Prisma.Document$sourceVersionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$sourceVersionArgs<ExtArgs>>): Prisma.Prisma__SourceVersionClient<runtime.Types.Result.GetResult<Prisma.$SourceVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2850,6 +3422,78 @@ export type DocumentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Documents to delete.
    */
   limit?: number
+}
+
+/**
+ * Document.entityMentions
+ */
+export type Document$entityMentionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EntityMention
+   */
+  select?: Prisma.EntityMentionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EntityMention
+   */
+  omit?: Prisma.EntityMentionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EntityMentionInclude<ExtArgs> | null
+  where?: Prisma.EntityMentionWhereInput
+  orderBy?: Prisma.EntityMentionOrderByWithRelationInput | Prisma.EntityMentionOrderByWithRelationInput[]
+  cursor?: Prisma.EntityMentionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EntityMentionScalarFieldEnum | Prisma.EntityMentionScalarFieldEnum[]
+}
+
+/**
+ * Document.relationEvidence
+ */
+export type Document$relationEvidenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RelationEvidence
+   */
+  select?: Prisma.RelationEvidenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RelationEvidence
+   */
+  omit?: Prisma.RelationEvidenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RelationEvidenceInclude<ExtArgs> | null
+  where?: Prisma.RelationEvidenceWhereInput
+  orderBy?: Prisma.RelationEvidenceOrderByWithRelationInput | Prisma.RelationEvidenceOrderByWithRelationInput[]
+  cursor?: Prisma.RelationEvidenceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RelationEvidenceScalarFieldEnum | Prisma.RelationEvidenceScalarFieldEnum[]
+}
+
+/**
+ * Document.derivedFacts
+ */
+export type Document$derivedFactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DerivedFact
+   */
+  select?: Prisma.DerivedFactSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DerivedFact
+   */
+  omit?: Prisma.DerivedFactOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DerivedFactInclude<ExtArgs> | null
+  where?: Prisma.DerivedFactWhereInput
+  orderBy?: Prisma.DerivedFactOrderByWithRelationInput | Prisma.DerivedFactOrderByWithRelationInput[]
+  cursor?: Prisma.DerivedFactWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DerivedFactScalarFieldEnum | Prisma.DerivedFactScalarFieldEnum[]
 }
 
 /**

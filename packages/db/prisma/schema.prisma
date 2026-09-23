@@ -331,6 +331,11 @@ enum DocumentStatus {
 }
 
 model KnowledgeBase {
+  entities Entity[]
+  entityMentions EntityMention[]
+  entityRelations EntityRelation[]
+  derivedFacts DerivedFact[]
+  ontologyConfigs OntologyConfig[]
   id String @id @default(cuid())
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -351,6 +356,9 @@ model KnowledgeBase {
 }
 
 model Document {
+  entityMentions EntityMention[]
+  relationEvidence RelationEvidence[]
+  derivedFacts DerivedFact[]
   id String @id @default(cuid())
   kbId String
   kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
@@ -381,6 +389,8 @@ model Document {
 }
 
 model Chunk {
+  entityMentions EntityMention[]
+  relationEvidence RelationEvidence[]
   id String @id @default(cuid())
   kbId String
   kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
@@ -439,6 +449,8 @@ enum IndexGenerationStatus {
 }
 
 model SourceVersion {
+  entityMentions EntityMention[]
+  relationEvidence RelationEvidence[]
   id String @id @default(cuid())
   kbId String
   kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
@@ -454,6 +466,9 @@ model SourceVersion {
 }
 
 model IndexGeneration {
+  entityMentions EntityMention[]
+  entityRelations EntityRelation[]
+  derivedFacts DerivedFact[]
   id String @id @default(cuid())
   kbId String
   kb KnowledgeBase @relation("KbGenerations", fields: [kbId], references: [id], onDelete: Cascade)
@@ -543,4 +558,126 @@ model SummaryFact {
   spanStart Int
   spanEnd Int
   @@index([summaryDocumentId])
+}
+
+model Entity {
+  id String @id @default(cuid())
+  kbId String
+  canonicalName String
+  type String
+  context String
+  createdAt DateTime @default(now())
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  aliases EntityAlias[]
+  mentions EntityMention[]
+  subjectRelations EntityRelation[] @relation("Subject")
+  objectRelations EntityRelation[] @relation("Object")
+  derivedFacts DerivedFact[]
+  @@index([kbId])
+}
+
+model EntityAlias {
+  id String @id @default(cuid())
+  entityId String
+  alias String
+  normalized String
+  entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  @@index([normalized])
+  @@index([entityId])
+}
+
+model EntityMention {
+  id String @id @default(cuid())
+  kbId String
+  generationId String
+  entityId String
+  documentId String
+  chunkId String
+  sourceVersionId String
+  start Int
+  end Int
+  evidenceText String
+  evidenceTextHash String
+  createdAt DateTime @default(now())
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  generation IndexGeneration @relation(fields: [generationId], references: [id], onDelete: Cascade)
+  entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  chunk Chunk @relation(fields: [chunkId], references: [id], onDelete: Cascade)
+  sourceVersion SourceVersion @relation(fields: [sourceVersionId], references: [id], onDelete: Cascade)
+  @@unique([chunkId, entityId, start])
+  @@index([kbId, generationId])
+  @@index([entityId])
+}
+
+model EntityRelation {
+  id String @id @default(cuid())
+  kbId String
+  generationId String
+  schemaVersion String
+  subjectId String
+  predicate String
+  objectId String
+  timeQualifier String?
+  conditionQualifier String?
+  createdAt DateTime @default(now())
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  generation IndexGeneration @relation(fields: [generationId], references: [id], onDelete: Cascade)
+  subject Entity @relation("Subject", fields: [subjectId], references: [id], onDelete: Cascade)
+  object Entity @relation("Object", fields: [objectId], references: [id], onDelete: Cascade)
+  evidence RelationEvidence[]
+  derivedFacts DerivedFact[]
+  @@unique([generationId, subjectId, predicate, objectId, timeQualifier, conditionQualifier], map: "EntityRelation_fact_key")
+  @@index([kbId, generationId])
+  @@index([subjectId, predicate])
+  @@index([objectId])
+}
+
+model RelationEvidence {
+  id String @id @default(cuid())
+  relationId String
+  documentId String
+  sourceVersionId String
+  chunkId String
+  start Int
+  end Int
+  evidenceText String
+  evidenceTextHash String
+  createdAt DateTime @default(now())
+  relation EntityRelation @relation(fields: [relationId], references: [id], onDelete: Cascade)
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  sourceVersion SourceVersion @relation(fields: [sourceVersionId], references: [id], onDelete: Cascade)
+  chunk Chunk @relation(fields: [chunkId], references: [id], onDelete: Cascade)
+  @@index([relationId])
+  @@index([documentId])
+  @@index([chunkId])
+}
+
+model DerivedFact {
+  id String @id @default(cuid())
+  kbId String
+  generationId String
+  claim String
+  entityId String?
+  relationId String?
+  sourceDocumentIds String[]
+  evidenceJson Json
+  wikidocId String?
+  createdAt DateTime @default(now())
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  generation IndexGeneration @relation(fields: [generationId], references: [id], onDelete: Cascade)
+  entity Entity? @relation(fields: [entityId], references: [id], onDelete: SetNull)
+  relation EntityRelation? @relation(fields: [relationId], references: [id], onDelete: SetNull)
+  wikidoc Document? @relation(fields: [wikidocId], references: [id], onDelete: SetNull)
+  @@index([kbId, generationId])
+}
+
+model OntologyConfig {
+  id String @id @default(cuid())
+  kbId String
+  version String
+  schemaJson Json
+  createdAt DateTime @default(now())
+  kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
+  @@unique([kbId, version])
 }

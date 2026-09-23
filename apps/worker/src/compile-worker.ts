@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import * as minio from 'minio';
 import { prisma } from '@aichat/db';
-import { claimCompileJob, consumeCompileOutbox, compileSummary, failCompileJob, pauseForBudget, renewCompileJob, type CompileJobRow, type SourceChunk } from '@aichat/rag/compile';
+import { claimCompileJob, consumeCompileOutbox, compileSummary, compileEntityGraph, failCompileJob, pauseForBudget, renewCompileJob, type CompileJobRow, type SourceChunk } from '@aichat/rag/compile';
 import { embed, embeddingModel } from '@aichat/rag';
 
 const reservationUsd = 0.05;
@@ -13,7 +13,7 @@ function storage(): { client: minio.Client; bucket: string } {
     useSSL: url.protocol === 'https:', accessKey: MINIO_ROOT_USER, secretKey: MINIO_ROOT_PASSWORD }) };
 }
 
-export async function reserveCompileBudget(job: CompileJobRow): Promise<boolean> {
+export async function reserveCompileBudget(job: CompileJobRow, requestKey = `${job.id}:${job.attempt}`): Promise<boolean> {
   const configured = Number(process.env.RAG_COMPILE_BUDGET_CNY ?? '5');
   if (!Number.isFinite(configured) || configured < 0) throw new Error('INVALID_COMPILE_BUDGET');
   return prisma.$transaction(async tx => {
@@ -24,8 +24,8 @@ export async function reserveCompileBudget(job: CompileJobRow): Promise<boolean>
       AND status IN ('RESERVED','SUCCEEDED','UNKNOWN_COST','FAILED')`, job.kbId, reservationUsd);
     if ((used?.total ?? 0) + reservationUsd > configured / 7.2) return false;
     await tx.$executeRawUnsafe(`INSERT INTO "CompileCostLedger" (id,"kbId","compileJobId",model,operation,"priceVersion",attempt,status,"requestDedupKey")
-      VALUES ($1,$2,$3,'deepseek-chat','SUMMARY','estimate-v1',$4,'RESERVED',$5) ON CONFLICT ("requestDedupKey") DO NOTHING`,
-      randomUUID(), job.kbId, job.id, job.attempt, `${job.id}:${job.attempt}`);
+      VALUES ($1,$2,$3,'deepseek-chat',$6,'estimate-v1',$4,'RESERVED',$5) ON CONFLICT ("requestDedupKey") DO NOTHING`,
+      randomUUID(), job.kbId, job.id, job.attempt, requestKey, job.artifactType);
     return true;
   });
 }
@@ -36,6 +36,7 @@ export async function processCompileJob(job: CompileJobRow): Promise<void> {
   let called = false;
   const started = Date.now();
   try {
+    if (job.artifactType === 'ENTITY_GRAPH') { await compileEntityGraph(job, controller.signal, reserveCompileBudget); return; }
     const [existing] = await prisma.$queryRawUnsafe<{ artifactDocumentId: string | null }[]>(`SELECT "artifactDocumentId" FROM "CompileJob" WHERE id=$1`, job.id);
     if (existing?.artifactDocumentId) {
       await prisma.$executeRawUnsafe(`UPDATE "CompileJob" SET status='SUCCEEDED',"leaseOwner"=NULL,"leaseExpiresAt"=NULL WHERE id=$1 AND attempt=$2 AND "leaseOwner"=$3 AND status='RUNNING'`, job.id, job.attempt, job.leaseOwner);

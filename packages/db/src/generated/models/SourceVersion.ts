@@ -198,6 +198,8 @@ export type SourceVersionWhereInput = {
   parserVersion?: Prisma.StringFilter<"SourceVersion"> | string
   normalizerVersion?: Prisma.StringFilter<"SourceVersion"> | string
   createdAt?: Prisma.DateTimeFilter<"SourceVersion"> | Date | string
+  entityMentions?: Prisma.EntityMentionListRelationFilter
+  relationEvidence?: Prisma.RelationEvidenceListRelationFilter
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   document?: Prisma.XOR<Prisma.DocumentScalarRelationFilter, Prisma.DocumentWhereInput>
   currentDocuments?: Prisma.DocumentListRelationFilter
@@ -212,6 +214,8 @@ export type SourceVersionOrderByWithRelationInput = {
   parserVersion?: Prisma.SortOrder
   normalizerVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  entityMentions?: Prisma.EntityMentionOrderByRelationAggregateInput
+  relationEvidence?: Prisma.RelationEvidenceOrderByRelationAggregateInput
   kb?: Prisma.KnowledgeBaseOrderByWithRelationInput
   document?: Prisma.DocumentOrderByWithRelationInput
   currentDocuments?: Prisma.DocumentOrderByRelationAggregateInput
@@ -230,6 +234,8 @@ export type SourceVersionWhereUniqueInput = Prisma.AtLeast<{
   parserVersion?: Prisma.StringFilter<"SourceVersion"> | string
   normalizerVersion?: Prisma.StringFilter<"SourceVersion"> | string
   createdAt?: Prisma.DateTimeFilter<"SourceVersion"> | Date | string
+  entityMentions?: Prisma.EntityMentionListRelationFilter
+  relationEvidence?: Prisma.RelationEvidenceListRelationFilter
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   document?: Prisma.XOR<Prisma.DocumentScalarRelationFilter, Prisma.DocumentWhereInput>
   currentDocuments?: Prisma.DocumentListRelationFilter
@@ -268,6 +274,8 @@ export type SourceVersionCreateInput = {
   parserVersion: string
   normalizerVersion: string
   createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutSourceVersionInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutSourceVersionInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutSourceVersionsInput
   document: Prisma.DocumentCreateNestedOneWithoutSourceVersionsInput
   currentDocuments?: Prisma.DocumentCreateNestedManyWithoutSourceVersionInput
@@ -282,6 +290,8 @@ export type SourceVersionUncheckedCreateInput = {
   parserVersion: string
   normalizerVersion: string
   createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutSourceVersionInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutSourceVersionInput
   currentDocuments?: Prisma.DocumentUncheckedCreateNestedManyWithoutSourceVersionInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutSourceVersionInput
 }
@@ -292,6 +302,8 @@ export type SourceVersionUpdateInput = {
   parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
   normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutSourceVersionNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutSourceVersionNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutSourceVersionsNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutSourceVersionsNestedInput
   currentDocuments?: Prisma.DocumentUpdateManyWithoutSourceVersionNestedInput
@@ -306,6 +318,8 @@ export type SourceVersionUncheckedUpdateInput = {
   parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
   normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutSourceVersionNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutSourceVersionNestedInput
   currentDocuments?: Prisma.DocumentUncheckedUpdateManyWithoutSourceVersionNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutSourceVersionNestedInput
 }
@@ -507,12 +521,42 @@ export type SourceVersionUpdateOneRequiredWithoutCompileJobsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SourceVersionUpdateToOneWithWhereWithoutCompileJobsInput, Prisma.SourceVersionUpdateWithoutCompileJobsInput>, Prisma.SourceVersionUncheckedUpdateWithoutCompileJobsInput>
 }
 
+export type SourceVersionCreateNestedOneWithoutEntityMentionsInput = {
+  create?: Prisma.XOR<Prisma.SourceVersionCreateWithoutEntityMentionsInput, Prisma.SourceVersionUncheckedCreateWithoutEntityMentionsInput>
+  connectOrCreate?: Prisma.SourceVersionCreateOrConnectWithoutEntityMentionsInput
+  connect?: Prisma.SourceVersionWhereUniqueInput
+}
+
+export type SourceVersionUpdateOneRequiredWithoutEntityMentionsNestedInput = {
+  create?: Prisma.XOR<Prisma.SourceVersionCreateWithoutEntityMentionsInput, Prisma.SourceVersionUncheckedCreateWithoutEntityMentionsInput>
+  connectOrCreate?: Prisma.SourceVersionCreateOrConnectWithoutEntityMentionsInput
+  upsert?: Prisma.SourceVersionUpsertWithoutEntityMentionsInput
+  connect?: Prisma.SourceVersionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SourceVersionUpdateToOneWithWhereWithoutEntityMentionsInput, Prisma.SourceVersionUpdateWithoutEntityMentionsInput>, Prisma.SourceVersionUncheckedUpdateWithoutEntityMentionsInput>
+}
+
+export type SourceVersionCreateNestedOneWithoutRelationEvidenceInput = {
+  create?: Prisma.XOR<Prisma.SourceVersionCreateWithoutRelationEvidenceInput, Prisma.SourceVersionUncheckedCreateWithoutRelationEvidenceInput>
+  connectOrCreate?: Prisma.SourceVersionCreateOrConnectWithoutRelationEvidenceInput
+  connect?: Prisma.SourceVersionWhereUniqueInput
+}
+
+export type SourceVersionUpdateOneRequiredWithoutRelationEvidenceNestedInput = {
+  create?: Prisma.XOR<Prisma.SourceVersionCreateWithoutRelationEvidenceInput, Prisma.SourceVersionUncheckedCreateWithoutRelationEvidenceInput>
+  connectOrCreate?: Prisma.SourceVersionCreateOrConnectWithoutRelationEvidenceInput
+  upsert?: Prisma.SourceVersionUpsertWithoutRelationEvidenceInput
+  connect?: Prisma.SourceVersionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SourceVersionUpdateToOneWithWhereWithoutRelationEvidenceInput, Prisma.SourceVersionUpdateWithoutRelationEvidenceInput>, Prisma.SourceVersionUncheckedUpdateWithoutRelationEvidenceInput>
+}
+
 export type SourceVersionCreateWithoutKbInput = {
   id?: string
   contentHash: string
   parserVersion: string
   normalizerVersion: string
   createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutSourceVersionInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutSourceVersionInput
   document: Prisma.DocumentCreateNestedOneWithoutSourceVersionsInput
   currentDocuments?: Prisma.DocumentCreateNestedManyWithoutSourceVersionInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutSourceVersionInput
@@ -525,6 +569,8 @@ export type SourceVersionUncheckedCreateWithoutKbInput = {
   parserVersion: string
   normalizerVersion: string
   createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutSourceVersionInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutSourceVersionInput
   currentDocuments?: Prisma.DocumentUncheckedCreateNestedManyWithoutSourceVersionInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutSourceVersionInput
 }
@@ -574,6 +620,8 @@ export type SourceVersionCreateWithoutCurrentDocumentsInput = {
   parserVersion: string
   normalizerVersion: string
   createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutSourceVersionInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutSourceVersionInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutSourceVersionsInput
   document: Prisma.DocumentCreateNestedOneWithoutSourceVersionsInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutSourceVersionInput
@@ -587,6 +635,8 @@ export type SourceVersionUncheckedCreateWithoutCurrentDocumentsInput = {
   parserVersion: string
   normalizerVersion: string
   createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutSourceVersionInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutSourceVersionInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutSourceVersionInput
 }
 
@@ -601,6 +651,8 @@ export type SourceVersionCreateWithoutDocumentInput = {
   parserVersion: string
   normalizerVersion: string
   createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutSourceVersionInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutSourceVersionInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutSourceVersionsInput
   currentDocuments?: Prisma.DocumentCreateNestedManyWithoutSourceVersionInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutSourceVersionInput
@@ -613,6 +665,8 @@ export type SourceVersionUncheckedCreateWithoutDocumentInput = {
   parserVersion: string
   normalizerVersion: string
   createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutSourceVersionInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutSourceVersionInput
   currentDocuments?: Prisma.DocumentUncheckedCreateNestedManyWithoutSourceVersionInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutSourceVersionInput
 }
@@ -644,6 +698,8 @@ export type SourceVersionUpdateWithoutCurrentDocumentsInput = {
   parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
   normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutSourceVersionNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutSourceVersionNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutSourceVersionsNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutSourceVersionsNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutSourceVersionNestedInput
@@ -657,6 +713,8 @@ export type SourceVersionUncheckedUpdateWithoutCurrentDocumentsInput = {
   parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
   normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutSourceVersionNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutSourceVersionNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutSourceVersionNestedInput
 }
 
@@ -682,6 +740,8 @@ export type SourceVersionCreateWithoutCompileJobsInput = {
   parserVersion: string
   normalizerVersion: string
   createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutSourceVersionInput
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutSourceVersionInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutSourceVersionsInput
   document: Prisma.DocumentCreateNestedOneWithoutSourceVersionsInput
   currentDocuments?: Prisma.DocumentCreateNestedManyWithoutSourceVersionInput
@@ -695,6 +755,8 @@ export type SourceVersionUncheckedCreateWithoutCompileJobsInput = {
   parserVersion: string
   normalizerVersion: string
   createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutSourceVersionInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutSourceVersionInput
   currentDocuments?: Prisma.DocumentUncheckedCreateNestedManyWithoutSourceVersionInput
 }
 
@@ -720,6 +782,8 @@ export type SourceVersionUpdateWithoutCompileJobsInput = {
   parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
   normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutSourceVersionNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutSourceVersionNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutSourceVersionsNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutSourceVersionsNestedInput
   currentDocuments?: Prisma.DocumentUpdateManyWithoutSourceVersionNestedInput
@@ -733,7 +797,145 @@ export type SourceVersionUncheckedUpdateWithoutCompileJobsInput = {
   parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
   normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutSourceVersionNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutSourceVersionNestedInput
   currentDocuments?: Prisma.DocumentUncheckedUpdateManyWithoutSourceVersionNestedInput
+}
+
+export type SourceVersionCreateWithoutEntityMentionsInput = {
+  id?: string
+  contentHash: string
+  parserVersion: string
+  normalizerVersion: string
+  createdAt?: Date | string
+  relationEvidence?: Prisma.RelationEvidenceCreateNestedManyWithoutSourceVersionInput
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutSourceVersionsInput
+  document: Prisma.DocumentCreateNestedOneWithoutSourceVersionsInput
+  currentDocuments?: Prisma.DocumentCreateNestedManyWithoutSourceVersionInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutSourceVersionInput
+}
+
+export type SourceVersionUncheckedCreateWithoutEntityMentionsInput = {
+  id?: string
+  kbId: string
+  documentId: string
+  contentHash: string
+  parserVersion: string
+  normalizerVersion: string
+  createdAt?: Date | string
+  relationEvidence?: Prisma.RelationEvidenceUncheckedCreateNestedManyWithoutSourceVersionInput
+  currentDocuments?: Prisma.DocumentUncheckedCreateNestedManyWithoutSourceVersionInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutSourceVersionInput
+}
+
+export type SourceVersionCreateOrConnectWithoutEntityMentionsInput = {
+  where: Prisma.SourceVersionWhereUniqueInput
+  create: Prisma.XOR<Prisma.SourceVersionCreateWithoutEntityMentionsInput, Prisma.SourceVersionUncheckedCreateWithoutEntityMentionsInput>
+}
+
+export type SourceVersionUpsertWithoutEntityMentionsInput = {
+  update: Prisma.XOR<Prisma.SourceVersionUpdateWithoutEntityMentionsInput, Prisma.SourceVersionUncheckedUpdateWithoutEntityMentionsInput>
+  create: Prisma.XOR<Prisma.SourceVersionCreateWithoutEntityMentionsInput, Prisma.SourceVersionUncheckedCreateWithoutEntityMentionsInput>
+  where?: Prisma.SourceVersionWhereInput
+}
+
+export type SourceVersionUpdateToOneWithWhereWithoutEntityMentionsInput = {
+  where?: Prisma.SourceVersionWhereInput
+  data: Prisma.XOR<Prisma.SourceVersionUpdateWithoutEntityMentionsInput, Prisma.SourceVersionUncheckedUpdateWithoutEntityMentionsInput>
+}
+
+export type SourceVersionUpdateWithoutEntityMentionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contentHash?: Prisma.StringFieldUpdateOperationsInput | string
+  parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutSourceVersionNestedInput
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutSourceVersionsNestedInput
+  document?: Prisma.DocumentUpdateOneRequiredWithoutSourceVersionsNestedInput
+  currentDocuments?: Prisma.DocumentUpdateManyWithoutSourceVersionNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutSourceVersionNestedInput
+}
+
+export type SourceVersionUncheckedUpdateWithoutEntityMentionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  contentHash?: Prisma.StringFieldUpdateOperationsInput | string
+  parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutSourceVersionNestedInput
+  currentDocuments?: Prisma.DocumentUncheckedUpdateManyWithoutSourceVersionNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutSourceVersionNestedInput
+}
+
+export type SourceVersionCreateWithoutRelationEvidenceInput = {
+  id?: string
+  contentHash: string
+  parserVersion: string
+  normalizerVersion: string
+  createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutSourceVersionInput
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutSourceVersionsInput
+  document: Prisma.DocumentCreateNestedOneWithoutSourceVersionsInput
+  currentDocuments?: Prisma.DocumentCreateNestedManyWithoutSourceVersionInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutSourceVersionInput
+}
+
+export type SourceVersionUncheckedCreateWithoutRelationEvidenceInput = {
+  id?: string
+  kbId: string
+  documentId: string
+  contentHash: string
+  parserVersion: string
+  normalizerVersion: string
+  createdAt?: Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutSourceVersionInput
+  currentDocuments?: Prisma.DocumentUncheckedCreateNestedManyWithoutSourceVersionInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutSourceVersionInput
+}
+
+export type SourceVersionCreateOrConnectWithoutRelationEvidenceInput = {
+  where: Prisma.SourceVersionWhereUniqueInput
+  create: Prisma.XOR<Prisma.SourceVersionCreateWithoutRelationEvidenceInput, Prisma.SourceVersionUncheckedCreateWithoutRelationEvidenceInput>
+}
+
+export type SourceVersionUpsertWithoutRelationEvidenceInput = {
+  update: Prisma.XOR<Prisma.SourceVersionUpdateWithoutRelationEvidenceInput, Prisma.SourceVersionUncheckedUpdateWithoutRelationEvidenceInput>
+  create: Prisma.XOR<Prisma.SourceVersionCreateWithoutRelationEvidenceInput, Prisma.SourceVersionUncheckedCreateWithoutRelationEvidenceInput>
+  where?: Prisma.SourceVersionWhereInput
+}
+
+export type SourceVersionUpdateToOneWithWhereWithoutRelationEvidenceInput = {
+  where?: Prisma.SourceVersionWhereInput
+  data: Prisma.XOR<Prisma.SourceVersionUpdateWithoutRelationEvidenceInput, Prisma.SourceVersionUncheckedUpdateWithoutRelationEvidenceInput>
+}
+
+export type SourceVersionUpdateWithoutRelationEvidenceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contentHash?: Prisma.StringFieldUpdateOperationsInput | string
+  parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutSourceVersionNestedInput
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutSourceVersionsNestedInput
+  document?: Prisma.DocumentUpdateOneRequiredWithoutSourceVersionsNestedInput
+  currentDocuments?: Prisma.DocumentUpdateManyWithoutSourceVersionNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutSourceVersionNestedInput
+}
+
+export type SourceVersionUncheckedUpdateWithoutRelationEvidenceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  contentHash?: Prisma.StringFieldUpdateOperationsInput | string
+  parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutSourceVersionNestedInput
+  currentDocuments?: Prisma.DocumentUncheckedUpdateManyWithoutSourceVersionNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutSourceVersionNestedInput
 }
 
 export type SourceVersionCreateManyKbInput = {
@@ -751,6 +953,8 @@ export type SourceVersionUpdateWithoutKbInput = {
   parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
   normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutSourceVersionNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutSourceVersionNestedInput
   document?: Prisma.DocumentUpdateOneRequiredWithoutSourceVersionsNestedInput
   currentDocuments?: Prisma.DocumentUpdateManyWithoutSourceVersionNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutSourceVersionNestedInput
@@ -763,6 +967,8 @@ export type SourceVersionUncheckedUpdateWithoutKbInput = {
   parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
   normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutSourceVersionNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutSourceVersionNestedInput
   currentDocuments?: Prisma.DocumentUncheckedUpdateManyWithoutSourceVersionNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutSourceVersionNestedInput
 }
@@ -791,6 +997,8 @@ export type SourceVersionUpdateWithoutDocumentInput = {
   parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
   normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutSourceVersionNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUpdateManyWithoutSourceVersionNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutSourceVersionsNestedInput
   currentDocuments?: Prisma.DocumentUpdateManyWithoutSourceVersionNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutSourceVersionNestedInput
@@ -803,6 +1011,8 @@ export type SourceVersionUncheckedUpdateWithoutDocumentInput = {
   parserVersion?: Prisma.StringFieldUpdateOperationsInput | string
   normalizerVersion?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutSourceVersionNestedInput
+  relationEvidence?: Prisma.RelationEvidenceUncheckedUpdateManyWithoutSourceVersionNestedInput
   currentDocuments?: Prisma.DocumentUncheckedUpdateManyWithoutSourceVersionNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutSourceVersionNestedInput
 }
@@ -822,11 +1032,15 @@ export type SourceVersionUncheckedUpdateManyWithoutDocumentInput = {
  */
 
 export type SourceVersionCountOutputType = {
+  entityMentions: number
+  relationEvidence: number
   currentDocuments: number
   compileJobs: number
 }
 
 export type SourceVersionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  entityMentions?: boolean | SourceVersionCountOutputTypeCountEntityMentionsArgs
+  relationEvidence?: boolean | SourceVersionCountOutputTypeCountRelationEvidenceArgs
   currentDocuments?: boolean | SourceVersionCountOutputTypeCountCurrentDocumentsArgs
   compileJobs?: boolean | SourceVersionCountOutputTypeCountCompileJobsArgs
 }
@@ -839,6 +1053,20 @@ export type SourceVersionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Type
    * Select specific fields to fetch from the SourceVersionCountOutputType
    */
   select?: Prisma.SourceVersionCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * SourceVersionCountOutputType without action
+ */
+export type SourceVersionCountOutputTypeCountEntityMentionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EntityMentionWhereInput
+}
+
+/**
+ * SourceVersionCountOutputType without action
+ */
+export type SourceVersionCountOutputTypeCountRelationEvidenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RelationEvidenceWhereInput
 }
 
 /**
@@ -864,6 +1092,8 @@ export type SourceVersionSelect<ExtArgs extends runtime.Types.Extensions.Interna
   parserVersion?: boolean
   normalizerVersion?: boolean
   createdAt?: boolean
+  entityMentions?: boolean | Prisma.SourceVersion$entityMentionsArgs<ExtArgs>
+  relationEvidence?: boolean | Prisma.SourceVersion$relationEvidenceArgs<ExtArgs>
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
   currentDocuments?: boolean | Prisma.SourceVersion$currentDocumentsArgs<ExtArgs>
@@ -907,6 +1137,8 @@ export type SourceVersionSelectScalar = {
 
 export type SourceVersionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "documentId" | "contentHash" | "parserVersion" | "normalizerVersion" | "createdAt", ExtArgs["result"]["sourceVersion"]>
 export type SourceVersionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  entityMentions?: boolean | Prisma.SourceVersion$entityMentionsArgs<ExtArgs>
+  relationEvidence?: boolean | Prisma.SourceVersion$relationEvidenceArgs<ExtArgs>
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
   currentDocuments?: boolean | Prisma.SourceVersion$currentDocumentsArgs<ExtArgs>
@@ -925,6 +1157,8 @@ export type SourceVersionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Type
 export type $SourceVersionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SourceVersion"
   objects: {
+    entityMentions: Prisma.$EntityMentionPayload<ExtArgs>[]
+    relationEvidence: Prisma.$RelationEvidencePayload<ExtArgs>[]
     kb: Prisma.$KnowledgeBasePayload<ExtArgs>
     document: Prisma.$DocumentPayload<ExtArgs>
     currentDocuments: Prisma.$DocumentPayload<ExtArgs>[]
@@ -1332,6 +1566,8 @@ readonly fields: SourceVersionFieldRefs;
  */
 export interface Prisma__SourceVersionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  entityMentions<T extends Prisma.SourceVersion$entityMentionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SourceVersion$entityMentionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityMentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  relationEvidence<T extends Prisma.SourceVersion$relationEvidenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SourceVersion$relationEvidenceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RelationEvidencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   kb<T extends Prisma.KnowledgeBaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBaseDefaultArgs<ExtArgs>>): Prisma.Prisma__KnowledgeBaseClient<runtime.Types.Result.GetResult<Prisma.$KnowledgeBasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   document<T extends Prisma.DocumentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentClient<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   currentDocuments<T extends Prisma.SourceVersion$currentDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SourceVersion$currentDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1765,6 +2001,54 @@ export type SourceVersionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many SourceVersions to delete.
    */
   limit?: number
+}
+
+/**
+ * SourceVersion.entityMentions
+ */
+export type SourceVersion$entityMentionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EntityMention
+   */
+  select?: Prisma.EntityMentionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EntityMention
+   */
+  omit?: Prisma.EntityMentionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EntityMentionInclude<ExtArgs> | null
+  where?: Prisma.EntityMentionWhereInput
+  orderBy?: Prisma.EntityMentionOrderByWithRelationInput | Prisma.EntityMentionOrderByWithRelationInput[]
+  cursor?: Prisma.EntityMentionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EntityMentionScalarFieldEnum | Prisma.EntityMentionScalarFieldEnum[]
+}
+
+/**
+ * SourceVersion.relationEvidence
+ */
+export type SourceVersion$relationEvidenceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RelationEvidence
+   */
+  select?: Prisma.RelationEvidenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RelationEvidence
+   */
+  omit?: Prisma.RelationEvidenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RelationEvidenceInclude<ExtArgs> | null
+  where?: Prisma.RelationEvidenceWhereInput
+  orderBy?: Prisma.RelationEvidenceOrderByWithRelationInput | Prisma.RelationEvidenceOrderByWithRelationInput[]
+  cursor?: Prisma.RelationEvidenceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RelationEvidenceScalarFieldEnum | Prisma.RelationEvidenceScalarFieldEnum[]
 }
 
 /**

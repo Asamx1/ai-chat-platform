@@ -248,6 +248,9 @@ export type IndexGenerationWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"IndexGeneration"> | Date | string
   activatedAt?: Prisma.DateTimeNullableFilter<"IndexGeneration"> | Date | string | null
   retiredAt?: Prisma.DateTimeNullableFilter<"IndexGeneration"> | Date | string | null
+  entityMentions?: Prisma.EntityMentionListRelationFilter
+  entityRelations?: Prisma.EntityRelationListRelationFilter
+  derivedFacts?: Prisma.DerivedFactListRelationFilter
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   activeFor?: Prisma.XOR<Prisma.KnowledgeBaseNullableScalarRelationFilter, Prisma.KnowledgeBaseWhereInput> | null
   chunks?: Prisma.ChunkListRelationFilter
@@ -264,6 +267,9 @@ export type IndexGenerationOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   retiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  entityMentions?: Prisma.EntityMentionOrderByRelationAggregateInput
+  entityRelations?: Prisma.EntityRelationOrderByRelationAggregateInput
+  derivedFacts?: Prisma.DerivedFactOrderByRelationAggregateInput
   kb?: Prisma.KnowledgeBaseOrderByWithRelationInput
   activeFor?: Prisma.KnowledgeBaseOrderByWithRelationInput
   chunks?: Prisma.ChunkOrderByRelationAggregateInput
@@ -283,6 +289,9 @@ export type IndexGenerationWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"IndexGeneration"> | Date | string
   activatedAt?: Prisma.DateTimeNullableFilter<"IndexGeneration"> | Date | string | null
   retiredAt?: Prisma.DateTimeNullableFilter<"IndexGeneration"> | Date | string | null
+  entityMentions?: Prisma.EntityMentionListRelationFilter
+  entityRelations?: Prisma.EntityRelationListRelationFilter
+  derivedFacts?: Prisma.DerivedFactListRelationFilter
   kb?: Prisma.XOR<Prisma.KnowledgeBaseScalarRelationFilter, Prisma.KnowledgeBaseWhereInput>
   activeFor?: Prisma.XOR<Prisma.KnowledgeBaseNullableScalarRelationFilter, Prisma.KnowledgeBaseWhereInput> | null
   chunks?: Prisma.ChunkListRelationFilter
@@ -330,6 +339,9 @@ export type IndexGenerationCreateInput = {
   createdAt?: Date | string
   activatedAt?: Date | string | null
   retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutGenerationInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutGenerationsInput
   activeFor?: Prisma.KnowledgeBaseCreateNestedOneWithoutActiveGenerationInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutGenerationInput
@@ -346,6 +358,9 @@ export type IndexGenerationUncheckedCreateInput = {
   createdAt?: Date | string
   activatedAt?: Date | string | null
   retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutGenerationInput
   activeFor?: Prisma.KnowledgeBaseUncheckedCreateNestedOneWithoutActiveGenerationInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutGenerationInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutGenerationInput
@@ -360,6 +375,9 @@ export type IndexGenerationUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutGenerationNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutGenerationsNestedInput
   activeFor?: Prisma.KnowledgeBaseUpdateOneWithoutActiveGenerationNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutGenerationNestedInput
@@ -376,6 +394,9 @@ export type IndexGenerationUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutGenerationNestedInput
   activeFor?: Prisma.KnowledgeBaseUncheckedUpdateOneWithoutActiveGenerationNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutGenerationNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutGenerationNestedInput
@@ -566,6 +587,48 @@ export type IndexGenerationUpdateOneRequiredWithoutCompileJobsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.IndexGenerationUpdateToOneWithWhereWithoutCompileJobsInput, Prisma.IndexGenerationUpdateWithoutCompileJobsInput>, Prisma.IndexGenerationUncheckedUpdateWithoutCompileJobsInput>
 }
 
+export type IndexGenerationCreateNestedOneWithoutEntityMentionsInput = {
+  create?: Prisma.XOR<Prisma.IndexGenerationCreateWithoutEntityMentionsInput, Prisma.IndexGenerationUncheckedCreateWithoutEntityMentionsInput>
+  connectOrCreate?: Prisma.IndexGenerationCreateOrConnectWithoutEntityMentionsInput
+  connect?: Prisma.IndexGenerationWhereUniqueInput
+}
+
+export type IndexGenerationUpdateOneRequiredWithoutEntityMentionsNestedInput = {
+  create?: Prisma.XOR<Prisma.IndexGenerationCreateWithoutEntityMentionsInput, Prisma.IndexGenerationUncheckedCreateWithoutEntityMentionsInput>
+  connectOrCreate?: Prisma.IndexGenerationCreateOrConnectWithoutEntityMentionsInput
+  upsert?: Prisma.IndexGenerationUpsertWithoutEntityMentionsInput
+  connect?: Prisma.IndexGenerationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.IndexGenerationUpdateToOneWithWhereWithoutEntityMentionsInput, Prisma.IndexGenerationUpdateWithoutEntityMentionsInput>, Prisma.IndexGenerationUncheckedUpdateWithoutEntityMentionsInput>
+}
+
+export type IndexGenerationCreateNestedOneWithoutEntityRelationsInput = {
+  create?: Prisma.XOR<Prisma.IndexGenerationCreateWithoutEntityRelationsInput, Prisma.IndexGenerationUncheckedCreateWithoutEntityRelationsInput>
+  connectOrCreate?: Prisma.IndexGenerationCreateOrConnectWithoutEntityRelationsInput
+  connect?: Prisma.IndexGenerationWhereUniqueInput
+}
+
+export type IndexGenerationUpdateOneRequiredWithoutEntityRelationsNestedInput = {
+  create?: Prisma.XOR<Prisma.IndexGenerationCreateWithoutEntityRelationsInput, Prisma.IndexGenerationUncheckedCreateWithoutEntityRelationsInput>
+  connectOrCreate?: Prisma.IndexGenerationCreateOrConnectWithoutEntityRelationsInput
+  upsert?: Prisma.IndexGenerationUpsertWithoutEntityRelationsInput
+  connect?: Prisma.IndexGenerationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.IndexGenerationUpdateToOneWithWhereWithoutEntityRelationsInput, Prisma.IndexGenerationUpdateWithoutEntityRelationsInput>, Prisma.IndexGenerationUncheckedUpdateWithoutEntityRelationsInput>
+}
+
+export type IndexGenerationCreateNestedOneWithoutDerivedFactsInput = {
+  create?: Prisma.XOR<Prisma.IndexGenerationCreateWithoutDerivedFactsInput, Prisma.IndexGenerationUncheckedCreateWithoutDerivedFactsInput>
+  connectOrCreate?: Prisma.IndexGenerationCreateOrConnectWithoutDerivedFactsInput
+  connect?: Prisma.IndexGenerationWhereUniqueInput
+}
+
+export type IndexGenerationUpdateOneRequiredWithoutDerivedFactsNestedInput = {
+  create?: Prisma.XOR<Prisma.IndexGenerationCreateWithoutDerivedFactsInput, Prisma.IndexGenerationUncheckedCreateWithoutDerivedFactsInput>
+  connectOrCreate?: Prisma.IndexGenerationCreateOrConnectWithoutDerivedFactsInput
+  upsert?: Prisma.IndexGenerationUpsertWithoutDerivedFactsInput
+  connect?: Prisma.IndexGenerationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.IndexGenerationUpdateToOneWithWhereWithoutDerivedFactsInput, Prisma.IndexGenerationUpdateWithoutDerivedFactsInput>, Prisma.IndexGenerationUncheckedUpdateWithoutDerivedFactsInput>
+}
+
 export type IndexGenerationCreateWithoutActiveForInput = {
   id?: string
   status?: $Enums.IndexGenerationStatus
@@ -575,6 +638,9 @@ export type IndexGenerationCreateWithoutActiveForInput = {
   createdAt?: Date | string
   activatedAt?: Date | string | null
   retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutGenerationInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutGenerationsInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutGenerationInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutGenerationInput
@@ -590,6 +656,9 @@ export type IndexGenerationUncheckedCreateWithoutActiveForInput = {
   createdAt?: Date | string
   activatedAt?: Date | string | null
   retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutGenerationInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutGenerationInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutGenerationInput
 }
@@ -608,6 +677,9 @@ export type IndexGenerationCreateWithoutKbInput = {
   createdAt?: Date | string
   activatedAt?: Date | string | null
   retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutGenerationInput
   activeFor?: Prisma.KnowledgeBaseCreateNestedOneWithoutActiveGenerationInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutGenerationInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutGenerationInput
@@ -622,6 +694,9 @@ export type IndexGenerationUncheckedCreateWithoutKbInput = {
   createdAt?: Date | string
   activatedAt?: Date | string | null
   retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutGenerationInput
   activeFor?: Prisma.KnowledgeBaseUncheckedCreateNestedOneWithoutActiveGenerationInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutGenerationInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutGenerationInput
@@ -657,6 +732,9 @@ export type IndexGenerationUpdateWithoutActiveForInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutGenerationNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutGenerationsNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutGenerationNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutGenerationNestedInput
@@ -672,6 +750,9 @@ export type IndexGenerationUncheckedUpdateWithoutActiveForInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutGenerationNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutGenerationNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutGenerationNestedInput
 }
@@ -716,6 +797,9 @@ export type IndexGenerationCreateWithoutChunksInput = {
   createdAt?: Date | string
   activatedAt?: Date | string | null
   retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutGenerationInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutGenerationsInput
   activeFor?: Prisma.KnowledgeBaseCreateNestedOneWithoutActiveGenerationInput
   compileJobs?: Prisma.CompileJobCreateNestedManyWithoutGenerationInput
@@ -731,6 +815,9 @@ export type IndexGenerationUncheckedCreateWithoutChunksInput = {
   createdAt?: Date | string
   activatedAt?: Date | string | null
   retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutGenerationInput
   activeFor?: Prisma.KnowledgeBaseUncheckedCreateNestedOneWithoutActiveGenerationInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutGenerationInput
 }
@@ -760,6 +847,9 @@ export type IndexGenerationUpdateWithoutChunksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutGenerationNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutGenerationsNestedInput
   activeFor?: Prisma.KnowledgeBaseUpdateOneWithoutActiveGenerationNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutGenerationNestedInput
@@ -775,6 +865,9 @@ export type IndexGenerationUncheckedUpdateWithoutChunksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutGenerationNestedInput
   activeFor?: Prisma.KnowledgeBaseUncheckedUpdateOneWithoutActiveGenerationNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutGenerationNestedInput
 }
@@ -788,6 +881,9 @@ export type IndexGenerationCreateWithoutCompileJobsInput = {
   createdAt?: Date | string
   activatedAt?: Date | string | null
   retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutGenerationInput
   kb: Prisma.KnowledgeBaseCreateNestedOneWithoutGenerationsInput
   activeFor?: Prisma.KnowledgeBaseCreateNestedOneWithoutActiveGenerationInput
   chunks?: Prisma.ChunkCreateNestedManyWithoutGenerationInput
@@ -803,6 +899,9 @@ export type IndexGenerationUncheckedCreateWithoutCompileJobsInput = {
   createdAt?: Date | string
   activatedAt?: Date | string | null
   retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutGenerationInput
   activeFor?: Prisma.KnowledgeBaseUncheckedCreateNestedOneWithoutActiveGenerationInput
   chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutGenerationInput
 }
@@ -832,6 +931,9 @@ export type IndexGenerationUpdateWithoutCompileJobsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutGenerationNestedInput
   kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutGenerationsNestedInput
   activeFor?: Prisma.KnowledgeBaseUpdateOneWithoutActiveGenerationNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutGenerationNestedInput
@@ -847,8 +949,263 @@ export type IndexGenerationUncheckedUpdateWithoutCompileJobsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutGenerationNestedInput
   activeFor?: Prisma.KnowledgeBaseUncheckedUpdateOneWithoutActiveGenerationNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutGenerationNestedInput
+}
+
+export type IndexGenerationCreateWithoutEntityMentionsInput = {
+  id?: string
+  status?: $Enums.IndexGenerationStatus
+  configSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: number
+  chunkCount?: number
+  createdAt?: Date | string
+  activatedAt?: Date | string | null
+  retiredAt?: Date | string | null
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutGenerationInput
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutGenerationsInput
+  activeFor?: Prisma.KnowledgeBaseCreateNestedOneWithoutActiveGenerationInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutGenerationInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutGenerationInput
+}
+
+export type IndexGenerationUncheckedCreateWithoutEntityMentionsInput = {
+  id?: string
+  kbId: string
+  status?: $Enums.IndexGenerationStatus
+  configSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: number
+  chunkCount?: number
+  createdAt?: Date | string
+  activatedAt?: Date | string | null
+  retiredAt?: Date | string | null
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutGenerationInput
+  activeFor?: Prisma.KnowledgeBaseUncheckedCreateNestedOneWithoutActiveGenerationInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutGenerationInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutGenerationInput
+}
+
+export type IndexGenerationCreateOrConnectWithoutEntityMentionsInput = {
+  where: Prisma.IndexGenerationWhereUniqueInput
+  create: Prisma.XOR<Prisma.IndexGenerationCreateWithoutEntityMentionsInput, Prisma.IndexGenerationUncheckedCreateWithoutEntityMentionsInput>
+}
+
+export type IndexGenerationUpsertWithoutEntityMentionsInput = {
+  update: Prisma.XOR<Prisma.IndexGenerationUpdateWithoutEntityMentionsInput, Prisma.IndexGenerationUncheckedUpdateWithoutEntityMentionsInput>
+  create: Prisma.XOR<Prisma.IndexGenerationCreateWithoutEntityMentionsInput, Prisma.IndexGenerationUncheckedCreateWithoutEntityMentionsInput>
+  where?: Prisma.IndexGenerationWhereInput
+}
+
+export type IndexGenerationUpdateToOneWithWhereWithoutEntityMentionsInput = {
+  where?: Prisma.IndexGenerationWhereInput
+  data: Prisma.XOR<Prisma.IndexGenerationUpdateWithoutEntityMentionsInput, Prisma.IndexGenerationUncheckedUpdateWithoutEntityMentionsInput>
+}
+
+export type IndexGenerationUpdateWithoutEntityMentionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIndexGenerationStatusFieldUpdateOperationsInput | $Enums.IndexGenerationStatus
+  configSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutGenerationNestedInput
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutGenerationsNestedInput
+  activeFor?: Prisma.KnowledgeBaseUpdateOneWithoutActiveGenerationNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutGenerationNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutGenerationNestedInput
+}
+
+export type IndexGenerationUncheckedUpdateWithoutEntityMentionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIndexGenerationStatusFieldUpdateOperationsInput | $Enums.IndexGenerationStatus
+  configSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutGenerationNestedInput
+  activeFor?: Prisma.KnowledgeBaseUncheckedUpdateOneWithoutActiveGenerationNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutGenerationNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutGenerationNestedInput
+}
+
+export type IndexGenerationCreateWithoutEntityRelationsInput = {
+  id?: string
+  status?: $Enums.IndexGenerationStatus
+  configSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: number
+  chunkCount?: number
+  createdAt?: Date | string
+  activatedAt?: Date | string | null
+  retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutGenerationInput
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutGenerationsInput
+  activeFor?: Prisma.KnowledgeBaseCreateNestedOneWithoutActiveGenerationInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutGenerationInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutGenerationInput
+}
+
+export type IndexGenerationUncheckedCreateWithoutEntityRelationsInput = {
+  id?: string
+  kbId: string
+  status?: $Enums.IndexGenerationStatus
+  configSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: number
+  chunkCount?: number
+  createdAt?: Date | string
+  activatedAt?: Date | string | null
+  retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutGenerationInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutGenerationInput
+  activeFor?: Prisma.KnowledgeBaseUncheckedCreateNestedOneWithoutActiveGenerationInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutGenerationInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutGenerationInput
+}
+
+export type IndexGenerationCreateOrConnectWithoutEntityRelationsInput = {
+  where: Prisma.IndexGenerationWhereUniqueInput
+  create: Prisma.XOR<Prisma.IndexGenerationCreateWithoutEntityRelationsInput, Prisma.IndexGenerationUncheckedCreateWithoutEntityRelationsInput>
+}
+
+export type IndexGenerationUpsertWithoutEntityRelationsInput = {
+  update: Prisma.XOR<Prisma.IndexGenerationUpdateWithoutEntityRelationsInput, Prisma.IndexGenerationUncheckedUpdateWithoutEntityRelationsInput>
+  create: Prisma.XOR<Prisma.IndexGenerationCreateWithoutEntityRelationsInput, Prisma.IndexGenerationUncheckedCreateWithoutEntityRelationsInput>
+  where?: Prisma.IndexGenerationWhereInput
+}
+
+export type IndexGenerationUpdateToOneWithWhereWithoutEntityRelationsInput = {
+  where?: Prisma.IndexGenerationWhereInput
+  data: Prisma.XOR<Prisma.IndexGenerationUpdateWithoutEntityRelationsInput, Prisma.IndexGenerationUncheckedUpdateWithoutEntityRelationsInput>
+}
+
+export type IndexGenerationUpdateWithoutEntityRelationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIndexGenerationStatusFieldUpdateOperationsInput | $Enums.IndexGenerationStatus
+  configSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutGenerationNestedInput
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutGenerationsNestedInput
+  activeFor?: Prisma.KnowledgeBaseUpdateOneWithoutActiveGenerationNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutGenerationNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutGenerationNestedInput
+}
+
+export type IndexGenerationUncheckedUpdateWithoutEntityRelationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIndexGenerationStatusFieldUpdateOperationsInput | $Enums.IndexGenerationStatus
+  configSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutGenerationNestedInput
+  activeFor?: Prisma.KnowledgeBaseUncheckedUpdateOneWithoutActiveGenerationNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutGenerationNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutGenerationNestedInput
+}
+
+export type IndexGenerationCreateWithoutDerivedFactsInput = {
+  id?: string
+  status?: $Enums.IndexGenerationStatus
+  configSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: number
+  chunkCount?: number
+  createdAt?: Date | string
+  activatedAt?: Date | string | null
+  retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutGenerationInput
+  kb: Prisma.KnowledgeBaseCreateNestedOneWithoutGenerationsInput
+  activeFor?: Prisma.KnowledgeBaseCreateNestedOneWithoutActiveGenerationInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutGenerationInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutGenerationInput
+}
+
+export type IndexGenerationUncheckedCreateWithoutDerivedFactsInput = {
+  id?: string
+  kbId: string
+  status?: $Enums.IndexGenerationStatus
+  configSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: number
+  chunkCount?: number
+  createdAt?: Date | string
+  activatedAt?: Date | string | null
+  retiredAt?: Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutGenerationInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutGenerationInput
+  activeFor?: Prisma.KnowledgeBaseUncheckedCreateNestedOneWithoutActiveGenerationInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutGenerationInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutGenerationInput
+}
+
+export type IndexGenerationCreateOrConnectWithoutDerivedFactsInput = {
+  where: Prisma.IndexGenerationWhereUniqueInput
+  create: Prisma.XOR<Prisma.IndexGenerationCreateWithoutDerivedFactsInput, Prisma.IndexGenerationUncheckedCreateWithoutDerivedFactsInput>
+}
+
+export type IndexGenerationUpsertWithoutDerivedFactsInput = {
+  update: Prisma.XOR<Prisma.IndexGenerationUpdateWithoutDerivedFactsInput, Prisma.IndexGenerationUncheckedUpdateWithoutDerivedFactsInput>
+  create: Prisma.XOR<Prisma.IndexGenerationCreateWithoutDerivedFactsInput, Prisma.IndexGenerationUncheckedCreateWithoutDerivedFactsInput>
+  where?: Prisma.IndexGenerationWhereInput
+}
+
+export type IndexGenerationUpdateToOneWithWhereWithoutDerivedFactsInput = {
+  where?: Prisma.IndexGenerationWhereInput
+  data: Prisma.XOR<Prisma.IndexGenerationUpdateWithoutDerivedFactsInput, Prisma.IndexGenerationUncheckedUpdateWithoutDerivedFactsInput>
+}
+
+export type IndexGenerationUpdateWithoutDerivedFactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIndexGenerationStatusFieldUpdateOperationsInput | $Enums.IndexGenerationStatus
+  configSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutGenerationNestedInput
+  kb?: Prisma.KnowledgeBaseUpdateOneRequiredWithoutGenerationsNestedInput
+  activeFor?: Prisma.KnowledgeBaseUpdateOneWithoutActiveGenerationNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutGenerationNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutGenerationNestedInput
+}
+
+export type IndexGenerationUncheckedUpdateWithoutDerivedFactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kbId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIndexGenerationStatusFieldUpdateOperationsInput | $Enums.IndexGenerationStatus
+  configSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  documentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  chunkCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutGenerationNestedInput
+  activeFor?: Prisma.KnowledgeBaseUncheckedUpdateOneWithoutActiveGenerationNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutGenerationNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutGenerationNestedInput
 }
 
 export type IndexGenerationCreateManyKbInput = {
@@ -871,6 +1228,9 @@ export type IndexGenerationUpdateWithoutKbInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutGenerationNestedInput
   activeFor?: Prisma.KnowledgeBaseUpdateOneWithoutActiveGenerationNestedInput
   chunks?: Prisma.ChunkUpdateManyWithoutGenerationNestedInput
   compileJobs?: Prisma.CompileJobUpdateManyWithoutGenerationNestedInput
@@ -885,6 +1245,9 @@ export type IndexGenerationUncheckedUpdateWithoutKbInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   retiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutGenerationNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutGenerationNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutGenerationNestedInput
   activeFor?: Prisma.KnowledgeBaseUncheckedUpdateOneWithoutActiveGenerationNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutGenerationNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutGenerationNestedInput
@@ -907,11 +1270,17 @@ export type IndexGenerationUncheckedUpdateManyWithoutKbInput = {
  */
 
 export type IndexGenerationCountOutputType = {
+  entityMentions: number
+  entityRelations: number
+  derivedFacts: number
   chunks: number
   compileJobs: number
 }
 
 export type IndexGenerationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  entityMentions?: boolean | IndexGenerationCountOutputTypeCountEntityMentionsArgs
+  entityRelations?: boolean | IndexGenerationCountOutputTypeCountEntityRelationsArgs
+  derivedFacts?: boolean | IndexGenerationCountOutputTypeCountDerivedFactsArgs
   chunks?: boolean | IndexGenerationCountOutputTypeCountChunksArgs
   compileJobs?: boolean | IndexGenerationCountOutputTypeCountCompileJobsArgs
 }
@@ -924,6 +1293,27 @@ export type IndexGenerationCountOutputTypeDefaultArgs<ExtArgs extends runtime.Ty
    * Select specific fields to fetch from the IndexGenerationCountOutputType
    */
   select?: Prisma.IndexGenerationCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * IndexGenerationCountOutputType without action
+ */
+export type IndexGenerationCountOutputTypeCountEntityMentionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EntityMentionWhereInput
+}
+
+/**
+ * IndexGenerationCountOutputType without action
+ */
+export type IndexGenerationCountOutputTypeCountEntityRelationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EntityRelationWhereInput
+}
+
+/**
+ * IndexGenerationCountOutputType without action
+ */
+export type IndexGenerationCountOutputTypeCountDerivedFactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DerivedFactWhereInput
 }
 
 /**
@@ -951,6 +1341,9 @@ export type IndexGenerationSelect<ExtArgs extends runtime.Types.Extensions.Inter
   createdAt?: boolean
   activatedAt?: boolean
   retiredAt?: boolean
+  entityMentions?: boolean | Prisma.IndexGeneration$entityMentionsArgs<ExtArgs>
+  entityRelations?: boolean | Prisma.IndexGeneration$entityRelationsArgs<ExtArgs>
+  derivedFacts?: boolean | Prisma.IndexGeneration$derivedFactsArgs<ExtArgs>
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   activeFor?: boolean | Prisma.IndexGeneration$activeForArgs<ExtArgs>
   chunks?: boolean | Prisma.IndexGeneration$chunksArgs<ExtArgs>
@@ -998,6 +1391,9 @@ export type IndexGenerationSelectScalar = {
 
 export type IndexGenerationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "kbId" | "status" | "configSnapshot" | "documentCount" | "chunkCount" | "createdAt" | "activatedAt" | "retiredAt", ExtArgs["result"]["indexGeneration"]>
 export type IndexGenerationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  entityMentions?: boolean | Prisma.IndexGeneration$entityMentionsArgs<ExtArgs>
+  entityRelations?: boolean | Prisma.IndexGeneration$entityRelationsArgs<ExtArgs>
+  derivedFacts?: boolean | Prisma.IndexGeneration$derivedFactsArgs<ExtArgs>
   kb?: boolean | Prisma.KnowledgeBaseDefaultArgs<ExtArgs>
   activeFor?: boolean | Prisma.IndexGeneration$activeForArgs<ExtArgs>
   chunks?: boolean | Prisma.IndexGeneration$chunksArgs<ExtArgs>
@@ -1014,6 +1410,9 @@ export type IndexGenerationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Ty
 export type $IndexGenerationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "IndexGeneration"
   objects: {
+    entityMentions: Prisma.$EntityMentionPayload<ExtArgs>[]
+    entityRelations: Prisma.$EntityRelationPayload<ExtArgs>[]
+    derivedFacts: Prisma.$DerivedFactPayload<ExtArgs>[]
     kb: Prisma.$KnowledgeBasePayload<ExtArgs>
     activeFor: Prisma.$KnowledgeBasePayload<ExtArgs> | null
     chunks: Prisma.$ChunkPayload<ExtArgs>[]
@@ -1423,6 +1822,9 @@ readonly fields: IndexGenerationFieldRefs;
  */
 export interface Prisma__IndexGenerationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  entityMentions<T extends Prisma.IndexGeneration$entityMentionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IndexGeneration$entityMentionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityMentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  entityRelations<T extends Prisma.IndexGeneration$entityRelationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IndexGeneration$entityRelationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityRelationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  derivedFacts<T extends Prisma.IndexGeneration$derivedFactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IndexGeneration$derivedFactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DerivedFactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   kb<T extends Prisma.KnowledgeBaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBaseDefaultArgs<ExtArgs>>): Prisma.Prisma__KnowledgeBaseClient<runtime.Types.Result.GetResult<Prisma.$KnowledgeBasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   activeFor<T extends Prisma.IndexGeneration$activeForArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IndexGeneration$activeForArgs<ExtArgs>>): Prisma.Prisma__KnowledgeBaseClient<runtime.Types.Result.GetResult<Prisma.$KnowledgeBasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   chunks<T extends Prisma.IndexGeneration$chunksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.IndexGeneration$chunksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1858,6 +2260,78 @@ export type IndexGenerationDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many IndexGenerations to delete.
    */
   limit?: number
+}
+
+/**
+ * IndexGeneration.entityMentions
+ */
+export type IndexGeneration$entityMentionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EntityMention
+   */
+  select?: Prisma.EntityMentionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EntityMention
+   */
+  omit?: Prisma.EntityMentionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EntityMentionInclude<ExtArgs> | null
+  where?: Prisma.EntityMentionWhereInput
+  orderBy?: Prisma.EntityMentionOrderByWithRelationInput | Prisma.EntityMentionOrderByWithRelationInput[]
+  cursor?: Prisma.EntityMentionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EntityMentionScalarFieldEnum | Prisma.EntityMentionScalarFieldEnum[]
+}
+
+/**
+ * IndexGeneration.entityRelations
+ */
+export type IndexGeneration$entityRelationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EntityRelation
+   */
+  select?: Prisma.EntityRelationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EntityRelation
+   */
+  omit?: Prisma.EntityRelationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EntityRelationInclude<ExtArgs> | null
+  where?: Prisma.EntityRelationWhereInput
+  orderBy?: Prisma.EntityRelationOrderByWithRelationInput | Prisma.EntityRelationOrderByWithRelationInput[]
+  cursor?: Prisma.EntityRelationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EntityRelationScalarFieldEnum | Prisma.EntityRelationScalarFieldEnum[]
+}
+
+/**
+ * IndexGeneration.derivedFacts
+ */
+export type IndexGeneration$derivedFactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DerivedFact
+   */
+  select?: Prisma.DerivedFactSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DerivedFact
+   */
+  omit?: Prisma.DerivedFactOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DerivedFactInclude<ExtArgs> | null
+  where?: Prisma.DerivedFactWhereInput
+  orderBy?: Prisma.DerivedFactOrderByWithRelationInput | Prisma.DerivedFactOrderByWithRelationInput[]
+  cursor?: Prisma.DerivedFactWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DerivedFactScalarFieldEnum | Prisma.DerivedFactScalarFieldEnum[]
 }
 
 /**

@@ -190,6 +190,11 @@ export type KnowledgeBaseWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"KnowledgeBase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"KnowledgeBase"> | Date | string
   activeGenerationId?: Prisma.StringNullableFilter<"KnowledgeBase"> | string | null
+  entities?: Prisma.EntityListRelationFilter
+  entityMentions?: Prisma.EntityMentionListRelationFilter
+  entityRelations?: Prisma.EntityRelationListRelationFilter
+  derivedFacts?: Prisma.DerivedFactListRelationFilter
+  ontologyConfigs?: Prisma.OntologyConfigListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   documents?: Prisma.DocumentListRelationFilter
   activeGeneration?: Prisma.XOR<Prisma.IndexGenerationNullableScalarRelationFilter, Prisma.IndexGenerationWhereInput> | null
@@ -209,6 +214,11 @@ export type KnowledgeBaseOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   activeGenerationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  entities?: Prisma.EntityOrderByRelationAggregateInput
+  entityMentions?: Prisma.EntityMentionOrderByRelationAggregateInput
+  entityRelations?: Prisma.EntityRelationOrderByRelationAggregateInput
+  derivedFacts?: Prisma.DerivedFactOrderByRelationAggregateInput
+  ontologyConfigs?: Prisma.OntologyConfigOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
   documents?: Prisma.DocumentOrderByRelationAggregateInput
   activeGeneration?: Prisma.IndexGenerationOrderByWithRelationInput
@@ -231,6 +241,11 @@ export type KnowledgeBaseWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"KnowledgeBase"> | string
   createdAt?: Prisma.DateTimeFilter<"KnowledgeBase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"KnowledgeBase"> | Date | string
+  entities?: Prisma.EntityListRelationFilter
+  entityMentions?: Prisma.EntityMentionListRelationFilter
+  entityRelations?: Prisma.EntityRelationListRelationFilter
+  derivedFacts?: Prisma.DerivedFactListRelationFilter
+  ontologyConfigs?: Prisma.OntologyConfigListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   documents?: Prisma.DocumentListRelationFilter
   activeGeneration?: Prisma.XOR<Prisma.IndexGenerationNullableScalarRelationFilter, Prisma.IndexGenerationWhereInput> | null
@@ -272,6 +287,11 @@ export type KnowledgeBaseCreateInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
   documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
@@ -291,6 +311,11 @@ export type KnowledgeBaseUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
@@ -306,6 +331,11 @@ export type KnowledgeBaseUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
@@ -325,6 +355,11 @@ export type KnowledgeBaseUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
@@ -587,11 +622,86 @@ export type KnowledgeBaseUpdateOneRequiredWithoutCompileCostsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.KnowledgeBaseUpdateToOneWithWhereWithoutCompileCostsInput, Prisma.KnowledgeBaseUpdateWithoutCompileCostsInput>, Prisma.KnowledgeBaseUncheckedUpdateWithoutCompileCostsInput>
 }
 
+export type KnowledgeBaseCreateNestedOneWithoutEntitiesInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntitiesInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntitiesInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutEntitiesInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+}
+
+export type KnowledgeBaseUpdateOneRequiredWithoutEntitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntitiesInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntitiesInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutEntitiesInput
+  upsert?: Prisma.KnowledgeBaseUpsertWithoutEntitiesInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KnowledgeBaseUpdateToOneWithWhereWithoutEntitiesInput, Prisma.KnowledgeBaseUpdateWithoutEntitiesInput>, Prisma.KnowledgeBaseUncheckedUpdateWithoutEntitiesInput>
+}
+
+export type KnowledgeBaseCreateNestedOneWithoutEntityMentionsInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntityMentionsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntityMentionsInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutEntityMentionsInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+}
+
+export type KnowledgeBaseUpdateOneRequiredWithoutEntityMentionsNestedInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntityMentionsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntityMentionsInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutEntityMentionsInput
+  upsert?: Prisma.KnowledgeBaseUpsertWithoutEntityMentionsInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KnowledgeBaseUpdateToOneWithWhereWithoutEntityMentionsInput, Prisma.KnowledgeBaseUpdateWithoutEntityMentionsInput>, Prisma.KnowledgeBaseUncheckedUpdateWithoutEntityMentionsInput>
+}
+
+export type KnowledgeBaseCreateNestedOneWithoutEntityRelationsInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntityRelationsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntityRelationsInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutEntityRelationsInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+}
+
+export type KnowledgeBaseUpdateOneRequiredWithoutEntityRelationsNestedInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntityRelationsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntityRelationsInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutEntityRelationsInput
+  upsert?: Prisma.KnowledgeBaseUpsertWithoutEntityRelationsInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KnowledgeBaseUpdateToOneWithWhereWithoutEntityRelationsInput, Prisma.KnowledgeBaseUpdateWithoutEntityRelationsInput>, Prisma.KnowledgeBaseUncheckedUpdateWithoutEntityRelationsInput>
+}
+
+export type KnowledgeBaseCreateNestedOneWithoutDerivedFactsInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutDerivedFactsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutDerivedFactsInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutDerivedFactsInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+}
+
+export type KnowledgeBaseUpdateOneRequiredWithoutDerivedFactsNestedInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutDerivedFactsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutDerivedFactsInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutDerivedFactsInput
+  upsert?: Prisma.KnowledgeBaseUpsertWithoutDerivedFactsInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KnowledgeBaseUpdateToOneWithWhereWithoutDerivedFactsInput, Prisma.KnowledgeBaseUpdateWithoutDerivedFactsInput>, Prisma.KnowledgeBaseUncheckedUpdateWithoutDerivedFactsInput>
+}
+
+export type KnowledgeBaseCreateNestedOneWithoutOntologyConfigsInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutOntologyConfigsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutOntologyConfigsInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutOntologyConfigsInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+}
+
+export type KnowledgeBaseUpdateOneRequiredWithoutOntologyConfigsNestedInput = {
+  create?: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutOntologyConfigsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutOntologyConfigsInput>
+  connectOrCreate?: Prisma.KnowledgeBaseCreateOrConnectWithoutOntologyConfigsInput
+  upsert?: Prisma.KnowledgeBaseUpsertWithoutOntologyConfigsInput
+  connect?: Prisma.KnowledgeBaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KnowledgeBaseUpdateToOneWithWhereWithoutOntologyConfigsInput, Prisma.KnowledgeBaseUpdateWithoutOntologyConfigsInput>, Prisma.KnowledgeBaseUncheckedUpdateWithoutOntologyConfigsInput>
+}
+
 export type KnowledgeBaseCreateWithoutUserInput = {
   id?: string
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
@@ -609,6 +719,11 @@ export type KnowledgeBaseUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
@@ -662,6 +777,11 @@ export type KnowledgeBaseCreateWithoutDocumentsInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
@@ -680,6 +800,11 @@ export type KnowledgeBaseUncheckedCreateWithoutDocumentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
@@ -710,6 +835,11 @@ export type KnowledgeBaseUpdateWithoutDocumentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
@@ -728,6 +858,11 @@ export type KnowledgeBaseUncheckedUpdateWithoutDocumentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
@@ -742,6 +877,11 @@ export type KnowledgeBaseCreateWithoutChunksInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
   documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
@@ -760,6 +900,11 @@ export type KnowledgeBaseUncheckedCreateWithoutChunksInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
@@ -790,6 +935,11 @@ export type KnowledgeBaseUpdateWithoutChunksInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
@@ -808,6 +958,11 @@ export type KnowledgeBaseUncheckedUpdateWithoutChunksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
@@ -822,6 +977,11 @@ export type KnowledgeBaseCreateWithoutConversationsInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
   documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
@@ -840,6 +1000,11 @@ export type KnowledgeBaseUncheckedCreateWithoutConversationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
@@ -870,6 +1035,11 @@ export type KnowledgeBaseUpdateWithoutConversationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
@@ -888,6 +1058,11 @@ export type KnowledgeBaseUncheckedUpdateWithoutConversationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
@@ -902,6 +1077,11 @@ export type KnowledgeBaseCreateWithoutSourceVersionsInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
   documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
@@ -920,6 +1100,11 @@ export type KnowledgeBaseUncheckedCreateWithoutSourceVersionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
@@ -950,6 +1135,11 @@ export type KnowledgeBaseUpdateWithoutSourceVersionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
@@ -968,6 +1158,11 @@ export type KnowledgeBaseUncheckedUpdateWithoutSourceVersionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
@@ -982,6 +1177,11 @@ export type KnowledgeBaseCreateWithoutGenerationsInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
   documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
@@ -1000,6 +1200,11 @@ export type KnowledgeBaseUncheckedCreateWithoutGenerationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
   compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
@@ -1019,6 +1224,11 @@ export type KnowledgeBaseCreateWithoutActiveGenerationInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
   documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
@@ -1036,6 +1246,11 @@ export type KnowledgeBaseUncheckedCreateWithoutActiveGenerationInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
@@ -1067,6 +1282,11 @@ export type KnowledgeBaseUpdateWithoutGenerationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
@@ -1085,6 +1305,11 @@ export type KnowledgeBaseUncheckedUpdateWithoutGenerationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
@@ -1110,6 +1335,11 @@ export type KnowledgeBaseUpdateWithoutActiveGenerationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
@@ -1127,6 +1357,11 @@ export type KnowledgeBaseUncheckedUpdateWithoutActiveGenerationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
@@ -1142,6 +1377,11 @@ export type KnowledgeBaseCreateWithoutCompileJobsInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
   documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
@@ -1160,6 +1400,11 @@ export type KnowledgeBaseUncheckedCreateWithoutCompileJobsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
@@ -1190,6 +1435,11 @@ export type KnowledgeBaseUpdateWithoutCompileJobsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
@@ -1208,6 +1458,11 @@ export type KnowledgeBaseUncheckedUpdateWithoutCompileJobsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
@@ -1222,6 +1477,11 @@ export type KnowledgeBaseCreateWithoutCompileOutboxInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
   documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
@@ -1240,6 +1500,11 @@ export type KnowledgeBaseUncheckedCreateWithoutCompileOutboxInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
@@ -1270,6 +1535,11 @@ export type KnowledgeBaseUpdateWithoutCompileOutboxInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
@@ -1288,6 +1558,11 @@ export type KnowledgeBaseUncheckedUpdateWithoutCompileOutboxInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
@@ -1302,6 +1577,11 @@ export type KnowledgeBaseCreateWithoutCompileCostsInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
   user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
   documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
   activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
@@ -1320,6 +1600,11 @@ export type KnowledgeBaseUncheckedCreateWithoutCompileCostsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
   generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
   sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
@@ -1350,6 +1635,11 @@ export type KnowledgeBaseUpdateWithoutCompileCostsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
@@ -1368,11 +1658,516 @@ export type KnowledgeBaseUncheckedUpdateWithoutCompileCostsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
   compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
   compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseCreateWithoutEntitiesInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
+  user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
+  activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
+  generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseUncheckedCreateWithoutEntitiesInput = {
+  id?: string
+  userId: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeGenerationId?: string | null
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
+  generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseCreateOrConnectWithoutEntitiesInput = {
+  where: Prisma.KnowledgeBaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntitiesInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntitiesInput>
+}
+
+export type KnowledgeBaseUpsertWithoutEntitiesInput = {
+  update: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutEntitiesInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutEntitiesInput>
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntitiesInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntitiesInput>
+  where?: Prisma.KnowledgeBaseWhereInput
+}
+
+export type KnowledgeBaseUpdateToOneWithWhereWithoutEntitiesInput = {
+  where?: Prisma.KnowledgeBaseWhereInput
+  data: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutEntitiesInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutEntitiesInput>
+}
+
+export type KnowledgeBaseUpdateWithoutEntitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
+  activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
+  generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseUncheckedUpdateWithoutEntitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
+  generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseCreateWithoutEntityMentionsInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
+  user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
+  activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
+  generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseUncheckedCreateWithoutEntityMentionsInput = {
+  id?: string
+  userId: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
+  generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseCreateOrConnectWithoutEntityMentionsInput = {
+  where: Prisma.KnowledgeBaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntityMentionsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntityMentionsInput>
+}
+
+export type KnowledgeBaseUpsertWithoutEntityMentionsInput = {
+  update: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutEntityMentionsInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutEntityMentionsInput>
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntityMentionsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntityMentionsInput>
+  where?: Prisma.KnowledgeBaseWhereInput
+}
+
+export type KnowledgeBaseUpdateToOneWithWhereWithoutEntityMentionsInput = {
+  where?: Prisma.KnowledgeBaseWhereInput
+  data: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutEntityMentionsInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutEntityMentionsInput>
+}
+
+export type KnowledgeBaseUpdateWithoutEntityMentionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
+  activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
+  generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseUncheckedUpdateWithoutEntityMentionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
+  generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseCreateWithoutEntityRelationsInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
+  user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
+  activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
+  generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseUncheckedCreateWithoutEntityRelationsInput = {
+  id?: string
+  userId: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
+  generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseCreateOrConnectWithoutEntityRelationsInput = {
+  where: Prisma.KnowledgeBaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntityRelationsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntityRelationsInput>
+}
+
+export type KnowledgeBaseUpsertWithoutEntityRelationsInput = {
+  update: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutEntityRelationsInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutEntityRelationsInput>
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutEntityRelationsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutEntityRelationsInput>
+  where?: Prisma.KnowledgeBaseWhereInput
+}
+
+export type KnowledgeBaseUpdateToOneWithWhereWithoutEntityRelationsInput = {
+  where?: Prisma.KnowledgeBaseWhereInput
+  data: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutEntityRelationsInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutEntityRelationsInput>
+}
+
+export type KnowledgeBaseUpdateWithoutEntityRelationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
+  activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
+  generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseUncheckedUpdateWithoutEntityRelationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
+  generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseCreateWithoutDerivedFactsInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigCreateNestedManyWithoutKbInput
+  user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
+  activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
+  generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseUncheckedCreateWithoutDerivedFactsInput = {
+  id?: string
+  userId: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedCreateNestedManyWithoutKbInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
+  generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseCreateOrConnectWithoutDerivedFactsInput = {
+  where: Prisma.KnowledgeBaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutDerivedFactsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutDerivedFactsInput>
+}
+
+export type KnowledgeBaseUpsertWithoutDerivedFactsInput = {
+  update: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutDerivedFactsInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutDerivedFactsInput>
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutDerivedFactsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutDerivedFactsInput>
+  where?: Prisma.KnowledgeBaseWhereInput
+}
+
+export type KnowledgeBaseUpdateToOneWithWhereWithoutDerivedFactsInput = {
+  where?: Prisma.KnowledgeBaseWhereInput
+  data: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutDerivedFactsInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutDerivedFactsInput>
+}
+
+export type KnowledgeBaseUpdateWithoutDerivedFactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
+  activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
+  generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseUncheckedUpdateWithoutDerivedFactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
+  generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseCreateWithoutOntologyConfigsInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  entities?: Prisma.EntityCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactCreateNestedManyWithoutKbInput
+  user: Prisma.UserCreateNestedOneWithoutKnowledgeBasesInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutKbInput
+  activeGeneration?: Prisma.IndexGenerationCreateNestedOneWithoutActiveForInput
+  generations?: Prisma.IndexGenerationCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseUncheckedCreateWithoutOntologyConfigsInput = {
+  id?: string
+  userId: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeGenerationId?: string | null
+  entities?: Prisma.EntityUncheckedCreateNestedManyWithoutKbInput
+  entityMentions?: Prisma.EntityMentionUncheckedCreateNestedManyWithoutKbInput
+  entityRelations?: Prisma.EntityRelationUncheckedCreateNestedManyWithoutKbInput
+  derivedFacts?: Prisma.DerivedFactUncheckedCreateNestedManyWithoutKbInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutKbInput
+  generations?: Prisma.IndexGenerationUncheckedCreateNestedManyWithoutKbInput
+  sourceVersions?: Prisma.SourceVersionUncheckedCreateNestedManyWithoutKbInput
+  compileJobs?: Prisma.CompileJobUncheckedCreateNestedManyWithoutKbInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedCreateNestedManyWithoutKbInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedCreateNestedManyWithoutKbInput
+  chunks?: Prisma.ChunkUncheckedCreateNestedManyWithoutKbInput
+  conversations?: Prisma.ConversationKnowledgeBaseUncheckedCreateNestedManyWithoutKbInput
+}
+
+export type KnowledgeBaseCreateOrConnectWithoutOntologyConfigsInput = {
+  where: Prisma.KnowledgeBaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutOntologyConfigsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutOntologyConfigsInput>
+}
+
+export type KnowledgeBaseUpsertWithoutOntologyConfigsInput = {
+  update: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutOntologyConfigsInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutOntologyConfigsInput>
+  create: Prisma.XOR<Prisma.KnowledgeBaseCreateWithoutOntologyConfigsInput, Prisma.KnowledgeBaseUncheckedCreateWithoutOntologyConfigsInput>
+  where?: Prisma.KnowledgeBaseWhereInput
+}
+
+export type KnowledgeBaseUpdateToOneWithWhereWithoutOntologyConfigsInput = {
+  where?: Prisma.KnowledgeBaseWhereInput
+  data: Prisma.XOR<Prisma.KnowledgeBaseUpdateWithoutOntologyConfigsInput, Prisma.KnowledgeBaseUncheckedUpdateWithoutOntologyConfigsInput>
+}
+
+export type KnowledgeBaseUpdateWithoutOntologyConfigsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutKnowledgeBasesNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
+  activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
+  generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUpdateManyWithoutKbNestedInput
+  chunks?: Prisma.ChunkUpdateManyWithoutKbNestedInput
+  conversations?: Prisma.ConversationKnowledgeBaseUpdateManyWithoutKbNestedInput
+}
+
+export type KnowledgeBaseUncheckedUpdateWithoutOntologyConfigsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
+  generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
+  sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
+  compileJobs?: Prisma.CompileJobUncheckedUpdateManyWithoutKbNestedInput
+  compileOutbox?: Prisma.CompileOutboxUncheckedUpdateManyWithoutKbNestedInput
+  compileCosts?: Prisma.CompileCostLedgerUncheckedUpdateManyWithoutKbNestedInput
   chunks?: Prisma.ChunkUncheckedUpdateManyWithoutKbNestedInput
   conversations?: Prisma.ConversationKnowledgeBaseUncheckedUpdateManyWithoutKbNestedInput
 }
@@ -1390,6 +2185,11 @@ export type KnowledgeBaseUpdateWithoutUserInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  entities?: Prisma.EntityUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutKbNestedInput
   activeGeneration?: Prisma.IndexGenerationUpdateOneWithoutActiveForNestedInput
   generations?: Prisma.IndexGenerationUpdateManyWithoutKbNestedInput
@@ -1407,6 +2207,11 @@ export type KnowledgeBaseUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeGenerationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  entities?: Prisma.EntityUncheckedUpdateManyWithoutKbNestedInput
+  entityMentions?: Prisma.EntityMentionUncheckedUpdateManyWithoutKbNestedInput
+  entityRelations?: Prisma.EntityRelationUncheckedUpdateManyWithoutKbNestedInput
+  derivedFacts?: Prisma.DerivedFactUncheckedUpdateManyWithoutKbNestedInput
+  ontologyConfigs?: Prisma.OntologyConfigUncheckedUpdateManyWithoutKbNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutKbNestedInput
   generations?: Prisma.IndexGenerationUncheckedUpdateManyWithoutKbNestedInput
   sourceVersions?: Prisma.SourceVersionUncheckedUpdateManyWithoutKbNestedInput
@@ -1431,6 +2236,11 @@ export type KnowledgeBaseUncheckedUpdateManyWithoutUserInput = {
  */
 
 export type KnowledgeBaseCountOutputType = {
+  entities: number
+  entityMentions: number
+  entityRelations: number
+  derivedFacts: number
+  ontologyConfigs: number
   documents: number
   generations: number
   sourceVersions: number
@@ -1442,6 +2252,11 @@ export type KnowledgeBaseCountOutputType = {
 }
 
 export type KnowledgeBaseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  entities?: boolean | KnowledgeBaseCountOutputTypeCountEntitiesArgs
+  entityMentions?: boolean | KnowledgeBaseCountOutputTypeCountEntityMentionsArgs
+  entityRelations?: boolean | KnowledgeBaseCountOutputTypeCountEntityRelationsArgs
+  derivedFacts?: boolean | KnowledgeBaseCountOutputTypeCountDerivedFactsArgs
+  ontologyConfigs?: boolean | KnowledgeBaseCountOutputTypeCountOntologyConfigsArgs
   documents?: boolean | KnowledgeBaseCountOutputTypeCountDocumentsArgs
   generations?: boolean | KnowledgeBaseCountOutputTypeCountGenerationsArgs
   sourceVersions?: boolean | KnowledgeBaseCountOutputTypeCountSourceVersionsArgs
@@ -1460,6 +2275,41 @@ export type KnowledgeBaseCountOutputTypeDefaultArgs<ExtArgs extends runtime.Type
    * Select specific fields to fetch from the KnowledgeBaseCountOutputType
    */
   select?: Prisma.KnowledgeBaseCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * KnowledgeBaseCountOutputType without action
+ */
+export type KnowledgeBaseCountOutputTypeCountEntitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EntityWhereInput
+}
+
+/**
+ * KnowledgeBaseCountOutputType without action
+ */
+export type KnowledgeBaseCountOutputTypeCountEntityMentionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EntityMentionWhereInput
+}
+
+/**
+ * KnowledgeBaseCountOutputType without action
+ */
+export type KnowledgeBaseCountOutputTypeCountEntityRelationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EntityRelationWhereInput
+}
+
+/**
+ * KnowledgeBaseCountOutputType without action
+ */
+export type KnowledgeBaseCountOutputTypeCountDerivedFactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DerivedFactWhereInput
+}
+
+/**
+ * KnowledgeBaseCountOutputType without action
+ */
+export type KnowledgeBaseCountOutputTypeCountOntologyConfigsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OntologyConfigWhereInput
 }
 
 /**
@@ -1526,6 +2376,11 @@ export type KnowledgeBaseSelect<ExtArgs extends runtime.Types.Extensions.Interna
   createdAt?: boolean
   updatedAt?: boolean
   activeGenerationId?: boolean
+  entities?: boolean | Prisma.KnowledgeBase$entitiesArgs<ExtArgs>
+  entityMentions?: boolean | Prisma.KnowledgeBase$entityMentionsArgs<ExtArgs>
+  entityRelations?: boolean | Prisma.KnowledgeBase$entityRelationsArgs<ExtArgs>
+  derivedFacts?: boolean | Prisma.KnowledgeBase$derivedFactsArgs<ExtArgs>
+  ontologyConfigs?: boolean | Prisma.KnowledgeBase$ontologyConfigsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   documents?: boolean | Prisma.KnowledgeBase$documentsArgs<ExtArgs>
   activeGeneration?: boolean | Prisma.KnowledgeBase$activeGenerationArgs<ExtArgs>
@@ -1572,6 +2427,11 @@ export type KnowledgeBaseSelectScalar = {
 
 export type KnowledgeBaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "name" | "createdAt" | "updatedAt" | "activeGenerationId", ExtArgs["result"]["knowledgeBase"]>
 export type KnowledgeBaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  entities?: boolean | Prisma.KnowledgeBase$entitiesArgs<ExtArgs>
+  entityMentions?: boolean | Prisma.KnowledgeBase$entityMentionsArgs<ExtArgs>
+  entityRelations?: boolean | Prisma.KnowledgeBase$entityRelationsArgs<ExtArgs>
+  derivedFacts?: boolean | Prisma.KnowledgeBase$derivedFactsArgs<ExtArgs>
+  ontologyConfigs?: boolean | Prisma.KnowledgeBase$ontologyConfigsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   documents?: boolean | Prisma.KnowledgeBase$documentsArgs<ExtArgs>
   activeGeneration?: boolean | Prisma.KnowledgeBase$activeGenerationArgs<ExtArgs>
@@ -1596,6 +2456,11 @@ export type KnowledgeBaseIncludeUpdateManyAndReturn<ExtArgs extends runtime.Type
 export type $KnowledgeBasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "KnowledgeBase"
   objects: {
+    entities: Prisma.$EntityPayload<ExtArgs>[]
+    entityMentions: Prisma.$EntityMentionPayload<ExtArgs>[]
+    entityRelations: Prisma.$EntityRelationPayload<ExtArgs>[]
+    derivedFacts: Prisma.$DerivedFactPayload<ExtArgs>[]
+    ontologyConfigs: Prisma.$OntologyConfigPayload<ExtArgs>[]
     user: Prisma.$UserPayload<ExtArgs>
     documents: Prisma.$DocumentPayload<ExtArgs>[]
     activeGeneration: Prisma.$IndexGenerationPayload<ExtArgs> | null
@@ -2008,6 +2873,11 @@ readonly fields: KnowledgeBaseFieldRefs;
  */
 export interface Prisma__KnowledgeBaseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  entities<T extends Prisma.KnowledgeBase$entitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$entitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  entityMentions<T extends Prisma.KnowledgeBase$entityMentionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$entityMentionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityMentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  entityRelations<T extends Prisma.KnowledgeBase$entityRelationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$entityRelationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityRelationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  derivedFacts<T extends Prisma.KnowledgeBase$derivedFactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$derivedFactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DerivedFactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ontologyConfigs<T extends Prisma.KnowledgeBase$ontologyConfigsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$ontologyConfigsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OntologyConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   documents<T extends Prisma.KnowledgeBase$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   activeGeneration<T extends Prisma.KnowledgeBase$activeGenerationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KnowledgeBase$activeGenerationArgs<ExtArgs>>): Prisma.Prisma__IndexGenerationClient<runtime.Types.Result.GetResult<Prisma.$IndexGenerationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2446,6 +3316,126 @@ export type KnowledgeBaseDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many KnowledgeBases to delete.
    */
   limit?: number
+}
+
+/**
+ * KnowledgeBase.entities
+ */
+export type KnowledgeBase$entitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Entity
+   */
+  select?: Prisma.EntitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Entity
+   */
+  omit?: Prisma.EntityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EntityInclude<ExtArgs> | null
+  where?: Prisma.EntityWhereInput
+  orderBy?: Prisma.EntityOrderByWithRelationInput | Prisma.EntityOrderByWithRelationInput[]
+  cursor?: Prisma.EntityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EntityScalarFieldEnum | Prisma.EntityScalarFieldEnum[]
+}
+
+/**
+ * KnowledgeBase.entityMentions
+ */
+export type KnowledgeBase$entityMentionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EntityMention
+   */
+  select?: Prisma.EntityMentionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EntityMention
+   */
+  omit?: Prisma.EntityMentionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EntityMentionInclude<ExtArgs> | null
+  where?: Prisma.EntityMentionWhereInput
+  orderBy?: Prisma.EntityMentionOrderByWithRelationInput | Prisma.EntityMentionOrderByWithRelationInput[]
+  cursor?: Prisma.EntityMentionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EntityMentionScalarFieldEnum | Prisma.EntityMentionScalarFieldEnum[]
+}
+
+/**
+ * KnowledgeBase.entityRelations
+ */
+export type KnowledgeBase$entityRelationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EntityRelation
+   */
+  select?: Prisma.EntityRelationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EntityRelation
+   */
+  omit?: Prisma.EntityRelationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EntityRelationInclude<ExtArgs> | null
+  where?: Prisma.EntityRelationWhereInput
+  orderBy?: Prisma.EntityRelationOrderByWithRelationInput | Prisma.EntityRelationOrderByWithRelationInput[]
+  cursor?: Prisma.EntityRelationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EntityRelationScalarFieldEnum | Prisma.EntityRelationScalarFieldEnum[]
+}
+
+/**
+ * KnowledgeBase.derivedFacts
+ */
+export type KnowledgeBase$derivedFactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DerivedFact
+   */
+  select?: Prisma.DerivedFactSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DerivedFact
+   */
+  omit?: Prisma.DerivedFactOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DerivedFactInclude<ExtArgs> | null
+  where?: Prisma.DerivedFactWhereInput
+  orderBy?: Prisma.DerivedFactOrderByWithRelationInput | Prisma.DerivedFactOrderByWithRelationInput[]
+  cursor?: Prisma.DerivedFactWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DerivedFactScalarFieldEnum | Prisma.DerivedFactScalarFieldEnum[]
+}
+
+/**
+ * KnowledgeBase.ontologyConfigs
+ */
+export type KnowledgeBase$ontologyConfigsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OntologyConfig
+   */
+  select?: Prisma.OntologyConfigSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OntologyConfig
+   */
+  omit?: Prisma.OntologyConfigOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OntologyConfigInclude<ExtArgs> | null
+  where?: Prisma.OntologyConfigWhereInput
+  orderBy?: Prisma.OntologyConfigOrderByWithRelationInput | Prisma.OntologyConfigOrderByWithRelationInput[]
+  cursor?: Prisma.OntologyConfigWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OntologyConfigScalarFieldEnum | Prisma.OntologyConfigScalarFieldEnum[]
 }
 
 /**

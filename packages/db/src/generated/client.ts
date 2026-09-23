@@ -184,3 +184,38 @@ export type CompileCostLedger = Prisma.CompileCostLedgerModel
  * 
  */
 export type SummaryFact = Prisma.SummaryFactModel
+/**
+ * Model Entity
+ * 
+ */
+export type Entity = Prisma.EntityModel
+/**
+ * Model EntityAlias
+ * 
+ */
+export type EntityAlias = Prisma.EntityAliasModel
+/**
+ * Model EntityMention
+ * 
+ */
+export type EntityMention = Prisma.EntityMentionModel
+/**
+ * Model EntityRelation
+ * 
+ */
+export type EntityRelation = Prisma.EntityRelationModel
+/**
+ * Model RelationEvidence
+ * 
+ */
+export type RelationEvidence = Prisma.RelationEvidenceModel
+/**
+ * Model DerivedFact
+ * 
+ */
+export type DerivedFact = Prisma.DerivedFactModel
+/**
+ * Model OntologyConfig
+ * 
+ */
+export type OntologyConfig = Prisma.OntologyConfigModel

@@ -79,7 +79,14 @@ export const ModelName = {
   CompileJob: 'CompileJob',
   CompileOutbox: 'CompileOutbox',
   CompileCostLedger: 'CompileCostLedger',
-  SummaryFact: 'SummaryFact'
+  SummaryFact: 'SummaryFact',
+  Entity: 'Entity',
+  EntityAlias: 'EntityAlias',
+  EntityMention: 'EntityMention',
+  EntityRelation: 'EntityRelation',
+  RelationEvidence: 'RelationEvidence',
+  DerivedFact: 'DerivedFact',
+  OntologyConfig: 'OntologyConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -526,6 +533,105 @@ export const SummaryFactScalarFieldEnum = {
 } as const
 
 export type SummaryFactScalarFieldEnum = (typeof SummaryFactScalarFieldEnum)[keyof typeof SummaryFactScalarFieldEnum]
+
+
+export const EntityScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  canonicalName: 'canonicalName',
+  type: 'type',
+  context: 'context',
+  createdAt: 'createdAt'
+} as const
+
+export type EntityScalarFieldEnum = (typeof EntityScalarFieldEnum)[keyof typeof EntityScalarFieldEnum]
+
+
+export const EntityAliasScalarFieldEnum = {
+  id: 'id',
+  entityId: 'entityId',
+  alias: 'alias',
+  normalized: 'normalized'
+} as const
+
+export type EntityAliasScalarFieldEnum = (typeof EntityAliasScalarFieldEnum)[keyof typeof EntityAliasScalarFieldEnum]
+
+
+export const EntityMentionScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  generationId: 'generationId',
+  entityId: 'entityId',
+  documentId: 'documentId',
+  chunkId: 'chunkId',
+  sourceVersionId: 'sourceVersionId',
+  start: 'start',
+  end: 'end',
+  evidenceText: 'evidenceText',
+  evidenceTextHash: 'evidenceTextHash',
+  createdAt: 'createdAt'
+} as const
+
+export type EntityMentionScalarFieldEnum = (typeof EntityMentionScalarFieldEnum)[keyof typeof EntityMentionScalarFieldEnum]
+
+
+export const EntityRelationScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  generationId: 'generationId',
+  schemaVersion: 'schemaVersion',
+  subjectId: 'subjectId',
+  predicate: 'predicate',
+  objectId: 'objectId',
+  timeQualifier: 'timeQualifier',
+  conditionQualifier: 'conditionQualifier',
+  createdAt: 'createdAt'
+} as const
+
+export type EntityRelationScalarFieldEnum = (typeof EntityRelationScalarFieldEnum)[keyof typeof EntityRelationScalarFieldEnum]
+
+
+export const RelationEvidenceScalarFieldEnum = {
+  id: 'id',
+  relationId: 'relationId',
+  documentId: 'documentId',
+  sourceVersionId: 'sourceVersionId',
+  chunkId: 'chunkId',
+  start: 'start',
+  end: 'end',
+  evidenceText: 'evidenceText',
+  evidenceTextHash: 'evidenceTextHash',
+  createdAt: 'createdAt'
+} as const
+
+export type RelationEvidenceScalarFieldEnum = (typeof RelationEvidenceScalarFieldEnum)[keyof typeof RelationEvidenceScalarFieldEnum]
+
+
+export const DerivedFactScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  generationId: 'generationId',
+  claim: 'claim',
+  entityId: 'entityId',
+  relationId: 'relationId',
+  sourceDocumentIds: 'sourceDocumentIds',
+  evidenceJson: 'evidenceJson',
+  wikidocId: 'wikidocId',
+  createdAt: 'createdAt'
+} as const
+
+export type DerivedFactScalarFieldEnum = (typeof DerivedFactScalarFieldEnum)[keyof typeof DerivedFactScalarFieldEnum]
+
+
+export const OntologyConfigScalarFieldEnum = {
+  id: 'id',
+  kbId: 'kbId',
+  version: 'version',
+  schemaJson: 'schemaJson',
+  createdAt: 'createdAt'
+} as const
+
+export type OntologyConfigScalarFieldEnum = (typeof OntologyConfigScalarFieldEnum)[keyof typeof OntologyConfigScalarFieldEnum]
 
 
 export const SortOrder = {
