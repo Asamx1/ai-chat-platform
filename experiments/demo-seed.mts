@@ -161,6 +161,18 @@ async function main(): Promise<void> {
     localModel = await prisma.modelRegistry.create({ data: { providerId: provider.id, kind: 'local', isDefault: true, modelKey: LOCAL_MODEL, capabilities: { label: LOCAL_MODEL + ' (local)' }, pricingVersion: 'v0' } });
   }
   await prisma.modelRegistry.updateMany({ where: { id: localModel.id }, data: { isDefault: true } });
+
+  // M12: 幂等补 deepseek 云端 provider + 模型注册(密钥由用户在设置页保存,DbSource)
+  let dsProvider = await prisma.provider.findFirst({ where: { kind: 'deepseek' } });
+  if (!dsProvider) {
+    dsProvider = await prisma.provider.create({ data: { id: 'deepseek', kind: 'deepseek', baseUrl: 'https://api.deepseek.com/v1', enabled: true } });
+  }
+  for (const mk of ['deepseek-chat', 'deepseek-reasoner']) {
+    const found = await prisma.modelRegistry.findFirst({ where: { providerId: dsProvider.id, modelKey: mk } });
+    if (!found) {
+      await prisma.modelRegistry.create({ data: { providerId: dsProvider.id, kind: 'cloud', modelKey: mk, capabilities: { label: mk + ' (deepseek)' }, pricingVersion: 'v0' } });
+    }
+  }
   console.log(`[demo-seed] model registry: ${localModel.modelKey} (${localModel.id})`);
 
   console.log('\n=== 答辩演示库就绪 ===');
