@@ -12,7 +12,8 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@aichat/db": "workspace:*"
+    "@aichat/db": "workspace:*",
+    "zod": "4.1.5"
   },
   "devDependencies": {
     "typescript": "^5",
