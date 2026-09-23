@@ -126,7 +126,7 @@ function SetLight([System.Windows.Controls.TextBlock]$tb, [string]$state) {
 }
 
 # 状态灯条目(当前真实系统:无 redis;Web 在 3001)
-$svcDefs = @('postgres','minio','Ollama','Web:3001','Worker')
+$svcDefs = @('postgres','minio','Ollama','Web:3001','Worker','Web预热')
 $svcLights = @{}
 foreach ($name in $svcDefs) {
   $tb = New-Object System.Windows.Controls.TextBlock
@@ -176,6 +176,7 @@ $pollTimer.Add_Tick({
           'ollama'         { $target='Ollama' }
           'web'            { $target='Web:3001' }
           'worker'         { $target='Worker' }
+          'warmup'         { $target='Web预热' }
         }
         if ($target -and $svcLights[$target]) {
           $state = if ($c.state -eq 'pass') {'ok'} elseif ($c.state -eq 'warn') {'warn'} else {'err'}
@@ -214,6 +215,7 @@ $btnStart.Add_Click({
     [pscustomobject]@{ Lines=$out; Code=$p.ExitCode }
   }).AddArgument($launcher).AddArgument($repo)
   $handle = $ps.BeginInvoke()
+  $runT0 = Get-Date
   $harvest = New-Object System.Windows.Threading.DispatcherTimer
   $harvest.Interval = [TimeSpan]::FromMilliseconds(400)
   $harvest.Add_Tick({
@@ -224,6 +226,12 @@ $btnStart.Add_Click({
         $color = if ($l -match '\[FAIL\]') { $T.err } elseif ($l -match '\[OK\]|\[PASS\]') { $T.ok } elseif ($l -match '\[WAIT\]') { $T.warn } else { $T.text }
         Log $l $color
       }
+      # 各阶段耗时摘要(行内 "(Xs)" 由 start-demo 输出;S1∥S2 并行取并行段总时长)
+      $stages = foreach ($l in $res.Lines) {
+        if ($l -match '^\[(OK|FAIL)\]\[(S[0-9]+(\+S[0-9]+)?)\].*\(([\d.]+s|\d+x3s)\)') { "$($Matches[2])=$($Matches[4])" }
+      }
+      if ($stages) { Log ('阶段耗时: ' + ($stages -join '  ')) $T.dim }
+      Log ("本次启动总耗时: $([math]::Round(((Get-Date) - $runT0).TotalSeconds,1))s") $T.dim
       if ($res.Code -eq 0) { Log '启动完成,系统入口 http://localhost:3001' $T.ok }
       else { Log "启动失败(exit $($res.Code)),看上方日志定位" $T.err }
       $busy = $false; $btnStart.IsEnabled = $true

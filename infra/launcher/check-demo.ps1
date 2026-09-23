@@ -43,9 +43,21 @@ try {
   Add-Check 'web' 'Web :3001' 'fail' '无响应:运行 start-demo.ps1 拉起 WSL dev server'
 }
 
-# ④ Worker(WSL 内 tsx worker 进程)
-$wk = (wsl -- bash -c "pgrep -fc 'kb-worker|worker/src' 2>/dev/null || echo 0" | Select-Object -First 1).Trim()
-if ($wk -match '^[1-9]') { Add-Check 'worker' 'Worker 进程' 'pass' "$wk 个进程" }
+# ④ Worker(tmux 会话存在性判断,精确;不再 pgrep 模糊匹配)
+$wk = (wsl -- bash -c "tmux has-session -t aichat-worker 2>/dev/null && echo yes || echo no" | Select-Object -First 1).Trim()
+if ($wk -eq 'yes') { Add-Check 'worker' 'Worker 进程' 'pass' 'tmux:aichat-worker' }
 else { Add-Check 'worker' 'Worker 进程' 'warn' '未运行(KB 重建/重分块不可用;聊天不受影响)' }
+
+# ⑤ Web 预热(M12-P3:start-demo 后台 curl 关键路由,完成标记 /tmp/m10logs/warmup.done)
+try {
+  $webCode = (Invoke-WebRequest -Uri 'http://127.0.0.1:3001/login' -UseBasicParsing -TimeoutSec 3).StatusCode
+} catch { $webCode = 0 }
+if ($webCode -ne 200) {
+  Add-Check 'warmup' 'Web 预热' 'warn' 'Web 未运行'
+} else {
+  $done = (wsl -- bash -c "test -f /tmp/m10logs/warmup.done && echo yes || echo no" | Select-Object -First 1).Trim()
+  if ($done -eq 'yes') { Add-Check 'warmup' 'Web 预热' 'pass' '就绪(/login / /settings /kb /api/models 已编译)' }
+  else { Add-Check 'warmup' 'Web 预热' 'warn' '预热中(后台编译 /login / /settings /kb /api/models)' }
+}
 
 if ($Json) { [pscustomobject]@{ checks = $script:checks } | ConvertTo-Json -Depth 4 -Compress }
