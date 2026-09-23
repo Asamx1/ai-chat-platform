@@ -13,7 +13,7 @@ export default function StopButton({
   return (
     <button
       type="button"
-      className="stop-btn"
+      className="btn"
       disabled={disabled}
       onClick={async () => {
         // POST /api/chat/stop {runId}

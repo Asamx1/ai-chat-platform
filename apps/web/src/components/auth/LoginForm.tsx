@@ -47,7 +47,7 @@ export default function LoginForm() {
           <div className="login-field">
             <label htmlFor="login-email">邮箱</label>
             <input
-              className="login-input"
+              className="input"
               id="login-email"
               name="email"
               type="email"
@@ -61,7 +61,7 @@ export default function LoginForm() {
           <div className="login-field">
             <label htmlFor="login-password">密码</label>
             <input
-              className="login-input"
+              className="input"
               id="login-password"
               name="password"
               type="password"
@@ -72,7 +72,7 @@ export default function LoginForm() {
             />
           </div>
 
-          <button className="login-submit" type="submit" disabled={pending}>
+          <button className="btn btn-primary login-submit" type="submit" disabled={pending}>
             {pending ? '登录中…' : '登录'}
           </button>
 

@@ -226,11 +226,11 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
         <div className="chat-topbar">
           <span>{activeId ? '对话' : '新对话'}</span>
           <div className="topbar-actions">
-            {isAdmin && <a className="topbar-link" href="/admin">后台</a>}
-            <a className="topbar-link" href="/kb">
+            {isAdmin && <a className="btn topbar-link" href="/admin">后台</a>}
+            <a className="btn topbar-link" href="/kb">
               知识库
             </a>
-            <a className="topbar-link" href="/settings">
+            <a className="btn topbar-link" href="/settings">
               设置
             </a>
             <CollabLauncher conversationId={activeId} onLaunched={setCollabRunId} />
@@ -238,7 +238,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
             <KbMountPicker conversationId={activeId} />
           </div>
         </div>
-        {notice && <div role="alert" className="msg-status failed" style={{ padding: '8px 16px' }}>{notice}</div>}
+        {notice && <div role="alert" className="msg-status failed chat-notice">{notice}</div>}
         <MessageStream messages={messages} onRetry={handleRetry} />
         <Composer
           disabled={sending}
@@ -250,7 +250,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
       </div>
       {collabRunId && (
         <div className="collab-side">
-          <button type="button" className="tl-btn" onClick={() => setCollabRunId(null)}>关闭协作进度</button>
+          <button type="button" className="btn" onClick={() => setCollabRunId(null)}>关闭协作进度</button>
           <OrchestrationProgress key={collabRunId} runId={collabRunId} />
           <RunTimeline runId={collabRunId} collapsed />
         </div>

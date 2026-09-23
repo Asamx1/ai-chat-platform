@@ -22,7 +22,7 @@ export default function MessageStream({
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    bottomRef.current?.scrollIntoView({ behavior: 'auto' });
   }, [messages]);
 
   if (messages.length === 0) {
@@ -35,7 +35,7 @@ export default function MessageStream({
         <div key={m.id} className={`msg-row ${m.role}`}>
           <div>
             <div className="msg-bubble">
-              {m.content || (m.status === 'streaming' ? '…' : '')}
+              {m.content || (m.status === 'streaming' ? <span className="thinking" role="status" aria-label="正在思考"><span aria-hidden="true" /><span aria-hidden="true" /><span aria-hidden="true" /></span> : '')}
               {m.role === 'assistant' && <CitationBadges citations={m.citations ?? []} />}
             </div>
             {m.status && (
@@ -44,7 +44,7 @@ export default function MessageStream({
                 {m.error && <span role="alert">：{m.error}</span>}
                 {onRetry && (m.status === 'failed' || m.status === 'error') && m.retryIdempotencyKey && (
                   <button
-                    className="retry-btn"
+                    className="btn retry-btn"
                     onClick={() => onRetry(m.retryIdempotencyKey as string)}
                   >
                     重试

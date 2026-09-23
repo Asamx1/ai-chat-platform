@@ -36,9 +36,9 @@ export default function QuotaEditor({ user }: { user: AdminUser | null }) {
   }
   return <section className="admin-card" aria-labelledby="admin-quota-title"><h2 id="admin-quota-title">模型每日限额{user ? ` · ${user.email}` : ''}</h2>
     <p className="admin-hint">从用户表选择用户。0 禁止云调用；恢复默认会删除覆盖值。</p>
-    {error && <p role="alert" className="admin-error">{error}</p>}<p role="status">{loading ? '加载限额中…' : feedback}</p>
-    {user && <button className="btn-ghost" disabled={loading || !!saving} onClick={() => setVersion(v => v + 1)}>刷新限额</button>}
+    {error && <p role="alert" className="admin-error">{error}</p>}<p className={loading ? 'skeleton' : undefined} role="status">{loading ? '加载限额中…' : feedback}</p>
+    {user && <button className="btn" disabled={loading || !!saving} onClick={() => setVersion(v => v + 1)}>刷新限额</button>}
     {user && !loading && !error && items.length === 0 && <p>暂无模型</p>}
-    {user && !loading && <div className="admin-table-wrap"><table className="data-table"><thead><tr><th>模型</th><th>生效限额 / 来源</th><th>每日 token 限额</th><th>操作</th></tr></thead><tbody>{items.map(item => <tr key={item.modelId}><td>{item.modelId}</td><td>{item.effectiveLimit} / {item.source}</td><td><input aria-label={`${item.modelId} 每日限额`} type="number" min="0" max="2147483647" step="1" value={drafts[item.modelId] ?? ''} disabled={!!saving} onChange={e => setDrafts(d => ({ ...d, [item.modelId]: e.target.value }))} /></td><td><div className="admin-toolbar"><button className="btn-primary" disabled={!!saving} onClick={() => void save(item.modelId, false)}>保存</button><button className="btn-ghost" disabled={!!saving} onClick={() => void save(item.modelId, true)}>恢复默认</button></div></td></tr>)}</tbody></table></div>}
+    {user && !loading && <div className="admin-table-wrap"><table className="data-table"><thead><tr><th>模型</th><th>生效限额 / 来源</th><th>每日 token 限额</th><th>操作</th></tr></thead><tbody>{items.map(item => <tr key={item.modelId}><td>{item.modelId}</td><td>{item.effectiveLimit} / {item.source}</td><td><input className="input" aria-label={`${item.modelId} 每日限额`} type="number" min="0" max="2147483647" step="1" value={drafts[item.modelId] ?? ''} disabled={!!saving} onChange={e => setDrafts(d => ({ ...d, [item.modelId]: e.target.value }))} /></td><td><div className="admin-toolbar"><button className="btn btn-primary" disabled={!!saving} onClick={() => void save(item.modelId, false)}>保存</button><button className="btn" disabled={!!saving} onClick={() => void save(item.modelId, true)}>恢复默认</button></div></td></tr>)}</tbody></table></div>}
   </section>;
 }

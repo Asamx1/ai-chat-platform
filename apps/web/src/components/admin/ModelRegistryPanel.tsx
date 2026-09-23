@@ -22,11 +22,11 @@ function ModelRow({ model, onSaved }: { model: RegistryModel; onSaved: (model: R
   return <tr>
     <td>{model.modelKey}<small>{model.id}</small></td>
     <td><form className="admin-toolbar" onSubmit={e => { e.preventDefault(); void save({ label: label.trim() }); }}>
-      <input aria-label={`${model.modelKey} 标签`} required maxLength={200} value={label} disabled={saving} onChange={e => setLabel(e.target.value)} />
-      <button className="btn-ghost" disabled={saving || !label.trim() || label.trim() === model.label}>保存标签</button>
+      <input className="input" aria-label={`${model.modelKey} 标签`} required maxLength={200} value={label} disabled={saving} onChange={e => setLabel(e.target.value)} />
+      <button className="btn" disabled={saving || !label.trim() || label.trim() === model.label}>保存标签</button>
     </form>{error && <p role="alert" className="settings-error">{error}</p>}{saving && <span role="status">保存中…</span>}</td>
     <td>{model.kind}</td><td>{model.provider}</td>
-    <td><input type="checkbox" role="switch" aria-label={`启用 ${model.modelKey} (${model.provider})`} checked={model.available} disabled={saving} onChange={e => void save({ available: e.target.checked })} /></td>
+    <td><input className="input" type="checkbox" role="switch" aria-label={`启用 ${model.modelKey} (${model.provider})`} checked={model.available} disabled={saving} onChange={e => void save({ available: e.target.checked })} /></td>
   </tr>;
 }
 
@@ -45,10 +45,10 @@ export default function ModelRegistryPanel() {
     return () => controller.abort();
   }, [version]);
   return <section className="settings-card admin-card" aria-labelledby="admin-models-title">
-    <div className="settings-card-title"><h2 id="admin-models-title">模型注册表</h2><button className="btn-ghost" disabled={loading} onClick={() => setVersion(v => v + 1)}>刷新</button></div>
+    <div className="settings-card-title"><h2 id="admin-models-title">模型注册表</h2><button className="btn" disabled={loading} onClick={() => setVersion(v => v + 1)}>刷新</button></div>
     <p className="settings-hint">开关控制注册项启用状态；实际可用性仍受提供方、API Key 和配额限制。</p>
     {error && <p role="alert" className="settings-error">{error}</p>}
-    {loading && <p role="status">加载模型中…</p>}
+    {loading && <p className="skeleton" role="status">加载模型中…</p>}
     {!loading && !error && (models.length === 0 ? <p>暂无模型</p> : <div className="admin-table-wrap"><table className="data-table">
       <thead><tr><th>模型 Key</th><th>标签</th><th>类型</th><th>提供方</th><th>启用</th></tr></thead>
       <tbody>{models.map(model => <ModelRow key={`${version}/${model.id}`} model={model} onSaved={updated => setModels(rows => rows.map(row => row.id === updated.id ? updated : row))} />)}</tbody>

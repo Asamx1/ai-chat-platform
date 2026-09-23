@@ -41,14 +41,14 @@ export default function ChangePasswordForm() {
         { id: 'confirm-password', label: '确认新密码', value: confirmation, set: setConfirmation, autocomplete: 'new-password' },
       ].map(field => <div className="login-field" key={field.id}>
         <label htmlFor={field.id}>{field.label}</label>
-        <input id={field.id} name={field.id} className="login-input" type="password" required
+        <input id={field.id} name={field.id} className="input" type="password" required
           autoComplete={field.autocomplete} value={field.value} disabled={pending}
           onChange={event => { field.set(event.target.value); setError(null); setSuccess(false); }} />
       </div>)}
       <p className="settings-hint">新密码长度须为 8 至 128 个字符。</p>
       {error && <p className="settings-error" role="alert">{error}</p>}
       {success && <p role="status">密码修改成功</p>}
-      <button className="btn-primary" type="submit" disabled={pending}>{pending ? '修改中…' : '修改密码'}</button>
+      <button className="btn btn-primary" type="submit" disabled={pending}>{pending ? '修改中…' : '修改密码'}</button>
     </form>
   </section>;
 }

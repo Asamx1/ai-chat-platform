@@ -69,7 +69,7 @@ export default function ConversationList({
     <div className="sidebar">
       <div className="sidebar-header">
         <span>对话</span>
-        <button className="new-chat-btn" onClick={() => void createConversation()}>
+        <button className="btn btn-primary" onClick={() => void createConversation()}>
           + 新建
         </button>
       </div>

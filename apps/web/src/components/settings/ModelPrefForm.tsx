@@ -29,7 +29,7 @@ export default function ModelPrefForm() {
     <div className="settings-card-title"><h2 id="model-pref-title">默认模型偏好</h2></div>
     <div className="login-field">
       <label htmlFor="default-model">默认模型</label>
-      <select id="default-model" className="login-input" value={model} disabled={!options.length}
+      <select id="default-model" className="input" value={model} disabled={!options.length}
         onChange={event => {
           setSaved(false);
           setError('');
@@ -45,6 +45,7 @@ export default function ModelPrefForm() {
         {options.map(option => <option key={option} value={option}>{option}</option>)}
       </select>
     </div>
+    {!options.length && <p className="skeleton" role="status">加载模型中…</p>}
     <p className="settings-hint">仅保存在当前浏览器，新会话生效。</p>
     {saved && <p role="status">已保存，新会话生效</p>}
     {error && <p className="settings-error" role="alert">{error}</p>}

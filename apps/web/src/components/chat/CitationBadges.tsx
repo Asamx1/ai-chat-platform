@@ -46,7 +46,7 @@ function CitationBadge({ citation, number }: { citation: Citation; number: numbe
 
   return (
     <sup className="citation-badge">
-      <a ref={anchor} href={`/kb/${encodeURIComponent(citation.documentId)}/chunks`}
+      <a className="badge" ref={anchor} href={`/kb/${encodeURIComponent(citation.documentId)}/chunks`}
         aria-label={`引用 ${number}：${citation.name}，分块 ${citation.ordinal}`}
         aria-describedby={position ? id : undefined}
         onMouseEnter={open} onMouseLeave={closeSoon} onFocus={open} onBlur={closeSoon}>

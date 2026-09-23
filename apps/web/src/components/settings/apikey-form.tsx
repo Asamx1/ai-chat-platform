@@ -143,12 +143,12 @@ export default function ApiKeyForm() {
   const hasKey = Boolean(keyInfo?.maskedKey);
 
   return (
-    <div className="settings-page">
+    <div className="page-shell">
       {toast && <div className={`settings-toast is-${toast.kind}`}>{toast.text}</div>}
-      <a className="settings-back" href="/">
+      <a className="btn page-back" href="/">
         ← 返回聊天
       </a>
-      <header className="settings-header">
+      <header className="page-header">
         <h1>设置</h1>
         <p>管理你的 API 密钥与模型可用性</p>
       </header>
@@ -156,7 +156,7 @@ export default function ApiKeyForm() {
       <section className="settings-card">
         <div className="settings-card-title">
           <h2>DeepSeek API 密钥</h2>
-          <span className={`settings-badge ${hasKey ? 'is-ok' : 'is-empty'}`}>
+          <span className={`badge ${hasKey ? 'is-ok' : 'is-empty'}`}>
             {hasKey ? '已配置' : '未配置'}
           </span>
         </div>
@@ -168,7 +168,7 @@ export default function ApiKeyForm() {
             <div className="settings-actions">
               <button
                 type="button"
-                className="btn-ghost"
+                className="btn"
                 onClick={() => {
                   setEditing(true);
                   setApiKey('');
@@ -178,7 +178,7 @@ export default function ApiKeyForm() {
               >
                 更换密钥
               </button>
-              <button type="button" className="btn-danger" onClick={() => setConfirming(true)}>
+              <button type="button" className="btn btn-danger" onClick={() => setConfirming(true)}>
                 删除
               </button>
             </div>
@@ -188,12 +188,12 @@ export default function ApiKeyForm() {
                 <div className="settings-actions">
                   <button
                     type="button"
-                    className="btn-danger is-solid"
+                    className="btn btn-danger is-solid"
                     onClick={() => void handleDelete()}
                   >
                     确认删除
                   </button>
-                  <button type="button" className="btn-ghost" onClick={() => setConfirming(false)}>
+                  <button type="button" className="btn" onClick={() => setConfirming(false)}>
                     取消
                   </button>
                 </div>
@@ -221,7 +221,7 @@ export default function ApiKeyForm() {
                 <label htmlFor="deepseek-api-key">API Key</label>
                 <input
                   id="deepseek-api-key"
-                  className="login-input"
+                  className="input"
                   type="password"
                   placeholder="sk-..."
                   value={apiKey}
@@ -231,13 +231,13 @@ export default function ApiKeyForm() {
                 <small className="settings-hint">密钥仅存储于服务端，保存后不再显示明文。</small>
               </div>
               <div className="settings-actions">
-                <button type="submit" className={`btn-primary${saving ? ' is-loading' : ''}`} disabled={saving}>
+                <button type="submit" className={`btn btn-primary${saving ? ' is-loading' : ''}`} disabled={saving}>
                   {saving ? '校验中…' : '保存并校验'}
                 </button>
                 {keyInfo && (
                   <button
                     type="button"
-                    className="btn-ghost"
+                    className="btn"
                     disabled={saving}
                     onClick={() => {
                       setEditing(false);
@@ -259,6 +259,7 @@ export default function ApiKeyForm() {
         <div className="settings-card-title">
           <h2>模型状态</h2>
         </div>
+        {!loaded && <p className="skeleton" role="status">加载模型中…</p>}
         {(loaded && cloudModels.length === 0 ? fallbackModelRows() : cloudModels).map((m) => (
           <div key={m.id} className={`settings-model-item ${m.available ? 'is-on' : 'is-off'}`}>
             <div>

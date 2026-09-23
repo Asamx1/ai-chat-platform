@@ -11,7 +11,7 @@ export default async function SettingsPage() {
   if (!session?.user) redirect('/login');
   return <>
     <ApiKeyForm />
-    <div className="settings-page" style={{ paddingTop: 0 }}>
+    <div className="page-shell page-shell-continuation">
       <ChangePasswordForm />
       <ModelPrefForm />
     </div>
