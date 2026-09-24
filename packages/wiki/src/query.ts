@@ -40,6 +40,7 @@ export async function embedQueries(questions: string[], signal: AbortSignal): Pr
 }
 const vectorCaches = new WeakMap<EmbeddingOptions['embed'], Map<string, { hash: string; vector: number[] }>>();
 const SEMANTIC_THRESHOLD = 0.35; // below this, cosine similarity is treated as noise (bge-m3 gives weak positives for unrelated text)
+const ANSWER_CLUES = /网址|官网|URL|链接|公式|等于|多少|几个|第.{1,3}页|版本|步骤/iu;
 
 function cosine(a: number[], b: number[]): number {
   if (a.length !== b.length) throw new Error('EMBEDDING_DIMENSION_MISMATCH');
@@ -156,6 +157,8 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
     let cache = vectorCaches.get(embed);
     if (!cache) { cache = new Map(); vectorCaches.set(embed, cache); }
     const sectionHits: Array<{ e: Citation; score: number }> = [];
+    const clueHits: Array<{ e: Citation; score: number }> = [];
+    const hasAnswerClue = ANSWER_CLUES.test(question);
     if (opts.vaultPath) {
       const sources = await tx.vaultSource.findMany({ where: { vaultId }, orderBy: { id: 'asc' } });
       for (const source of sources) {
@@ -186,6 +189,12 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
             try { similarity = cosine(questionVector, sectionVectors.get(index)!); }
             catch { vectorFailed = true; }
           }
+          const clueHit = hasAnswerClue && (score >= 1 || similarity > 0.25);
+          const id = `section_${sha256(JSON.stringify([source.id, source.sha256, section.locator])).slice(0, 24)}`;
+          const sectionCitation: Citation = { assertionId: id, quote: section.text.slice(0, 300), locator: section.locator,
+            sourceTitle: source.title, sourceId: source.id, sourceFile: source.filePath,
+            sourceSha256: source.sha256, origin: 'sourced', derivedFromSection: true };
+          if (clueHit) clueHits.push({ e: sectionCitation, score: score + Math.max(0, similarity) });
           if (!score && similarity <= SEMANTIC_THRESHOLD) continue;
           const quoted = usable.filter(a => a.evidence.some(e => e.sourceId === source.id && JSON.stringify(e.locator) === JSON.stringify(section.locator)));
           if (quoted.length) {
@@ -197,7 +206,6 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
               else ranked.push({ a, score: boosted });
             }
           } else {
-            const id = `section_${sha256(JSON.stringify([source.id, source.sha256, section.locator])).slice(0, 24)}`;
             semantic.set(id, similarity);
             sectionOverlap.set(id, tokens.length ? tokens.filter(t => normalizeName(section.text).includes(t)).length / tokens.length : 0);
             sectionHits.push({ score, e: { assertionId: id,
@@ -226,6 +234,11 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
       .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, 15);
     const selected = usable.filter(a => choices.some(c => c.id === a.row.id));
     const evidence = choices.flatMap(c => c.evidence);
+    // Supplement the main top-15 without spending its quota or repeating its sections.
+    evidence.push(...clueHits.filter(hit => !evidence.some(e => e.sourceId === hit.e.sourceId
+      && JSON.stringify(e.locator) === JSON.stringify(hit.e.locator)))
+      .sort((a, b) => b.score - a.score || a.e.assertionId.localeCompare(b.e.assertionId))
+      .slice(0, 3).map(hit => hit.e));
     const assertions: Assertion[] = selected.map(({ row: a }) => ({ id: a.id, subject: { id: a.subjectId, type: byId.get(a.subjectId)!.type }, predicate: a.predicate,
       ...(a.objectId ? { object: { id: a.objectId, type: byId.get(a.objectId)!.type } } : { value: z.union([z.string(), z.number(), z.boolean()]).parse(JSON.parse(a.value ?? 'null')) }),
       polarity: a.polarity ? 'positive' : 'negative', context: record.parse(JSON.parse(a.conditions ?? '{}')),
