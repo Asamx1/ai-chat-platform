@@ -1,0 +1,19 @@
+version: "1.0.0"
+maxDepth: 5
+rules:
+  - ruleId: R-SUBCLASS-TRANS
+    ruleVersion: "1.0.0"
+    approved: true
+    description: 仅对同一上下文、有效时间的肯定且 supported 的子类边求有界传递闭包。
+    premises: ["A subclass_of B", "B subclass_of C"]
+  - ruleId: R-INVERSE-DECLARED
+    ruleVersion: "1.0.0"
+    approved: true
+    description: 仅当本体中关系双方显式声明 inverseOf 时生成反向边；默认无互逆对。
+    premises: ["A r B", "ontology.r.inverseOf = s", "ontology.s.inverseOf = r"]
+forbidden:
+  - 相关→因果
+  - broader_than 当子类传递
+  - 优于自动传递
+  - 使用自动传递
+  - 任意自然语言规则执行

@@ -1,0 +1,9 @@
+# 借鉴 SHACL 形状，不声明标准兼容；object/value 必须且只能出现一个。
+version: "1.0.0"
+requiredFields: [id, subject, predicate, polarity, context, validTime, status, evidence, origin, ruleVersion, revision]
+numericRequiredFields: [unit, dataset, testSettings, metric]
+objectOrValue: exactlyOne
+origins: [sourced, inferred]
+endpointTypes: true
+forbidSubclassCycles: true
+evidenceTargetsAssertion: true

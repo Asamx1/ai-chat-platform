@@ -1,0 +1,119 @@
+# version 是本文件唯一 schemaVersion；不要再添加 schemaVersion 字段。
+version: "1.0.0"
+classes:
+  - id: Concept
+    label: Concept
+    description: "主题概念"
+    abstract: false
+  - id: Model
+    label: Model
+    description: "模型及其具体版本"
+    abstract: false
+  - id: Method
+    label: Method
+    description: "方法与技术"
+    abstract: false
+  - id: Task
+    label: Task
+    description: "任务"
+    abstract: false
+  - id: Metric
+    label: Metric
+    description: "评价指标"
+    abstract: false
+  - id: Dataset
+    label: Dataset
+    description: "数据集及其版本"
+    abstract: false
+  - id: Source
+    label: Source
+    description: "原始来源"
+    abstract: false
+# 以下为结构端点角色，不计入七个本体 Class。
+endpointRoles: [Class, Entity, Evidence, Assertion, Experiment]
+relations:
+  - id: instance_of
+    label: 实例类型
+    domain: ["Entity", "Concept", "Model", "Method", "Task", "Metric", "Dataset", "Source"]
+    range: ["Class"]
+    symmetric: false
+    transitive: false
+    requiresContext: false
+    description: 实体属于指定类型。
+  - id: subclass_of
+    label: 子类
+    domain: ["Class"]
+    range: ["Class"]
+    symmetric: false
+    transitive: true
+    requiresContext: false
+    description: 类型包含；禁止自环及有向环。
+  - id: broader_than
+    label: 更广主题
+    domain: ["Concept"]
+    range: ["Concept"]
+    symmetric: false
+    transitive: false
+    requiresContext: false
+    description: 主题导航，不是逻辑子类，不传递。
+  - id: uses
+    label: 使用
+    domain: ["Model", "Method"]
+    range: ["Method"]
+    symmetric: false
+    transitive: false
+    requiresContext: true
+    description: 系统或方法在指定条件下使用技术或方法。
+  - id: supports_task
+    label: 支持任务
+    domain: ["Model", "Method"]
+    range: ["Task"]
+    symmetric: false
+    transitive: false
+    requiresContext: true
+    description: 指定模型版本或方法在特定条件下支持任务。
+  - id: evaluated_on
+    label: 评测于
+    domain: ["Experiment"]
+    range: ["Dataset"]
+    symmetric: false
+    transitive: false
+    requiresContext: true
+    description: 实验在指定数据集及设置上评测。
+  - id: supports
+    label: 支持断言
+    domain: ["Evidence"]
+    range: ["Assertion"]
+    symmetric: false
+    transitive: false
+    requiresContext: false
+    description: 原始证据支持具体断言，不指向整篇文档。
+  - id: contradicts
+    label: 反驳断言
+    domain: ["Evidence"]
+    range: ["Assertion"]
+    symmetric: false
+    transitive: false
+    requiresContext: false
+    description: 原始证据反驳具体断言，不指向整篇文档。
+  - id: supersedes
+    label: 替代
+    domain: ["Entity", "Concept", "Model", "Method", "Task", "Metric", "Dataset", "Source"]
+    range: ["Entity", "Concept", "Model", "Method", "Task", "Metric", "Dataset", "Source"]
+    symmetric: false
+    transitive: false
+    requiresContext: true
+    description: 新版本在指定范围及生效条件下替代旧版本。
+  - id: related_to
+    label: 相关
+    domain: ["Entity", "Concept", "Model", "Method", "Task", "Metric", "Dataset", "Source"]
+    range: ["Entity", "Concept", "Model", "Method", "Task", "Metric", "Dataset", "Source"]
+    symmetric: true
+    transitive: false
+    requiresContext: false
+    description: 弱关联，仅供导航，不能推导事实。
+# 未声明 inverseOf；互逆推理默认空载。
+aliases:
+  fields: [canonicalId, type, version, definition, context, aliases]
+  resolutionOrder: [canonicalId, typeAndVersion, definitionAndContext, similarityCandidate]
+  similarityMayMerge: false
