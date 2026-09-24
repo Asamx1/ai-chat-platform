@@ -29,7 +29,7 @@ try {
     const output = await provider(request); estimatedOutputTokens += Math.ceil((JSON.stringify(output) ?? '').length / 4); return output;
   };
   const started = Date.now();
-  const results = [];
+  const results: Array<{ id: string; questionType: string; answerable: boolean; correct: boolean; actual: Awaited<ReturnType<typeof answerStrict>>; anchorCount: number; fileMatches: number; pageFileMatches: number; elapsedMs: number }> = [];
   for (const item of cases) {
     const start = Date.now();
     const actual = await answerStrict(item.question, values['vault-id'], values.vault, db, { llm });

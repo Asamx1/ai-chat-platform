@@ -1,0 +1,1683 @@
+{
+  "generatedAt": "2026-09-24T12:29:42.412Z",
+  "total": 59,
+  "correct": 30,
+  "accuracy": 0.5084745762711864,
+  "byType": {
+    "fact": {
+      "total": 13,
+      "correct": 5,
+      "accuracy": 0.38461538461538464
+    },
+    "synonym": {
+      "total": 8,
+      "correct": 3,
+      "accuracy": 0.375
+    },
+    "single_source": {
+      "total": 11,
+      "correct": 4,
+      "accuracy": 0.36363636363636365
+    },
+    "version_scope": {
+      "total": 9,
+      "correct": 2,
+      "accuracy": 0.2222222222222222
+    },
+    "unanswerable": {
+      "total": 9,
+      "correct": 8,
+      "accuracy": 0.8888888888888888
+    },
+    "out_of_scope": {
+      "total": 9,
+      "correct": 8,
+      "accuracy": 0.8888888888888888
+    }
+  },
+  "correctRefusals": 16,
+  "falseAnswers": 2,
+  "missedAnswers": 27,
+  "retrievalFailures": 0,
+  "averageCitations": 0.4067796610169492,
+  "citationQuality": {
+    "anchorCount": 52,
+    "fileOverlap": 0.3076923076923077,
+    "pageAndFileOverlap": 0.3076923076923077
+  },
+  "elapsedMs": 47437,
+  "llmCalls": 59,
+  "estimatedInputTokens": 292532,
+  "estimatedOutputTokens": 1345,
+  "tokenEstimateMethod": "ceil(characters / 4), not provider usage",
+  "errors": [
+    {
+      "id": "70e5e20f-f1f1-44bc-8e55-6e5ea7451d7d",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "dfe0ef02-7e55-42a5-a3c5-fc5b46b3d739",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "7f817bb1-9a93-4f2f-976b-17edeef009d3",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "13c096bf-ea25-4d79-985a-4656e43a3509",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "68657ac3-177c-44a5-aa35-ac30de951377",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "efacc0ee-9922-4d9c-9c57-b589b9a8e148",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "ad453209-7674-4eb8-9f51-9816fbd25395",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "6cf91083-ca82-45a9-84cf-4fe9894468fc",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "82732eec-cde7-42a7-bde5-dc21974d3675",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "870db59b-98a3-4516-8f14-dd9feda3d139",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "c2219eac-af25-4275-8306-6b56ed8e7d92",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "9601019b-ef82-49c6-ac0b-b24254d985e3",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "c0f72b47-7519-4568-878f-950f97fa2706",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "be1f3a90-b64d-4ad5-9951-7043f43c8b3a",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "4928efa1-58fd-4e61-8be0-3bbb85c8e8dc",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "f0946694-0b1d-44e6-a28b-50b8c27bc87d",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "633e4fe9-f28d-4446-bb57-ef07858ba0b1",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "486bbfca-0d97-4118-9ce4-7e8188f941f7",
+      "answerable": false,
+      "actual": {
+        "kind": "sourced",
+        "answer": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月发布。[asr_535450df-094e-47f1-9874-83eda88f82b2]",
+        "citations": [
+          {
+            "assertionId": "asr_535450df-094e-47f1-9874-83eda88f82b2",
+            "quote": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月\n发布。",
+            "locator": {
+              "kind": "page",
+              "page": 2
+            },
+            "sourceTitle": "MCP介绍-水印",
+            "sourceId": "src_852dcd76-6e03-4766-a150-6cd57f0a3218",
+            "sourceFile": "raw/articles/MCP介绍-水印.pdf",
+            "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      }
+    },
+    {
+      "id": "64ad2117-5787-427b-a262-5fcd7283af52",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "181ec4df-3c90-4ea9-99e9-0497496f4b47",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "eccf8a74-7d36-4339-a31c-d0808e0d9672",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "24dd05f1-a9ae-43d0-b424-4ddafbd75773",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "4513e98a-5fd4-40a5-ae16-00d4fa530d4b",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "c15f8071-72fb-481d-bffd-bf9e5548b2ad",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "4548e251-8d22-43b7-9d3e-b82fe2c58395",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "43cc423f-9093-465e-8845-0765105d549a",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "71025a98-2764-46ed-850c-6ab913a50817",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "c96ed427-667a-40cb-b5d0-3c7848258f89",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "e7a2c29d-41bb-4cd3-9155-6a5532cb21a0",
+      "answerable": false,
+      "actual": {
+        "kind": "sourced",
+        "answer": "ChatOpenAI 使用的模型为 Qwen2___5-7B-Instruct。[asr_4e162d71-0a25-48af-a9ff-1de5c3316605]",
+        "citations": [
+          {
+            "assertionId": "asr_4e162d71-0a25-48af-a9ff-1de5c3316605",
+            "quote": "chat_model = ChatOpenAI(\napi_key=\"EMPTY\",\nbase_url=\"http://192.168.180.180:29806/v1\",\nmodel=\"Qwen2___5-7B-Instruct\"\n)",
+            "locator": {
+              "kind": "page",
+              "page": 5
+            },
+            "sourceTitle": "手搓一个Agent-水印",
+            "sourceId": "src_5aa44177-ec54-4cbc-8de8-51354e95e348",
+            "sourceFile": "raw/articles/手搓一个Agent-水印.pdf",
+            "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      }
+    }
+  ],
+  "results": [
+    {
+      "id": "e192eb83-6ec0-4433-8fbb-d13ea9d85cfd",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "RAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结合的自然语言处理技术，主要应用于大规模语言模型（如GPT）与信息检索系统（如搜索引擎）的集成。[asr_7dec4b65-77c7-4a37-a5b3-366b55fca6c1]",
+        "citations": [
+          {
+            "assertionId": "asr_7dec4b65-77c7-4a37-a5b3-366b55fca6c1",
+            "quote": "RAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结\n合的自然语言处理技术，主要应用于大规模语言模型（如GPT）与信息检索系统（如\n搜索引擎）的集成。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "RAG的介绍-水印",
+            "sourceId": "src_5eb432f7-c380-4f7b-9a74-51c7cae3feb7",
+            "sourceFile": "raw/articles/RAG的介绍-水印.pdf",
+            "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 905
+    },
+    {
+      "id": "7b7f900e-8c1f-4e72-abf6-8a9d2342a85e",
+      "questionType": "synonym",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "检索增强生成（RAG）还可以被称为 Retrieval-Augmented Generation。[asr_7dec4b65-77c7-4a37-a5b3-366b55fca6c1]",
+        "citations": [
+          {
+            "assertionId": "asr_7dec4b65-77c7-4a37-a5b3-366b55fca6c1",
+            "quote": "RAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结\n合的自然语言处理技术，主要应用于大规模语言模型（如GPT）与信息检索系统（如\n搜索引擎）的集成。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "RAG的介绍-水印",
+            "sourceId": "src_5eb432f7-c380-4f7b-9a74-51c7cae3feb7",
+            "sourceFile": "raw/articles/RAG的介绍-水印.pdf",
+            "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 1489
+    },
+    {
+      "id": "9ad6ebae-90f0-4707-bd53-bae8c9073500",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "RAG 模型首先通过检索模块从外部知识库中提取相关文档，随后生成模块基于这些检索结果生成自然语言的回答。[asr_4f53fc02-db1c-40d6-a6b5-7b5c45d8c9db]\nRAG 模型首先通过检索模块从外部知识库中提取相关文档，随后生成模块基于这些检索结果生成自然语言的回答。[asr_cfb4d935-5ad9-412c-95d3-bc4f25e6c33e]\n生成器（Generator）是基于预训练的大规模语言模型（如GPT），负责根据检索到的信息生成自然语言的回答或文本。[asr_420a9327-5b40-4087-a6dd-575b9af3c185]\n生成器通常是基于大规模预训练的语言模型（例如 GPT 系列模型），这些模型本身已经具备一定的生成能力和知识储备。[asr_dd90d157-1631-48e0-823e-89e4f4690b21]",
+        "citations": [
+          {
+            "assertionId": "asr_4f53fc02-db1c-40d6-a6b5-7b5c45d8c9db",
+            "quote": "RAG（Retrieval-Augmented Generation）是结合检索和生成的自然语言处理技术。在 RAG 模型中，首\n先通过检索模块从外部知识库中提取相关文档，随后生成模块基于这些检索结果生成自然语言的回答。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "RAG的评估-水印",
+            "sourceId": "src_10274047-2c1d-49ca-8bba-29163aab9d50",
+            "sourceFile": "raw/articles/RAG的评估-水印.pdf",
+            "sourceSha256": "36df196521a0aded6d31697ead066de29b7604259dc3f0527bbf936287fd0bcf",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_cfb4d935-5ad9-412c-95d3-bc4f25e6c33e",
+            "quote": "RAG（Retrieval-Augmented Generation）是结合检索和生成的自然语言处理技术。在 RAG 模型中，首\n先通过检索模块从外部知识库中提取相关文档，随后生成模块基于这些检索结果生成自然语言的回答。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "RAG的评估-水印",
+            "sourceId": "src_10274047-2c1d-49ca-8bba-29163aab9d50",
+            "sourceFile": "raw/articles/RAG的评估-水印.pdf",
+            "sourceSha256": "36df196521a0aded6d31697ead066de29b7604259dc3f0527bbf936287fd0bcf",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_420a9327-5b40-4087-a6dd-575b9af3c185",
+            "quote": "生成器（Generator）： 生成器是基于预训练的大规模语言模型（如GPT），负\n责根据检索到的信息生成自然语言的回答或文本。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "RAG的介绍-水印",
+            "sourceId": "src_5eb432f7-c380-4f7b-9a74-51c7cae3feb7",
+            "sourceFile": "raw/articles/RAG的介绍-水印.pdf",
+            "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_dd90d157-1631-48e0-823e-89e4f4690b21",
+            "quote": "生成器通常是基于大规模预训\n练的语言模型（例如 GPT 系列模型），这些模型本身已经具备一定的生成能力和知\n识储备。",
+            "locator": {
+              "kind": "page",
+              "page": 2
+            },
+            "sourceTitle": "RAG的介绍-水印",
+            "sourceId": "src_5eb432f7-c380-4f7b-9a74-51c7cae3feb7",
+            "sourceFile": "raw/articles/RAG的介绍-水印.pdf",
+            "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 1460
+    },
+    {
+      "id": "852d0a12-548a-4429-aa46-e64b6c89d2ec",
+      "questionType": "version_scope",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "它通常使用诸如 Elasticsearch 或基于嵌入的向量搜索（例如，FAISS）来检索最相关的信息。[asr_25a1047e-068f-40fe-9ca9-9acd871fa0a8]\n它通常使用诸如 Elasticsearch 或基于嵌入的向量搜索（例如，FAISS）来检索最相关的信息。[asr_4290653b-dee0-416c-8e7c-6a85121d493b]\n它通常使用诸如 Elasticsearch 或基于嵌入的向量搜索（例如，FAISS）来检索最相关的信息。[asr_5d5c88e7-1b12-4bed-b055-213271793a64]",
+        "citations": [
+          {
+            "assertionId": "asr_25a1047e-068f-40fe-9ca9-9acd871fa0a8",
+            "quote": "它通常使用诸如 Elasticsearch 或基于嵌入的向量搜索（例如，\nFAISS）来检索最相关的信息。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "RAG的介绍-水印",
+            "sourceId": "src_5eb432f7-c380-4f7b-9a74-51c7cae3feb7",
+            "sourceFile": "raw/articles/RAG的介绍-水印.pdf",
+            "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_4290653b-dee0-416c-8e7c-6a85121d493b",
+            "quote": "它通常使用诸如 Elasticsearch 或基于嵌入的向量搜索（例如，\nFAISS）来检索最相关的信息。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "RAG的介绍-水印",
+            "sourceId": "src_5eb432f7-c380-4f7b-9a74-51c7cae3feb7",
+            "sourceFile": "raw/articles/RAG的介绍-水印.pdf",
+            "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_5d5c88e7-1b12-4bed-b055-213271793a64",
+            "quote": "它通常使用诸如 Elasticsearch 或基于嵌入的向量搜索（例如，\nFAISS）来检索最相关的信息。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "RAG的介绍-水印",
+            "sourceId": "src_5eb432f7-c380-4f7b-9a74-51c7cae3feb7",
+            "sourceFile": "raw/articles/RAG的介绍-水印.pdf",
+            "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 2,
+      "fileMatches": 2,
+      "pageFileMatches": 2,
+      "elapsedMs": 1622
+    },
+    {
+      "id": "f923b3f4-d7ac-4999-b9c1-94c79779db69",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 425
+    },
+    {
+      "id": "f523a2ac-ac1f-45db-8661-e87bb63deffa",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 493
+    },
+    {
+      "id": "70e5e20f-f1f1-44bc-8e55-6e5ea7451d7d",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 998
+    },
+    {
+      "id": "dfe0ef02-7e55-42a5-a3c5-fc5b46b3d739",
+      "questionType": "synonym",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 552
+    },
+    {
+      "id": "7f817bb1-9a93-4f2f-976b-17edeef009d3",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 623
+    },
+    {
+      "id": "13c096bf-ea25-4d79-985a-4656e43a3509",
+      "questionType": "version_scope",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 657
+    },
+    {
+      "id": "01e4aa8a-e332-4f19-896b-4bae7a57dad1",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 664
+    },
+    {
+      "id": "800f08c9-0e8b-4ef1-8aef-ae011b172618",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 528
+    },
+    {
+      "id": "68657ac3-177c-44a5-aa35-ac30de951377",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 2,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 636
+    },
+    {
+      "id": "cb637ce9-a55d-48b7-bccb-e16c3cf3748f",
+      "questionType": "synonym",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月发布。[asr_535450df-094e-47f1-9874-83eda88f82b2]",
+        "citations": [
+          {
+            "assertionId": "asr_535450df-094e-47f1-9874-83eda88f82b2",
+            "quote": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月\n发布。",
+            "locator": {
+              "kind": "page",
+              "page": 2
+            },
+            "sourceTitle": "MCP介绍-水印",
+            "sourceId": "src_852dcd76-6e03-4766-a150-6cd57f0a3218",
+            "sourceFile": "raw/articles/MCP介绍-水印.pdf",
+            "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 791
+    },
+    {
+      "id": "533bfe9e-bdc5-4f0a-9771-b89c2fa0c40e",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月发布。[asr_535450df-094e-47f1-9874-83eda88f82b2]",
+        "citations": [
+          {
+            "assertionId": "asr_535450df-094e-47f1-9874-83eda88f82b2",
+            "quote": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月\n发布。",
+            "locator": {
+              "kind": "page",
+              "page": 2
+            },
+            "sourceTitle": "MCP介绍-水印",
+            "sourceId": "src_852dcd76-6e03-4766-a150-6cd57f0a3218",
+            "sourceFile": "raw/articles/MCP介绍-水印.pdf",
+            "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 2,
+      "fileMatches": 2,
+      "pageFileMatches": 2,
+      "elapsedMs": 705
+    },
+    {
+      "id": "92f20f19-dc52-453c-9657-2f0dc07004ab",
+      "questionType": "version_scope",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "MCP基于JSON-RPC 2.0协议，确保结构化、可靠的通信。[asr_a921edb1-848e-4d59-b5a7-c8471698a191]",
+        "citations": [
+          {
+            "assertionId": "asr_a921edb1-848e-4d59-b5a7-c8471698a191",
+            "quote": "MCP基于JSON-RPC 2.0协议，确保结构化、可靠的通信。",
+            "locator": {
+              "kind": "page",
+              "page": 5
+            },
+            "sourceTitle": "MCP介绍-水印",
+            "sourceId": "src_852dcd76-6e03-4766-a150-6cd57f0a3218",
+            "sourceFile": "raw/articles/MCP介绍-水印.pdf",
+            "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 955
+    },
+    {
+      "id": "c78d409b-6dbc-4ce0-92f1-201eb091c04c",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 725
+    },
+    {
+      "id": "07b04237-91fd-468a-9420-1e0700195a0b",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 688
+    },
+    {
+      "id": "efacc0ee-9922-4d9c-9c57-b589b9a8e148",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 648
+    },
+    {
+      "id": "ad453209-7674-4eb8-9f51-9816fbd25395",
+      "questionType": "synonym",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 2,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 490
+    },
+    {
+      "id": "6cf91083-ca82-45a9-84cf-4fe9894468fc",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 1060
+    },
+    {
+      "id": "82732eec-cde7-42a7-bde5-dc21974d3675",
+      "questionType": "version_scope",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 626
+    },
+    {
+      "id": "870db59b-98a3-4516-8f14-dd9feda3d139",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 790
+    },
+    {
+      "id": "c2219eac-af25-4275-8306-6b56ed8e7d92",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 613
+    },
+    {
+      "id": "9601019b-ef82-49c6-ac0b-b24254d985e3",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 2,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 467
+    },
+    {
+      "id": "c0f72b47-7519-4568-878f-950f97fa2706",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 712
+    },
+    {
+      "id": "be1f3a90-b64d-4ad5-9951-7043f43c8b3a",
+      "questionType": "version_scope",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 2,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 789
+    },
+    {
+      "id": "4928efa1-58fd-4e61-8be0-3bbb85c8e8dc",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 2,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 613
+    },
+    {
+      "id": "f0946694-0b1d-44e6-a28b-50b8c27bc87d",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 747
+    },
+    {
+      "id": "633e4fe9-f28d-4446-bb57-ef07858ba0b1",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 577
+    },
+    {
+      "id": "8346d496-738b-4659-95e8-c3dac376d4ca",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 636
+    },
+    {
+      "id": "de2f337d-dc32-49d1-9253-4050e21a15c8",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 591
+    },
+    {
+      "id": "486bbfca-0d97-4118-9ce4-7e8188f941f7",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "correct": false,
+      "actual": {
+        "kind": "sourced",
+        "answer": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月发布。[asr_535450df-094e-47f1-9874-83eda88f82b2]",
+        "citations": [
+          {
+            "assertionId": "asr_535450df-094e-47f1-9874-83eda88f82b2",
+            "quote": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月\n发布。",
+            "locator": {
+              "kind": "page",
+              "page": 2
+            },
+            "sourceTitle": "MCP介绍-水印",
+            "sourceId": "src_852dcd76-6e03-4766-a150-6cd57f0a3218",
+            "sourceFile": "raw/articles/MCP介绍-水印.pdf",
+            "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 860
+    },
+    {
+      "id": "0521ca0a-6d82-477e-bcc3-9b8df091279b",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 569
+    },
+    {
+      "id": "f3de426b-5d7b-4208-ad39-5b9d305a59a1",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "Memory在Langchain中是用来存储对话状态的组件。[asr_ce04e0fc-9d7a-4f4d-9314-ece0d33a28bb]",
+        "citations": [
+          {
+            "assertionId": "asr_ce04e0fc-9d7a-4f4d-9314-ece0d33a28bb",
+            "quote": "Memory在Langchain中是用来存储对话状态的组件。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "Langchain-memory记忆-水印",
+            "sourceId": "src_06680996-0650-4e59-818a-ae541f147580",
+            "sourceFile": "raw/articles/Langchain-memory记忆-水印.pdf",
+            "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 696
+    },
+    {
+      "id": "64ad2117-5787-427b-a262-5fcd7283af52",
+      "questionType": "synonym",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 608
+    },
+    {
+      "id": "e43be92d-2b32-4eb0-861a-2cdce9313deb",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "它是一种简单的对话缓冲记忆，存储所有的对话历史记录。[asr_801258b1-f319-4486-9def-eaf24a03b0d2]",
+        "citations": [
+          {
+            "assertionId": "asr_801258b1-f319-4486-9def-eaf24a03b0d2",
+            "quote": "它是一种简单的对话缓冲记忆，存储所有的对话历史记录。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "Langchain-memory记忆-水印",
+            "sourceId": "src_06680996-0650-4e59-818a-ae541f147580",
+            "sourceFile": "raw/articles/Langchain-memory记忆-水印.pdf",
+            "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 959
+    },
+    {
+      "id": "181ec4df-3c90-4ea9-99e9-0497496f4b47",
+      "questionType": "version_scope",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 2,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 345
+    },
+    {
+      "id": "c38aec5d-37f2-4627-b5bb-2602b3e0c3bb",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 1648
+    },
+    {
+      "id": "526f34c8-b151-418c-896c-8a7387226903",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 573
+    },
+    {
+      "id": "eccf8a74-7d36-4339-a31c-d0808e0d9672",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 495
+    },
+    {
+      "id": "24dd05f1-a9ae-43d0-b424-4ddafbd75773",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 990
+    },
+    {
+      "id": "4513e98a-5fd4-40a5-ae16-00d4fa530d4b",
+      "questionType": "synonym",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 710
+    },
+    {
+      "id": "c15f8071-72fb-481d-bffd-bf9e5548b2ad",
+      "questionType": "version_scope",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 931
+    },
+    {
+      "id": "3a257585-8487-4632-8ba7-cdbd0db09ebe",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "MCP 支持 1. Standard I/O（stdio）传输 [asr_f633955b-634a-421e-9145-7f1d24de5bf9]\nMCP 支持 2. Server-Sent Events（SSE）传输 [asr_84f4830b-0262-40d0-a237-cef79a8e112d]\nMCP 支持 3. Streamable-HTTP（可流式 HTTP）传输 [asr_85736b69-e620-46d0-93ee-c167e178b6ac]",
+        "citations": [
+          {
+            "assertionId": "asr_84f4830b-0262-40d0-a237-cef79a8e112d",
+            "quote": "2. Server-Sent Events（SSE）传输",
+            "locator": {
+              "kind": "page",
+              "page": 6
+            },
+            "sourceTitle": "MCP介绍-水印",
+            "sourceId": "src_852dcd76-6e03-4766-a150-6cd57f0a3218",
+            "sourceFile": "raw/articles/MCP介绍-水印.pdf",
+            "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_85736b69-e620-46d0-93ee-c167e178b6ac",
+            "quote": "3. Streamable-HTTP（可流式 HTTP）传输",
+            "locator": {
+              "kind": "page",
+              "page": 6
+            },
+            "sourceTitle": "MCP介绍-水印",
+            "sourceId": "src_852dcd76-6e03-4766-a150-6cd57f0a3218",
+            "sourceFile": "raw/articles/MCP介绍-水印.pdf",
+            "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_f633955b-634a-421e-9145-7f1d24de5bf9",
+            "quote": "1. Standard I/O（stdio）传输",
+            "locator": {
+              "kind": "page",
+              "page": 6
+            },
+            "sourceTitle": "MCP介绍-水印",
+            "sourceId": "src_852dcd76-6e03-4766-a150-6cd57f0a3218",
+            "sourceFile": "raw/articles/MCP介绍-水印.pdf",
+            "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 1353
+    },
+    {
+      "id": "0ac735a6-2826-4267-857f-248eb4468f65",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 788
+    },
+    {
+      "id": "fef173ec-7e67-4456-a2f5-1c698b6e99f1",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 337
+    },
+    {
+      "id": "6f3ffddd-c22e-4bc2-8f07-10c14c1bc062",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "当计算两个向量的相似度时，常见的方法包括余弦相似度、内积和L2距离（欧几里得距离）。 [asr_4b2ebd9d-7b60-455b-9f87-fd8ab6893f5a]",
+        "citations": [
+          {
+            "assertionId": "asr_4b2ebd9d-7b60-455b-9f87-fd8ab6893f5a",
+            "quote": "当计算两个向量的相似度时，常见的方法包括余弦相似度、内积和L2距离（欧几里得\n距离）。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "常见向量数据库的介绍-水印",
+            "sourceId": "src_35ee08bf-ff9a-440e-a262-fbfac4adb2a3",
+            "sourceFile": "raw/articles/常见向量数据库的介绍-水印.pdf",
+            "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 816
+    },
+    {
+      "id": "4548e251-8d22-43b7-9d3e-b82fe2c58395",
+      "questionType": "synonym",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 832
+    },
+    {
+      "id": "ed50628a-8069-49ff-b63d-8ea1efc72deb",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "FAISS 的全称是 Facebook AI Similarity Search。[asr_b2d081f3-cb06-479b-926f-84d29c038472]",
+        "citations": [
+          {
+            "assertionId": "asr_b2d081f3-cb06-479b-926f-84d29c038472",
+            "quote": "1.2.2 FAISS (Facebook AI Similarity Search)",
+            "locator": {
+              "kind": "page",
+              "page": 8
+            },
+            "sourceTitle": "常见向量数据库的介绍-水印",
+            "sourceId": "src_35ee08bf-ff9a-440e-a262-fbfac4adb2a3",
+            "sourceFile": "raw/articles/常见向量数据库的介绍-水印.pdf",
+            "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 921
+    },
+    {
+      "id": "43cc423f-9093-465e-8845-0765105d549a",
+      "questionType": "version_scope",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 1010
+    },
+    {
+      "id": "7aef475b-e2fb-4ad5-9366-353adf9aefbb",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 807
+    },
+    {
+      "id": "41ac6840-d5ae-4c25-abf2-3c8010b1f4b9",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 908
+    },
+    {
+      "id": "d0eb1a86-14c0-401c-851f-c4bc314ecafb",
+      "questionType": "fact",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "React（Reasoning + Acting）是构建智能代理（Agent）的一个底层逻辑框架，用于通过语言模型（LLM）结合外部工具的交互来解决复杂问题。[asr_9fe79c6d-ae4d-4bf1-bb4e-3afdca3f346c]\n它的核心思想是通过推理（Reasoning）和执行（Acting）的循环，让代理能够自主思考、规划和采取行动。[asr_136cba52-d12b-47e2-ba14-9d7060f9c32f]",
+        "citations": [
+          {
+            "assertionId": "asr_136cba52-d12b-47e2-ba14-9d7060f9c32f",
+            "quote": "它的核心思想是通过推\n理（Reasoning）和执行（Acting）**的循环，让代理能够自主思考、规划和采取行\n动。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "手搓一个Agent-水印",
+            "sourceId": "src_5aa44177-ec54-4cbc-8de8-51354e95e348",
+            "sourceFile": "raw/articles/手搓一个Agent-水印.pdf",
+            "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_9fe79c6d-ae4d-4bf1-bb4e-3afdca3f346c",
+            "quote": "React（Reasoning + Acting）是构建智能代理（Agent）的一个底层逻辑框架，用于\n通过语言模型（LLM）结合外部工具的交互来解决复杂问题。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "手搓一个Agent-水印",
+            "sourceId": "src_5aa44177-ec54-4cbc-8de8-51354e95e348",
+            "sourceFile": "raw/articles/手搓一个Agent-水印.pdf",
+            "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 3,
+      "fileMatches": 3,
+      "pageFileMatches": 3,
+      "elapsedMs": 1117
+    },
+    {
+      "id": "2506efb1-2b7e-41af-b14c-156665782475",
+      "questionType": "synonym",
+      "answerable": true,
+      "correct": true,
+      "actual": {
+        "kind": "sourced",
+        "answer": "提示词对应的英文术语是 Prompt。[asr_ec21f77e-6073-44e7-989f-68c7496e2d32]",
+        "citations": [
+          {
+            "assertionId": "asr_ec21f77e-6073-44e7-989f-68c7496e2d32",
+            "quote": "其实简单来说这个就是所谓的提示词Prompt。",
+            "locator": {
+              "kind": "page",
+              "page": 7
+            },
+            "sourceTitle": "Langchain部署本地大模型-水印",
+            "sourceId": "src_df674da9-5fda-4920-8cc6-245661b35d26",
+            "sourceFile": "raw/articles/Langchain部署本地大模型-水印.pdf",
+            "sourceSha256": "d91c956a692f10a2824d58709fae5f4b76976971872a1ab7f382c15699bd4a2a",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 1461
+    },
+    {
+      "id": "71025a98-2764-46ed-850c-6ab913a50817",
+      "questionType": "single_source",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 2,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 746
+    },
+    {
+      "id": "c96ed427-667a-40cb-b5d0-3c7848258f89",
+      "questionType": "version_scope",
+      "answerable": true,
+      "correct": false,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 1,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 744
+    },
+    {
+      "id": "e7a2c29d-41bb-4cd3-9155-6a5532cb21a0",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "correct": false,
+      "actual": {
+        "kind": "sourced",
+        "answer": "ChatOpenAI 使用的模型为 Qwen2___5-7B-Instruct。[asr_4e162d71-0a25-48af-a9ff-1de5c3316605]",
+        "citations": [
+          {
+            "assertionId": "asr_4e162d71-0a25-48af-a9ff-1de5c3316605",
+            "quote": "chat_model = ChatOpenAI(\napi_key=\"EMPTY\",\nbase_url=\"http://192.168.180.180:29806/v1\",\nmodel=\"Qwen2___5-7B-Instruct\"\n)",
+            "locator": {
+              "kind": "page",
+              "page": 5
+            },
+            "sourceTitle": "手搓一个Agent-水印",
+            "sourceId": "src_5aa44177-ec54-4cbc-8de8-51354e95e348",
+            "sourceFile": "raw/articles/手搓一个Agent-水印.pdf",
+            "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 950
+    },
+    {
+      "id": "8605de8b-bfea-4e5a-a638-0ee52be267e5",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "correct": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      },
+      "anchorCount": 0,
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 987
+    }
+  ]
+}
