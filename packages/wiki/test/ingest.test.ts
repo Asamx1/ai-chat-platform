@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import type { PrismaClient } from '@aichat/db';
 import type { Ontology } from '@aichat/ontology';
-import { extractAssertions, normalizeEntities, defaultConstraints, entityKey, type CandidateSet, type Llm } from '../src/extract.js';
+import { reextractAll, extractAssertions, normalizeEntities, defaultConstraints, entityKey, type CandidateSet, type Llm } from '../src/extract.js';
 import { parseSource } from '../src/parse.js';
 import { registerSource, scanRawDir, scanRawFile, sha256 } from '../src/scan.js';
 import { ingestFile, ingestVault } from '../src/ingest.js';
@@ -197,4 +197,40 @@ describe.skipIf(!testUrl)('real test database ingestion', () => {
     expect(reports.find(r => r.file.endsWith('00-broken.pdf'))?.errors[0]?.stage).toBe('parse');
     expect(reports.find(r => r.file.endsWith('zz-good.txt'))?.state).toBe('ingested');
   });
+  it('reextracts atomically, removes old assertions and retains candidates and family membership', async () => {
+    const isolated = `${vaultId}_reextract`;
+    const text = 'RAG（检索增强生成）是结合检索与生成的方法。';
+    await writeFile(join(vault, 'raw/articles/reextract.txt'), text);
+    const loc = { kind: 'offset' as const, start: 0, end: text.length };
+    const llm: Llm = async () => ({ entities: [{ name: 'RAG', type: 'A', aliases: [], context: {} }], assertions: [{
+      subject: { name: 'RAG', type: 'A' }, predicate: 'definition', value: '结合检索与生成的方法',
+      polarity: 'positive', conditions: {}, quote: text, locatorKind: 'offset', locator: loc,
+    }] });
+    const first = await ingestFile(vault, 'raw/articles/reextract.txt', { vaultId: isolated, db, ontology,
+      constraints: defaultConstraints, llm, normalizeLlm: normalizeStub });
+    expect(first.errors).toEqual([]);
+    const before = await db.vaultEntityCandidate.findMany({ where: { vaultId: isolated } });
+    expect(before[0]!.aliasesJson).toEqual(expect.arrayContaining(['RAG', 'rag', '检索增强生成']));
+    const stub = vi.fn(llm);
+    const reports = await reextractAll(isolated, db, { vaultPath: vault, ontology, constraints: defaultConstraints, llm: stub });
+    expect(stub).toHaveBeenCalledTimes(1);
+    expect(reports).toMatchObject([{ oldCount: 1, newCount: 1, oldPredicates: { definition: 1 }, newPredicates: { definition: 1 } }]);
+    expect(reports[0]!.error).toBeUndefined();
+    expect(await db.vaultAssertion.findUnique({ where: { id: first.assertionsAccepted[0]! } })).toBeNull();
+    expect(await db.vaultEvidence.count({ where: { assertionId: first.assertionsAccepted[0]! } })).toBe(0);
+    const after = await db.vaultEntityCandidate.findMany({ where: { vaultId: isolated } });
+    expect(after.map(e => ({ id: e.id, familyIds: e.familyIdsJson }))).toEqual(before.map(e => ({ id: e.id, familyIds: e.familyIdsJson })));
+    expect(await db.vaultAssertion.count({ where: { vaultId: isolated } })).toBe(1);
+    // Failed replacement must leave the previously committed evidence intact.
+    const current = await db.vaultAssertion.findFirstOrThrow({ where: { vaultId: isolated } });
+    await pool.query(`ALTER TABLE "${schema}"."VaultEvidence" ADD CONSTRAINT reject_reextract CHECK (quote <> '${text}') NOT VALID`);
+    try {
+      const failed = await reextractAll(isolated, db, { vaultPath: vault, ontology, constraints: defaultConstraints, llm });
+      expect(failed[0]!.error).toBeDefined();
+      expect(await db.vaultAssertion.findUnique({ where: { id: current.id } })).not.toBeNull();
+      expect(await db.vaultEvidence.count({ where: { assertionId: current.id } })).toBe(1);
+      expect(await db.vaultAssertion.count({ where: { vaultId: isolated } })).toBe(1);
+    } finally { await pool.query(`ALTER TABLE "${schema}"."VaultEvidence" DROP CONSTRAINT reject_reextract`); }
+  });
+
 });

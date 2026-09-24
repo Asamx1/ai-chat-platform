@@ -1,11 +1,12 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { z } from 'zod';
 import type { PrismaClient } from '@aichat/db';
 import { SourceLocatorSchema, type SourceLocator } from '@aichat/contracts';
 import { loadOntology, loadConstraints, loadInferenceRules, runInference, type Assertion } from '@aichat/ontology';
 import { deepseekLlm, type Llm } from './extract.js';
-import { normalizeName } from './scan.js';
+import { normalizeName, rawPath, sha256 } from './scan.js';
+import { parseSource, type ParsedDoc, type ParseSource } from './parse.js';
 
 export async function loadVaultContext(vaultPath: string) {
   const [rules, ontology, constraints, inferenceRules, index] = await Promise.all([
@@ -20,7 +21,7 @@ export async function loadVaultContext(vaultPath: string) {
 export type VaultContext = Awaited<ReturnType<typeof loadVaultContext>>;
 export interface Citation {
   assertionId: string; quote: string; locator: SourceLocator; sourceTitle: string; pageId?: string;
-  sourceId: string; sourceFile: string; sourceSha256: string; origin: 'sourced' | 'inferred'; premiseAssertionIds?: string[];
+  sourceId: string; sourceFile: string; sourceSha256: string; origin: 'sourced' | 'inferred'; premiseAssertionIds?: string[]; derivedFromSection?: boolean;
 }
 export interface EvidenceSet {
   evidence: Citation[]; assertions: Assertion[]; linkedEntityIds: string[]; ontologyVersion: string; revision: string | null;
@@ -58,6 +59,20 @@ function matchesName(question: string, name: string): boolean {
   }
   return q.includes(n);
 }
+// Cache validated parses, invalidating on file changes as well as stored source version.
+const sectionCache = new Map<string, { stamp: string; doc: ParsedDoc }>();
+async function sourceSections(source: ParseSource, vaultPath: string): Promise<ParsedDoc> {
+  const path = await rawPath(vaultPath, source.filePath);
+  const info = await stat(path);
+  const key = JSON.stringify([path, source.sha256]);
+  const stamp = `${info.mtimeMs}:${info.ctimeMs}:${info.size}`;
+  const cached = sectionCache.get(key);
+  if (cached?.stamp === stamp) return cached.doc;
+  const doc = await parseSource(source, vaultPath);
+  if (sectionCache.size >= 128) sectionCache.delete(sectionCache.keys().next().value!);
+  sectionCache.set(key, { stamp, doc });
+  return doc;
+}
 function terms(question: string): string[] {
   const stop = new Set(['what', 'is', 'the', 'a', 'an', 'of', 'in', 'and', 'does', '什么', '是什么', '如何', '哪些', '根据', '文档', '是否', '可以', '一个']);
   const words = question.normalize('NFKC').toLowerCase().match(/[a-z0-9]+|[\p{Script=Han}]+/gu) ?? [];
@@ -73,9 +88,16 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
     if (!release) return empty;
     const entities = await tx.vaultEntityCandidate.findMany({ where: { vaultId, status: { in: ['candidate', 'promoted'] } } });
     const byId = new Map(entities.map(e => [e.id, e]));
-    const linked = entities.filter(e => entityNames(e.canonicalName, e.aliasesJson).some(n => matchesName(question, n))).map(e => e.id);
+    const linked = entities.flatMap(e => {
+      const names = entityNames(e.canonicalName, e.aliasesJson).filter(n => normalizeName(n));
+      const matches = names.flatMap(n => question === n ? [{ tier: 3, length: n.length }]
+        : normalizeName(question) === normalizeName(n) ? [{ tier: 2, length: normalizeName(n).length }]
+        : matchesName(question, n) || normalizeName(question).includes(normalizeName(n)) ? [{ tier: 1, length: normalizeName(n).length }] : []);
+      const best = matches.sort((a, b) => b.tier - a.tier || b.length - a.length)[0];
+      return best ? [{ id: e.id, ...best }] : [];
+    }).sort((a, b) => b.tier - a.tier || b.length - a.length || a.id.localeCompare(b.id)).slice(0, 8).map(e => e.id);
     const rows = (await tx.vaultAssertion.findMany({ where: { vaultId, status: { in: ['supported', 'candidate'] }, origin: 'sourced',
-      predicate: { in: context.ontology.relations.map(r => r.id) }, ontologyVersion: context.ontology.version },
+      predicate: { in: [...context.ontology.relations.map(r => r.id), 'definition'] }, ontologyVersion: context.ontology.version },
       include: { evidence: { where: { vaultId, stance: 'supports' }, include: { source: true }, orderBy: { id: 'asc' } } }, orderBy: { id: 'asc' },
     })).filter(a => rev(a.revision) >= 0 && rev(a.revision) <= rev(release.revision));
     const usable = rows.map(a => ({ row: a, evidence: a.evidence.flatMap(e => {
@@ -91,10 +113,44 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
     const neighbors = new Set(direct.flatMap(a => [a.row.subjectId, ...(a.row.objectId ? [a.row.objectId] : [])]));
     const expanded = [...direct, ...usable.filter(a => !direct.includes(a) && (neighbors.has(a.row.subjectId) || (a.row.objectId !== null && neighbors.has(a.row.objectId))))].slice(0, 50);
     const tokens = terms(question);
-    const lexical = usable.flatMap(a => a.evidence.map(e => ({ a, e, score: tokens.reduce((sum, term) => sum + (normalizeName(e.quote).split(term).length - 1), 0) })))
-      .filter(e => e.score > 0).sort((a, b) => b.score - a.score || a.e.assertionId.localeCompare(b.e.assertionId)).slice(0, 10);
-    const selected = [...new Set([...expanded, ...lexical.map(e => e.a)])];
-    const evidence = selected.flatMap(a => expanded.includes(a) ? a.evidence : lexical.filter(e => e.a === a).map(e => e.e));
+    const overlap = (text: string): number => tokens.reduce((sum, term) => sum + (normalizeName(text).split(term).length - 1), 0);
+    const versionQuestion = /版本|\bv\d+(?:\.\d+)*\b|\bversion\b/iu.test(question);
+    const weight = (conditions: string | null): number => versionQuestion && Object.keys(record.parse(JSON.parse(conditions ?? '{}'))).length ? 2 : 1;
+    const lexical = usable.flatMap(a => a.evidence.map(e => ({ a, e, score: overlap(e.quote) * weight(a.row.conditions) })))
+      .filter(e => e.score > 0).sort((a, b) => b.score - a.score || a.e.assertionId.localeCompare(b.e.assertionId)).slice(0, 15);
+    const ranked = [...new Set([...expanded, ...lexical.map(e => e.a)])].map(a => ({ a,
+      score: (Math.max(0, ...a.evidence.map(e => overlap(e.quote))) + (direct.includes(a) ? 2 : expanded.includes(a) ? 1 : 0)) * weight(a.row.conditions) }));
+    const sectionHits: Array<{ e: Citation; score: number }> = [];
+    if (opts.vaultPath) {
+      const sources = await tx.vaultSource.findMany({ where: { vaultId }, orderBy: { id: 'asc' } });
+      for (const source of sources) {
+        let doc: ParsedDoc;
+        try { doc = await sourceSections(source, opts.vaultPath); }
+        catch { continue; } // Missing, changed or unparseable raw files cannot supply evidence.
+        for (const section of doc.sections) {
+          const score = overlap(section.text);
+          if (!score) continue;
+          const quoted = usable.filter(a => a.evidence.some(e => e.sourceId === source.id && JSON.stringify(e.locator) === JSON.stringify(section.locator)));
+          if (quoted.length) {
+            for (const a of quoted) {
+              const hit = ranked.find(r => r.a === a);
+              const boosted = score * weight(a.row.conditions);
+              if (hit) hit.score = Math.max(hit.score, boosted);
+              else ranked.push({ a, score: boosted });
+            }
+          } else {
+            sectionHits.push({ score, e: { assertionId: `section_${sha256(JSON.stringify([source.id, source.sha256, section.locator])).slice(0, 24)}`,
+              quote: section.text.slice(0, 300), locator: section.locator, sourceTitle: source.title, sourceId: source.id,
+              sourceFile: source.filePath, sourceSha256: source.sha256, origin: 'sourced', derivedFromSection: true } });
+          }
+        }
+      }
+    }
+    const choices = [...ranked.map(r => ({ score: r.score, id: r.a.row.id, evidence: r.a.evidence })),
+      ...sectionHits.map(r => ({ score: r.score, id: r.e.assertionId, evidence: [r.e] }))]
+      .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, 15);
+    const selected = ranked.filter(r => choices.some(c => c.id === r.a.row.id)).map(r => r.a);
+    const evidence = choices.flatMap(c => c.evidence);
     const assertions: Assertion[] = selected.map(({ row: a }) => ({ id: a.id, subject: { id: a.subjectId, type: byId.get(a.subjectId)!.type }, predicate: a.predicate,
       ...(a.objectId ? { object: { id: a.objectId, type: byId.get(a.objectId)!.type } } : { value: z.union([z.string(), z.number(), z.boolean()]).parse(JSON.parse(a.value ?? 'null')) }),
       polarity: a.polarity ? 'positive' : 'negative', context: record.parse(JSON.parse(a.conditions ?? '{}')),
@@ -110,7 +166,7 @@ async function answer(question: string, vaultId: string, vaultPath: string, db: 
   let context: VaultContext; let set: EvidenceSet;
   try {
     context = await loadVaultContext(vaultPath);
-    set = await retrieveEvidence(question, vaultId, db, { context });
+    set = await retrieveEvidence(question, vaultId, db, { context, vaultPath });
     if (inference && set.evidence.length) {
       const result = runInference(set.assertions, context.inferenceRules, { ontology: context.ontology });
       for (const derived of result.derived) {

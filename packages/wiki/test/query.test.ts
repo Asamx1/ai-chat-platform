@@ -145,4 +145,61 @@ describe.skipIf(!testUrl)('strict query with real PostgreSQL', () => {
       }
     }
   });
+  it('links alias substrings longest first and caps links at eight with a stub answer', async () => {
+    const f = await fixture();
+    const names = ['检索增强生成', '检索增强', '检索', '增强生成', '增强', '生成', '检索增强生', '索增强生成', '索增强'];
+    const ids: string[] = [];
+    for (const name of names) {
+      const entity = await db.vaultEntityCandidate.create({ data: { vaultId: f.vaultId, canonicalName: name, type: 'Concept',
+        firstSourceId: f.source.id, status: 'candidate', familyIdsJson: [f.source.familyId], aliasesJson: [name] } });
+      ids.push(entity.id);
+    }
+    const question = '检索增强生成的定义是什么？';
+    const set = await retrieveEvidence(question, f.vaultId, db, { vaultPath: f.root });
+    expect(set.linkedEntityIds).toHaveLength(8);
+    expect(set.linkedEntityIds[0]).toBe(ids[0]);
+    const llm = vi.fn<Llm>(async () => ({ answer: '', usedAssertionIds: [] }));
+    expect((await answerStrict(question, f.vaultId, f.root, db, { llm })).kind).toBe('unknown');
+    expect(llm).not.toHaveBeenCalled();
+  });
+  it('uses raw section evidence without stored quotes and invalidates cached changed content', async () => {
+    const f = await fixture();
+    const text = '# RAG\n检索增强生成通过检索文档辅助回答问题。';
+    await mkdir(join(f.root, 'raw/articles'), { recursive: true });
+    await writeFile(join(f.root, 'raw/articles/rag.md'), text);
+    const source = (await registerSource({ filePath: 'raw/articles/rag.md', title: 'RAG', sha256: sha256(text),
+      bytes: BigInt(Buffer.byteLength(text)), mimeType: 'text/markdown' }, f.vaultId, db)).source;
+    const llm = vi.fn<Llm>(async request => {
+      const payload = JSON.parse(request.system.slice(request.system.lastIndexOf('\n') + 1)) as { evidence: Array<{ assertionId: string; sourceId: string }> };
+      const evidence = payload.evidence.find(e => e.sourceId === source.id)!;
+      return { answer: `检索文档辅助回答问题。[${evidence.assertionId}]`, usedAssertionIds: [evidence.assertionId] };
+    });
+    const result = await answerStrict('检索增强生成是什么？', f.vaultId, f.root, db, { llm });
+    expect(llm).toHaveBeenCalledTimes(1);
+    expect(result).toMatchObject({ kind: 'sourced', citations: [{ sourceId: source.id, quote: text,
+      derivedFromSection: true, locator: { kind: 'section', section: '1:RAG' } }] });
+    await writeFile(join(f.root, 'raw/articles/rag.md'), text + ' changed');
+    expect((await retrieveEvidence('检索增强生成是什么？', f.vaultId, db, { vaultPath: f.root })).evidence).toEqual([]);
+  });
+  it('ranks conditional assertions higher for version questions and admits definition values', async () => {
+    const f = await fixture();
+    const ids: string[] = [];
+    for (let i = 0; i < 16; i++) {
+      const id = `asr_version_${f.vaultId}_${String(i).padStart(2, '0')}`;
+      ids.push(id);
+      await db.vaultAssertion.create({ data: { id, vaultId: f.vaultId, subjectId: f.entities[0]!.id,
+        predicate: 'definition', value: JSON.stringify('Alpha definition'), polarity: true,
+        conditions: i === 15 ? JSON.stringify({ version: 'v2' }) : '{}', status: 'candidate', origin: 'sourced', revision: 'rev-002', ontologyVersion: '1.0.0' } });
+      await db.vaultEvidence.create({ data: { vaultId: f.vaultId, assertionId: id, sourceId: f.source.id,
+        sourceSha256: f.source.sha256, quote: 'Alpha definition.', locatorKind: 'page', locatorJson: JSON.stringify({ kind: 'page', page: 3 + i }), stance: 'supports' } });
+    }
+    const plain = await retrieveEvidence('Alpha definition', f.vaultId, db, { vaultPath: f.root });
+    expect(plain.assertions.map(a => a.id)).not.toContain(ids[15]);
+    const ranked = await retrieveEvidence('Alpha definition 哪个版本 v2', f.vaultId, db, { vaultPath: f.root });
+    expect(ranked.evidence).toHaveLength(15);
+    expect(ranked.evidence[0]!.assertionId).toBe(ids[15]);
+    const llm: Llm = async () => ({ answer: `Alpha definition applies to v2. [${ids[15]}]`, usedAssertionIds: [ids[15]!] });
+    expect((await answerStrict('Alpha definition 哪个版本 v2', f.vaultId, f.root, db, { llm })).kind).toBe('sourced');
+  });
+
 });
