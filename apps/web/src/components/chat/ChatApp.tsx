@@ -254,7 +254,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
   }, [activeId, persist, closeStream]);
 
   return (
-    <div className="app-shell">
+    <div className="app-shell anim-fade-in">
       <ConversationList
         activeId={activeId}
         onSelect={setActiveId}

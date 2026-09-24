@@ -45,7 +45,7 @@ function CitationBadge({ citation, number }: { citation: Citation; number: numbe
   useEffect(() => () => clearTimeout(closeTimer.current), []);
 
   return (
-    <sup className="citation-badge">
+    <sup className="citation-badge badge-accent">
       <a className="badge" ref={anchor} href={`/kb/${encodeURIComponent(citation.documentId)}/chunks`}
         aria-label={`引用 ${number}：${citation.name}，分块 ${citation.ordinal}`}
         aria-describedby={position ? id : undefined}

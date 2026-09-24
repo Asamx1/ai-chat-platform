@@ -35,7 +35,7 @@ export default function Composer({
 
   return (
     <div className="composer">
-      <textarea className="input"
+      <textarea className="input-focus input"
         rows={1}
         value={text}
         placeholder="输入消息，Enter 发送，Shift+Enter 换行"
@@ -47,7 +47,7 @@ export default function Composer({
       ) : (
         <button
           type="button"
-          className="btn btn-primary"
+          className="btn btn-accent"
           disabled={disabled || !text.trim()}
           onClick={submit}
         >

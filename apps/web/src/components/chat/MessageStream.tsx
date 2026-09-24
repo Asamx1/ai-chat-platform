@@ -33,7 +33,7 @@ export default function MessageStream({
   return (
     <div className="messages">
       {messages.map((m) => (
-        <div key={m.id} className={`msg-row ${m.role}`}>
+        <div key={m.id} className={`msg-row anim-fade-up ${m.role}`}>
           <div>
             <div className="msg-bubble">
               {(m.content ? (m.role === 'assistant' ? <Markdown text={m.content} /> : m.content) : '') || (m.status === 'streaming' ? <span className="thinking" role="status" aria-label="正在思考"><span aria-hidden="true" /><span aria-hidden="true" /><span aria-hidden="true" /></span> : '')}

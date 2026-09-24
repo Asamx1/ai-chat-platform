@@ -11,9 +11,9 @@ type Answer = Exclude<StrictAnswer, { kind: 'unknown' }> | {
 
 const badges = {
   sourced: { label: '有据回答', color: 'border-green-800 bg-green-950 text-green-300' },
-  inferred: { label: '推导回答', color: 'border-purple-800 bg-purple-950 text-purple-300' },
+  inferred: { label: '推导回答', color: 'border-purple-800 bg-purple-950 text-[#A855F7]' },
   mixed: { label: '证据与推导', color: 'border-blue-800 bg-blue-950 text-blue-300' },
-  no_evidence: { label: '证据不足', color: 'border-zinc-700 bg-zinc-900 text-zinc-300' },
+  no_evidence: { label: '证据不足', color: 'border-amber-600/50 bg-amber-950/30 text-amber-300' },
   out_of_scope: { label: '超出范围', color: 'border-zinc-700 bg-zinc-900 text-zinc-300' },
 };
 
@@ -33,7 +33,7 @@ function excerpt(quote: string) {
 
 function Premises({ ids }: { ids: string[] }) {
   return (
-    <details className="mt-3 text-sm text-purple-300">
+    <details className="mt-3 text-sm text-[#A855F7]">
       <summary className="cursor-pointer rounded focus-visible:outline focus-visible:outline-[#A855F7]">推导自 {ids.length} 条前提</summary>
       <ul className="mt-2 space-y-1 break-all pl-4 text-zinc-400">
         {ids.map((id, index) => <li key={`${id}-${index}`}>{id}</li>)}
@@ -79,8 +79,8 @@ export default function StrictQa() {
     <div className="min-h-screen bg-[#0a0a0b] px-5 py-8 text-zinc-100 sm:px-8">
       <div className="mx-auto max-w-3xl">
         <nav aria-label="知识问答导航" className="mb-12 flex gap-5 text-sm text-zinc-400">
-          <Link href="/" className="hover:text-purple-300">返回聊天</Link>
-          <Link href="/kb" className="hover:text-purple-300">知识库</Link>
+          <Link href="/" className="hover:text-[#A855F7]">返回聊天</Link>
+          <Link href="/kb" className="hover:text-[#A855F7]">知识库</Link>
         </nav>
         <header className="mb-8">
           <p className="mb-3 text-xs tracking-widest text-[#A855F7]">严格知识问答</p>
@@ -107,7 +107,7 @@ export default function StrictQa() {
             <span className={`inline-flex rounded-full border px-3 py-1 text-xs ${badges[result.kind].color}`}>{badges[result.kind].label} · {result.kind}</span>
             <p className="mt-5 whitespace-pre-wrap break-words leading-7">{result.answer}</p>
             {result.inferredParts.length > 0 && <section aria-label="推导部分" className="mt-6 border-t border-zinc-800 pt-5">
-              <h2 className="text-sm font-medium text-purple-300">推导部分</h2>
+              <h2 className="text-sm font-medium text-[#A855F7]">推导部分</h2>
               {result.inferredParts.map((part, index) => <div key={index} className="mt-4">
                 <p className="whitespace-pre-wrap break-words text-sm leading-6 text-zinc-300">{part.text}</p>
                 <Premises ids={part.premiseAssertionIds} />
@@ -116,7 +116,7 @@ export default function StrictQa() {
             {result.citations.length > 0 && <details className="mt-6 border-t border-zinc-800 pt-5">
               <summary className="cursor-pointer text-sm text-zinc-300">引用依据 · {result.citations.length} 条</summary>
               <ol className="mt-4 space-y-4">
-                {result.citations.map((citation, index) => <li key={`${citation.assertionId}-${index}`} className="rounded-lg border border-zinc-800 p-4">
+                {result.citations.map((citation, index) => <li key={`${citation.assertionId}-${index}`} className="cite-card rounded-lg border border-zinc-800 p-4">
                   <h3 className="break-words text-sm font-medium">{citation.sourceTitle}</h3>
                   <p className="mt-1 break-words text-xs text-zinc-400">{locatorText(citation.locator)}</p>
                   <blockquote className="mt-3 whitespace-pre-wrap break-words border-l-2 border-zinc-700 pl-3 text-sm leading-6 text-zinc-300">{excerpt(citation.quote)}</blockquote>

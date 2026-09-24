@@ -19,6 +19,10 @@
   --bubble: var(--surface2);
   --accent: var(--primary);
   --text-dim: var(--text-2);
+  --accent: #A855F7;
+  --accent-hover: #9333EA;
+  --accent-soft: rgba(168, 85, 247, 0.12);
+  --accent-ring: rgba(168, 85, 247, 0.45);
 }
 
 * {
@@ -1207,3 +1211,17 @@ button:disabled, .input:disabled { opacity: .55; cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* ===== 前端翻新:入场动画与紫色强调(hardcoded tokens → vars) ===== */
+@keyframes fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.anim-fade-up { animation: fade-up 180ms ease-out both; }
+.anim-fade-in { animation: fade-in 150ms ease-out both; }
+.input-focus:focus { border-color: var(--accent-ring) !important; box-shadow: 0 0 0 3px var(--accent-soft); outline: none; }
+.cite-card { transition: border-color 120ms ease; }
+.cite-card:hover { border-color: var(--accent-ring); }
+.btn-accent { background: var(--accent); color: #fff; transition: background 120ms ease, transform 120ms ease; }
+.btn-accent:hover { background: var(--accent-hover); }
+.btn-accent:active { transform: translateY(1px); }
+.row-accent { background: var(--accent-soft); border-left: 2px solid var(--accent); }
+.badge-accent { background: var(--accent-soft); color: var(--accent); }

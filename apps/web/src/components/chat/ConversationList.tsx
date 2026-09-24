@@ -69,7 +69,7 @@ export default function ConversationList({
     <div className="sidebar">
       <div className="sidebar-header">
         <span>对话</span>
-        <button className="btn btn-primary" onClick={() => void createConversation()}>
+        <button className="btn btn-accent" onClick={() => void createConversation()}>
           + 新建
         </button>
       </div>
@@ -81,7 +81,7 @@ export default function ConversationList({
         {items.map((c) => (
           <div
             key={c.id}
-            className={`conv-item${c.id === activeId ? ' active' : ''}`}
+            className={`conv-item input-focus${c.id === activeId ? ' active row-accent' : ''}`}
             onClick={() => onSelect(c.id)}
           >
             <div className="conv-title">{c.title || '未命名'}</div>

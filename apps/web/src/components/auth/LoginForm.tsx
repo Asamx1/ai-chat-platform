@@ -37,7 +37,7 @@ export default function LoginForm() {
 
   return (
     <div className="login-shell">
-      <section className="login-card" aria-labelledby="login-heading">
+      <section className="login-card anim-fade-up" aria-labelledby="login-heading">
         <div className="login-brand">
           <h1 id="login-heading">登录 AI Chat</h1>
           <p>使用管理员账号继续</p>
@@ -47,7 +47,7 @@ export default function LoginForm() {
           <div className="login-field">
             <label htmlFor="login-email">邮箱</label>
             <input
-              className="input"
+              className="input-focus input"
               id="login-email"
               name="email"
               type="email"
@@ -61,7 +61,7 @@ export default function LoginForm() {
           <div className="login-field">
             <label htmlFor="login-password">密码</label>
             <input
-              className="input"
+              className="input-focus input"
               id="login-password"
               name="password"
               type="password"

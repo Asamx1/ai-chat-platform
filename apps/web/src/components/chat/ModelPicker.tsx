@@ -76,7 +76,7 @@ export default function ModelPicker({
 
   return (
     <select
-      className="input model-select"
+      className="input input-focus model-select"
       value={options.includes(value) ? value : (options[0] ?? value)}
       disabled={disabled}
       aria-label="选择模型"
