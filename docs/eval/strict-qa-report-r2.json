@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-24T12:45:01.017Z",
+  "generatedAt": "2026-09-24T14:34:04.228Z",
   "total": 59,
-  "correct": 34,
-  "accuracy": 0.576271186440678,
+  "correct": 38,
+  "accuracy": 0.6440677966101694,
   "byType": {
     "fact": {
       "total": 13,
@@ -11,13 +11,13 @@
     },
     "synonym": {
       "total": 8,
-      "correct": 2,
-      "accuracy": 0.25
+      "correct": 4,
+      "accuracy": 0.5
     },
     "single_source": {
       "total": 11,
-      "correct": 4,
-      "accuracy": 0.36363636363636365
+      "correct": 6,
+      "accuracy": 0.5454545454545454
     },
     "version_scope": {
       "total": 9,
@@ -37,20 +37,30 @@
   },
   "correctRefusals": 17,
   "falseAnswers": 1,
-  "missedAnswers": 24,
+  "missedAnswers": 20,
   "retrievalFailures": 0,
-  "averageCitations": 0.3898305084745763,
+  "averageCitations": 0.4915254237288136,
   "citationQuality": {
     "anchorCount": 52,
-    "fileOverlap": 0.4230769230769231,
-    "pageAndFileOverlap": 0.38461538461538464
+    "fileOverlap": 0.5,
+    "pageAndFileOverlap": 0.4807692307692308
   },
-  "elapsedMs": 59537,
+  "elapsedMs": 177778,
   "llmCalls": 59,
-  "estimatedInputTokens": 211220,
-  "estimatedOutputTokens": 1539,
+  "estimatedInputTokens": 200587,
+  "estimatedOutputTokens": 1715,
   "tokenEstimateMethod": "ceil(characters / 4), not provider usage",
   "errors": [
+    {
+      "id": "70e5e20f-f1f1-44bc-8e55-6e5ea7451d7d",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
     {
       "id": "dfe0ef02-7e55-42a5-a3c5-fc5b46b3d739",
       "answerable": true,
@@ -73,26 +83,6 @@
     },
     {
       "id": "13c096bf-ea25-4d79-985a-4656e43a3509",
-      "answerable": true,
-      "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
-      }
-    },
-    {
-      "id": "cb637ce9-a55d-48b7-bccb-e16c3cf3748f",
-      "answerable": true,
-      "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
-      }
-    },
-    {
-      "id": "533bfe9e-bdc5-4f0a-9771-b89c2fa0c40e",
       "answerable": true,
       "actual": {
         "kind": "unknown",
@@ -152,26 +142,6 @@
       }
     },
     {
-      "id": "f0946694-0b1d-44e6-a28b-50b8c27bc87d",
-      "answerable": true,
-      "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
-      }
-    },
-    {
-      "id": "633e4fe9-f28d-4446-bb57-ef07858ba0b1",
-      "answerable": true,
-      "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
-      }
-    },
-    {
       "id": "486bbfca-0d97-4118-9ce4-7e8188f941f7",
       "answerable": false,
       "actual": {
@@ -218,16 +188,6 @@
       }
     },
     {
-      "id": "eccf8a74-7d36-4339-a31c-d0808e0d9672",
-      "answerable": true,
-      "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
-      }
-    },
-    {
       "id": "24dd05f1-a9ae-43d0-b424-4ddafbd75773",
       "answerable": true,
       "actual": {
@@ -239,6 +199,16 @@
     },
     {
       "id": "4513e98a-5fd4-40a5-ae16-00d4fa530d4b",
+      "answerable": true,
+      "actual": {
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
+      }
+    },
+    {
+      "id": "3a257585-8487-4632-8ba7-cdbd0db09ebe",
       "answerable": true,
       "actual": {
         "kind": "unknown",
@@ -279,16 +249,6 @@
     },
     {
       "id": "43cc423f-9093-465e-8845-0765105d549a",
-      "answerable": true,
-      "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
-      }
-    },
-    {
-      "id": "2506efb1-2b7e-41af-b14c-156665782475",
       "answerable": true,
       "actual": {
         "kind": "unknown",
@@ -326,21 +286,8 @@
       "correct": true,
       "actual": {
         "kind": "sourced",
-        "answer": "RAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结合的自然语言处理技术，主要应用于大规模语言模型（如GPT）与信息检索系统（如搜索引擎）的集成。[asr_4c646a86-4c9c-4de5-9318-6e7a96bf970b]\nRAG（Retrieval-Augmented Generation）是结合检索和生成的自然语言处理技术。[asr_35642278-475d-4f65-a483-f010abcc3338]\n检索增强生成（RAG）。[asr_9e322d13-110d-4614-8ddf-67836e95799e]",
+        "answer": "RAG（Retrieval-Augmented Generation）是结合检索和生成的自然语言处理技术。[asr_35642278-475d-4f65-a483-f010abcc3338]\nRAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结合的自然语言处理技术，主要应用于大规模语言模型（如GPT）与信息检索系统（如搜索引擎）的集成。[asr_4c646a86-4c9c-4de5-9318-6e7a96bf970b]\n检索增强生成（RAG）。[asr_9e322d13-110d-4614-8ddf-67836e95799e]",
         "citations": [
-          {
-            "assertionId": "asr_4c646a86-4c9c-4de5-9318-6e7a96bf970b",
-            "quote": "RAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结\n合的自然语言处理技术，主要应用于大规模语言模型（如GPT）与信息检索系统（如\n搜索引擎）的集成。",
-            "locator": {
-              "kind": "page",
-              "page": 1
-            },
-            "sourceTitle": "RAG的介绍-水印",
-            "sourceId": "src_5eb432f7-c380-4f7b-9a74-51c7cae3feb7",
-            "sourceFile": "raw/articles/RAG的介绍-水印.pdf",
-            "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
-            "origin": "sourced"
-          },
           {
             "assertionId": "asr_35642278-475d-4f65-a483-f010abcc3338",
             "quote": "RAG（Retrieval-Augmented Generation）是结合检索和生成的自然语言处理技术。",
@@ -352,6 +299,19 @@
             "sourceId": "src_10274047-2c1d-49ca-8bba-29163aab9d50",
             "sourceFile": "raw/articles/RAG的评估-水印.pdf",
             "sourceSha256": "36df196521a0aded6d31697ead066de29b7604259dc3f0527bbf936287fd0bcf",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_4c646a86-4c9c-4de5-9318-6e7a96bf970b",
+            "quote": "RAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结\n合的自然语言处理技术，主要应用于大规模语言模型（如GPT）与信息检索系统（如\n搜索引擎）的集成。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "RAG的介绍-水印",
+            "sourceId": "src_5eb432f7-c380-4f7b-9a74-51c7cae3feb7",
+            "sourceFile": "raw/articles/RAG的介绍-水印.pdf",
+            "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
             "origin": "sourced"
           },
           {
@@ -375,7 +335,7 @@
       "anchorCount": 1,
       "fileMatches": 1,
       "pageFileMatches": 1,
-      "elapsedMs": 4036
+      "elapsedMs": 12721
     },
     {
       "id": "7b7f900e-8c1f-4e72-abf6-8a9d2342a85e",
@@ -384,19 +344,19 @@
       "correct": true,
       "actual": {
         "kind": "sourced",
-        "answer": "检索增强生成（RAG）还可以被称为「检索增强」。[asr_54f07175-3b40-433a-a723-869aa05b4143]",
+        "answer": "检索增强生成（RAG）还可以被称为“检索增强生成”。[asr_9e322d13-110d-4614-8ddf-67836e95799e]",
         "citations": [
           {
-            "assertionId": "asr_54f07175-3b40-433a-a723-869aa05b4143",
-            "quote": "检索增强是指将检索技术与生成式模型相结合的一种方法。",
+            "assertionId": "asr_9e322d13-110d-4614-8ddf-67836e95799e",
+            "quote": "检索增强生成（RAG）",
             "locator": {
               "kind": "page",
-              "page": 3
+              "page": 1
             },
-            "sourceTitle": "Langchain-chain链-水印",
-            "sourceId": "src_8a7f451b-20b9-48cc-bba3-261a648d303e",
-            "sourceFile": "raw/articles/Langchain-chain链-水印.pdf",
-            "sourceSha256": "2d8fa89b27a0a342d4ae79a98e4d20705d57198bdd117d77e551bca28bf25bb8",
+            "sourceTitle": "langchain部署简单rag应用-水印",
+            "sourceId": "src_6f998b30-9f2a-4f16-9bd8-29d6d53a8325",
+            "sourceFile": "raw/articles/langchain部署简单rag应用-水印.pdf",
+            "sourceSha256": "72474e9cc67abe8bf2c2ca2170689b5c4047ff5c0b1459117f6d61fae4453047",
             "origin": "sourced"
           }
         ],
@@ -407,7 +367,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 956
+      "elapsedMs": 3124
     },
     {
       "id": "9ad6ebae-90f0-4707-bd53-bae8c9073500",
@@ -416,11 +376,11 @@
       "correct": true,
       "actual": {
         "kind": "sourced",
-        "answer": "RAG模型通常包括生成器（Generator）和检索器（Retriever）两个主要组件。生成器是基于预训练的大规模语言模型（如GPT），负责根据检索到的信息生成自然语言的回答或文本 [asr_6e2506d2-9633-4866-b2e2-d46411a7e8fb]。检索器负责从大型外部知识库中找到与当前任务或问题相关的文档 [asr_bd86b8a6-7ba0-4960-a255-315e077e7140]。",
+        "answer": "RAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结合的自然语言处理技术，主要应用于大规模语言模型（如GPT）与信息检索系统（如搜索引擎）的集成。 [asr_4c646a86-4c9c-4de5-9318-6e7a96bf970b]\n生成器（Generator）：生成器是基于预训练的大规模语言模型（如GPT），负责根据检索到的信息生成自然语言的回答或文本。 [asr_6e2506d2-9633-4866-b2e2-d46411a7e8fb]",
         "citations": [
           {
-            "assertionId": "asr_6e2506d2-9633-4866-b2e2-d46411a7e8fb",
-            "quote": "生成器（Generator）： 生成器是基于预训练的大规模语言模型（如GPT），负\n责根据检索到的信息生成自然语言的回答或文本。",
+            "assertionId": "asr_4c646a86-4c9c-4de5-9318-6e7a96bf970b",
+            "quote": "RAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结\n合的自然语言处理技术，主要应用于大规模语言模型（如GPT）与信息检索系统（如\n搜索引擎）的集成。",
             "locator": {
               "kind": "page",
               "page": 1
@@ -432,8 +392,8 @@
             "origin": "sourced"
           },
           {
-            "assertionId": "asr_bd86b8a6-7ba0-4960-a255-315e077e7140",
-            "quote": "检索器（Retriever）： 检索器负责从大型外部知识库中找到与当前任务或问题相\n关的文档。",
+            "assertionId": "asr_6e2506d2-9633-4866-b2e2-d46411a7e8fb",
+            "quote": "生成器（Generator）： 生成器是基于预训练的大规模语言模型（如GPT），负\n责根据检索到的信息生成自然语言的回答或文本。",
             "locator": {
               "kind": "page",
               "page": 1
@@ -452,7 +412,7 @@
       "anchorCount": 1,
       "fileMatches": 1,
       "pageFileMatches": 1,
-      "elapsedMs": 1291
+      "elapsedMs": 3096
     },
     {
       "id": "852d0a12-548a-4429-aa46-e64b6c89d2ec",
@@ -461,7 +421,7 @@
       "correct": true,
       "actual": {
         "kind": "sourced",
-        "answer": "检索器负责从大型外部知识库中找到与当前任务或问题相关的文档 [asr_bd86b8a6-7ba0-4960-a255-315e077e7140]",
+        "answer": "检索器负责从大型外部知识库中找到与当前任务或问题相关的文档 [asr_bd86b8a6-7ba0-4960-a255-315e077e7140]\n检索链通常与向量数据库（如Chroma、Pinecone、Faiss等）结合使用 [asr_ca13323a-49bf-44b6-b718-4b30170385e5]\n检索模块的主要任务是从外部知识库中查找与查询相关的文档 [asr_fa7643fa-7a7f-451b-b316-cb307f327cd1]",
         "citations": [
           {
             "assertionId": "asr_bd86b8a6-7ba0-4960-a255-315e077e7140",
@@ -475,6 +435,32 @@
             "sourceFile": "raw/articles/RAG的介绍-水印.pdf",
             "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
             "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_ca13323a-49bf-44b6-b718-4b30170385e5",
+            "quote": "检索链是Langchain中的一种特殊类型的链，主要用于从大量的文档数据集中检索相\n关信息，并且通常与向量数据库（如Chroma、Pinecone、Faiss等）结合使用。",
+            "locator": {
+              "kind": "page",
+              "page": 3
+            },
+            "sourceTitle": "Langchain-chain链-水印",
+            "sourceId": "src_8a7f451b-20b9-48cc-bba3-261a648d303e",
+            "sourceFile": "raw/articles/Langchain-chain链-水印.pdf",
+            "sourceSha256": "2d8fa89b27a0a342d4ae79a98e4d20705d57198bdd117d77e551bca28bf25bb8",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_fa7643fa-7a7f-451b-b316-cb307f327cd1",
+            "quote": "检索模块的主要任务是从外部知识库中查找与查询相关的文档。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "RAG的优化-水印",
+            "sourceId": "src_de0dff2f-98cf-436a-ad41-c2285fb69a94",
+            "sourceFile": "raw/articles/RAG的优化-水印.pdf",
+            "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
+            "origin": "sourced"
           }
         ],
         "ontologyVersion": "1.0.0",
@@ -484,7 +470,7 @@
       "anchorCount": 2,
       "fileMatches": 2,
       "pageFileMatches": 2,
-      "elapsedMs": 1339
+      "elapsedMs": 3403
     },
     {
       "id": "f923b3f4-d7ac-4999-b9c1-94c79779db69",
@@ -500,7 +486,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 671
+      "elapsedMs": 2567
     },
     {
       "id": "f523a2ac-ac1f-45db-8661-e87bb63deffa",
@@ -516,40 +502,23 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1068
+      "elapsedMs": 2436
     },
     {
       "id": "70e5e20f-f1f1-44bc-8e55-6e5ea7451d7d",
       "questionType": "fact",
       "answerable": true,
-      "correct": true,
+      "correct": false,
       "actual": {
-        "kind": "sourced",
-        "answer": "优化 RAG 系统需要从检索模块、生成模块两个方面入手。 [section_b6de01e21172bdef8cf31b9f]",
-        "citations": [
-          {
-            "assertionId": "section_b6de01e21172bdef8cf31b9f",
-            "quote": "1. RAG的优化\n为了优化 RAG 系统，我们需要从以下几个方面入手：检索模块、生成模块。\n根据之前的评估，我们可以有针对性的对某一方面进行优化。比如说如果\nfaithfulness、answer relevancy比较低就要优化生成模块，而context precision、\ncontext recall比较低就要考虑优化检索模块了。\nps：本章我们只介绍一些常见的优化方法。\n2. 检索模块优化\n检索模块的主要任务是从外部知识库中查找与查询相关的文档。优化这一模块可以显\n著提升生成模型的上下文准确性。\n2.1 优化分块\n合理的分块一般是能保证块之间的差异性和块内部的一致性。但在实际应用中，",
-            "locator": {
-              "kind": "page",
-              "page": 1
-            },
-            "sourceTitle": "RAG的优化-水印",
-            "sourceId": "src_429bd2a0-4905-4a14-9e2e-cb18dd796936",
-            "sourceFile": "raw/articles/RAG的优化-水印.pdf",
-            "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
-            "origin": "sourced",
-            "derivedFromSection": true
-          }
-        ],
-        "ontologyVersion": "1.0.0",
-        "revision": "rev-003",
-        "inferredParts": []
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
       },
       "anchorCount": 1,
-      "fileMatches": 1,
-      "pageFileMatches": 1,
-      "elapsedMs": 1387
+      "fileMatches": 0,
+      "pageFileMatches": 0,
+      "elapsedMs": 2630
     },
     {
       "id": "dfe0ef02-7e55-42a5-a3c5-fc5b46b3d739",
@@ -565,7 +534,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1027
+      "elapsedMs": 2981
     },
     {
       "id": "7f817bb1-9a93-4f2f-976b-17edeef009d3",
@@ -581,7 +550,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 828
+      "elapsedMs": 2492
     },
     {
       "id": "13c096bf-ea25-4d79-985a-4656e43a3509",
@@ -597,7 +566,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1096
+      "elapsedMs": 2923
     },
     {
       "id": "01e4aa8a-e332-4f19-896b-4bae7a57dad1",
@@ -613,7 +582,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1026
+      "elapsedMs": 2660
     },
     {
       "id": "800f08c9-0e8b-4ef1-8aef-ae011b172618",
@@ -629,7 +598,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1143
+      "elapsedMs": 2704
     },
     {
       "id": "68657ac3-177c-44a5-aa35-ac30de951377",
@@ -661,39 +630,71 @@
       "anchorCount": 2,
       "fileMatches": 2,
       "pageFileMatches": 2,
-      "elapsedMs": 796
+      "elapsedMs": 2868
     },
     {
       "id": "cb637ce9-a55d-48b7-bccb-e16c3cf3748f",
       "questionType": "synonym",
       "answerable": true,
-      "correct": false,
+      "correct": true,
       "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
+        "kind": "sourced",
+        "answer": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月发布。 [asr_bfb86b34-16eb-417d-a16f-b377a05691c3]",
+        "citations": [
+          {
+            "assertionId": "asr_bfb86b34-16eb-417d-a16f-b377a05691c3",
+            "quote": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月\n发布。",
+            "locator": {
+              "kind": "page",
+              "page": 2
+            },
+            "sourceTitle": "MCP介绍-水印",
+            "sourceId": "src_852dcd76-6e03-4766-a150-6cd57f0a3218",
+            "sourceFile": "raw/articles/MCP介绍-水印.pdf",
+            "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
       },
       "anchorCount": 1,
-      "fileMatches": 0,
-      "pageFileMatches": 0,
-      "elapsedMs": 649
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 2876
     },
     {
       "id": "533bfe9e-bdc5-4f0a-9771-b89c2fa0c40e",
       "questionType": "single_source",
       "answerable": true,
-      "correct": false,
+      "correct": true,
       "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
+        "kind": "sourced",
+        "answer": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月发布。 [asr_bfb86b34-16eb-417d-a16f-b377a05691c3]",
+        "citations": [
+          {
+            "assertionId": "asr_bfb86b34-16eb-417d-a16f-b377a05691c3",
+            "quote": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月\n发布。",
+            "locator": {
+              "kind": "page",
+              "page": 2
+            },
+            "sourceTitle": "MCP介绍-水印",
+            "sourceId": "src_852dcd76-6e03-4766-a150-6cd57f0a3218",
+            "sourceFile": "raw/articles/MCP介绍-水印.pdf",
+            "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
       },
       "anchorCount": 2,
-      "fileMatches": 0,
-      "pageFileMatches": 0,
-      "elapsedMs": 964
+      "fileMatches": 2,
+      "pageFileMatches": 2,
+      "elapsedMs": 2768
     },
     {
       "id": "92f20f19-dc52-453c-9657-2f0dc07004ab",
@@ -725,7 +726,7 @@
       "anchorCount": 1,
       "fileMatches": 1,
       "pageFileMatches": 1,
-      "elapsedMs": 1365
+      "elapsedMs": 2897
     },
     {
       "id": "c78d409b-6dbc-4ce0-92f1-201eb091c04c",
@@ -741,7 +742,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 626
+      "elapsedMs": 2853
     },
     {
       "id": "07b04237-91fd-468a-9420-1e0700195a0b",
@@ -757,7 +758,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 677
+      "elapsedMs": 2781
     },
     {
       "id": "efacc0ee-9922-4d9c-9c57-b589b9a8e148",
@@ -789,7 +790,7 @@
       "anchorCount": 1,
       "fileMatches": 1,
       "pageFileMatches": 1,
-      "elapsedMs": 1045
+      "elapsedMs": 2873
     },
     {
       "id": "ad453209-7674-4eb8-9f51-9816fbd25395",
@@ -798,7 +799,7 @@
       "correct": true,
       "actual": {
         "kind": "sourced",
-        "answer": "“Awesome MCP Servers”对应的网址是 https://github.com/punkpeye/awesome-mcp-servers/blob/main/README-zh.md [asr_6cfa53c4-4de0-4143-8543-7061b6141f47]",
+        "answer": "4. Awesome MCP Servers：https://github.com/punkpeye/awesome-mcp-servers/blob/main/README-zh.md [asr_6cfa53c4-4de0-4143-8543-7061b6141f47]",
         "citations": [
           {
             "assertionId": "asr_6cfa53c4-4de0-4143-8543-7061b6141f47",
@@ -821,7 +822,7 @@
       "anchorCount": 2,
       "fileMatches": 2,
       "pageFileMatches": 2,
-      "elapsedMs": 899
+      "elapsedMs": 3043
     },
     {
       "id": "6cf91083-ca82-45a9-84cf-4fe9894468fc",
@@ -837,7 +838,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 919
+      "elapsedMs": 2865
     },
     {
       "id": "82732eec-cde7-42a7-bde5-dc21974d3675",
@@ -853,7 +854,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 914
+      "elapsedMs": 2493
     },
     {
       "id": "870db59b-98a3-4516-8f14-dd9feda3d139",
@@ -869,7 +870,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 704
+      "elapsedMs": 2594
     },
     {
       "id": "c2219eac-af25-4275-8306-6b56ed8e7d92",
@@ -902,7 +903,7 @@
       "anchorCount": 1,
       "fileMatches": 1,
       "pageFileMatches": 1,
-      "elapsedMs": 1118
+      "elapsedMs": 2946
     },
     {
       "id": "9601019b-ef82-49c6-ac0b-b24254d985e3",
@@ -911,7 +912,7 @@
       "correct": true,
       "actual": {
         "kind": "sourced",
-        "answer": "打开CMD或PowerShell，输入如下命令并回车，验证版本信息：node -v [section_744c086ea6846f1b2a12dcf1]；npm -v [section_744c086ea6846f1b2a12dcf1]",
+        "answer": "打开CMD或PowerShell，输入如下命令并回车，验证版本信息：node -v、npm -v [section_744c086ea6846f1b2a12dcf1]",
         "citations": [
           {
             "assertionId": "section_744c086ea6846f1b2a12dcf1",
@@ -935,7 +936,7 @@
       "anchorCount": 2,
       "fileMatches": 2,
       "pageFileMatches": 2,
-      "elapsedMs": 1091
+      "elapsedMs": 2841
     },
     {
       "id": "c0f72b47-7519-4568-878f-950f97fa2706",
@@ -944,7 +945,7 @@
       "correct": true,
       "actual": {
         "kind": "sourced",
-        "answer": "在安装目录下新建的两个文件夹是【node_global】和【node_cache】。[section_5ec78204c5f602fa059d4f7f]",
+        "answer": "在安装目录下新建的两个文件夹是【node_global】和【node_cache】。 [section_5ec78204c5f602fa059d4f7f]",
         "citations": [
           {
             "assertionId": "section_5ec78204c5f602fa059d4f7f",
@@ -968,7 +969,7 @@
       "anchorCount": 1,
       "fileMatches": 1,
       "pageFileMatches": 1,
-      "elapsedMs": 1194
+      "elapsedMs": 2799
     },
     {
       "id": "be1f3a90-b64d-4ad5-9951-7043f43c8b3a",
@@ -984,7 +985,7 @@
       "anchorCount": 2,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1000
+      "elapsedMs": 2716
     },
     {
       "id": "4928efa1-58fd-4e61-8be0-3bbb85c8e8dc",
@@ -1000,39 +1001,73 @@
       "anchorCount": 2,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1417
+      "elapsedMs": 2914
     },
     {
       "id": "f0946694-0b1d-44e6-a28b-50b8c27bc87d",
       "questionType": "single_source",
       "answerable": true,
-      "correct": false,
+      "correct": true,
       "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
+        "kind": "sourced",
+        "answer": "请帮我写一首古诗，并将其保存在我的桌面上，命名为古诗.txt [section_f518fcb94678cadc563bbae8]",
+        "citations": [
+          {
+            "assertionId": "section_f518fcb94678cadc563bbae8",
+            "quote": "返回到对话界面，通过锤子界面选择已经添加并激活的MCP服务\n通过@符，可选择其他的对话大模型，这里要选择带有tools能力的大模型\n接下来可以输入以下prompt测试一下：\n此时在对话界面，可显示其调用的MCP服务器中具体的工具及对应的执行结果，并根据当前的执行结果\n来判定是否达到用户的需求从而决定是否接着执行其他能力。\n请帮我写一首古诗，并将其保存在我的桌面上，命名为古诗.txt",
+            "locator": {
+              "kind": "page",
+              "page": 34
+            },
+            "sourceTitle": "MCP初体验-水印",
+            "sourceId": "src_6b8831c4-00c8-4bc9-9100-41e371142e5d",
+            "sourceFile": "raw/articles/MCP初体验-水印.pdf",
+            "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+            "origin": "sourced",
+            "derivedFromSection": true
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
       },
       "anchorCount": 1,
-      "fileMatches": 0,
-      "pageFileMatches": 0,
-      "elapsedMs": 771
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 2752
     },
     {
       "id": "633e4fe9-f28d-4446-bb57-ef07858ba0b1",
       "questionType": "fact",
       "answerable": true,
-      "correct": false,
+      "correct": true,
       "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
+        "kind": "sourced",
+        "answer": "打开的是 https://mcp.so 网址 [section_d9c49eba888471971a3db543]",
+        "citations": [
+          {
+            "assertionId": "section_d9c49eba888471971a3db543",
+            "quote": "提交后，就会出现新创建的秘钥，后续在MCP服务中就会使用该秘钥\n4.2.2 添加MCP服务\n打开https://mcp.so网址，界面如下",
+            "locator": {
+              "kind": "page",
+              "page": 38
+            },
+            "sourceTitle": "MCP初体验-水印",
+            "sourceId": "src_6b8831c4-00c8-4bc9-9100-41e371142e5d",
+            "sourceFile": "raw/articles/MCP初体验-水印.pdf",
+            "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+            "origin": "sourced",
+            "derivedFromSection": true
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
       },
       "anchorCount": 1,
-      "fileMatches": 0,
-      "pageFileMatches": 0,
-      "elapsedMs": 756
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 2510
     },
     {
       "id": "8346d496-738b-4659-95e8-c3dac376d4ca",
@@ -1048,7 +1083,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 897
+      "elapsedMs": 2944
     },
     {
       "id": "de2f337d-dc32-49d1-9253-4050e21a15c8",
@@ -1064,7 +1099,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 850
+      "elapsedMs": 2620
     },
     {
       "id": "486bbfca-0d97-4118-9ce4-7e8188f941f7",
@@ -1096,7 +1131,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 871
+      "elapsedMs": 2732
     },
     {
       "id": "0521ca0a-6d82-477e-bcc3-9b8df091279b",
@@ -1112,7 +1147,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 809
+      "elapsedMs": 2937
     },
     {
       "id": "f3de426b-5d7b-4208-ad39-5b9d305a59a1",
@@ -1144,7 +1179,7 @@
       "anchorCount": 1,
       "fileMatches": 1,
       "pageFileMatches": 1,
-      "elapsedMs": 1184
+      "elapsedMs": 2778
     },
     {
       "id": "64ad2117-5787-427b-a262-5fcd7283af52",
@@ -1160,7 +1195,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 818
+      "elapsedMs": 2949
     },
     {
       "id": "e43be92d-2b32-4eb0-861a-2cdce9313deb",
@@ -1192,7 +1227,7 @@
       "anchorCount": 1,
       "fileMatches": 1,
       "pageFileMatches": 1,
-      "elapsedMs": 1026
+      "elapsedMs": 2793
     },
     {
       "id": "181ec4df-3c90-4ea9-99e9-0497496f4b47",
@@ -1208,7 +1243,7 @@
       "anchorCount": 2,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 920
+      "elapsedMs": 2850
     },
     {
       "id": "c38aec5d-37f2-4627-b5bb-2602b3e0c3bb",
@@ -1224,7 +1259,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 605
+      "elapsedMs": 2837
     },
     {
       "id": "526f34c8-b151-418c-896c-8a7387226903",
@@ -1240,23 +1275,39 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 750
+      "elapsedMs": 2431
     },
     {
       "id": "eccf8a74-7d36-4339-a31c-d0808e0d9672",
       "questionType": "fact",
       "answerable": true,
-      "correct": false,
+      "correct": true,
       "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
+        "kind": "sourced",
+        "answer": "uv 是一个新一代的 Python 包管理和虚拟环境工具，它的目标就是要取代传统的 pip + venv + virtualenv + pip-tools + poetry 这些工具，提供一个统一、极快的体验。[asr_13615a16-95ee-4892-9e1c-9d3833b79b77]",
+        "citations": [
+          {
+            "assertionId": "asr_13615a16-95ee-4892-9e1c-9d3833b79b77",
+            "quote": "uv 是一个 新一代的 Python 包管理和虚拟环境工具，它的目标就是要取代传统的 pip + venv +\nvirtualenv + pip-tools + poetry 这些工具，提供一个统一、极快的体验。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "手写MCP服务器与客户端-水印",
+            "sourceId": "src_fa88f583-a8c2-43b8-b893-b9b3ffae91e7",
+            "sourceFile": "raw/articles/手写MCP服务器与客户端-水印.pdf",
+            "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
       },
       "anchorCount": 1,
-      "fileMatches": 0,
-      "pageFileMatches": 0,
-      "elapsedMs": 841
+      "fileMatches": 1,
+      "pageFileMatches": 1,
+      "elapsedMs": 2764
     },
     {
       "id": "24dd05f1-a9ae-43d0-b424-4ddafbd75773",
@@ -1272,7 +1323,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 882
+      "elapsedMs": 2991
     },
     {
       "id": "4513e98a-5fd4-40a5-ae16-00d4fa530d4b",
@@ -1288,7 +1339,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 997
+      "elapsedMs": 2454
     },
     {
       "id": "c15f8071-72fb-481d-bffd-bf9e5548b2ad",
@@ -1297,17 +1348,17 @@
       "correct": true,
       "actual": {
         "kind": "sourced",
-        "answer": "在 stdio 通信模式下，MCP 服务器通过 mcp.run(transport=\"stdio\") 启动，使用标准输入输出方式进行通信，适用于本地子进程模式，客户端通过标准输入输出与服务器通信。[section_16a168de61543c99b6bcb879]",
+        "answer": "MCP 服务器使用 stdio（标准输入输出）方式进行通信，这种方式适用于本地子进程模式，客户端通过标准输入输出与服务器通信 [section_6e649b85392831a051d1ff08]。",
         "citations": [
           {
-            "assertionId": "section_16a168de61543c99b6bcb879",
-            "quote": "return await time_tool.run(format)\n# 程序主入口点\nif __name__ == \"__main__\":\n# 启动 MCP 服务器，使用 stdio（标准输入输出）方式进行通信\n# 这种方式适用于本地子进程模式，客户端通过标准输入输出与服务器通信\nmcp.run(transport=\"stdio\")\n# client\n# 导入 asyncio 模块，用于支持异步编程\nimport asyncio\n# 导入 os 模块，用于访问操作系统功能，如环境变量\nimport os\n# 从 mcp 模块导入 ClientSession、StdioServerParame",
+            "assertionId": "section_6e649b85392831a051d1ff08",
+            "quote": "if __name__ == \"__main__\":\n# 启动 MCP 服务器，使用 stdio（标准输入输出）方式进行通信\n# 这种方式适用于本地子进程模式，客户端通过标准输入输出与服务器通信\nmcp.run(transport=\"stdio\")\n# 导入 asyncio 模块，用于支持异步编程\nimport asyncio\n# 导入 os 模块，用于访问操作系统功能，如环境变量\nimport os\n# 从 mcp 模块导入 ClientSession、StdioServerParameters 和 types\n# ClientSession: 客户端会话类，用于与 MCP 服务器进行交互\n",
             "locator": {
               "kind": "page",
-              "page": 21
+              "page": 18
             },
             "sourceTitle": "手写MCP服务器与客户端-水印",
-            "sourceId": "src_27e6c48e-0193-490f-b83e-7dc18c6ad154",
+            "sourceId": "src_fa88f583-a8c2-43b8-b893-b9b3ffae91e7",
             "sourceFile": "raw/articles/手写MCP服务器与客户端-水印.pdf",
             "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
             "origin": "sourced",
@@ -1321,68 +1372,23 @@
       "anchorCount": 1,
       "fileMatches": 1,
       "pageFileMatches": 0,
-      "elapsedMs": 1994
+      "elapsedMs": 2915
     },
     {
       "id": "3a257585-8487-4632-8ba7-cdbd0db09ebe",
       "questionType": "fact",
       "answerable": true,
-      "correct": true,
+      "correct": false,
       "actual": {
-        "kind": "sourced",
-        "answer": "MCP 服务器支持 stdio（标准输入输出）方式，适用于本地子进程模式，客户端通过标准输入输出与服务器通信 [section_16a168de61543c99b6bcb879]\nMCP 服务器支持 sse（Server-Sent Events）方式，适用于远程连接模式，客户端通过 HTTP/SSE 连接，允许通过网络进行远程访问 [section_a40f26bb12f00994a736eec3]\nMCP 服务器支持 streamable-http 方式，适用于远程连接模式，客户端通过 HTTP 流式传输连接，提供更高效的流式数据传输 [section_3fd680d34c1243c25454c117]",
-        "citations": [
-          {
-            "assertionId": "section_3fd680d34c1243c25454c117",
-            "quote": "4. 天气预报MCP服务器\n# 启动 MCP 服务器，使用 streamable-http 方式进行通信\n# 这种方式适用于远程连接模式，客户端通过 HTTP 流式传输连接\n# 与 stdio 和 sse 模式不同，streamable-http 提供了更高效的流式数据传输\nmcp.run(\"streamable-http\")\n# client\n# 导入 asyncio 模块，用于支持异步编程\nimport asyncio\n# 从 mcp 模块导入 ClientSession\n# ClientSession: 客户端会话类，用于与 MCP 服务器进行交互\nfrom mcp import Cli",
-            "locator": {
-              "kind": "page",
-              "page": 16
-            },
-            "sourceTitle": "手写MCP服务器与客户端-水印",
-            "sourceId": "src_27e6c48e-0193-490f-b83e-7dc18c6ad154",
-            "sourceFile": "raw/articles/手写MCP服务器与客户端-水印.pdf",
-            "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
-            "origin": "sourced",
-            "derivedFromSection": true
-          },
-          {
-            "assertionId": "section_16a168de61543c99b6bcb879",
-            "quote": "return await time_tool.run(format)\n# 程序主入口点\nif __name__ == \"__main__\":\n# 启动 MCP 服务器，使用 stdio（标准输入输出）方式进行通信\n# 这种方式适用于本地子进程模式，客户端通过标准输入输出与服务器通信\nmcp.run(transport=\"stdio\")\n# client\n# 导入 asyncio 模块，用于支持异步编程\nimport asyncio\n# 导入 os 模块，用于访问操作系统功能，如环境变量\nimport os\n# 从 mcp 模块导入 ClientSession、StdioServerParame",
-            "locator": {
-              "kind": "page",
-              "page": 21
-            },
-            "sourceTitle": "手写MCP服务器与客户端-水印",
-            "sourceId": "src_27e6c48e-0193-490f-b83e-7dc18c6ad154",
-            "sourceFile": "raw/articles/手写MCP服务器与客户端-水印.pdf",
-            "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
-            "origin": "sourced",
-            "derivedFromSection": true
-          },
-          {
-            "assertionId": "section_a40f26bb12f00994a736eec3",
-            "quote": "# 判断当前脚本是否为主程序入口\nif __name__ == \"__main__\":\n# 启动 MCP 服务器，使用 sse（Server-Sent Events）方式进行通信\n# 这种方式适用于远程连接模式，客户端通过 HTTP/SSE 连接\n# 与 stdio 模式不同，sse 模式允许通过网络进行远程访问\nmcp.run(\"sse\")\n# client\n# 导入 asyncio 模块，用于支持异步编程\nimport asyncio\n# 从 pydantic 导入 AnyUrl，用于处理 URL 类型，确保 URL 格式正确\nfrom pydantic import AnyUrl\n# 从",
-            "locator": {
-              "kind": "page",
-              "page": 12
-            },
-            "sourceTitle": "手写MCP服务器与客户端-水印",
-            "sourceId": "src_27e6c48e-0193-490f-b83e-7dc18c6ad154",
-            "sourceFile": "raw/articles/手写MCP服务器与客户端-水印.pdf",
-            "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
-            "origin": "sourced",
-            "derivedFromSection": true
-          }
-        ],
-        "ontologyVersion": "1.0.0",
-        "revision": "rev-003",
-        "inferredParts": []
+        "kind": "unknown",
+        "reason": "NO_EVIDENCE",
+        "answer": null,
+        "citations": []
       },
       "anchorCount": 1,
-      "fileMatches": 1,
+      "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1184
+      "elapsedMs": 2706
     },
     {
       "id": "0ac735a6-2826-4267-857f-248eb4468f65",
@@ -1398,7 +1404,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 636
+      "elapsedMs": 3085
     },
     {
       "id": "fef173ec-7e67-4456-a2f5-1c698b6e99f1",
@@ -1414,7 +1420,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 702
+      "elapsedMs": 2682
     },
     {
       "id": "6f3ffddd-c22e-4bc2-8f07-10c14c1bc062",
@@ -1430,7 +1436,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1170
+      "elapsedMs": 3442
     },
     {
       "id": "4548e251-8d22-43b7-9d3e-b82fe2c58395",
@@ -1446,7 +1452,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 885
+      "elapsedMs": 2559
     },
     {
       "id": "ed50628a-8069-49ff-b63d-8ea1efc72deb",
@@ -1462,7 +1468,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 972
+      "elapsedMs": 2659
     },
     {
       "id": "43cc423f-9093-465e-8845-0765105d549a",
@@ -1478,7 +1484,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1017
+      "elapsedMs": 2670
     },
     {
       "id": "7aef475b-e2fb-4ad5-9366-353adf9aefbb",
@@ -1494,7 +1500,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 672
+      "elapsedMs": 2759
     },
     {
       "id": "41ac6840-d5ae-4c25-abf2-3c8010b1f4b9",
@@ -1510,7 +1516,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 907
+      "elapsedMs": 3142
     },
     {
       "id": "d0eb1a86-14c0-401c-851f-c4bc314ecafb",
@@ -1519,11 +1525,37 @@
       "correct": true,
       "actual": {
         "kind": "sourced",
-        "answer": "React（Reasoning + Acting）是构建智能代理（Agent）的一个底层逻辑框架，用于通过语言模型（LLM）结合外部工具的交互来解决复杂问题。[asr_f6216204-6056-468d-a5de-107fe8d80356]",
+        "answer": "React（Reasoning + Acting）是构建智能代理（Agent）的一个底层逻辑框架，用于通过语言模型（LLM）结合外部工具的交互来解决复杂问题 [asr_f6216204-6056-468d-a5de-107fe8d80356]\nReasoning（推理）：代理首先通过LLM的推理能力，分析输入信息，理解上下文、问题或任务 [asr_653c7bcf-181f-46fa-8fc3-de089de1f3a5]\nActing（执行）：代理根据推理的结果，采取相应的行动 [asr_231840e9-5874-4e0f-b887-9e6510275d0f]",
         "citations": [
           {
             "assertionId": "asr_f6216204-6056-468d-a5de-107fe8d80356",
             "quote": "React（Reasoning + Acting）是构建智能代理（Agent）的一个底层逻辑框架，用于\n通过语言模型（LLM）结合外部工具的交互来解决复杂问题。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "手搓一个Agent-水印",
+            "sourceId": "src_5aa44177-ec54-4cbc-8de8-51354e95e348",
+            "sourceFile": "raw/articles/手搓一个Agent-水印.pdf",
+            "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_231840e9-5874-4e0f-b887-9e6510275d0f",
+            "quote": "Acting（执行）：\n代理根据推理的结果，采取相应的行动。",
+            "locator": {
+              "kind": "page",
+              "page": 1
+            },
+            "sourceTitle": "手搓一个Agent-水印",
+            "sourceId": "src_5aa44177-ec54-4cbc-8de8-51354e95e348",
+            "sourceFile": "raw/articles/手搓一个Agent-水印.pdf",
+            "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+            "origin": "sourced"
+          },
+          {
+            "assertionId": "asr_653c7bcf-181f-46fa-8fc3-de089de1f3a5",
+            "quote": "Reasoning（推理）：\n代理首先通过LLM的推理能力，分析输入信息，理解上下文、问题或任务。",
             "locator": {
               "kind": "page",
               "page": 1
@@ -1542,23 +1574,39 @@
       "anchorCount": 3,
       "fileMatches": 3,
       "pageFileMatches": 3,
-      "elapsedMs": 692
+      "elapsedMs": 3315
     },
     {
       "id": "2506efb1-2b7e-41af-b14c-156665782475",
       "questionType": "synonym",
       "answerable": true,
-      "correct": false,
+      "correct": true,
       "actual": {
-        "kind": "unknown",
-        "reason": "NO_EVIDENCE",
-        "answer": null,
-        "citations": []
+        "kind": "sourced",
+        "answer": "提示词对应的英文术语是 Prompt。[asr_3a7f0a1b-1fd8-4495-a463-8a3fc510f743]",
+        "citations": [
+          {
+            "assertionId": "asr_3a7f0a1b-1fd8-4495-a463-8a3fc510f743",
+            "quote": "其实简单来说这个就是所谓的提示词Prompt。",
+            "locator": {
+              "kind": "page",
+              "page": 7
+            },
+            "sourceTitle": "Langchain部署本地大模型-水印",
+            "sourceId": "src_df674da9-5fda-4920-8cc6-245661b35d26",
+            "sourceFile": "raw/articles/Langchain部署本地大模型-水印.pdf",
+            "sourceSha256": "d91c956a692f10a2824d58709fae5f4b76976971872a1ab7f382c15699bd4a2a",
+            "origin": "sourced"
+          }
+        ],
+        "ontologyVersion": "1.0.0",
+        "revision": "rev-003",
+        "inferredParts": []
       },
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 773
+      "elapsedMs": 3240
     },
     {
       "id": "71025a98-2764-46ed-850c-6ab913a50817",
@@ -1574,7 +1622,7 @@
       "anchorCount": 2,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1028
+      "elapsedMs": 3289
     },
     {
       "id": "c96ed427-667a-40cb-b5d0-3c7848258f89",
@@ -1590,7 +1638,7 @@
       "anchorCount": 1,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 870
+      "elapsedMs": 3109
     },
     {
       "id": "e7a2c29d-41bb-4cd3-9155-6a5532cb21a0",
@@ -1606,7 +1654,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 1036
+      "elapsedMs": 3042
     },
     {
       "id": "8605de8b-bfea-4e5a-a638-0ee52be267e5",
@@ -1622,7 +1670,7 @@
       "anchorCount": 0,
       "fileMatches": 0,
       "pageFileMatches": 0,
-      "elapsedMs": 759
+      "elapsedMs": 2957
     }
   ]
 }
