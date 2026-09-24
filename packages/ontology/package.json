@@ -9,5 +9,8 @@
   "dependencies": {
     "zod": "4.1.5",
     "yaml": "2.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24"
   }
 }
