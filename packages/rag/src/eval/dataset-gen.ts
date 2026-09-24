@@ -29,7 +29,7 @@ export function validateGeneratedCandidates(value: unknown, input: { kbId: strin
   });
 }
 
-function decryptKey(stored: string): string {
+export function decryptKey(stored: string): string {
   const parts = stored.split(':');
   const [version, iv64, tag64, ct64] = parts;
   if (parts.length !== 4 || version !== 'v1' || !iv64 || !tag64 || !ct64) throw new Error('INVALID_KEY');

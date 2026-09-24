@@ -221,6 +221,9 @@ importers:
       '@aichat/db':
         specifier: workspace:*
         version: link:../db
+      pdfjs-dist:
+        specifier: 5.4.296
+        version: 5.4.296
       zod:
         specifier: 4.1.5
         version: 4.1.5
