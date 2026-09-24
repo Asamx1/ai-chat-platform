@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import type { SourceLocator } from '@aichat/contracts';
-import { rawPath, sha256 } from './scan.js';
+import { rawPath, sha256 } from './scan';
 export interface ParsedDoc { needsOcr: boolean; sections: Array<{ locator: SourceLocator; text: string; sha256: string }> }
 export type ParseSource = { filePath: string; mimeType: string; sha256?: string };
 export type PdfReader = (bytes: Uint8Array) => Promise<string[]>;

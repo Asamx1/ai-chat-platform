@@ -4,9 +4,9 @@ import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promis
 import { basename, extname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { z } from 'zod';
-import { database, rawPath, scanRawFile, sha256 } from './scan.js';
-import { ingestFile, type IngestOptions } from './ingest.js';
-import type { ParsedDoc } from './parse.js';
+import { database, rawPath, scanRawFile, sha256 } from './scan';
+import { ingestFile, type IngestOptions } from './ingest';
+import type { ParsedDoc } from './parse';
 
 export interface VisionRequest { system: string; prompt: string; image: { mimeType: string; base64: string }; }
 export type VisionLlm = (request: VisionRequest) => Promise<unknown>;

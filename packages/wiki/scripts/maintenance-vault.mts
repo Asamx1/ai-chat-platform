@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import { parseArgs } from 'node:util';
 import type { PrismaClient } from '@aichat/db';
-import { database } from '../src/scan.js';
-import { propagateRetraction, recomputeInferences, markVersionStaleness, demoteLonelyConcepts } from '../src/maintenance.js';
+import { database } from '../src/scan';
+import { propagateRetraction, recomputeInferences, markVersionStaleness, demoteLonelyConcepts } from '../src/maintenance';
 
 let db: PrismaClient | undefined;
 try {

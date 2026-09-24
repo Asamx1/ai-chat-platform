@@ -1,9 +1,9 @@
 import 'dotenv/config';
 import { parseArgs } from 'node:util';
 import type { PrismaClient } from '@aichat/db';
-import { database } from '../src/scan.js';
-import { eligiblePromotions } from '../src/promote.js';
-import { publishRevision } from '../src/publish.js';
+import { database } from '../src/scan';
+import { eligiblePromotions } from '../src/promote';
+import { publishRevision } from '../src/publish';
 
 const { values } = parseArgs({ options: {
   vault: { type: 'string', default: '/mnt/d/wiki-vault' },

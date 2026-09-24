@@ -5,8 +5,8 @@ import { z } from 'zod';
 import { SourceLocatorSchema, type SourceLocator } from '@aichat/contracts';
 import { loadOntology, loadConstraints, checkAssertion, checkRelationEdge, type Assertion, type Constraints, type Ontology } from '@aichat/ontology';
 import type { Prisma, PrismaClient, VaultSource } from '@aichat/db';
-import { parseSource, type ParsedDoc, type PdfReader } from './parse.js';
-import { database, normalizeName, sha256 } from './scan.js';
+import { parseSource, type ParsedDoc, type PdfReader } from './parse';
+import { database, normalizeName, sha256 } from './scan';
 
 export interface Llm { (request: { system: string; prompt: string }): Promise<unknown> }
 export interface LlmOptions { llm?: Llm; userId?: string; constraints?: Constraints }

@@ -1,9 +1,9 @@
 import { lstat, readFile, readdir } from 'node:fs/promises';
 import { posix, resolve } from 'node:path';
 import type { PrismaClient } from '@aichat/db';
-import { links } from './publish.js';
-import { pageSlug } from './promote.js';
-import { canonicalJson } from './jobs.js';
+import { links } from './publish';
+import { pageSlug } from './promote';
+import { canonicalJson } from './jobs';
 
 export interface LintIssue {
   category: 'structure' | 'provenance' | 'conflicts' | 'timeliness';

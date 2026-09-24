@@ -4,9 +4,9 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { basename, dirname } from 'node:path';
 import { z } from 'zod';
 import type { PrismaClient } from '@aichat/db';
-import { answerStrict } from '../src/query.js';
-import { deepseekLlm, type Llm } from '../src/extract.js';
-import { database } from '../src/scan.js';
+import { answerStrict } from '../src/query';
+import { deepseekLlm, type Llm } from '../src/extract';
+import { database } from '../src/scan';
 
 const types = ['fact', 'synonym', 'single_source', 'version_scope', 'unanswerable', 'out_of_scope'] as const;
 const dataset = z.object({ cases: z.array(z.object({ id: z.string(), question: z.string(), questionType: z.enum(types), answerable: z.boolean(),

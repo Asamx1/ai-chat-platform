@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import { parseArgs } from 'node:util';
 import type { PrismaClient } from '@aichat/db';
-import { database } from '../src/scan.js';
-import { lintVault } from '../src/lint.js';
+import { database } from '../src/scan';
+import { lintVault } from '../src/lint';
 const { values } = parseArgs({ options: {
   vault: { type: 'string', default: '/mnt/d/wiki-vault' }, 'vault-id': { type: 'string', default: 'default' },
 } });

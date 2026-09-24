@@ -1,5 +1,5 @@
 import type { Prisma, PrismaClient } from '@aichat/db';
-import { sha256 } from './scan.js';
+import { sha256 } from './scan';
 
 export type JobKind = 'scan_backlog' | 'lint_check' | 'reextract' | 'republish';
 export const MAX_JOB_ATTEMPTS = 3;

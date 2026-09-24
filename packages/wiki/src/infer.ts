@@ -4,7 +4,7 @@ import type { Prisma, PrismaClient, VaultAssertion } from '@aichat/db';
 import { z } from 'zod';
 import { defaultOntology, loadOntology, loadInferenceRules, runInference,
   type Assertion, type Ontology, type InferenceRules } from '@aichat/ontology';
-import { sha256 } from './scan.js';
+import { sha256 } from './scan';
 
 export interface InferredAssertion extends Assertion {
   origin: 'inferred'; derivedFrom: string[]; ontologyVersion: string;

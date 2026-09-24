@@ -4,11 +4,11 @@ import { z } from 'zod';
 import type { PrismaClient } from '@aichat/db';
 import { SourceLocatorSchema, type SourceLocator } from '@aichat/contracts';
 import { loadOntology, loadConstraints, loadInferenceRules, type Assertion } from '@aichat/ontology';
-import { embed as ragEmbed } from '../../rag/src/embed.js';
-import { deepseekLlm, type Llm } from './extract.js';
-import { deriveAssertions, toOntologyAssertion, type InferredAssertion } from './infer.js';
-import { normalizeName, rawPath, sha256 } from './scan.js';
-import { parseSource, type ParsedDoc, type ParseSource } from './parse.js';
+import { embed as ragEmbed } from '../../rag/src/embed';
+import { deepseekLlm, type Llm } from './extract';
+import { deriveAssertions, toOntologyAssertion, type InferredAssertion } from './infer';
+import { normalizeName, rawPath, sha256 } from './scan';
+import { parseSource, type ParsedDoc, type ParseSource } from './parse';
 
 export async function loadVaultContext(vaultPath: string) {
   const [rules, ontology, constraints, inferenceRules, index] = await Promise.all([

@@ -1,7 +1,7 @@
 import { parseArgs } from 'node:util';
 import { readFile } from 'node:fs/promises';
-import { database } from '../src/scan.js';
-import { inferAssertions, persistInferred } from '../src/infer.js';
+import { database } from '../src/scan';
+import { inferAssertions, persistInferred } from '../src/infer';
 
 const { values } = parseArgs({ options: {
   'vault-id': { type: 'string', default: 'default' },

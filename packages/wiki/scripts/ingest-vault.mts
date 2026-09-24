@@ -3,8 +3,8 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
-import { ingestFile, ingestVault } from '../src/ingest.js';
-import { database } from '../src/scan.js';
+import { ingestFile, ingestVault } from '../src/ingest';
+import { database } from '../src/scan';
 import type { PrismaClient } from '@aichat/db';
 
 const { values } = parseArgs({ options: {

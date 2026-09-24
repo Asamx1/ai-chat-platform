@@ -2,9 +2,9 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { checkAssertion, loadConstraints, loadOntology, type Assertion, type Constraints, type Ontology } from '@aichat/ontology';
 import type { PrismaClient } from '@aichat/db';
-import { database, listRawFiles, registerSource, scanRawFile } from './scan.js';
-import { parseSource, type PdfReader, type ParsedDoc } from './parse.js';
-import { extractAssertions, normalizeEntities, proposeAliases, type Llm, type Rejected } from './extract.js';
+import { database, listRawFiles, registerSource, scanRawFile } from './scan';
+import { parseSource, type PdfReader, type ParsedDoc } from './parse';
+import { extractAssertions, normalizeEntities, proposeAliases, type Llm, type Rejected } from './extract';
 export interface IngestOptions {
   vaultId?: string; userId?: string; db?: PrismaClient; ontology?: Ontology; constraints?: Constraints;
   resumeRegistered?: boolean; expectedSha256?: string;

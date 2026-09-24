@@ -2,8 +2,8 @@ import { randomUUID } from 'node:crypto';
 import { mkdir, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import type { PrismaClient } from '@aichat/db';
-import type { Citation, StrictAnswer } from './query.js';
-import { sha256 } from './scan.js';
+import type { Citation, StrictAnswer } from './query';
+import { sha256 } from './scan';
 
 type AnswerContent = { answer: string; citations: Citation[]; revision: string }
   | { answer: Exclude<StrictAnswer, { kind: 'unknown' }> };

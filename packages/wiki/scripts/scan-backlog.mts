@@ -2,10 +2,10 @@ import 'dotenv/config';
 import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import type { Prisma, PrismaClient } from '@aichat/db';
-import { database, scanRawDir } from '../src/scan.js';
-import { ingestFile } from '../src/ingest.js';
-import { ingestMultimodal } from '../src/multimodal.js';
-import { claimNextJob, completeJob, enqueueJob, failJob } from '../src/jobs.js';
+import { database, scanRawDir } from '../src/scan';
+import { ingestFile } from '../src/ingest';
+import { ingestMultimodal } from '../src/multimodal';
+import { claimNextJob, completeJob, enqueueJob, failJob } from '../src/jobs';
 
 const { values } = parseArgs({ options: {
   vault: { type: 'string', default: '/mnt/d/wiki-vault' },

@@ -1,10 +1,10 @@
 import { lstat, readFile, readdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import type { PrismaClient } from '@aichat/db';
-import { inferAssertions, type InferOptions } from './infer.js';
-import { canonicalJson } from './jobs.js';
-import { sha256 } from './scan.js';
-import type { LintIssue } from './lint.js';
+import { inferAssertions, type InferOptions } from './infer';
+import { canonicalJson } from './jobs';
+import { sha256 } from './scan';
+import type { LintIssue } from './lint';
 
 // Keep provenance as string[]. Reserved metadata is separate from semantic context.
 const context = (value: string | null): Record<string, unknown> => {

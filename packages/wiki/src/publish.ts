@@ -4,8 +4,8 @@ import { mkdir, readFile, readdir, rename, rm, writeFile } from 'node:fs/promise
 import { dirname, posix, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import type { PrismaClient } from '@aichat/db';
-import { eligiblePromotions, pageSlug, promoteEntity } from './promote.js';
-import { sha256 } from './scan.js';
+import { eligiblePromotions, pageSlug, promoteEntity } from './promote';
+import { sha256 } from './scan';
 
 export interface PublishOptions { autoGit?: boolean; userId?: string; ontologyVersion?: string; rulesVersion?: string }
 export interface PublishReport {
