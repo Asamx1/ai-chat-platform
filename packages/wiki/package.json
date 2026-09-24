@@ -1,0 +1,22 @@
+{
+  "name": "@aichat/wiki",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": {
+    "@aichat/db": "workspace:*",
+    "@aichat/contracts": "workspace:*",
+    "@aichat/ontology": "workspace:*",
+    "@aichat/crypto": "workspace:*",
+    "zod": "4.1.5",
+    "pdfjs-dist": "5.4.296",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24",
+    "@prisma/adapter-pg": "^7.10.0",
+    "pg": "^8.23.0",
+    "@types/pg": "^8.23.1"
+  }
+}
