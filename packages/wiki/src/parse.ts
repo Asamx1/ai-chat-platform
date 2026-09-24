@@ -45,6 +45,6 @@ export async function parseSource(source: ParseSource, vaultPath: string, pdf: P
       if (end < text.length) { const lineEnd = text.lastIndexOf('\n', end - 1); if (lineEnd >= start) end = lineEnd + 1; }
       add({ kind: 'offset', start, end }, text.slice(start, end)); start = end;
     }
-  } else throw new Error('UNSUPPORTED_FILE_TYPE');
+  } else return { needsOcr: true, sections: [] };
   return { needsOcr: false, sections };
 }

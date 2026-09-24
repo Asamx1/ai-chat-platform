@@ -3,18 +3,20 @@ import { resolve } from 'node:path';
 import { checkAssertion, loadConstraints, loadOntology, type Assertion, type Constraints, type Ontology } from '@aichat/ontology';
 import type { PrismaClient } from '@aichat/db';
 import { database, listRawFiles, registerSource, scanRawFile } from './scan.js';
-import { parseSource, type PdfReader } from './parse.js';
+import { parseSource, type PdfReader, type ParsedDoc } from './parse.js';
 import { extractAssertions, normalizeEntities, proposeAliases, type Llm, type Rejected } from './extract.js';
 export interface IngestOptions {
   vaultId?: string; userId?: string; db?: PrismaClient; ontology?: Ontology; constraints?: Constraints;
   resumeRegistered?: boolean; expectedSha256?: string;
   llm?: Llm; normalizeLlm?: Llm; pdfReader?: PdfReader;
+  documentParser?: (source: Awaited<ReturnType<typeof registerSource>>['source']) => Promise<ParsedDoc & { qualityInsufficient?: boolean; reasons?: string[] }>;
 }
 export interface IngestReport {
   file: string; sourceId: string | null; familyId: string | null; isDuplicate: boolean; needsOcr: boolean;
   state: 'failed' | 'duplicate' | 'pending-p3-ocr' | 'ingested'; candidatesIn: number; candidatesOut: number;
   assertionsAccepted: string[]; assertionsRejected: Rejected[]; entitiesCreated: number; entitiesMerged: number;
   errors: Array<{ stage: string; reason: string }>;
+  sourceType?: 'multimodal'; qualityInsufficient?: boolean; reasons?: string[];
 }
 export async function ingestFile(vaultPath: string, relPath: string, opts: IngestOptions = {}): Promise<IngestReport> {
   const report: IngestReport = { file: relPath, sourceId: null, familyId: null, isDuplicate: false, needsOcr: false,
@@ -31,7 +33,14 @@ export async function ingestFile(vaultPath: string, relPath: string, opts: Inges
     // Backlog retries must resume sources registered before an extraction failure.
     if (isDuplicate && (!opts.resumeRegistered || await db.vaultEvidence.count({ where: { vaultId, sourceId: source.id } }) > 0)) { report.state = 'duplicate'; return report; }
     stage = 'parse';
-    const doc = await parseSource(source, vaultPath, opts.pdfReader);
+    const doc: ParsedDoc & { qualityInsufficient?: boolean; reasons?: string[] } = opts.documentParser ? await opts.documentParser(source) : await parseSource(source, vaultPath, opts.pdfReader);
+    if (doc.qualityInsufficient) {
+      report.qualityInsufficient = true;
+      report.reasons = doc.reasons ?? [];
+      report.needsOcr = doc.needsOcr;
+      report.state = doc.needsOcr ? 'pending-p3-ocr' : 'failed';
+      return report;
+    }
     if (doc.needsOcr) { report.needsOcr = true; report.state = 'pending-p3-ocr'; return report; }
     stage = 'schema';
     const ontology = opts.ontology ?? loadOntology(await readFile(resolve(vaultPath, 'schema/ontology.yaml'), 'utf8'));

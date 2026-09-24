@@ -7,7 +7,9 @@ export const sha256 = (data: string | Uint8Array): string => createHash('sha256'
 export const normalizeName = (name: string): string => name.normalize('NFKC').toLowerCase().replace(/\s+/gu, '');
 export interface RawFile { filePath: string; title: string; sha256: string; bytes: bigint; mimeType: string }
 export async function database(): Promise<PrismaClient> { return (await import('@aichat/db')).prisma; }
-const mimeTypes: Record<string, string> = { '.pdf': 'application/pdf', '.md': 'text/markdown', '.txt': 'text/plain' };
+const mimeTypes: Record<string, string> = { '.pdf': 'application/pdf', '.md': 'text/markdown', '.txt': 'text/plain',
+  '.srt': 'application/x-subrip', '.vtt': 'text/vtt', '.png': 'image/png', '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.tif': 'image/tiff', '.tiff': 'image/tiff', '.bmp': 'image/bmp' };
 
 export async function rawPath(vaultPath: string, relPath: string): Promise<string> {
   if (!/^raw\/(articles|papers|transcripts)\//u.test(relPath.replaceAll('\\', '/'))) throw new Error('PATH_OUTSIDE_RAW');
