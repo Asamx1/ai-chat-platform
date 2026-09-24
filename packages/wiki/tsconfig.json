@@ -1,5 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "types": ["node"] },
-  "include": ["src", "scripts", "test"]
+  "compilerOptions": {
+    "noEmit": true,
+    "types": [
+      "node"
+    ],
+    "declaration": false
+  },
+  "include": [
+    "src",
+    "scripts",
+    "test"
+  ]
 }

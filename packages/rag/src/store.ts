@@ -8,8 +8,8 @@ import { PermanentRagError } from './parse';
 export class LeaseLostError extends Error {}
 
 
-export function createGeneration(kbId: string, configSnapshot: Prisma.InputJsonObject) {
-  return prisma.indexGeneration.create({ data: { kbId, configSnapshot, status: 'BUILDING' } });
+export function createGeneration(kbId: string, configSnapshot: Prisma.InputJsonObject): Promise<unknown> {
+  return prisma.indexGeneration.create({ data: { kbId, configSnapshot, status: 'BUILDING' } }) as Promise<unknown>;
 }
 
 async function lockKb(tx: Prisma.TransactionClient, kbId: string): Promise<void> {

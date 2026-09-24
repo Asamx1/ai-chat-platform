@@ -11,8 +11,10 @@ try { tsc = require.resolve('typescript/bin/tsc'); }
 catch { console.error('TypeScript unavailable: existing apps/web dependencies are required.'); process.exit(1); }
 let exitCode = 0;
 for (const parent of ['apps', 'packages']) {
+  const SKIP_TYPECHECK = new Set(['desktop']); // apps/desktop 独立构建链(electron 依赖不随根装)
   for (const entry of readdirSync(path.join(root, parent), { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
     if (!entry.isDirectory()) continue;
+    if (parent === 'apps' && SKIP_TYPECHECK.has(entry.name)) continue;
     const config = path.join(root, parent, entry.name, 'tsconfig.json');
     if (!existsSync(config)) continue;
     console.log(`Typecheck ${path.relative(root, config)}`);

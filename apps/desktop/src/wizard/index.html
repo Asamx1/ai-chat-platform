@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'">
+  <title>AI Chat 初始化向导</title>
+  <link rel="stylesheet" href="wizard.css">
+</head>
+<body>
+  <main>
+    <h1>初始化桌面工作台</h1>
+    <p>检查资料目录与本地服务，完成后进入工作台。</p>
+    <h2>资料目录</h2>
+    <p id="vault"></p><p id="warning" class="warning" hidden></p>
+    <button id="open">打开资料目录</button>
+    <h2>依赖状态</h2>
+    <ul id="dependencies" aria-live="polite"></ul>
+    <p id="docker" class="warning" hidden>请在 Docker Desktop 中确认 aichat-postgres（宿主机 5433）和 MinIO（9000）已启动，再重新检测。本向导不会自动启动容器。</p>
+    <button id="refresh">重新检测</button>
+    <button id="start" disabled>启动服务并进入工作台</button>
+    <p id="message" role="status"></p>
+  </main>
+  <script src="wizard.js"></script>
+</body>
+</html>

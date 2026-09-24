@@ -1,0 +1,17 @@
+{
+  "name": "@aichat/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && electron .",
+    "test": "tsx --test test/service-manager.test.ts",
+    "package": "node scripts/package.mjs"
+  },
+  "dependencies": { "dotenv": "^17.4.2", "pg": "^8.16.3" },
+  "devDependencies": {
+    "electron": "^37", "electron-builder": "^26", "typescript": "^5",
+    "@types/node": "^24", "@types/pg": "^8", "tsx": "^4.23.13"
+  }
+}

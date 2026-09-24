@@ -34,6 +34,7 @@ export interface OllamaProbeResult {
 export interface VramEstimate {
   paramsB: number;
   estimatedGB: number;
+  moe?: boolean;
 }
 
 function normalizeBaseUrl(baseUrl: string): string {

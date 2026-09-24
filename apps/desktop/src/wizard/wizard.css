@@ -1,0 +1,7 @@
+body { margin: 0; background: #f4f6f8; color: #202b38; font: 16px/1.6 system-ui, sans-serif; }
+main { max-width: 820px; margin: 48px auto; padding: 32px; background: white; border-radius: 12px; }
+h1 { margin-top: 0; } h2 { font-size: 20px; }
+button { padding: 10px 18px; margin: 8px 8px 8px 0; cursor: pointer; }
+button:disabled { cursor: wait; } button:focus-visible { outline: 3px solid #255acb; }
+.warning { padding: 12px; background: #fff0bc; color: #644500; border-left: 4px solid #b07800; }
+li { margin: 8px 0; } #message { white-space: pre-wrap; }

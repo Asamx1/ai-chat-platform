@@ -42,9 +42,9 @@ describe.skipIf(!testUrl)('maintenance with real PostgreSQL', () => {
     const vaultId = randomUUID();
     const root = await mkdtemp(join(tmpdir(), 'wiki-maintenance-'));
     roots.push(root);
-    const sources = [];
+    const sources: Awaited<ReturnType<typeof registerSource>>['source'][] = [];
     for (const title of ['First', 'Second']) sources.push((await registerSource({ title, filePath: `raw/articles/${title}.txt`, sha256: sha256(title), bytes: 5n, mimeType: 'text/plain' }, vaultId, db)).source);
-    const entities = [];
+    const entities: { id: string }[] = []
     for (const canonicalName of ['A', 'B', 'C', 'D']) entities.push(await db.vaultEntityCandidate.create({ data: {
       vaultId, canonicalName, type: predicate === 'supersedes' ? 'Model' : 'Class', status: 'candidate',
       firstSourceId: sources[0]!.id, familyIdsJson: sources.map(s => s.familyId), aliasesJson: [],

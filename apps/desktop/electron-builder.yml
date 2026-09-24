@@ -1,0 +1,17 @@
+appId: com.aichat.desktop
+productName: AI Chat
+artifactName: aichat-setup-${version}.exe
+directories:
+  output: release
+files:
+  - dist/**
+  - src/wizard/**
+  - package.json
+# Web and its node_modules are deliberately not copied. See docs/m18-electron-spike.md.
+extraResources: []
+asar: true
+win:
+  target: nsis
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
