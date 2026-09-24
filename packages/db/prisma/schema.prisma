@@ -681,3 +681,121 @@ model OntologyConfig {
   kb KnowledgeBase @relation(fields: [kbId], references: [id], onDelete: Cascade)
   @@unique([kbId, version])
 }
+
+// Vault is an independent root; no relation to the legacy KB table family.
+model VaultSource {
+  id String @id @default(cuid())
+  vaultId String @default("default") @map("vault_id")
+  familyId String @map("family_id")
+  title String
+  mimeType String @map("mime_type")
+  filePath String @map("file_path")
+  sha256 String @db.VarChar(64)
+  bytes BigInt
+  addedBy String @default("user") @map("added_by")
+  createdAt DateTime @default(now()) @map("created_at")
+  family VaultSourceFamily @relation(fields: [familyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  evidence VaultEvidence[]
+  entityCandidates VaultEntityCandidate[]
+  @@unique([vaultId, familyId, sha256])
+}
+
+model VaultSourceFamily {
+  id String @id @default(cuid())
+  vaultId String @default("default") @map("vault_id")
+  familyKey String @map("family_key")
+  title String
+  firstSeenAt DateTime @default(now()) @map("first_seen_at")
+  sources VaultSource[]
+  @@unique([vaultId, familyKey])
+}
+
+model VaultPage {
+  id String @id @default(cuid())
+  vaultId String @default("default") @map("vault_id")
+  pageId String @map("page_id") // Concept slug
+  kind String // source_summary | concept | comparison | answer | report
+  title String
+  revision String // rev-NNN
+  filePath String @map("file_path")
+  ontologyVersion String @map("ontology_version")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  assertions VaultAssertion[]
+  @@unique([vaultId, pageId])
+}
+
+model VaultAssertion {
+  id String @id @default(cuid()) // Application supplies the asr_ prefix.
+  vaultId String @default("default") @map("vault_id")
+  subjectId String @map("subject_id")
+  predicate String
+  objectId String? @map("object_id") // Application supplies exactly one of objectId/value.
+  value String?
+  polarity Boolean
+  conditions String? // Serialized JSON
+  validFrom String? @map("valid_from")
+  validTo String? @map("valid_to")
+  status String // candidate | supported | contested | superseded | invalid
+  origin String // sourced | inferred
+  ruleId String? @map("rule_id")
+  ruleVersion String? @map("rule_version")
+  revision String
+  pageId String? @map("page_id")
+  ontologyVersion String @map("ontology_version")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  page VaultPage? @relation(fields: [vaultId, pageId], references: [vaultId, pageId], onDelete: Cascade, onUpdate: Cascade)
+  evidence VaultEvidence[]
+  @@index([vaultId, subjectId])
+  @@index([vaultId, predicate])
+  @@index([vaultId, status])
+}
+
+model VaultEvidence {
+  id String @id @default(cuid())
+  vaultId String @default("default") @map("vault_id")
+  assertionId String @map("assertion_id")
+  sourceId String @map("source_id")
+  sourceSha256 String @map("source_sha256") @db.VarChar(64)
+  locatorKind String @map("locator_kind") // page | section | offset | time
+  locatorJson String @map("locator_json")
+  quote String @db.VarChar(500)
+  stance String // supports | contradicts
+  createdAt DateTime @default(now()) @map("created_at")
+  assertion VaultAssertion @relation(fields: [assertionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  source VaultSource @relation(fields: [sourceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@index([assertionId])
+  @@index([sourceId])
+}
+
+model VaultRelease {
+  id String @id @default(cuid())
+  vaultId String @default("default") @map("vault_id")
+  revision String // rev-NNN
+  ontologyVersion String @map("ontology_version")
+  rulesVersion String @map("rules_version")
+  filesJson Json @map("files_json") // Array<{path, sha256}>
+  baselineHash String @map("baseline_hash")
+  releasedAt DateTime @default(now()) @map("released_at")
+  status String // pending | committed | aborted
+  gitCommit String? @map("git_commit")
+  @@unique([vaultId, revision])
+}
+
+model VaultEntityCandidate {
+  id String @id @default(cuid())
+  vaultId String @default("default") @map("vault_id")
+  canonicalName String @map("canonical_name")
+  type String // One of the seven ontology entity types
+  status String // candidate | promoted | merged | rejected
+  promotedPageId String? @map("promoted_page_id")
+  firstSourceId String @map("first_source_id")
+  familyIdsJson Json @map("family_ids_json")
+  aliasesJson Json @map("aliases_json")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  firstSource VaultSource @relation(fields: [firstSourceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@unique([vaultId, canonicalName])
+  @@index([vaultId, status])
+}

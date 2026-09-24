@@ -22,3 +22,12 @@ if (process.env.NODE_ENV !== "production") {
 export { PrismaClient };
 export type { Prisma } from "./generated/client";
 export * from "./repositories/index";
+export type {
+  VaultSource,
+  VaultSourceFamily,
+  VaultPage,
+  VaultAssertion,
+  VaultEvidence,
+  VaultRelease,
+  VaultEntityCandidate,
+} from "./generated/client";
