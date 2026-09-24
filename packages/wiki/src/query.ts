@@ -252,7 +252,7 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
       }
     }
     return { ...empty, linkedEntityIds: linked, evidence, assertions };
-  }, { isolationLevel: 'RepeatableRead' });
+  }, { isolationLevel: 'RepeatableRead', timeout: 180_000 });
 }
 const responseSchema = z.object({ answer: z.string(), usedAssertionIds: z.array(z.string()) });
 async function answer(question: string, vaultId: string, vaultPath: string, db: PrismaClient, opts: QueryOptions): Promise<StrictAnswer> {
