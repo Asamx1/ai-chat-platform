@@ -1,0 +1,1035 @@
+{
+  "generatedAt": "2026-09-24T07:54:29.167Z",
+  "model": "deepseek-chat",
+  "totalSources": 8,
+  "successfulSources": 8,
+  "failures": [],
+  "statistics": {
+    "questionTypeCounts": {
+      "fact": 13,
+      "synonym": 8,
+      "single_source": 11,
+      "version_scope": 9,
+      "unanswerable": 9,
+      "out_of_scope": 9
+    },
+    "answerable": {
+      "true": 41,
+      "false": 18
+    },
+    "totalAnchors": 52,
+    "allQuestionTypesCovered": true,
+    "missingQuestionTypes": []
+  },
+  "cases": [
+    {
+      "id": "e192eb83-6ec0-4433-8fbb-d13ea9d85cfd",
+      "question": "RAG的全称是什么？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "RAG的全称是Retrieval-Augmented Generation，中文为检索增强生成。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "RAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结",
+          "evidenceTextHash": "6c7b97dbe750b1896510a774116ce1eee7709c992af074dd100efb38f264d95b"
+        }
+      ],
+      "sourceFile": "RAG的介绍-水印.pdf",
+      "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:01.129Z"
+    },
+    {
+      "id": "7b7f900e-8c1f-4e72-abf6-8a9d2342a85e",
+      "question": "检索增强生成（RAG）还可以被称为什么？",
+      "questionType": "synonym",
+      "answerable": true,
+      "referenceAnswer": "检索增强生成即RAG，其英文别名为Retrieval-Augmented Generation。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "RAG（Retrieval-Augmented Generation，检索增强生成）是一种将检索与生成结",
+          "evidenceTextHash": "6c7b97dbe750b1896510a774116ce1eee7709c992af074dd100efb38f264d95b"
+        }
+      ],
+      "sourceFile": "RAG的介绍-水印.pdf",
+      "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:01.130Z"
+    },
+    {
+      "id": "9ad6ebae-90f0-4707-bd53-bae8c9073500",
+      "question": "RAG模型通常包括哪两个主要组件？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "RAG模型通常包括两个主要组件：检索器（Retriever）和生成器（Generator）。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "RAG 模型通常包括两个主要组件：",
+          "evidenceTextHash": "c351d1e7ae6e5751fe0d76b3d05bf23d0496ccdb6bfeb340d2739e46f5ab087d"
+        }
+      ],
+      "sourceFile": "RAG的介绍-水印.pdf",
+      "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:01.130Z"
+    },
+    {
+      "id": "852d0a12-548a-4429-aa46-e64b6c89d2ec",
+      "question": "根据文档，检索器通常使用哪些工具或方法来检索最相关的信息？",
+      "questionType": "version_scope",
+      "answerable": true,
+      "referenceAnswer": "检索器通常使用诸如Elasticsearch或基于嵌入的向量搜索（例如FAISS）来检索最相关的信息。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "关的文档。它通常使用诸如 Elasticsearch 或基于嵌入的向量搜索（例如，",
+          "evidenceTextHash": "3979537b0ba650e6f012e4faadd1d4b5a06e8531f9069410969e57e67cb70ea4"
+        },
+        {
+          "page": 1,
+          "evidenceText": "FAISS）来检索最相关的信息。知识库可以是任何形式的文本库，包括维基百科、",
+          "evidenceTextHash": "2a6321e4a3297e97f635e5bb913e9fab728ebec3f9efdf4eac98f8f21b992176"
+        }
+      ],
+      "sourceFile": "RAG的介绍-水印.pdf",
+      "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:01.130Z"
+    },
+    {
+      "id": "f923b3f4-d7ac-4999-b9c1-94c79779db69",
+      "question": "文档中提到的RAG模型所使用的具体嵌入向量维度是多少？",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "RAG的介绍-水印.pdf",
+      "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:01.130Z"
+    },
+    {
+      "id": "f523a2ac-ac1f-45db-8661-e87bb63deffa",
+      "question": "RAG模型在训练时使用了多少张GPU以及训练时长是多少？",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "RAG的介绍-水印.pdf",
+      "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:01.130Z"
+    },
+    {
+      "id": "70e5e20f-f1f1-44bc-8e55-6e5ea7451d7d",
+      "question": "根据资料，优化RAG系统需要从哪几个方面入手？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "检索模块、生成模块。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "为了优化 RAG 系统，我们需要从以下几个方面入手：检索模块、生成模块。",
+          "evidenceTextHash": "3f69d43ab316096d82c354a6490c4be67c4e09e63dbc97c49125d7bc780354d8"
+        }
+      ],
+      "sourceFile": "RAG的优化-水印.pdf",
+      "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:04.309Z"
+    },
+    {
+      "id": "dfe0ef02-7e55-42a5-a3c5-fc5b46b3d739",
+      "question": "资料中提到的“混合检索（多路召回）”的英文别名是什么？",
+      "questionType": "synonym",
+      "answerable": true,
+      "referenceAnswer": "混合检索（多路召回）对应英文为 Ensemble Retrieval（多路召回），资料中标题写作“2.2.3 混合检索（多路召回）”。",
+      "evidenceAnchors": [
+        {
+          "page": 12,
+          "evidenceText": "2.2.3 混合检索（多路召回）",
+          "evidenceTextHash": "40c2958b171b955a0795511ad37a233a2b735c7984edfde4a24fafb0d67cfd6b"
+        }
+      ],
+      "sourceFile": "RAG的优化-水印.pdf",
+      "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:04.309Z"
+    },
+    {
+      "id": "7f817bb1-9a93-4f2f-976b-17edeef009d3",
+      "question": "资料中BM25的IDF公式里，N和DF分别代表什么？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "N 是语料库中的文档总数，DF 是包含关键词的文档数量。",
+      "evidenceAnchors": [
+        {
+          "page": 9,
+          "evidenceText": "其中，N 是语料库中的文档总数，DF 是包含关键词的文档数量。0.5也是为了光滑。",
+          "evidenceTextHash": "8d7b024eee287acda06e651b4cd8c6c5e19477239dea316fa381600c50b1313d"
+        }
+      ],
+      "sourceFile": "RAG的优化-水印.pdf",
+      "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:04.309Z"
+    },
+    {
+      "id": "13c096bf-ea25-4d79-985a-4656e43a3509",
+      "question": "资料中关于分块大小，一般多少大小在一些测试中表现良好？",
+      "questionType": "version_scope",
+      "answerable": true,
+      "referenceAnswer": "一般128的大小在一些测试中表现良好，但面对实际场景还是需要自己进行测试。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "大小在一些测试中表现良好，但面对实际场景还是需要自己进行测试。No. 1 / 16",
+          "evidenceTextHash": "f2597cc027b24287c0b9cbac1291a06dca3bbe871bc4b5c1ccef95a7609d4a6f"
+        }
+      ],
+      "sourceFile": "RAG的优化-水印.pdf",
+      "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:04.309Z"
+    },
+    {
+      "id": "01e4aa8a-e332-4f19-896b-4bae7a57dad1",
+      "question": "资料中是否给出了RAG系统优化后准确率提升的具体百分比数值？",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "RAG的优化-水印.pdf",
+      "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:04.309Z"
+    },
+    {
+      "id": "800f08c9-0e8b-4ef1-8aef-ae011b172618",
+      "question": "资料中是否介绍了如何对RAG系统进行成本预算与硬件采购方案？",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "RAG的优化-水印.pdf",
+      "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:04.309Z"
+    },
+    {
+      "id": "68657ac3-177c-44a5-aa35-ac30de951377",
+      "question": "Function Calling 是什么？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "Function Calling (函数调用) 是一种允许大语言模型(LLM)根据用户输入识别它需要的工具并决定何时调用该工具的机制。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "Function Calling (函数调用) 是一种允许大语言模型(LLM)根据用户输入识别它需要的工具并决定何时调",
+          "evidenceTextHash": "d619cf3b365eada6ec900f972de3356462f6bb2101a06a8ff09fa2ee2dabc08e"
+        },
+        {
+          "page": 1,
+          "evidenceText": "用该工具的机制。",
+          "evidenceTextHash": "279d633c6c342b6af9d0b2b8da4168c9b8f8d5a9277da17d62ede3c0354ca2f0"
+        }
+      ],
+      "sourceFile": "MCP介绍-水印.pdf",
+      "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:07.461Z"
+    },
+    {
+      "id": "cb637ce9-a55d-48b7-bccb-e16c3cf3748f",
+      "question": "MCP 的全称是什么？",
+      "questionType": "synonym",
+      "answerable": true,
+      "referenceAnswer": "MCP全称为Model Context Protocol（模型上下文协议）。",
+      "evidenceAnchors": [
+        {
+          "page": 2,
+          "evidenceText": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月",
+          "evidenceTextHash": "ef3616b3fc43197b3a136c50bfce016176209799348e4421c886f2538eaa58af"
+        }
+      ],
+      "sourceFile": "MCP介绍-水印.pdf",
+      "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:07.461Z"
+    },
+    {
+      "id": "533bfe9e-bdc5-4f0a-9771-b89c2fa0c40e",
+      "question": "MCP 由哪家公司在什么时候发布？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "MCP由Claude的母公司Anthropic在2024年11月发布。",
+      "evidenceAnchors": [
+        {
+          "page": 2,
+          "evidenceText": "MCP全称为Model Context Protocol（模型上下文协议），由Claude的母公司Anthropic在2024年11月",
+          "evidenceTextHash": "ef3616b3fc43197b3a136c50bfce016176209799348e4421c886f2538eaa58af"
+        },
+        {
+          "page": 2,
+          "evidenceText": "发布。",
+          "evidenceTextHash": "264ba8907f606a798f022e6d33ef768f8c41084f9434e4a6bf7957b6f2ecdd5f"
+        }
+      ],
+      "sourceFile": "MCP介绍-水印.pdf",
+      "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:07.461Z"
+    },
+    {
+      "id": "92f20f19-dc52-453c-9657-2f0dc07004ab",
+      "question": "MCP 基于哪个协议来确保结构化、可靠的通信？",
+      "questionType": "version_scope",
+      "answerable": true,
+      "referenceAnswer": "MCP基于JSON-RPC 2.0协议，确保结构化、可靠的通信。",
+      "evidenceAnchors": [
+        {
+          "page": 5,
+          "evidenceText": "MCP基于JSON-RPC 2.0协议，确保结构化、可靠的通信。JSON-RPC 2.0 是一个 轻量级的远程过程调用",
+          "evidenceTextHash": "20f08e43c1a508a68c0e430168f1a4981cf195c668d8ee373485b9041a604cbf"
+        }
+      ],
+      "sourceFile": "MCP介绍-水印.pdf",
+      "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:07.461Z"
+    },
+    {
+      "id": "c78d409b-6dbc-4ce0-92f1-201eb091c04c",
+      "question": "MCP 协议中，Streamable-HTTP 传输默认使用哪个端点处理所有请求？",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "MCP介绍-水印.pdf",
+      "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:07.461Z"
+    },
+    {
+      "id": "07b04237-91fd-468a-9420-1e0700195a0b",
+      "question": "MCP 协议在 2025 年发布了哪个新版本，新增了哪些功能？",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "MCP介绍-水印.pdf",
+      "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:07.461Z"
+    },
+    {
+      "id": "efacc0ee-9922-4d9c-9c57-b589b9a8e148",
+      "question": "文档中列出的“常用MCP服务网站”里，MCP官方项目的网址是什么？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "https://github.com/modelcontextprotocol/servers",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "1. MCP官方项目：https://github.com/modelcontextprotocol/servers",
+          "evidenceTextHash": "454218b2e9bedd1492eaac5a004c80d79dad23373cd555ff41c34c1b97abfb3b"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "ad453209-7674-4eb8-9f51-9816fbd25395",
+      "question": "文档中提到的“Awesome MCP Servers”对应的网址是什么？",
+      "questionType": "synonym",
+      "answerable": true,
+      "referenceAnswer": "https://github.com/punkpeye/awesome-mcp-servers/blob/main/README-zh.md",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "4. Awesome MCP Servers：https://github.com/punkpeye/awesome-mcp-servers/blob/main/RE",
+          "evidenceTextHash": "4cd7e31f4cabe5b1e0aa238064d25b845e028e8953af71cc19b6222f8bf880bb"
+        },
+        {
+          "page": 1,
+          "evidenceText": "ADME-zh.md",
+          "evidenceTextHash": "21854975084612f770c4889d94fff8e260ba2e0650a76826ff0f4486c40d9f35"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "6cf91083-ca82-45a9-84cf-4fe9894468fc",
+      "question": "文档中给出的node.js官方网址是什么？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "https://www.nodejs.com.cn/download.html",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "node.js官方网址：https://www.nodejs.com.cn/download.html",
+          "evidenceTextHash": "c0db01ea8b128f71954194791dae0e005f860f470496d57542d6ff1ffd035f9f"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "82732eec-cde7-42a7-bde5-dc21974d3675",
+      "question": "文档在下载node.js时推荐使用哪个版本，理由是什么？",
+      "questionType": "version_scope",
+      "answerable": true,
+      "referenceAnswer": "推荐使用长期维护版，因为更加稳定。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "2. 在该界面中有长期维护版和最新版本，这里推荐使用长期维护版，更加稳定。然后根据自己的系统",
+          "evidenceTextHash": "2e4db55ab81cbd146ef3734a72a8127d9b0b1dc3002bc3be723e8b830e83cc3c"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "870db59b-98a3-4516-8f14-dd9feda3d139",
+      "question": "文档中Cherry Studio的官方网址是什么？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "https://www.cherry-ai.com/",
+      "evidenceAnchors": [
+        {
+          "page": 20,
+          "evidenceText": "Cherry Studio的官方网址为：https://www.cherry-ai.com/",
+          "evidenceTextHash": "5ed496d62fae51f524b0270029f0407f4a86c601e21ac6a7d52cb8097991b8ba"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "c2219eac-af25-4275-8306-6b56ed8e7d92",
+      "question": "文档中创建高德地图API密钥时，打开的高德地图开放平台网址是什么？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "https://lbs.amap.com/",
+      "evidenceAnchors": [
+        {
+          "page": 35,
+          "evidenceText": "首先打开高德地图开放平台，注册并登录账号，网址为：https://lbs.amap.com/",
+          "evidenceTextHash": "5b1a6114e2201affc312487d66e763ea2902fd1054ee070c1a25a070155e3dad"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "9601019b-ef82-49c6-ac0b-b24254d985e3",
+      "question": "文档中测试node.js安装时，需要在CMD或PowerShell中输入哪两条命令来验证版本信息？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "node -v 和 npm -v。",
+      "evidenceAnchors": [
+        {
+          "page": 8,
+          "evidenceText": "node -v",
+          "evidenceTextHash": "6621b2f683fa1f9c28b4eda8e1b32081418b5fe901a1a4c24000f01239e1df25"
+        },
+        {
+          "page": 8,
+          "evidenceText": "npm -v",
+          "evidenceTextHash": "c819c9b85be502e470af5b02a2845bbec52c5bb07b2417ef694f692dab11b0f3"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "c0f72b47-7519-4568-878f-950f97fa2706",
+      "question": "文档中在node.js安装目录下新建的两个文件夹分别叫什么名字？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "【node_global】和【node_cache】。",
+      "evidenceAnchors": [
+        {
+          "page": 11,
+          "evidenceText": "4. 进入安装目录，在安装目录下新建两个文件夹【node_global】和【node_cache】",
+          "evidenceTextHash": "064adea3c4a7521a042c72a2d8c8f71e873de1fb108edfd76aa39656fdbd74eb"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "be1f3a90-b64d-4ad5-9951-7043f43c8b3a",
+      "question": "文档中新建系统环境变量时，变量名NODE_PATH对应的变量值是什么？",
+      "questionType": "version_scope",
+      "answerable": true,
+      "referenceAnswer": "D:\\nodejs\\node_global\\node_modules",
+      "evidenceAnchors": [
+        {
+          "page": 18,
+          "evidenceText": "变量名：NODE_PATH",
+          "evidenceTextHash": "8065cf0aa28452156280eca26804c0647e46bef2ef3dc59681ce9484433a64d3"
+        },
+        {
+          "page": 18,
+          "evidenceText": "变量值：D:\\nodejs\\node_global\\node_modules",
+          "evidenceTextHash": "8ca07d3cb51e2af1d99ca38f670cbc55094ac2148e559e34bd78657abac3a9ab"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "4928efa1-58fd-4e61-8be0-3bbb85c8e8dc",
+      "question": "文档中配置npm的prefix和cache时使用的两条命令分别是什么？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "npm config set prefix \"D:\\nodejs\\node_global\" 和 npm config set cache \"D:\\nodejs\\node_cache\"（注意将后面的路径替换为自己的实际路径）。",
+      "evidenceAnchors": [
+        {
+          "page": 12,
+          "evidenceText": "npm config set prefix \"D:\\nodejs\\node_global\" # 注意将后面的路径替换为自己的实际路径",
+          "evidenceTextHash": "0ff0031872d35b16371f94f128fd9ee7b36117229e319f47cec3ea79eb28b177"
+        },
+        {
+          "page": 12,
+          "evidenceText": "npm config set cache \"D:\\nodejs\\node_cache\" # 注意将后面的路径替换为自己的实际路径",
+          "evidenceTextHash": "3e731d4690f5fd1bcf12a111a71ba2fc148fc7858933af49847ed69879599992"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "f0946694-0b1d-44e6-a28b-50b8c27bc87d",
+      "question": "文档中测试MCP文件管理服务时使用的prompt是什么？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "请帮我写一首古诗，并将其保存在我的桌面上，命名为古诗.txt",
+      "evidenceAnchors": [
+        {
+          "page": 34,
+          "evidenceText": "请帮我写一首古诗，并将其保存在我的桌面上，命名为古诗.txt",
+          "evidenceTextHash": "5686bd7d021658b80540f63c0c1d69e94d8ce5de8bf15064f46442d77d242238"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "633e4fe9-f28d-4446-bb57-ef07858ba0b1",
+      "question": "文档中在Cherry Studio里添加高德地图MCP服务时，打开的是哪个网址？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "https://mcp.so",
+      "evidenceAnchors": [
+        {
+          "page": 38,
+          "evidenceText": "打开https://mcp.so网址，界面如下",
+          "evidenceTextHash": "6b7b20c6543bc31b439f48063b7b01358d2f92468c3ac0a20a4538344774f377"
+        }
+      ],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "8346d496-738b-4659-95e8-c3dac376d4ca",
+      "question": "文档中Cherry Studio的安装包大小是多少MB？",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "de2f337d-dc32-49d1-9253-4050e21a15c8",
+      "question": "文档中安装node.js时，作者使用的电脑操作系统是Windows 10还是Windows 11？",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "486bbfca-0d97-4118-9ce4-7e8188f941f7",
+      "question": "文档中提到的MCP协议是由哪家公司主导制定的？",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "0521ca0a-6d82-477e-bcc3-9b8df091279b",
+      "question": "文档中Cherry Studio软件的开源许可证是MIT还是Apache 2.0？",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "MCP初体验-水印.pdf",
+      "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:13.786Z"
+    },
+    {
+      "id": "f3de426b-5d7b-4208-ad39-5b9d305a59a1",
+      "question": "在Langchain中，Memory是用来做什么的组件？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "Memory在Langchain中是用来存储对话状态的组件。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "Memory在Langchain中是用来存储对话状态的组件。",
+          "evidenceTextHash": "98542c4abc6d08ab924cc0a0ec308ea3761512170b11ad4f12fd67f90626b032"
+        }
+      ],
+      "sourceFile": "Langchain-memory记忆-水印.pdf",
+      "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:16.718Z"
+    },
+    {
+      "id": "64ad2117-5787-427b-a262-5fcd7283af52",
+      "question": "ConversationBufferMemory 这种对话缓冲记忆的英文名称是什么？",
+      "questionType": "synonym",
+      "answerable": true,
+      "referenceAnswer": "ConversationBufferMemory。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "1.2.1 ConversationBufferMemory",
+          "evidenceTextHash": "1c39a66e72715036aba5f5d9ff722798f49fa9f82e4a061997a04cdc802414c1"
+        }
+      ],
+      "sourceFile": "Langchain-memory记忆-水印.pdf",
+      "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:16.718Z"
+    },
+    {
+      "id": "e43be92d-2b32-4eb0-861a-2cdce9313deb",
+      "question": "ConversationBufferMemory 会存储哪些内容？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "它是一种简单的对话缓冲记忆，存储所有的对话历史记录。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "它是一种简单的对话缓冲记忆，存储所有的对话历史记录。",
+          "evidenceTextHash": "d6e9dc4881eeec5beac816c88c4ba433fd63e7202170237279f2edb9ecae9531"
+        }
+      ],
+      "sourceFile": "Langchain-memory记忆-水印.pdf",
+      "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:16.718Z"
+    },
+    {
+      "id": "181ec4df-3c90-4ea9-99e9-0497496f4b47",
+      "question": "ConversationBufferWindowMemory 中 k 参数的作用是什么？",
+      "questionType": "version_scope",
+      "answerable": true,
+      "referenceAnswer": "k 可以调整大小来改变存储的消息数量，该Memory只存储最近的K次对话。",
+      "evidenceAnchors": [
+        {
+          "page": 7,
+          "evidenceText": "memory_key=\"chat_history\") # 可以调整k的大小来改变存储的消息数量",
+          "evidenceTextHash": "6054e953fa96265fc1198671b472d35b13c3a6c8ac26ff774f930c45548af8cc"
+        },
+        {
+          "page": 7,
+          "evidenceText": "这种Memory只存储最近的K次对话。与ConversationBufferMemory不同，它不会",
+          "evidenceTextHash": "a67be90c2bd3f79faccb0164576a7f07d215ffbac3ac430614cc3638f40f65b1"
+        }
+      ],
+      "sourceFile": "Langchain-memory记忆-水印.pdf",
+      "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:16.718Z"
+    },
+    {
+      "id": "c38aec5d-37f2-4627-b5bb-2602b3e0c3bb",
+      "question": "ConversationSummaryMemory 在总结对话时使用的是哪个具体的大语言模型？",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "Langchain-memory记忆-水印.pdf",
+      "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:16.718Z"
+    },
+    {
+      "id": "526f34c8-b151-418c-896c-8a7387226903",
+      "question": "Langchain 的 memory 模块支持将对话历史持久化到 Redis 数据库吗？",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "Langchain-memory记忆-水印.pdf",
+      "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:16.718Z"
+    },
+    {
+      "id": "eccf8a74-7d36-4339-a31c-d0808e0d9672",
+      "question": "uv 是什么工具？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "uv 是一个新一代的 Python 包管理和虚拟环境工具，它的目标就是要取代传统的 pip + venv + virtualenv + pip-tools + poetry 这些工具，提供一个统一、极快的体验。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "uv 是一个 新一代的 Python 包管理和虚拟环境工具，它的目标就是要取代传统的 pip + venv +",
+          "evidenceTextHash": "772abaab8abec30d68073e1136c27863f6dbd8e4f5f50298550aa334afae89b5"
+        }
+      ],
+      "sourceFile": "手写MCP服务器与客户端-水印.pdf",
+      "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:22.408Z"
+    },
+    {
+      "id": "24dd05f1-a9ae-43d0-b424-4ddafbd75773",
+      "question": "uv 的官方网址是什么？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "uv官方网址：https://docs.astral.sh/uv/getting-started/installation/#docker",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "uv官方网址：https://docs.astral.sh/uv/getting-started/installation/#docker",
+          "evidenceTextHash": "9f962cdeef2d0e270074cec751914949e7c8ee15ec9e770296911e0d73458388"
+        }
+      ],
+      "sourceFile": "手写MCP服务器与客户端-水印.pdf",
+      "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:22.408Z"
+    },
+    {
+      "id": "4513e98a-5fd4-40a5-ae16-00d4fa530d4b",
+      "question": "uv 的“锁文件”功能对应哪个命令？",
+      "questionType": "synonym",
+      "answerable": true,
+      "referenceAnswer": "锁文件对应 uv.lock，它是记录依赖包具体版本的锁文件，确保团队或 CI/CD 环境可以安装完全一致的依赖。",
+      "evidenceAnchors": [
+        {
+          "page": 5,
+          "evidenceText": "uv.lock 锁文件，记录依赖包的具体版本，确保团队或 CI/CD 环境可以安装完全一致",
+          "evidenceTextHash": "368583a18587c17ec0a1fbaee8213f70604ff2f3f41e072ae64c555dfe0c9b31"
+        }
+      ],
+      "sourceFile": "手写MCP服务器与客户端-水印.pdf",
+      "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:22.408Z"
+    },
+    {
+      "id": "c15f8071-72fb-481d-bffd-bf9e5548b2ad",
+      "question": "在 stdio 通信模式下，MCP 服务器是如何启动的？",
+      "questionType": "version_scope",
+      "answerable": true,
+      "referenceAnswer": "在 stdio 通信模式下，服务器通过 mcp.run(\"stdio\") 启动，使用 stdio（标准输入输出）方式进行通信，这种方式适用于本地子进程模式，客户端通过 stdio_client 连接。",
+      "evidenceAnchors": [
+        {
+          "page": 8,
+          "evidenceText": "mcp.run(\"stdio\")",
+          "evidenceTextHash": "2ff357cbbc43bc395d4082fe238c25c3e34e3f721c88105c3616f52272e1005a"
+        }
+      ],
+      "sourceFile": "手写MCP服务器与客户端-水印.pdf",
+      "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:22.408Z"
+    },
+    {
+      "id": "3a257585-8487-4632-8ba7-cdbd0db09ebe",
+      "question": "这份资料中提到的 MCP 服务器一共支持哪几种传输方式？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "资料中涉及 stdio、sse 和 streamable-http 三种传输方式；高德地图本地 MCP 服务器的命令行参数也支持 stdio、sse、streamable-http 三种方式。",
+      "evidenceAnchors": [
+        {
+          "page": 41,
+          "evidenceText": "# 添加传输方式参数，支持stdio、sse、streamable-http三种方式",
+          "evidenceTextHash": "d6ef975aa5105c6ba16363c3b1d87474bbd15962da3f471bb881d8abe7f6d031"
+        }
+      ],
+      "sourceFile": "手写MCP服务器与客户端-水印.pdf",
+      "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:22.408Z"
+    },
+    {
+      "id": "0ac735a6-2826-4267-857f-248eb4468f65",
+      "question": "这份资料中是否提供了 MCP 服务器的性能基准测试数据（如每秒请求数、延迟对比）？",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "手写MCP服务器与客户端-水印.pdf",
+      "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:22.408Z"
+    },
+    {
+      "id": "fef173ec-7e67-4456-a2f5-1c698b6e99f1",
+      "question": "这份资料中是否说明了如何将 MCP 服务器部署到 Kubernetes 集群？",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "手写MCP服务器与客户端-水印.pdf",
+      "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:22.408Z"
+    },
+    {
+      "id": "6f3ffddd-c22e-4bc2-8f07-10c14c1bc062",
+      "question": "文档中介绍的计算两个向量相似度的常见方法包括哪些？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "余弦相似度、内积和L2距离（欧几里得距离）。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "当计算两个向量的相似度时，常见的方法包括余弦相似度、内积和L2距离（欧几里得",
+          "evidenceTextHash": "6af759bd4a79480eb8361a54ca1ea7dc5de89613df834a8733eba66d76898113"
+        }
+      ],
+      "sourceFile": "常见向量数据库的介绍-水印.pdf",
+      "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:25.325Z"
+    },
+    {
+      "id": "4548e251-8d22-43b7-9d3e-b82fe2c58395",
+      "question": "文档中“内积”的英文别名是什么？",
+      "questionType": "synonym",
+      "answerable": true,
+      "referenceAnswer": "Dot Product。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "2. 内积（Dot Product）",
+          "evidenceTextHash": "c0c791331387d578621ec7e688f4448483c0ff18edc9fb3cae754b6fca01e65f"
+        }
+      ],
+      "sourceFile": "常见向量数据库的介绍-水印.pdf",
+      "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:25.325Z"
+    },
+    {
+      "id": "ed50628a-8069-49ff-b63d-8ea1efc72deb",
+      "question": "文档中FAISS的全称是什么？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "Facebook AI Similarity Search。",
+      "evidenceAnchors": [
+        {
+          "page": 8,
+          "evidenceText": "1.2.2 FAISS (Facebook AI Similarity Search)",
+          "evidenceTextHash": "656f0fad91c0afd38d5b966504b4b866e436f365bc07c5045f59d1705ef8ab0f"
+        }
+      ],
+      "sourceFile": "常见向量数据库的介绍-水印.pdf",
+      "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:25.325Z"
+    },
+    {
+      "id": "43cc423f-9093-465e-8845-0765105d549a",
+      "question": "文档中安装Pinecone时指定的版本号是多少？",
+      "questionType": "version_scope",
+      "answerable": true,
+      "referenceAnswer": "5.4.11。",
+      "evidenceAnchors": [
+        {
+          "page": 5,
+          "evidenceText": "pip install pinecone==5.4.11",
+          "evidenceTextHash": "5b86475bbee2b96a602fae6da012147afa2c327f7e61cdd619b458685b00fa94"
+        }
+      ],
+      "sourceFile": "常见向量数据库的介绍-水印.pdf",
+      "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:25.325Z"
+    },
+    {
+      "id": "7aef475b-e2fb-4ad5-9366-353adf9aefbb",
+      "question": "文档中Pinecone服务端无服务器索引示例使用的云服务商和区域分别是什么？",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "常见向量数据库的介绍-水印.pdf",
+      "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:25.325Z"
+    },
+    {
+      "id": "41ac6840-d5ae-4c25-abf2-3c8010b1f4b9",
+      "question": "文档中是否介绍了Weaviate向量数据库的安装与使用方法？",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "常见向量数据库的介绍-水印.pdf",
+      "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:25.325Z"
+    },
+    {
+      "id": "d0eb1a86-14c0-401c-851f-c4bc314ecafb",
+      "question": "React（Reasoning + Acting）框架的核心思想是什么？",
+      "questionType": "fact",
+      "answerable": true,
+      "referenceAnswer": "React的核心思想是通过推理（Reasoning）和执行（Acting）的循环，让代理能够自主思考、规划和采取行动。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "通过语言模型（LLM）结合外部工具的交互来解决复杂问题。它的核心思想是通过推",
+          "evidenceTextHash": "901f3e98f6a3cb3bb95988c10e270844b8f861632959193da55e605a051ee90f"
+        },
+        {
+          "page": 1,
+          "evidenceText": "理（Reasoning）和执行（Acting）**的循环，让代理能够自主思考、规划和采取行",
+          "evidenceTextHash": "9212796b847bc9f73db176d25c2773514a1bd4ad68ecd327b287d7bc334c59bc"
+        },
+        {
+          "page": 1,
+          "evidenceText": "动。",
+          "evidenceTextHash": "131e458de39e47e687e0acd052cf8b20d9b8c2afc6e44965a911c6d1a17c0c55"
+        }
+      ],
+      "sourceFile": "手搓一个Agent-水印.pdf",
+      "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:29.156Z"
+    },
+    {
+      "id": "2506efb1-2b7e-41af-b14c-156665782475",
+      "question": "文中提到的“提示词”对应的英文术语是什么？",
+      "questionType": "synonym",
+      "answerable": true,
+      "referenceAnswer": "Prompt（提示词）。",
+      "evidenceAnchors": [
+        {
+          "page": 1,
+          "evidenceText": "Prompt（提示词）：设计Prompt是让LLM和工具之间顺利交互的关键。通过巧",
+          "evidenceTextHash": "908680d9053229e3b816f383bcf30cfba2e318141a08b8c075b0c32e15acaa9d"
+        }
+      ],
+      "sourceFile": "手搓一个Agent-水印.pdf",
+      "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:29.156Z"
+    },
+    {
+      "id": "71025a98-2764-46ed-850c-6ab913a50817",
+      "question": "文中定义的两个工具函数分别叫什么名字？",
+      "questionType": "single_source",
+      "answerable": true,
+      "referenceAnswer": "get_current_temperature 和 get_temperature_date。",
+      "evidenceAnchors": [
+        {
+          "page": 3,
+          "evidenceText": "\"name\": \"get_current_temperature\",",
+          "evidenceTextHash": "3d022d298927482620516620d52baf2a34622012451be64aaab4f11cc796b289"
+        },
+        {
+          "page": 3,
+          "evidenceText": "\"name\": \"get_temperature_date\",",
+          "evidenceTextHash": "4049ca5c3904d34337700360ff804dab78c35bfb61afabb44232e64d9b9c33ce"
+        }
+      ],
+      "sourceFile": "手搓一个Agent-水印.pdf",
+      "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:29.156Z"
+    },
+    {
+      "id": "c96ed427-667a-40cb-b5d0-3c7848258f89",
+      "question": "在系统提示中设置的当前日期是哪一天？",
+      "questionType": "version_scope",
+      "answerable": true,
+      "referenceAnswer": "当前日期是2025年1月1日（2025-1-1）。",
+      "evidenceAnchors": [
+        {
+          "page": 5,
+          "evidenceText": "当前的时间是：2025年1月1日\\n\\n {sys_prompt}\"},",
+          "evidenceTextHash": "680d4633f69bb051dd474a0e5781b7a04d10643e78a57bebef1e7a2001bd6e52"
+        }
+      ],
+      "sourceFile": "手搓一个Agent-水印.pdf",
+      "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:29.156Z"
+    },
+    {
+      "id": "e7a2c29d-41bb-4cd3-9155-6a5532cb21a0",
+      "question": "文中使用的ChatOpenAI模型的具体版本号是多少？",
+      "questionType": "unanswerable",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "手搓一个Agent-水印.pdf",
+      "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:29.156Z"
+    },
+    {
+      "id": "8605de8b-bfea-4e5a-a638-0ee52be267e5",
+      "question": "这个Agent示例中调用大模型API的接口密钥（api_key）的真实值是什么？",
+      "questionType": "out_of_scope",
+      "answerable": false,
+      "referenceAnswer": "提供的资料未包含该信息，无法据此回答。",
+      "evidenceAnchors": [],
+      "sourceFile": "手搓一个Agent-水印.pdf",
+      "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
+      "reviewStatus": "DRAFT",
+      "createdAt": "2026-09-24T07:54:29.156Z"
+    }
+  ]
+}
