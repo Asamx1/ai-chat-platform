@@ -95,6 +95,9 @@ export async function publishRevision(vaultPath: string, vaultId: string, db: Pr
         const staged = new Map<string, Buffer>();
         const pages: Array<{ pageId: string; kind: string; title: string; filePath: string }> = [];
         const put = (path: string, text: string) => { if (staged.has(path)) throw new Error(`FILE_COLLISION: ${path}`); staged.set(path, Buffer.from(text)); };
+        const retire: string[] = [];
+        const stagedPageIds = new Set<string>();
+        const publishedPageIds = new Set((await tx.vaultPage.findMany({ where: { vaultId, kind: 'concept' }, select: { pageId: true } })).map(pg => pg.pageId));
         for (const family of families) {
           const slug = pageSlug(family.id);
           const filePath = `wiki/sources/${slug}.md`;
@@ -110,7 +113,7 @@ export async function publishRevision(vaultPath: string, vaultId: string, db: Pr
           const neighbors = entities.filter(e => e.id !== entity.id && (e.status === 'candidate' || e.status === 'promoted') && related.some(a => a.subjectId === e.id || a.objectId === e.id));
           const filePath = `wiki/concepts/${slug}.md`;
           put(filePath, `${supported[0] ? `${statement(supported[0])} ${citation(supported[0])}` : `${plain(entity.canonicalName)}: no supported assertion available.`}\n\n# ${plain(entity.canonicalName)}\n\n## Definition\n\n${supported.map(a => `- ${statement(a)} ${citation(a)}`).join('\n')}\n\n## Relations (navigation only)\n\n${neighbors.map(e => `- [[concepts/${e.promotedPageId ?? pageSlug(e.canonicalName)}|${plain(e.canonicalName)}]]`).join('\n')}\n`);
-          pages.push({ pageId: slug, kind: 'concept', title: entity.canonicalName, filePath });
+          pages.push({ pageId: slug, kind: 'concept', title: entity.canonicalName, filePath }); stagedPageIds.add(slug);
         }
         const allPaths = new Set([...baseline.keys(), ...staged.keys()]);
         const conceptPaths = [...allPaths].filter(p => /^wiki\/concepts\/[^/]+\.md$/u.test(p)).sort();
@@ -127,8 +130,21 @@ export async function publishRevision(vaultPath: string, vaultId: string, db: Pr
         for (const [path, content] of combined) {
           if (!path.endsWith('.md')) continue;
           const text = content.toString('utf8');
-          if (path.startsWith('wiki/concepts/')) for (const match of text.matchAll(/\[(asr_[^\]\s]+)\]/gu)) {
-            if (!knownIds.has(match[1]!)) throw new Error(`UNKNOWN_ASSERTION: ${match[1]} in ${path}`);
+          if (path.startsWith('wiki/concepts/') && staged.has(path)) {
+            // Pages (re)written by this batch: stale citations from earlier releases are dropped instead of blocking publication.
+            let pageText = text;
+            for (const match of [...pageText.matchAll(/\[(asr_[^\]\s]+)\]/gu)]) {
+              if (!knownIds.has(match[1]!)) { put(path, pageText = pageText.replaceAll(`[${match[1]!}]`, '').replaceAll(` [${match[1]!}]`, ' ')); combined.set(path, Buffer.from(pageText, 'utf8')); }
+            }
+          } else if (path.startsWith('wiki/concepts/')) {
+            const slug = path.slice('wiki/concepts/'.length, -3);
+            const host = entities.some(e => e.promotedPageId === slug) || stagedPageIds.has(slug);
+            // Orphaned SYSTEM page: previously published (VaultPage record) but host entity no longer exists (merged/replaced by a reextract) — retire it.
+            // Manual pages (never published by us, no live host) still reject unknown assertion IDs to block silent injections.
+            if (!host && publishedPageIds.has(slug)) { combined.delete(path); baseline.delete(path); retire.push(path); }
+            else for (const match of text.matchAll(/\[(asr_[^\]\s]+)\]/gu)) {
+              if (!knownIds.has(match[1]!)) throw new Error(`UNKNOWN_ASSERTION: ${match[1]} in ${path}`);
+            }
           }
           for (const target of links(text)) {
             if (!target) continue;
