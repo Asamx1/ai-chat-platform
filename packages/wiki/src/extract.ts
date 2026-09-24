@@ -130,7 +130,7 @@ export async function normalizeEntities(candidates: CandidateSet, vaultId: strin
       const aliases = [...new Set([...group.members.flatMap(e => [e.name, ...e.aliases]), ...(existing && Array.isArray(existing.aliasesJson) ? existing.aliasesJson.filter((x): x is string => typeof x === 'string') : [])])];
       const familyIds = [...new Set([...(existing && Array.isArray(existing.familyIdsJson) ? existing.familyIdsJson.filter((x): x is string => typeof x === 'string') : []), candidates.source.familyId])];
       const canonicalName = existing?.canonicalName ?? entityKey(group.type, canonical);
-      const row = await tx.vaultEntityCandidate.upsert({ where: { vaultId_canonicalName: { vaultId, canonicalName } },
+      const row = await tx.vaultEntityCandidate.upsert({ where: { vaultId_canonicalName_type: { vaultId, canonicalName, type: group.type } },
         create: { vaultId, canonicalName, type: group.type, status: 'candidate', firstSourceId: candidates.source.id, familyIdsJson: familyIds, aliasesJson: aliases },
         update: { familyIdsJson: familyIds, aliasesJson: aliases } });
       if (existing) entitiesMerged += group.members.length;

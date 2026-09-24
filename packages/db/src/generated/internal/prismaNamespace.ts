@@ -419,7 +419,14 @@ export const ModelName = {
   EntityRelation: 'EntityRelation',
   RelationEvidence: 'RelationEvidence',
   DerivedFact: 'DerivedFact',
-  OntologyConfig: 'OntologyConfig'
+  OntologyConfig: 'OntologyConfig',
+  VaultSource: 'VaultSource',
+  VaultSourceFamily: 'VaultSourceFamily',
+  VaultPage: 'VaultPage',
+  VaultAssertion: 'VaultAssertion',
+  VaultEvidence: 'VaultEvidence',
+  VaultRelease: 'VaultRelease',
+  VaultEntityCandidate: 'VaultEntityCandidate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -435,7 +442,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "provider" | "modelRegistry" | "conversation" | "participant" | "message" | "orchestrationRun" | "runParticipantSnapshot" | "runCheckpoint" | "runEvent" | "providerCall" | "usageLog" | "apiKey" | "shareLink" | "session" | "account" | "verification" | "modelUsageDaily" | "knowledgeBase" | "document" | "chunk" | "conversationKnowledgeBase" | "userModelQuota" | "sourceVersion" | "indexGeneration" | "compileJob" | "compileOutbox" | "compileCostLedger" | "summaryFact" | "entity" | "entityAlias" | "entityMention" | "entityRelation" | "relationEvidence" | "derivedFact" | "ontologyConfig"
+    modelProps: "user" | "provider" | "modelRegistry" | "conversation" | "participant" | "message" | "orchestrationRun" | "runParticipantSnapshot" | "runCheckpoint" | "runEvent" | "providerCall" | "usageLog" | "apiKey" | "shareLink" | "session" | "account" | "verification" | "modelUsageDaily" | "knowledgeBase" | "document" | "chunk" | "conversationKnowledgeBase" | "userModelQuota" | "sourceVersion" | "indexGeneration" | "compileJob" | "compileOutbox" | "compileCostLedger" | "summaryFact" | "entity" | "entityAlias" | "entityMention" | "entityRelation" | "relationEvidence" | "derivedFact" | "ontologyConfig" | "vaultSource" | "vaultSourceFamily" | "vaultPage" | "vaultAssertion" | "vaultEvidence" | "vaultRelease" | "vaultEntityCandidate"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3087,6 +3094,524 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    VaultSource: {
+      payload: Prisma.$VaultSourcePayload<ExtArgs>
+      fields: Prisma.VaultSourceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VaultSourceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VaultSourceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload>
+        }
+        findFirst: {
+          args: Prisma.VaultSourceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VaultSourceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload>
+        }
+        findMany: {
+          args: Prisma.VaultSourceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload>[]
+        }
+        create: {
+          args: Prisma.VaultSourceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload>
+        }
+        createMany: {
+          args: Prisma.VaultSourceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VaultSourceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload>[]
+        }
+        delete: {
+          args: Prisma.VaultSourceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload>
+        }
+        update: {
+          args: Prisma.VaultSourceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload>
+        }
+        deleteMany: {
+          args: Prisma.VaultSourceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VaultSourceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VaultSourceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload>[]
+        }
+        upsert: {
+          args: Prisma.VaultSourceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourcePayload>
+        }
+        aggregate: {
+          args: Prisma.VaultSourceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVaultSource>
+        }
+        groupBy: {
+          args: Prisma.VaultSourceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultSourceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VaultSourceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultSourceCountAggregateOutputType> | number
+        }
+      }
+    }
+    VaultSourceFamily: {
+      payload: Prisma.$VaultSourceFamilyPayload<ExtArgs>
+      fields: Prisma.VaultSourceFamilyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VaultSourceFamilyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VaultSourceFamilyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload>
+        }
+        findFirst: {
+          args: Prisma.VaultSourceFamilyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VaultSourceFamilyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload>
+        }
+        findMany: {
+          args: Prisma.VaultSourceFamilyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload>[]
+        }
+        create: {
+          args: Prisma.VaultSourceFamilyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload>
+        }
+        createMany: {
+          args: Prisma.VaultSourceFamilyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VaultSourceFamilyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload>[]
+        }
+        delete: {
+          args: Prisma.VaultSourceFamilyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload>
+        }
+        update: {
+          args: Prisma.VaultSourceFamilyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload>
+        }
+        deleteMany: {
+          args: Prisma.VaultSourceFamilyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VaultSourceFamilyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VaultSourceFamilyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload>[]
+        }
+        upsert: {
+          args: Prisma.VaultSourceFamilyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultSourceFamilyPayload>
+        }
+        aggregate: {
+          args: Prisma.VaultSourceFamilyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVaultSourceFamily>
+        }
+        groupBy: {
+          args: Prisma.VaultSourceFamilyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultSourceFamilyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VaultSourceFamilyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultSourceFamilyCountAggregateOutputType> | number
+        }
+      }
+    }
+    VaultPage: {
+      payload: Prisma.$VaultPagePayload<ExtArgs>
+      fields: Prisma.VaultPageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VaultPageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VaultPageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload>
+        }
+        findFirst: {
+          args: Prisma.VaultPageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VaultPageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload>
+        }
+        findMany: {
+          args: Prisma.VaultPageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload>[]
+        }
+        create: {
+          args: Prisma.VaultPageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload>
+        }
+        createMany: {
+          args: Prisma.VaultPageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VaultPageCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload>[]
+        }
+        delete: {
+          args: Prisma.VaultPageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload>
+        }
+        update: {
+          args: Prisma.VaultPageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload>
+        }
+        deleteMany: {
+          args: Prisma.VaultPageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VaultPageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VaultPageUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload>[]
+        }
+        upsert: {
+          args: Prisma.VaultPageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultPagePayload>
+        }
+        aggregate: {
+          args: Prisma.VaultPageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVaultPage>
+        }
+        groupBy: {
+          args: Prisma.VaultPageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultPageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VaultPageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultPageCountAggregateOutputType> | number
+        }
+      }
+    }
+    VaultAssertion: {
+      payload: Prisma.$VaultAssertionPayload<ExtArgs>
+      fields: Prisma.VaultAssertionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VaultAssertionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VaultAssertionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload>
+        }
+        findFirst: {
+          args: Prisma.VaultAssertionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VaultAssertionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload>
+        }
+        findMany: {
+          args: Prisma.VaultAssertionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload>[]
+        }
+        create: {
+          args: Prisma.VaultAssertionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload>
+        }
+        createMany: {
+          args: Prisma.VaultAssertionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VaultAssertionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload>[]
+        }
+        delete: {
+          args: Prisma.VaultAssertionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload>
+        }
+        update: {
+          args: Prisma.VaultAssertionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload>
+        }
+        deleteMany: {
+          args: Prisma.VaultAssertionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VaultAssertionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VaultAssertionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload>[]
+        }
+        upsert: {
+          args: Prisma.VaultAssertionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultAssertionPayload>
+        }
+        aggregate: {
+          args: Prisma.VaultAssertionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVaultAssertion>
+        }
+        groupBy: {
+          args: Prisma.VaultAssertionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultAssertionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VaultAssertionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultAssertionCountAggregateOutputType> | number
+        }
+      }
+    }
+    VaultEvidence: {
+      payload: Prisma.$VaultEvidencePayload<ExtArgs>
+      fields: Prisma.VaultEvidenceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VaultEvidenceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VaultEvidenceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload>
+        }
+        findFirst: {
+          args: Prisma.VaultEvidenceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VaultEvidenceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload>
+        }
+        findMany: {
+          args: Prisma.VaultEvidenceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload>[]
+        }
+        create: {
+          args: Prisma.VaultEvidenceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload>
+        }
+        createMany: {
+          args: Prisma.VaultEvidenceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VaultEvidenceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload>[]
+        }
+        delete: {
+          args: Prisma.VaultEvidenceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload>
+        }
+        update: {
+          args: Prisma.VaultEvidenceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload>
+        }
+        deleteMany: {
+          args: Prisma.VaultEvidenceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VaultEvidenceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VaultEvidenceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload>[]
+        }
+        upsert: {
+          args: Prisma.VaultEvidenceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEvidencePayload>
+        }
+        aggregate: {
+          args: Prisma.VaultEvidenceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVaultEvidence>
+        }
+        groupBy: {
+          args: Prisma.VaultEvidenceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultEvidenceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VaultEvidenceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultEvidenceCountAggregateOutputType> | number
+        }
+      }
+    }
+    VaultRelease: {
+      payload: Prisma.$VaultReleasePayload<ExtArgs>
+      fields: Prisma.VaultReleaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VaultReleaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VaultReleaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload>
+        }
+        findFirst: {
+          args: Prisma.VaultReleaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VaultReleaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload>
+        }
+        findMany: {
+          args: Prisma.VaultReleaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload>[]
+        }
+        create: {
+          args: Prisma.VaultReleaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload>
+        }
+        createMany: {
+          args: Prisma.VaultReleaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VaultReleaseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload>[]
+        }
+        delete: {
+          args: Prisma.VaultReleaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload>
+        }
+        update: {
+          args: Prisma.VaultReleaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload>
+        }
+        deleteMany: {
+          args: Prisma.VaultReleaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VaultReleaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VaultReleaseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload>[]
+        }
+        upsert: {
+          args: Prisma.VaultReleaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultReleasePayload>
+        }
+        aggregate: {
+          args: Prisma.VaultReleaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVaultRelease>
+        }
+        groupBy: {
+          args: Prisma.VaultReleaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultReleaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VaultReleaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultReleaseCountAggregateOutputType> | number
+        }
+      }
+    }
+    VaultEntityCandidate: {
+      payload: Prisma.$VaultEntityCandidatePayload<ExtArgs>
+      fields: Prisma.VaultEntityCandidateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VaultEntityCandidateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VaultEntityCandidateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload>
+        }
+        findFirst: {
+          args: Prisma.VaultEntityCandidateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VaultEntityCandidateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload>
+        }
+        findMany: {
+          args: Prisma.VaultEntityCandidateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload>[]
+        }
+        create: {
+          args: Prisma.VaultEntityCandidateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload>
+        }
+        createMany: {
+          args: Prisma.VaultEntityCandidateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VaultEntityCandidateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload>[]
+        }
+        delete: {
+          args: Prisma.VaultEntityCandidateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload>
+        }
+        update: {
+          args: Prisma.VaultEntityCandidateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload>
+        }
+        deleteMany: {
+          args: Prisma.VaultEntityCandidateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VaultEntityCandidateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VaultEntityCandidateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload>[]
+        }
+        upsert: {
+          args: Prisma.VaultEntityCandidateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultEntityCandidatePayload>
+        }
+        aggregate: {
+          args: Prisma.VaultEntityCandidateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVaultEntityCandidate>
+        }
+        groupBy: {
+          args: Prisma.VaultEntityCandidateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultEntityCandidateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VaultEntityCandidateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultEntityCandidateCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3655,6 +4180,123 @@ export const OntologyConfigScalarFieldEnum = {
 export type OntologyConfigScalarFieldEnum = (typeof OntologyConfigScalarFieldEnum)[keyof typeof OntologyConfigScalarFieldEnum]
 
 
+export const VaultSourceScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  familyId: 'familyId',
+  title: 'title',
+  mimeType: 'mimeType',
+  filePath: 'filePath',
+  sha256: 'sha256',
+  bytes: 'bytes',
+  addedBy: 'addedBy',
+  createdAt: 'createdAt'
+} as const
+
+export type VaultSourceScalarFieldEnum = (typeof VaultSourceScalarFieldEnum)[keyof typeof VaultSourceScalarFieldEnum]
+
+
+export const VaultSourceFamilyScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  familyKey: 'familyKey',
+  title: 'title',
+  firstSeenAt: 'firstSeenAt'
+} as const
+
+export type VaultSourceFamilyScalarFieldEnum = (typeof VaultSourceFamilyScalarFieldEnum)[keyof typeof VaultSourceFamilyScalarFieldEnum]
+
+
+export const VaultPageScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  pageId: 'pageId',
+  kind: 'kind',
+  title: 'title',
+  revision: 'revision',
+  filePath: 'filePath',
+  ontologyVersion: 'ontologyVersion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VaultPageScalarFieldEnum = (typeof VaultPageScalarFieldEnum)[keyof typeof VaultPageScalarFieldEnum]
+
+
+export const VaultAssertionScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  subjectId: 'subjectId',
+  predicate: 'predicate',
+  objectId: 'objectId',
+  value: 'value',
+  polarity: 'polarity',
+  conditions: 'conditions',
+  validFrom: 'validFrom',
+  validTo: 'validTo',
+  status: 'status',
+  origin: 'origin',
+  ruleId: 'ruleId',
+  ruleVersion: 'ruleVersion',
+  revision: 'revision',
+  pageId: 'pageId',
+  ontologyVersion: 'ontologyVersion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VaultAssertionScalarFieldEnum = (typeof VaultAssertionScalarFieldEnum)[keyof typeof VaultAssertionScalarFieldEnum]
+
+
+export const VaultEvidenceScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  assertionId: 'assertionId',
+  sourceId: 'sourceId',
+  sourceSha256: 'sourceSha256',
+  locatorKind: 'locatorKind',
+  locatorJson: 'locatorJson',
+  quote: 'quote',
+  stance: 'stance',
+  createdAt: 'createdAt'
+} as const
+
+export type VaultEvidenceScalarFieldEnum = (typeof VaultEvidenceScalarFieldEnum)[keyof typeof VaultEvidenceScalarFieldEnum]
+
+
+export const VaultReleaseScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  revision: 'revision',
+  ontologyVersion: 'ontologyVersion',
+  rulesVersion: 'rulesVersion',
+  filesJson: 'filesJson',
+  baselineHash: 'baselineHash',
+  releasedAt: 'releasedAt',
+  status: 'status',
+  gitCommit: 'gitCommit'
+} as const
+
+export type VaultReleaseScalarFieldEnum = (typeof VaultReleaseScalarFieldEnum)[keyof typeof VaultReleaseScalarFieldEnum]
+
+
+export const VaultEntityCandidateScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  canonicalName: 'canonicalName',
+  type: 'type',
+  status: 'status',
+  promotedPageId: 'promotedPageId',
+  firstSourceId: 'firstSourceId',
+  familyIdsJson: 'familyIdsJson',
+  aliasesJson: 'aliasesJson',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VaultEntityCandidateScalarFieldEnum = (typeof VaultEntityCandidateScalarFieldEnum)[keyof typeof VaultEntityCandidateScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -4026,6 +4668,13 @@ export type GlobalOmitConfig = {
   relationEvidence?: Prisma.RelationEvidenceOmit
   derivedFact?: Prisma.DerivedFactOmit
   ontologyConfig?: Prisma.OntologyConfigOmit
+  vaultSource?: Prisma.VaultSourceOmit
+  vaultSourceFamily?: Prisma.VaultSourceFamilyOmit
+  vaultPage?: Prisma.VaultPageOmit
+  vaultAssertion?: Prisma.VaultAssertionOmit
+  vaultEvidence?: Prisma.VaultEvidenceOmit
+  vaultRelease?: Prisma.VaultReleaseOmit
+  vaultEntityCandidate?: Prisma.VaultEntityCandidateOmit
 }
 
 /* Types for Logging */

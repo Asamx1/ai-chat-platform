@@ -86,7 +86,14 @@ export const ModelName = {
   EntityRelation: 'EntityRelation',
   RelationEvidence: 'RelationEvidence',
   DerivedFact: 'DerivedFact',
-  OntologyConfig: 'OntologyConfig'
+  OntologyConfig: 'OntologyConfig',
+  VaultSource: 'VaultSource',
+  VaultSourceFamily: 'VaultSourceFamily',
+  VaultPage: 'VaultPage',
+  VaultAssertion: 'VaultAssertion',
+  VaultEvidence: 'VaultEvidence',
+  VaultRelease: 'VaultRelease',
+  VaultEntityCandidate: 'VaultEntityCandidate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -632,6 +639,123 @@ export const OntologyConfigScalarFieldEnum = {
 } as const
 
 export type OntologyConfigScalarFieldEnum = (typeof OntologyConfigScalarFieldEnum)[keyof typeof OntologyConfigScalarFieldEnum]
+
+
+export const VaultSourceScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  familyId: 'familyId',
+  title: 'title',
+  mimeType: 'mimeType',
+  filePath: 'filePath',
+  sha256: 'sha256',
+  bytes: 'bytes',
+  addedBy: 'addedBy',
+  createdAt: 'createdAt'
+} as const
+
+export type VaultSourceScalarFieldEnum = (typeof VaultSourceScalarFieldEnum)[keyof typeof VaultSourceScalarFieldEnum]
+
+
+export const VaultSourceFamilyScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  familyKey: 'familyKey',
+  title: 'title',
+  firstSeenAt: 'firstSeenAt'
+} as const
+
+export type VaultSourceFamilyScalarFieldEnum = (typeof VaultSourceFamilyScalarFieldEnum)[keyof typeof VaultSourceFamilyScalarFieldEnum]
+
+
+export const VaultPageScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  pageId: 'pageId',
+  kind: 'kind',
+  title: 'title',
+  revision: 'revision',
+  filePath: 'filePath',
+  ontologyVersion: 'ontologyVersion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VaultPageScalarFieldEnum = (typeof VaultPageScalarFieldEnum)[keyof typeof VaultPageScalarFieldEnum]
+
+
+export const VaultAssertionScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  subjectId: 'subjectId',
+  predicate: 'predicate',
+  objectId: 'objectId',
+  value: 'value',
+  polarity: 'polarity',
+  conditions: 'conditions',
+  validFrom: 'validFrom',
+  validTo: 'validTo',
+  status: 'status',
+  origin: 'origin',
+  ruleId: 'ruleId',
+  ruleVersion: 'ruleVersion',
+  revision: 'revision',
+  pageId: 'pageId',
+  ontologyVersion: 'ontologyVersion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VaultAssertionScalarFieldEnum = (typeof VaultAssertionScalarFieldEnum)[keyof typeof VaultAssertionScalarFieldEnum]
+
+
+export const VaultEvidenceScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  assertionId: 'assertionId',
+  sourceId: 'sourceId',
+  sourceSha256: 'sourceSha256',
+  locatorKind: 'locatorKind',
+  locatorJson: 'locatorJson',
+  quote: 'quote',
+  stance: 'stance',
+  createdAt: 'createdAt'
+} as const
+
+export type VaultEvidenceScalarFieldEnum = (typeof VaultEvidenceScalarFieldEnum)[keyof typeof VaultEvidenceScalarFieldEnum]
+
+
+export const VaultReleaseScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  revision: 'revision',
+  ontologyVersion: 'ontologyVersion',
+  rulesVersion: 'rulesVersion',
+  filesJson: 'filesJson',
+  baselineHash: 'baselineHash',
+  releasedAt: 'releasedAt',
+  status: 'status',
+  gitCommit: 'gitCommit'
+} as const
+
+export type VaultReleaseScalarFieldEnum = (typeof VaultReleaseScalarFieldEnum)[keyof typeof VaultReleaseScalarFieldEnum]
+
+
+export const VaultEntityCandidateScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  canonicalName: 'canonicalName',
+  type: 'type',
+  status: 'status',
+  promotedPageId: 'promotedPageId',
+  firstSourceId: 'firstSourceId',
+  familyIdsJson: 'familyIdsJson',
+  aliasesJson: 'aliasesJson',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VaultEntityCandidateScalarFieldEnum = (typeof VaultEntityCandidateScalarFieldEnum)[keyof typeof VaultEntityCandidateScalarFieldEnum]
 
 
 export const SortOrder = {

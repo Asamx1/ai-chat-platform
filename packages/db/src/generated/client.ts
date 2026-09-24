@@ -219,3 +219,38 @@ export type DerivedFact = Prisma.DerivedFactModel
  * 
  */
 export type OntologyConfig = Prisma.OntologyConfigModel
+/**
+ * Model VaultSource
+ * 
+ */
+export type VaultSource = Prisma.VaultSourceModel
+/**
+ * Model VaultSourceFamily
+ * 
+ */
+export type VaultSourceFamily = Prisma.VaultSourceFamilyModel
+/**
+ * Model VaultPage
+ * 
+ */
+export type VaultPage = Prisma.VaultPageModel
+/**
+ * Model VaultAssertion
+ * 
+ */
+export type VaultAssertion = Prisma.VaultAssertionModel
+/**
+ * Model VaultEvidence
+ * 
+ */
+export type VaultEvidence = Prisma.VaultEvidenceModel
+/**
+ * Model VaultRelease
+ * 
+ */
+export type VaultRelease = Prisma.VaultReleaseModel
+/**
+ * Model VaultEntityCandidate
+ * 
+ */
+export type VaultEntityCandidate = Prisma.VaultEntityCandidateModel
