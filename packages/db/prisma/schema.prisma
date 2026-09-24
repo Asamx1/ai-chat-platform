@@ -819,3 +819,20 @@ model VaultInferredAssertion {
   @@unique([vaultId, subjectId, predicate, objectId], map: "VaultInferredAssertion_edge_key")
   @@index([vaultId])
 }
+
+model WikiJob {
+  id String @id @default(cuid())
+  vaultId String @default("default") @map("vault_id")
+  kind String // scan_backlog | lint_check | reextract | republish
+  status String @default("pending") // pending | running | done | failed | cancelled
+  attempts Int @default(0) // capped at 3 by migration CHECK and claimNextJob
+  fingerprint String @db.VarChar(64)
+  payload Json
+  result Json @default("{}")
+  error String?
+  createdAt DateTime @default(now()) @map("created_at")
+  startedAt DateTime? @map("started_at")
+  finishedAt DateTime? @map("finished_at")
+  @@unique([vaultId, kind, fingerprint])
+  @@index([vaultId, status, createdAt])
+}

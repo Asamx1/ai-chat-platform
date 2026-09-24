@@ -5,3 +5,5 @@ export * from './ingest.js';
 export * from './query.js';
 export * from './infer.js';
 export * from './answers.js';
+export * from './jobs.js';
+export * from './lint.js';

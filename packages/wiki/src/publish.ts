@@ -47,7 +47,7 @@ async function atomic(root: string, path: string, bytes: Buffer): Promise<void> 
   try { await writeFile(temp, bytes, { flag: 'wx' }); await rename(temp, file); }
   finally { await rm(temp, { force: true }); }
 }
-function links(text: string): string[] {
+export function links(text: string): string[] {
   return [...text.matchAll(/\[\[([^\]]+)\]\]/gu)].map(match => match[1]!.split('|')[0]!.split('#')[0]!.replace(/\.md$/u, ''));
 }
 export async function publishRevision(vaultPath: string, vaultId: string, db: PrismaClient, opts: PublishOptions = {}): Promise<PublishReport> {

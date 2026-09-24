@@ -94,7 +94,8 @@ export const ModelName = {
   VaultEvidence: 'VaultEvidence',
   VaultRelease: 'VaultRelease',
   VaultEntityCandidate: 'VaultEntityCandidate',
-  VaultInferredAssertion: 'VaultInferredAssertion'
+  VaultInferredAssertion: 'VaultInferredAssertion',
+  WikiJob: 'WikiJob'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -777,6 +778,24 @@ export const VaultInferredAssertionScalarFieldEnum = {
 } as const
 
 export type VaultInferredAssertionScalarFieldEnum = (typeof VaultInferredAssertionScalarFieldEnum)[keyof typeof VaultInferredAssertionScalarFieldEnum]
+
+
+export const WikiJobScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  kind: 'kind',
+  status: 'status',
+  attempts: 'attempts',
+  fingerprint: 'fingerprint',
+  payload: 'payload',
+  result: 'result',
+  error: 'error',
+  createdAt: 'createdAt',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt'
+} as const
+
+export type WikiJobScalarFieldEnum = (typeof WikiJobScalarFieldEnum)[keyof typeof WikiJobScalarFieldEnum]
 
 
 export const SortOrder = {

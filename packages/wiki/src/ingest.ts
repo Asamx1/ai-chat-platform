@@ -7,6 +7,7 @@ import { parseSource, type PdfReader } from './parse.js';
 import { extractAssertions, normalizeEntities, proposeAliases, type Llm, type Rejected } from './extract.js';
 export interface IngestOptions {
   vaultId?: string; userId?: string; db?: PrismaClient; ontology?: Ontology; constraints?: Constraints;
+  resumeRegistered?: boolean; expectedSha256?: string;
   llm?: Llm; normalizeLlm?: Llm; pdfReader?: PdfReader;
 }
 export interface IngestReport {
@@ -21,12 +22,14 @@ export async function ingestFile(vaultPath: string, relPath: string, opts: Inges
   let stage = 'scan';
   try {
     const file = await scanRawFile(vaultPath, relPath);
+    if (opts.expectedSha256 && file.sha256 !== opts.expectedSha256) throw new Error('RAW_HASH_CHANGED');
     const db = opts.db ?? await database();
     const vaultId = opts.vaultId ?? 'default';
     stage = 'register';
     const { source, family, isDuplicate } = await registerSource(file, vaultId, db);
     Object.assign(report, { sourceId: source.id, familyId: family.id, isDuplicate });
-    if (isDuplicate) { report.state = 'duplicate'; return report; }
+    // Backlog retries must resume sources registered before an extraction failure.
+    if (isDuplicate && (!opts.resumeRegistered || await db.vaultEvidence.count({ where: { vaultId, sourceId: source.id } }) > 0)) { report.state = 'duplicate'; return report; }
     stage = 'parse';
     const doc = await parseSource(source, vaultPath, opts.pdfReader);
     if (doc.needsOcr) { report.needsOcr = true; report.state = 'pending-p3-ocr'; return report; }

@@ -259,3 +259,8 @@ export type VaultEntityCandidate = Prisma.VaultEntityCandidateModel
  * 
  */
 export type VaultInferredAssertion = Prisma.VaultInferredAssertionModel
+/**
+ * Model WikiJob
+ * 
+ */
+export type WikiJob = Prisma.WikiJobModel

@@ -427,7 +427,8 @@ export const ModelName = {
   VaultEvidence: 'VaultEvidence',
   VaultRelease: 'VaultRelease',
   VaultEntityCandidate: 'VaultEntityCandidate',
-  VaultInferredAssertion: 'VaultInferredAssertion'
+  VaultInferredAssertion: 'VaultInferredAssertion',
+  WikiJob: 'WikiJob'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -443,7 +444,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "provider" | "modelRegistry" | "conversation" | "participant" | "message" | "orchestrationRun" | "runParticipantSnapshot" | "runCheckpoint" | "runEvent" | "providerCall" | "usageLog" | "apiKey" | "shareLink" | "session" | "account" | "verification" | "modelUsageDaily" | "knowledgeBase" | "document" | "chunk" | "conversationKnowledgeBase" | "userModelQuota" | "sourceVersion" | "indexGeneration" | "compileJob" | "compileOutbox" | "compileCostLedger" | "summaryFact" | "entity" | "entityAlias" | "entityMention" | "entityRelation" | "relationEvidence" | "derivedFact" | "ontologyConfig" | "vaultSource" | "vaultSourceFamily" | "vaultPage" | "vaultAssertion" | "vaultEvidence" | "vaultRelease" | "vaultEntityCandidate" | "vaultInferredAssertion"
+    modelProps: "user" | "provider" | "modelRegistry" | "conversation" | "participant" | "message" | "orchestrationRun" | "runParticipantSnapshot" | "runCheckpoint" | "runEvent" | "providerCall" | "usageLog" | "apiKey" | "shareLink" | "session" | "account" | "verification" | "modelUsageDaily" | "knowledgeBase" | "document" | "chunk" | "conversationKnowledgeBase" | "userModelQuota" | "sourceVersion" | "indexGeneration" | "compileJob" | "compileOutbox" | "compileCostLedger" | "summaryFact" | "entity" | "entityAlias" | "entityMention" | "entityRelation" | "relationEvidence" | "derivedFact" | "ontologyConfig" | "vaultSource" | "vaultSourceFamily" | "vaultPage" | "vaultAssertion" | "vaultEvidence" | "vaultRelease" | "vaultEntityCandidate" | "vaultInferredAssertion" | "wikiJob"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3687,6 +3688,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WikiJob: {
+      payload: Prisma.$WikiJobPayload<ExtArgs>
+      fields: Prisma.WikiJobFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WikiJobFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WikiJobFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload>
+        }
+        findFirst: {
+          args: Prisma.WikiJobFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WikiJobFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload>
+        }
+        findMany: {
+          args: Prisma.WikiJobFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload>[]
+        }
+        create: {
+          args: Prisma.WikiJobCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload>
+        }
+        createMany: {
+          args: Prisma.WikiJobCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WikiJobCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload>[]
+        }
+        delete: {
+          args: Prisma.WikiJobDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload>
+        }
+        update: {
+          args: Prisma.WikiJobUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload>
+        }
+        deleteMany: {
+          args: Prisma.WikiJobDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WikiJobUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WikiJobUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload>[]
+        }
+        upsert: {
+          args: Prisma.WikiJobUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WikiJobPayload>
+        }
+        aggregate: {
+          args: Prisma.WikiJobAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWikiJob>
+        }
+        groupBy: {
+          args: Prisma.WikiJobGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WikiJobGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WikiJobCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WikiJobCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4392,6 +4467,24 @@ export const VaultInferredAssertionScalarFieldEnum = {
 export type VaultInferredAssertionScalarFieldEnum = (typeof VaultInferredAssertionScalarFieldEnum)[keyof typeof VaultInferredAssertionScalarFieldEnum]
 
 
+export const WikiJobScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  kind: 'kind',
+  status: 'status',
+  attempts: 'attempts',
+  fingerprint: 'fingerprint',
+  payload: 'payload',
+  result: 'result',
+  error: 'error',
+  createdAt: 'createdAt',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt'
+} as const
+
+export type WikiJobScalarFieldEnum = (typeof WikiJobScalarFieldEnum)[keyof typeof WikiJobScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -4771,6 +4864,7 @@ export type GlobalOmitConfig = {
   vaultRelease?: Prisma.VaultReleaseOmit
   vaultEntityCandidate?: Prisma.VaultEntityCandidateOmit
   vaultInferredAssertion?: Prisma.VaultInferredAssertionOmit
+  wikiJob?: Prisma.WikiJobOmit
 }
 
 /* Types for Logging */
