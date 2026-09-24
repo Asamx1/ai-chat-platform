@@ -1,6 +1,6 @@
-import { assertionSchema } from './load.js';
-import { defaultOntology } from './registry.js';
-import type { Assertion, Constraints, Ontology, Violation } from './types.js';
+import { assertionSchema } from './load';
+import { defaultOntology } from './registry';
+import type { Assertion, Constraints, Ontology, Violation } from './types';
 export function checkRelationEdge(subjectType: string, relationId: string, objectType: string, ontology: Ontology = defaultOntology): Violation[] {
   const relation = ontology.relations.find(r => r.id === relationId);
   if (!relation) return [{ code: 'UNKNOWN_RELATION', path: 'predicate', message: `Unknown relation ${relationId}` }];

@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
-import { loadOntology } from './load.js';
-import type { Ontology } from './types.js';
+import { loadOntology } from './load';
+import type { Ontology } from './types';
 export const defaultOntology = loadOntology(readFileSync(new URL('../defaults/ontology.yaml', import.meta.url), 'utf8'));
 export function createRegistry(ontology: Ontology = defaultOntology) {
   const classes = new Map(ontology.classes.map(c => [c.id, c]));

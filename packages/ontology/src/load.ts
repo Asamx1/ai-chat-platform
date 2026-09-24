@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { parseDocument } from 'yaml';
-import type { Ontology, Constraints, InferenceRules } from './types.js';
+import type { Ontology, Constraints, InferenceRules } from './types';
 const text = z.string().trim().min(1);
 const version = z.string().regex(/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/);
 export const ontologySchema = z.strictObject({

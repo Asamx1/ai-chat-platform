@@ -1,4 +1,4 @@
-import type { AssertionStatus } from './types.js';
+import type { AssertionStatus } from './types';
 export const legalTransitions: Readonly<Record<AssertionStatus, readonly AssertionStatus[]>> = {
   candidate: ['supported', 'contested', 'superseded', 'invalid'],
   supported: ['contested', 'superseded', 'invalid'],

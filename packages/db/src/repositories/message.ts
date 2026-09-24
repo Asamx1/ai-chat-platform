@@ -1,5 +1,5 @@
-import type { PrismaClient } from '../generated/client.js';
-import type { MessageStatus } from '../generated/enums.js';
+import type { PrismaClient } from '../generated/client';
+import type { MessageStatus } from '../generated/enums';
 
 export async function createMessage(
   prisma: PrismaClient,

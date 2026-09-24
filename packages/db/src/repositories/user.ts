@@ -1,5 +1,5 @@
-import type { PrismaClient } from '../generated/client.js';
-import type { Role } from '../generated/enums.js';
+import type { PrismaClient } from '../generated/client';
+import type { Role } from '../generated/enums';
 
 export type UserRecord = {
   id: string;

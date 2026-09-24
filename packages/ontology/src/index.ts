@@ -1,6 +1,6 @@
-export type * from './types.js';
-export * from './load.js';
-export * from './registry.js';
-export * from './check.js';
-export * from './inference.js';
-export * from './status.js';
+export type * from './types';
+export * from './load';
+export * from './registry';
+export * from './check';
+export * from './inference';
+export * from './status';

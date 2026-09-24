@@ -1,7 +1,7 @@
-import { assertionSchema, inferenceRulesSchema } from './load.js';
-import { createsSubclassCycle, checkRelationEdge } from './check.js';
-import { defaultOntology } from './registry.js';
-import type { Assertion, InferenceOptions, InferenceResult, InferenceRules, InferenceRule } from './types.js';
+import { assertionSchema, inferenceRulesSchema } from './load';
+import { createsSubclassCycle, checkRelationEdge } from './check';
+import { defaultOntology } from './registry';
+import type { Assertion, InferenceOptions, InferenceResult, InferenceRules, InferenceRule } from './types';
 // Stable ordering prevents object insertion order from changing scope/edge identity.
 function stable(value: unknown): string {
   if (value === null || typeof value !== 'object') return JSON.stringify(value) ?? 'null';
