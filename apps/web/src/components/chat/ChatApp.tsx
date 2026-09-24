@@ -265,6 +265,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
           <span>{activeId ? '对话' : '新对话'}</span>
           <div className="topbar-actions">
             {isAdmin && <a className="btn topbar-link" href="/admin">后台</a>}
+            <a className="btn topbar-link" href="/qa">知识问答</a>
             <a className="btn topbar-link" href="/kb">
               知识库
             </a>
