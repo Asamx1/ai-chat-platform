@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import type { PrismaClient, VaultAssertion } from '@aichat/db';
+import type { Prisma, PrismaClient, VaultAssertion } from '@aichat/db';
 import { z } from 'zod';
 import { defaultOntology, loadOntology, loadInferenceRules, runInference,
   type Assertion, type Ontology, type InferenceRules } from '@aichat/ontology';
@@ -64,19 +64,20 @@ export function deriveAssertions(vaultId: string, input: readonly Assertion[], o
   });
 }
 
-export async function inferAssertions(vaultId: string, db: PrismaClient, opts: InferOptions = {}): Promise<InferredAssertion[]> {
+export async function inferAssertions(vaultId: string, db: PrismaClient | Prisma.TransactionClient, opts: InferOptions = {}): Promise<InferredAssertion[]> {
   const ontology = opts.ontology ?? (opts.vaultPath
     ? loadOntology(await readFile(resolve(opts.vaultPath, 'schema/ontology.yaml'), 'utf8')) : defaultOntology);
   const rules = opts.rules ?? loadInferenceRules(await readFile(opts.vaultPath
     ? resolve(opts.vaultPath, 'schema/inference-rules.yaml') : new URL('../../ontology/defaults/inference-rules.yaml', import.meta.url), 'utf8'));
-  return db.$transaction(async tx => {
+  const run = async (tx: Prisma.TransactionClient) => {
     const rows = await tx.vaultAssertion.findMany({ where: { vaultId, origin: 'sourced', status: { in: ['supported', 'candidate'] },
       ontologyVersion: ontology.version }, orderBy: { id: 'asc' } });
     const entities = await tx.vaultEntityCandidate.findMany({ where: { vaultId }, orderBy: { id: 'asc' } });
     const byId = new Map(entities.map(e => [e.id, e]));
     const assertions = rows.flatMap(row => { const a = toOntologyAssertion(row, byId); return a ? [a] : []; });
     return deriveAssertions(vaultId, assertions, ontology, rules, opts);
-  }, { isolationLevel: 'RepeatableRead' });
+  };
+  return '$transaction' in db ? db.$transaction(run, { isolationLevel: 'RepeatableRead' }) : run(db);
 }
 
 export async function persistInferred(vaultId: string, db: PrismaClient, inferred: readonly InferredAssertion[]): Promise<{ created: number; updated: number }> {
