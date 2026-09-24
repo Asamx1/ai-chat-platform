@@ -37,8 +37,9 @@
       ],
       "sourceFile": "RAG的介绍-水印.pdf",
       "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:01.129Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:01.129Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "7b7f900e-8c1f-4e72-abf6-8a9d2342a85e",
@@ -55,8 +56,9 @@
       ],
       "sourceFile": "RAG的介绍-水印.pdf",
       "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:01.130Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:01.130Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "9ad6ebae-90f0-4707-bd53-bae8c9073500",
@@ -73,8 +75,9 @@
       ],
       "sourceFile": "RAG的介绍-水印.pdf",
       "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:01.130Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:01.130Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "852d0a12-548a-4429-aa46-e64b6c89d2ec",
@@ -96,8 +99,9 @@
       ],
       "sourceFile": "RAG的介绍-水印.pdf",
       "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:01.130Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:01.130Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "f923b3f4-d7ac-4999-b9c1-94c79779db69",
@@ -108,8 +112,9 @@
       "evidenceAnchors": [],
       "sourceFile": "RAG的介绍-水印.pdf",
       "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:01.130Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:01.130Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "f523a2ac-ac1f-45db-8661-e87bb63deffa",
@@ -120,8 +125,9 @@
       "evidenceAnchors": [],
       "sourceFile": "RAG的介绍-水印.pdf",
       "sourceSha256": "bd1830cd3dcdb01bd2dc1356a70b557228f0bc8522e14ab2bad4b42f84ae0c06",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:01.130Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:01.130Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "70e5e20f-f1f1-44bc-8e55-6e5ea7451d7d",
@@ -138,8 +144,9 @@
       ],
       "sourceFile": "RAG的优化-水印.pdf",
       "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:04.309Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:04.309Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "dfe0ef02-7e55-42a5-a3c5-fc5b46b3d739",
@@ -156,8 +163,9 @@
       ],
       "sourceFile": "RAG的优化-水印.pdf",
       "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:04.309Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:04.309Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "7f817bb1-9a93-4f2f-976b-17edeef009d3",
@@ -174,8 +182,9 @@
       ],
       "sourceFile": "RAG的优化-水印.pdf",
       "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:04.309Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:04.309Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "13c096bf-ea25-4d79-985a-4656e43a3509",
@@ -192,8 +201,9 @@
       ],
       "sourceFile": "RAG的优化-水印.pdf",
       "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:04.309Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:04.309Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "01e4aa8a-e332-4f19-896b-4bae7a57dad1",
@@ -204,8 +214,9 @@
       "evidenceAnchors": [],
       "sourceFile": "RAG的优化-水印.pdf",
       "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:04.309Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:04.309Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "800f08c9-0e8b-4ef1-8aef-ae011b172618",
@@ -216,8 +227,9 @@
       "evidenceAnchors": [],
       "sourceFile": "RAG的优化-水印.pdf",
       "sourceSha256": "2a7cf99c65932d2e92ffe23d17b4e863ea520b7d8c776639d23bc59ae6db957f",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:04.309Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:04.309Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "68657ac3-177c-44a5-aa35-ac30de951377",
@@ -239,8 +251,9 @@
       ],
       "sourceFile": "MCP介绍-水印.pdf",
       "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:07.461Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:07.461Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "cb637ce9-a55d-48b7-bccb-e16c3cf3748f",
@@ -257,8 +270,9 @@
       ],
       "sourceFile": "MCP介绍-水印.pdf",
       "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:07.461Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:07.461Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "533bfe9e-bdc5-4f0a-9771-b89c2fa0c40e",
@@ -280,8 +294,9 @@
       ],
       "sourceFile": "MCP介绍-水印.pdf",
       "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:07.461Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:07.461Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "92f20f19-dc52-453c-9657-2f0dc07004ab",
@@ -298,8 +313,9 @@
       ],
       "sourceFile": "MCP介绍-水印.pdf",
       "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:07.461Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:07.461Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "c78d409b-6dbc-4ce0-92f1-201eb091c04c",
@@ -310,8 +326,9 @@
       "evidenceAnchors": [],
       "sourceFile": "MCP介绍-水印.pdf",
       "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:07.461Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:07.461Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "07b04237-91fd-468a-9420-1e0700195a0b",
@@ -322,8 +339,9 @@
       "evidenceAnchors": [],
       "sourceFile": "MCP介绍-水印.pdf",
       "sourceSha256": "938c5f71385943de35f90a5b2090a83eb3df59f90125debc0ca409e6a78e68aa",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:07.461Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:07.461Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "efacc0ee-9922-4d9c-9c57-b589b9a8e148",
@@ -340,8 +358,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "ad453209-7674-4eb8-9f51-9816fbd25395",
@@ -363,8 +382,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "6cf91083-ca82-45a9-84cf-4fe9894468fc",
@@ -381,8 +401,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "82732eec-cde7-42a7-bde5-dc21974d3675",
@@ -399,8 +420,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "870db59b-98a3-4516-8f14-dd9feda3d139",
@@ -417,8 +439,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "c2219eac-af25-4275-8306-6b56ed8e7d92",
@@ -435,8 +458,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "9601019b-ef82-49c6-ac0b-b24254d985e3",
@@ -458,8 +482,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "c0f72b47-7519-4568-878f-950f97fa2706",
@@ -476,8 +501,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "be1f3a90-b64d-4ad5-9951-7043f43c8b3a",
@@ -499,8 +525,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "4928efa1-58fd-4e61-8be0-3bbb85c8e8dc",
@@ -522,8 +549,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "f0946694-0b1d-44e6-a28b-50b8c27bc87d",
@@ -540,8 +568,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "633e4fe9-f28d-4446-bb57-ef07858ba0b1",
@@ -558,8 +587,9 @@
       ],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "8346d496-738b-4659-95e8-c3dac376d4ca",
@@ -570,8 +600,9 @@
       "evidenceAnchors": [],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "de2f337d-dc32-49d1-9253-4050e21a15c8",
@@ -582,8 +613,9 @@
       "evidenceAnchors": [],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "486bbfca-0d97-4118-9ce4-7e8188f941f7",
@@ -594,8 +626,9 @@
       "evidenceAnchors": [],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "0521ca0a-6d82-477e-bcc3-9b8df091279b",
@@ -606,8 +639,9 @@
       "evidenceAnchors": [],
       "sourceFile": "MCP初体验-水印.pdf",
       "sourceSha256": "d6b41324490f684d613b2c8063d8878d7ee07570836f382086b0bd58272cb9d0",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:13.786Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:13.786Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "f3de426b-5d7b-4208-ad39-5b9d305a59a1",
@@ -624,8 +658,9 @@
       ],
       "sourceFile": "Langchain-memory记忆-水印.pdf",
       "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:16.718Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:16.718Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "64ad2117-5787-427b-a262-5fcd7283af52",
@@ -642,8 +677,9 @@
       ],
       "sourceFile": "Langchain-memory记忆-水印.pdf",
       "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:16.718Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:16.718Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "e43be92d-2b32-4eb0-861a-2cdce9313deb",
@@ -660,8 +696,9 @@
       ],
       "sourceFile": "Langchain-memory记忆-水印.pdf",
       "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:16.718Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:16.718Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "181ec4df-3c90-4ea9-99e9-0497496f4b47",
@@ -683,8 +720,9 @@
       ],
       "sourceFile": "Langchain-memory记忆-水印.pdf",
       "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:16.718Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:16.718Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "c38aec5d-37f2-4627-b5bb-2602b3e0c3bb",
@@ -695,8 +733,9 @@
       "evidenceAnchors": [],
       "sourceFile": "Langchain-memory记忆-水印.pdf",
       "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:16.718Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:16.718Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "526f34c8-b151-418c-896c-8a7387226903",
@@ -707,8 +746,9 @@
       "evidenceAnchors": [],
       "sourceFile": "Langchain-memory记忆-水印.pdf",
       "sourceSha256": "29ed2f55a8910481c09d91eb883dc27bcc75f975ec2a03a704409a641288ebba",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:16.718Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:16.718Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "eccf8a74-7d36-4339-a31c-d0808e0d9672",
@@ -725,8 +765,9 @@
       ],
       "sourceFile": "手写MCP服务器与客户端-水印.pdf",
       "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:22.408Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:22.408Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "24dd05f1-a9ae-43d0-b424-4ddafbd75773",
@@ -743,8 +784,9 @@
       ],
       "sourceFile": "手写MCP服务器与客户端-水印.pdf",
       "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:22.408Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:22.408Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "4513e98a-5fd4-40a5-ae16-00d4fa530d4b",
@@ -761,8 +803,9 @@
       ],
       "sourceFile": "手写MCP服务器与客户端-水印.pdf",
       "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:22.408Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:22.408Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "c15f8071-72fb-481d-bffd-bf9e5548b2ad",
@@ -779,8 +822,9 @@
       ],
       "sourceFile": "手写MCP服务器与客户端-水印.pdf",
       "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:22.408Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:22.408Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "3a257585-8487-4632-8ba7-cdbd0db09ebe",
@@ -797,8 +841,9 @@
       ],
       "sourceFile": "手写MCP服务器与客户端-水印.pdf",
       "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:22.408Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:22.408Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "0ac735a6-2826-4267-857f-248eb4468f65",
@@ -809,8 +854,9 @@
       "evidenceAnchors": [],
       "sourceFile": "手写MCP服务器与客户端-水印.pdf",
       "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:22.408Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:22.408Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "fef173ec-7e67-4456-a2f5-1c698b6e99f1",
@@ -821,8 +867,9 @@
       "evidenceAnchors": [],
       "sourceFile": "手写MCP服务器与客户端-水印.pdf",
       "sourceSha256": "14022fe939cfe12770bff74865bf2440b85a9befc1c776d7363a52d60ee033cb",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:22.408Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:22.408Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "6f3ffddd-c22e-4bc2-8f07-10c14c1bc062",
@@ -839,8 +886,9 @@
       ],
       "sourceFile": "常见向量数据库的介绍-水印.pdf",
       "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:25.325Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:25.325Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "4548e251-8d22-43b7-9d3e-b82fe2c58395",
@@ -857,8 +905,9 @@
       ],
       "sourceFile": "常见向量数据库的介绍-水印.pdf",
       "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:25.325Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:25.325Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "ed50628a-8069-49ff-b63d-8ea1efc72deb",
@@ -875,8 +924,9 @@
       ],
       "sourceFile": "常见向量数据库的介绍-水印.pdf",
       "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:25.325Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:25.325Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "43cc423f-9093-465e-8845-0765105d549a",
@@ -893,8 +943,9 @@
       ],
       "sourceFile": "常见向量数据库的介绍-水印.pdf",
       "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:25.325Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:25.325Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "7aef475b-e2fb-4ad5-9366-353adf9aefbb",
@@ -905,8 +956,9 @@
       "evidenceAnchors": [],
       "sourceFile": "常见向量数据库的介绍-水印.pdf",
       "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:25.325Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:25.325Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "41ac6840-d5ae-4c25-abf2-3c8010b1f4b9",
@@ -917,8 +969,9 @@
       "evidenceAnchors": [],
       "sourceFile": "常见向量数据库的介绍-水印.pdf",
       "sourceSha256": "3bb49bb1d1ef44dbe6909b831efbcdcc7f93e74045b6e61f65ce51082f09dd09",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:25.325Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:25.325Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "d0eb1a86-14c0-401c-851f-c4bc314ecafb",
@@ -945,8 +998,9 @@
       ],
       "sourceFile": "手搓一个Agent-水印.pdf",
       "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:29.156Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:29.156Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "2506efb1-2b7e-41af-b14c-156665782475",
@@ -963,8 +1017,9 @@
       ],
       "sourceFile": "手搓一个Agent-水印.pdf",
       "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:29.156Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:29.156Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "71025a98-2764-46ed-850c-6ab913a50817",
@@ -986,8 +1041,9 @@
       ],
       "sourceFile": "手搓一个Agent-水印.pdf",
       "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:29.156Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:29.156Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "c96ed427-667a-40cb-b5d0-3c7848258f89",
@@ -1004,8 +1060,9 @@
       ],
       "sourceFile": "手搓一个Agent-水印.pdf",
       "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:29.156Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:29.156Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "e7a2c29d-41bb-4cd3-9155-6a5532cb21a0",
@@ -1016,8 +1073,9 @@
       "evidenceAnchors": [],
       "sourceFile": "手搓一个Agent-水印.pdf",
       "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:29.156Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:29.156Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     },
     {
       "id": "8605de8b-bfea-4e5a-a638-0ee52be267e5",
@@ -1028,8 +1086,12 @@
       "evidenceAnchors": [],
       "sourceFile": "手搓一个Agent-水印.pdf",
       "sourceSha256": "a91d98b473828f1e7388b7a02340b091792ead95757a9a386f028b9db4cc7f3a",
-      "reviewStatus": "DRAFT",
-      "createdAt": "2026-09-24T07:54:29.156Z"
+      "reviewStatus": "APPROVED",
+      "createdAt": "2026-09-24T07:54:29.156Z",
+      "reviewedAt": "2026-09-24T16:00:00+08:00"
     }
-  ]
+  ],
+  "frozenAt": "2026-09-24T16:00:00+08:00",
+  "frozenBy": "user",
+  "note": "用户批准冻结(grill Q22 口径);统计无判别力声明见 M13 消融惯例"
 }
