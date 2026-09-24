@@ -38,6 +38,8 @@ export async function embedQueries(questions: string[], signal: AbortSignal): Pr
   try { return await ragEmbed(questions, signal); } catch { return []; }
 }
 const vectorCaches = new WeakMap<EmbeddingOptions['embed'], Map<string, { hash: string; vector: number[] }>>();
+const SEMANTIC_THRESHOLD = 0.35; // below this, cosine similarity is treated as noise (bge-m3 gives weak positives for unrelated text)
+
 function cosine(a: number[], b: number[]): number {
   if (a.length !== b.length) throw new Error('EMBEDDING_DIMENSION_MISMATCH');
   const dot = a.reduce((sum, n, i) => sum + n * b[i]!, 0);
@@ -183,7 +185,7 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
             try { similarity = cosine(questionVector, sectionVectors.get(index)!); }
             catch { vectorFailed = true; }
           }
-          if (!score && similarity <= 0) continue;
+          if (!score && similarity <= SEMANTIC_THRESHOLD) continue;
           const quoted = usable.filter(a => a.evidence.some(e => e.sourceId === source.id && JSON.stringify(e.locator) === JSON.stringify(section.locator)));
           if (quoted.length) {
             for (const a of quoted) {
@@ -210,16 +212,17 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
       .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, 15);
     const normalizedOverlap = (text: string): number => tokens.length
       ? tokens.filter(t => normalizeName(text).includes(t)).length / tokens.length : 0;
+    const condWeight = (id: string): number => { const hit = usable.find(u => u.row.id === id); return hit ? weight(hit.row.conditions) : 1; };
     const vectorChoices = vectorFailed ? [] : [
       ...usable.map(a => ({ id: a.row.id, evidence: a.evidence })),
       ...sectionHits.map(r => ({ id: r.e.assertionId, evidence: [r.e] })),
-    ].filter(c => (semantic.get(c.id) ?? 0) > 0).map(c => ({ ...c,
-      score: 0.5 * (sectionOverlap.get(c.id) ?? Math.max(...c.evidence.map(e => normalizedOverlap(e.quote)))) + 0.5 * (semantic.get(c.id) ?? 0),
+    ].filter(c => (semantic.get(c.id) ?? 0) > SEMANTIC_THRESHOLD).map(c => ({ ...c,
+      score: condWeight(c.id) * (0.5 * (sectionOverlap.get(c.id) ?? Math.max(...c.evidence.map(e => normalizedOverlap(e.quote)))) + 0.5 * (semantic.get(c.id) ?? 0)),
     })).sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, 15);
     const choices = vectorFailed ? lexicalChoices : [...new Map([...lexicalChoices.map(c => ({ ...c,
-      score: 0.5 * (sectionOverlap.get(c.id) ?? Math.max(...c.evidence.map(e => normalizedOverlap(e.quote)))) + 0.5 * (semantic.get(c.id) ?? 0),
+      score: condWeight(c.id) * (0.5 * (sectionOverlap.get(c.id) ?? Math.max(...c.evidence.map(e => normalizedOverlap(e.quote)))) + 0.5 * (semantic.get(c.id) ?? 0)),
     })), ...vectorChoices].map(c => [c.id, c])).values()]
-      .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
+      .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, 15);
     const selected = usable.filter(a => choices.some(c => c.id === a.row.id));
     const evidence = choices.flatMap(c => c.evidence);
     const assertions: Assertion[] = selected.map(({ row: a }) => ({ id: a.id, subject: { id: a.subjectId, type: byId.get(a.subjectId)!.type }, predicate: a.predicate,

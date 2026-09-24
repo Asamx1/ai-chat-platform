@@ -135,14 +135,14 @@ export async function proposeAliases(candidates: CandidateSet, llm: Llm = qwenLl
     prompt: `从给定 name/aliases 中选择 canonicalName，不可创造别名。返回 {entities:[{name,type,canonicalName}]}。${JSON.stringify(candidates.entities)}` })); }
   catch { return { entities: [] }; }
 }
-export interface NormalizeResult { ids: Map<string, string>; entitiesCreated: number; entitiesMerged: number }
+export interface NormalizeResult { ids: Map<string, string>; entitiesCreated: number; entitiesMerged: number; ambiguousResolutions?: number }
 export interface NormalizeOptions { llm?: Llm; db?: PrismaClient; tx?: Prisma.TransactionClient; proposals?: unknown }
 export async function normalizeEntities(candidates: CandidateSet, vaultId: string, opts: NormalizeOptions = {}): Promise<NormalizeResult> {
   const proposals = proposalsSchema.parse(opts.proposals ?? await proposeAliases(candidates, opts.llm));
   const save = async (tx: Prisma.TransactionClient): Promise<NormalizeResult> => {
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`wiki-entities:${vaultId}`}, 0))`;
     const rows = await tx.vaultEntityCandidate.findMany({ where: { vaultId } });
-    const ids = new Map<string, string>(); let entitiesCreated = 0; let entitiesMerged = 0;
+    const ids = new Map<string, string>(); let entitiesCreated = 0; let entitiesMerged = 0; let ambiguousResolutions = 0;
     // Connected components of exact aliases avoid order-dependent merges within a batch.
     const groups: Array<{ type: string; names: Set<string>; members: CandidateEntity[] }> = [];
     for (const entity of candidates.entities) {
@@ -155,8 +155,13 @@ export async function normalizeEntities(candidates: CandidateSet, vaultId: strin
     for (const group of groups) {
       const matches = rows.filter(row => row.type === group.type && [row.canonicalName, ...(Array.isArray(row.aliasesJson) ? row.aliasesJson.filter((x): x is string => typeof x === 'string') : [])]
         .some(name => group.names.has(normalizeName(name)) || [...group.names].some(n => row.canonicalName === entityKey(group.type, n))));
-      if (matches.length > 1) throw new Error('AMBIGUOUS_EXISTING_ALIAS: manual resolution required');
-      const existing = matches[0];
+      let existing = matches[0];
+      if (matches.length > 1) {
+        // Cross-alias ambiguity: pick the row sharing the most names with this group (deterministic tie-break on canonicalName) instead of aborting the whole ingestion.
+        existing = matches.map(row => ({ row, hits: [...group.names].filter(n => [row.canonicalName, ...(Array.isArray(row.aliasesJson) ? row.aliasesJson.filter((x): x is string => typeof x === 'string') : [])].some(name => normalizeName(name) === n || row.canonicalName === entityKey(group.type, n))).length }))
+          .sort((a, b) => b.hits - a.hits || a.row.canonicalName.localeCompare(b.row.canonicalName))[0]!.row;
+        ambiguousResolutions++;
+      }
       const choice = proposals.entities.find(p => p.type === group.type && group.names.has(normalizeName(p.name)) && group.names.has(normalizeName(p.canonicalName)));
       const canonical = choice ? normalizeName(choice.canonicalName) : [...group.names].sort()[0]!;
       const aliases = [...new Set([...group.members.flatMap(e => [e.name, ...e.aliases]), ...(existing && Array.isArray(existing.aliasesJson) ? existing.aliasesJson.filter((x): x is string => typeof x === 'string') : [])])];
@@ -192,7 +197,7 @@ export async function normalizeEntities(candidates: CandidateSet, vaultId: strin
       const aliases = Array.isArray(row?.aliasesJson) ? row.aliasesJson.filter((v): v is string => typeof v === 'string') : [];
       await tx.vaultEntityCandidate.update({ where: { id }, data: { aliasesJson: [...new Set([...aliases, ...variants])] } });
     }
-    return { ids, entitiesCreated, entitiesMerged };
+    return { ids, entitiesCreated, entitiesMerged, ambiguousResolutions };
   };
   return opts.tx ? save(opts.tx) : (opts.db ?? await database()).$transaction(save);
 }
