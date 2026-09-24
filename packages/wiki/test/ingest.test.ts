@@ -111,7 +111,9 @@ describe.skipIf(!testUrl)('real test database ingestion', () => {
       await connection.query('BEGIN');
       await connection.query(`CREATE SCHEMA "${schema}"`);
       await connection.query(`SET LOCAL search_path TO "${schema}"`);
-      await connection.query(await readFile(new URL('../../db/prisma/migrations/20260925000000_vault_tables/migration.sql', import.meta.url), 'utf8'));
+      for (const m of ['20260925000000_vault_tables', '20260925010000_entity_candidate_type']) {
+        await connection.query(await readFile(new URL(`../../db/prisma/migrations/${m}/migration.sql`, import.meta.url), 'utf8'));
+      }
       await connection.query('COMMIT');
     } catch (error) { await connection.query('ROLLBACK'); throw error; }
     finally { connection.release(); }
