@@ -235,6 +235,43 @@ importers:
         specifier: ^3
         version: 3.2.4(@types/node@24.13.5)(jiti@2.7.0)(tsx@4.23.13)(yaml@2.8.1)
 
+  packages/wiki:
+    dependencies:
+      '@aichat/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@aichat/crypto':
+        specifier: workspace:*
+        version: link:../crypto
+      '@aichat/db':
+        specifier: workspace:*
+        version: link:../db
+      '@aichat/ontology':
+        specifier: workspace:*
+        version: link:../ontology
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
+      pdfjs-dist:
+        specifier: 5.4.296
+        version: 5.4.296
+      zod:
+        specifier: 4.1.5
+        version: 4.1.5
+    devDependencies:
+      '@prisma/adapter-pg':
+        specifier: ^7.10.0
+        version: 7.10.0
+      '@types/node':
+        specifier: ^24
+        version: 24.13.5
+      '@types/pg':
+        specifier: ^8.23.1
+        version: 8.23.1
+      pg:
+        specifier: ^8.23.0
+        version: 8.23.0
+
 packages:
 
   '@better-auth/core@1.7.0':
