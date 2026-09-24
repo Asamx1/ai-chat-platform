@@ -4,6 +4,7 @@ import { z } from 'zod';
 import type { PrismaClient } from '@aichat/db';
 import { SourceLocatorSchema, type SourceLocator } from '@aichat/contracts';
 import { loadOntology, loadConstraints, loadInferenceRules, runInference, type Assertion } from '@aichat/ontology';
+import { embed as ragEmbed } from '../../rag/src/embed.js';
 import { deepseekLlm, type Llm } from './extract.js';
 import { normalizeName, rawPath, sha256 } from './scan.js';
 import { parseSource, type ParsedDoc, type ParseSource } from './parse.js';
@@ -30,8 +31,18 @@ export type StrictAnswer =
   | { kind: 'unknown'; reason: 'NO_EVIDENCE' | 'OUT_OF_SCOPE' | 'RETRIEVAL_FAILED'; answer: null; citations: [] }
   | { kind: 'sourced' | 'inferred' | 'mixed'; answer: string; citations: Citation[]; ontologyVersion: string; revision: string;
       inferredParts: Array<{ text: string; assertionIds: string[]; premiseAssertionIds: string[] }> };
-export interface QueryOptions { llm?: Llm; userId?: string }
-export interface RetrievalOptions { context?: VaultContext; vaultPath?: string }
+export interface EmbeddingOptions { embed: (texts: string[], signal: AbortSignal) => Promise<number[][]> }
+export interface QueryOptions { llm?: Llm; userId?: string; embedding?: EmbeddingOptions }
+export interface RetrievalOptions { context?: VaultContext; vaultPath?: string; embedding?: EmbeddingOptions }
+export async function embedQueries(questions: string[], signal: AbortSignal): Promise<number[][]> {
+  try { return await ragEmbed(questions, signal); } catch { return []; }
+}
+const vectorCaches = new WeakMap<EmbeddingOptions['embed'], Map<string, { hash: string; vector: number[] }>>();
+function cosine(a: number[], b: number[]): number {
+  if (a.length !== b.length) throw new Error('EMBEDDING_DIMENSION_MISMATCH');
+  const dot = a.reduce((sum, n, i) => sum + n * b[i]!, 0);
+  return Math.max(-1, Math.min(1, dot / (Math.hypot(...a) * Math.hypot(...b))));
+}
 const unknown = (reason: Extract<StrictAnswer, { kind: 'unknown' }>['reason']): StrictAnswer => ({ kind: 'unknown', reason, answer: null, citations: [] });
 const rev = (value: string): number => /^rev-\d+$/u.test(value) && Number.isSafeInteger(Number(value.slice(4))) ? Number(value.slice(4)) : -1;
 const record = z.record(z.string(), z.unknown());
@@ -120,6 +131,27 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
       .filter(e => e.score > 0).sort((a, b) => b.score - a.score || a.e.assertionId.localeCompare(b.e.assertionId)).slice(0, 15);
     const ranked = [...new Set([...expanded, ...lexical.map(e => e.a)])].map(a => ({ a,
       score: (Math.max(0, ...a.evidence.map(e => overlap(e.quote))) + (direct.includes(a) ? 2 : expanded.includes(a) ? 1 : 0)) * weight(a.row.conditions) }));
+    const embed = opts.embedding?.embed ?? embedQueries;
+    const signal = AbortSignal.timeout(60_000);
+    const vectors = async (texts: string[]): Promise<number[][]> => {
+      if (!texts.length) return [];
+      const result = await embed(texts, signal);
+      if (result.length !== texts.length || result.some(v => !v.length || !v.every(Number.isFinite) || !v.some(n => n !== 0)))
+        throw new Error('INVALID_EMBEDDINGS');
+      return result;
+    };
+    let questionVector: number[] | undefined;
+    let vectorFailed = false;
+    const semantic = new Map<string, number>();
+    const sectionOverlap = new Map<string, number>();
+    try {
+      questionVector = (await vectors([question]))[0]!;
+      const quotes = usable.flatMap(a => a.evidence);
+      const embedded = await vectors(quotes.map(e => e.quote));
+      quotes.forEach((e, i) => semantic.set(e.assertionId, Math.max(semantic.get(e.assertionId) ?? -1, cosine(questionVector!, embedded[i]!))));
+    } catch { vectorFailed = true; }
+    let cache = vectorCaches.get(embed);
+    if (!cache) { cache = new Map(); vectorCaches.set(embed, cache); }
     const sectionHits: Array<{ e: Citation; score: number }> = [];
     if (opts.vaultPath) {
       const sources = await tx.vaultSource.findMany({ where: { vaultId }, orderBy: { id: 'asc' } });
@@ -127,29 +159,68 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
         let doc: ParsedDoc;
         try { doc = await sourceSections(source, opts.vaultPath); }
         catch { continue; } // Missing, changed or unparseable raw files cannot supply evidence.
-        for (const section of doc.sections) {
+        const sectionVectors = new Map<number, number[]>();
+        if (!vectorFailed && questionVector) {
+          try {
+            const missing = doc.sections.flatMap((section, index) => {
+              const key = JSON.stringify([vaultId, source.id, index]);
+              const hash = `${source.sha256}:${section.sha256}`;
+              const hit = cache!.get(key);
+              if (hit?.hash === hash) { sectionVectors.set(index, hit.vector); return []; }
+              return [{ key, hash, section, index }];
+            });
+            const embedded = await vectors(missing.map(m => m.section.text));
+            missing.forEach((m, i) => {
+              cache!.set(m.key, { hash: m.hash, vector: embedded[i]! });
+              sectionVectors.set(m.index, embedded[i]!);
+            });
+          } catch { vectorFailed = true; }
+        }
+        for (const [index, section] of doc.sections.entries()) {
           const score = overlap(section.text);
-          if (!score) continue;
+          let similarity = -1;
+          if (!vectorFailed && questionVector) {
+            try { similarity = cosine(questionVector, sectionVectors.get(index)!); }
+            catch { vectorFailed = true; }
+          }
+          if (!score && similarity <= 0) continue;
           const quoted = usable.filter(a => a.evidence.some(e => e.sourceId === source.id && JSON.stringify(e.locator) === JSON.stringify(section.locator)));
           if (quoted.length) {
             for (const a of quoted) {
+              semantic.set(a.row.id, Math.max(semantic.get(a.row.id) ?? -1, similarity));
               const hit = ranked.find(r => r.a === a);
               const boosted = score * weight(a.row.conditions);
               if (hit) hit.score = Math.max(hit.score, boosted);
               else ranked.push({ a, score: boosted });
             }
           } else {
-            sectionHits.push({ score, e: { assertionId: `section_${sha256(JSON.stringify([source.id, source.sha256, section.locator])).slice(0, 24)}`,
+            const id = `section_${sha256(JSON.stringify([source.id, source.sha256, section.locator])).slice(0, 24)}`;
+            semantic.set(id, similarity);
+            sectionOverlap.set(id, tokens.length ? tokens.filter(t => normalizeName(section.text).includes(t)).length / tokens.length : 0);
+            sectionHits.push({ score, e: { assertionId: id,
               quote: section.text.slice(0, 300), locator: section.locator, sourceTitle: source.title, sourceId: source.id,
               sourceFile: source.filePath, sourceSha256: source.sha256, origin: 'sourced', derivedFromSection: true } });
           }
         }
       }
     }
-    const choices = [...ranked.map(r => ({ score: r.score, id: r.a.row.id, evidence: r.a.evidence })),
-      ...sectionHits.map(r => ({ score: r.score, id: r.e.assertionId, evidence: [r.e] }))]
+    // Each channel contributes its top 15; preserve the original lexical path on any embedding failure.
+    const lexicalChoices = [...ranked.filter(r => r.score > 0).map(r => ({ score: r.score, id: r.a.row.id, evidence: r.a.evidence })),
+      ...sectionHits.filter(r => r.score > 0).map(r => ({ score: r.score, id: r.e.assertionId, evidence: [r.e] }))]
       .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, 15);
-    const selected = ranked.filter(r => choices.some(c => c.id === r.a.row.id)).map(r => r.a);
+    const normalizedOverlap = (text: string): number => tokens.length
+      ? tokens.filter(t => normalizeName(text).includes(t)).length / tokens.length : 0;
+    const vectorChoices = vectorFailed ? [] : [
+      ...usable.map(a => ({ id: a.row.id, evidence: a.evidence })),
+      ...sectionHits.map(r => ({ id: r.e.assertionId, evidence: [r.e] })),
+    ].filter(c => (semantic.get(c.id) ?? 0) > 0).map(c => ({ ...c,
+      score: 0.5 * (sectionOverlap.get(c.id) ?? Math.max(...c.evidence.map(e => normalizedOverlap(e.quote)))) + 0.5 * (semantic.get(c.id) ?? 0),
+    })).sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, 15);
+    const choices = vectorFailed ? lexicalChoices : [...new Map([...lexicalChoices.map(c => ({ ...c,
+      score: 0.5 * (sectionOverlap.get(c.id) ?? Math.max(...c.evidence.map(e => normalizedOverlap(e.quote)))) + 0.5 * (semantic.get(c.id) ?? 0),
+    })), ...vectorChoices].map(c => [c.id, c])).values()]
+      .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
+    const selected = usable.filter(a => choices.some(c => c.id === a.row.id));
     const evidence = choices.flatMap(c => c.evidence);
     const assertions: Assertion[] = selected.map(({ row: a }) => ({ id: a.id, subject: { id: a.subjectId, type: byId.get(a.subjectId)!.type }, predicate: a.predicate,
       ...(a.objectId ? { object: { id: a.objectId, type: byId.get(a.objectId)!.type } } : { value: z.union([z.string(), z.number(), z.boolean()]).parse(JSON.parse(a.value ?? 'null')) }),
@@ -166,7 +237,7 @@ async function answer(question: string, vaultId: string, vaultPath: string, db: 
   let context: VaultContext; let set: EvidenceSet;
   try {
     context = await loadVaultContext(vaultPath);
-    set = await retrieveEvidence(question, vaultId, db, { context, vaultPath });
+    set = await retrieveEvidence(question, vaultId, db, { context, vaultPath, ...(opts.embedding ? { embedding: opts.embedding } : {}) });
     if (inference && set.evidence.length) {
       const result = runInference(set.assertions, context.inferenceRules, { ontology: context.ontology });
       for (const derived of result.derived) {
