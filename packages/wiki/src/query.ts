@@ -3,9 +3,10 @@ import { resolve } from 'node:path';
 import { z } from 'zod';
 import type { PrismaClient } from '@aichat/db';
 import { SourceLocatorSchema, type SourceLocator } from '@aichat/contracts';
-import { loadOntology, loadConstraints, loadInferenceRules, runInference, type Assertion } from '@aichat/ontology';
+import { loadOntology, loadConstraints, loadInferenceRules, type Assertion } from '@aichat/ontology';
 import { embed as ragEmbed } from '../../rag/src/embed.js';
 import { deepseekLlm, type Llm } from './extract.js';
+import { deriveAssertions, toOntologyAssertion, type InferredAssertion } from './infer.js';
 import { normalizeName, rawPath, sha256 } from './scan.js';
 import { parseSource, type ParsedDoc, type ParseSource } from './parse.js';
 
@@ -22,18 +23,18 @@ export async function loadVaultContext(vaultPath: string) {
 export type VaultContext = Awaited<ReturnType<typeof loadVaultContext>>;
 export interface Citation {
   assertionId: string; quote: string; locator: SourceLocator; sourceTitle: string; pageId?: string;
-  sourceId: string; sourceFile: string; sourceSha256: string; origin: 'sourced' | 'inferred'; premiseAssertionIds?: string[]; derivedFromSection?: boolean;
+  sourceId: string; sourceFile: string; sourceSha256: string; origin: 'sourced' | 'inferred'; premiseAssertionIds?: string[]; derivedFrom?: string[]; sourceAssertionId?: string; derivedFromSection?: boolean;
 }
 export interface EvidenceSet {
-  evidence: Citation[]; assertions: Assertion[]; linkedEntityIds: string[]; ontologyVersion: string; revision: string | null;
+  evidence: Citation[]; assertions: Array<Assertion | InferredAssertion>; linkedEntityIds: string[]; ontologyVersion: string; revision: string | null;
 }
 export type StrictAnswer =
   | { kind: 'unknown'; reason: 'NO_EVIDENCE' | 'OUT_OF_SCOPE' | 'RETRIEVAL_FAILED'; answer: null; citations: [] }
   | { kind: 'sourced' | 'inferred' | 'mixed'; answer: string; citations: Citation[]; ontologyVersion: string; revision: string;
       inferredParts: Array<{ text: string; assertionIds: string[]; premiseAssertionIds: string[] }> };
 export interface EmbeddingOptions { embed: (texts: string[], signal: AbortSignal) => Promise<number[][]> }
-export interface QueryOptions { llm?: Llm; userId?: string; embedding?: EmbeddingOptions }
-export interface RetrievalOptions { context?: VaultContext; vaultPath?: string; embedding?: EmbeddingOptions }
+export interface QueryOptions { includeInferred?: boolean; llm?: Llm; userId?: string; embedding?: EmbeddingOptions }
+export interface RetrievalOptions { includeInferred?: boolean; context?: VaultContext; vaultPath?: string; embedding?: EmbeddingOptions }
 export async function embedQueries(questions: string[], signal: AbortSignal): Promise<number[][]> {
   try { return await ragEmbed(questions, signal); } catch { return []; }
 }
@@ -232,25 +233,34 @@ export async function retrieveEvidence(question: string, vaultId: string, db: Pr
       ruleVersion: a.ruleVersion ?? a.ontologyVersion, revision: Math.max(1, rev(a.revision)),
       evidence: evidence.filter(e => e.assertionId === a.id).map(e => ({ sourceId: e.sourceId, sourceVersion: e.sourceSha256, locator: JSON.stringify(e.locator), excerpt: e.quote, relation: 'supports' })),
     }));
+    if (opts.includeInferred !== false && usable.length) {
+      // Recompute from the complete release-visible, evidence-backed source set.
+      // This also prevents stale persisted conclusions from bypassing source withdrawal.
+      const inputs = usable.flatMap(({ row }) => {
+        const a = toOntologyAssertion(row, byId); return a ? [a] : [];
+      });
+      const inferred = deriveAssertions(vaultId, inputs, context.ontology, context.inferenceRules);
+      const selectedIds = new Set(assertions.map(a => a.id));
+      for (const a of inferred) {
+        if (!linked.includes(a.subject.id) && !a.derivedFrom.some(id => selectedIds.has(id))) continue;
+        const premises = a.derivedFrom.flatMap(id => usable.find(u => u.row.id === id)?.evidence ?? []);
+        if (!a.derivedFrom.every(id => premises.some(e => e.assertionId === id))) continue;
+        assertions.push(a);
+        const inferredEvidence = premises.map(e => ({ ...e, assertionId: a.id, sourceAssertionId: e.assertionId,
+          origin: 'inferred' as const, derivedFrom: a.derivedFrom, premiseAssertionIds: a.derivedFrom }));
+        evidence.push(...inferredEvidence.slice(0, Math.max(0, 15 - evidence.length)));
+      }
+    }
     return { ...empty, linkedEntityIds: linked, evidence, assertions };
   }, { isolationLevel: 'RepeatableRead' });
 }
 const responseSchema = z.object({ answer: z.string(), usedAssertionIds: z.array(z.string()) });
-async function answer(question: string, vaultId: string, vaultPath: string, db: PrismaClient, opts: QueryOptions, inference: boolean): Promise<StrictAnswer> {
+async function answer(question: string, vaultId: string, vaultPath: string, db: PrismaClient, opts: QueryOptions): Promise<StrictAnswer> {
   let context: VaultContext; let set: EvidenceSet;
   try {
     context = await loadVaultContext(vaultPath);
-    set = await retrieveEvidence(question, vaultId, db, { context, vaultPath, ...(opts.embedding ? { embedding: opts.embedding } : {}) });
-    if (inference && set.evidence.length) {
-      const result = runInference(set.assertions, context.inferenceRules, { ontology: context.ontology });
-      for (const derived of result.derived) {
-        const premises = derived.premiseAssertionIds!;
-        const citations = premises.flatMap(id => set.evidence.filter(e => e.assertionId === id));
-        if (!premises.every(id => citations.some(e => e.assertionId === id))) throw new Error('MISSING_INFERENCE_PREMISE');
-        set.evidence.push(...citations.map(e => ({ ...e, assertionId: derived.id, origin: 'inferred' as const, premiseAssertionIds: premises })));
-      }
-      set.assertions = result.assertions;
-    }
+    set = await retrieveEvidence(question, vaultId, db, { context, vaultPath, includeInferred: opts.includeInferred ?? true,
+      ...(opts.embedding ? { embedding: opts.embedding } : {}) });
   } catch { return unknown('RETRIEVAL_FAILED'); }
   if (!set.evidence.length || !set.revision) return unknown('NO_EVIDENCE');
   try {
@@ -278,5 +288,5 @@ async function answer(question: string, vaultId: string, vaultPath: string, db: 
       ontologyVersion: set.ontologyVersion, revision: set.revision, inferredParts };
   } catch { return unknown('RETRIEVAL_FAILED'); }
 }
-export const answerStrict = (question: string, vaultId: string, vaultPath: string, db: PrismaClient, opts: QueryOptions = {}): Promise<StrictAnswer> => answer(question, vaultId, vaultPath, db, opts, false);
-export const answerWithInference = (question: string, vaultId: string, vaultPath: string, db: PrismaClient, opts: QueryOptions = {}): Promise<StrictAnswer> => answer(question, vaultId, vaultPath, db, opts, true);
+export const answerStrict = (question: string, vaultId: string, vaultPath: string, db: PrismaClient, opts: QueryOptions = {}): Promise<StrictAnswer> => answer(question, vaultId, vaultPath, db, opts);
+export const answerWithInference = (question: string, vaultId: string, vaultPath: string, db: PrismaClient, opts: QueryOptions = {}): Promise<StrictAnswer> => answer(question, vaultId, vaultPath, db, opts);

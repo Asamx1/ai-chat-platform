@@ -27,6 +27,7 @@ export type {
   VaultSourceFamily,
   VaultPage,
   VaultAssertion,
+  VaultInferredAssertion,
   VaultEvidence,
   VaultRelease,
   VaultEntityCandidate,

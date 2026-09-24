@@ -64,10 +64,12 @@ export function runInference(input: readonly Assertion[], rules: InferenceRules,
     const before = derived.length;
     const active = assertions.filter(usable);
     for (const rule of validated.rules) {
-      if (rule.ruleId === 'R-SUBCLASS-TRANS') {
+      if (rule.ruleId === 'R-SUBCLASS-TRANS' || rule.ruleId === 'R-SUPERSEDES-TRANS') {
+        const predicate = rule.ruleId === 'R-SUBCLASS-TRANS' ? 'subclass_of' : 'supersedes';
         for (const a of active) for (const b of active) {
-          if (a.predicate !== 'subclass_of' || b.predicate !== 'subclass_of' || !a.object || !b.object || a.object.id !== b.subject.id || scope(a) !== scope(b)) continue;
-          add(a, 'subclass_of', a.subject, b.object, rule, [a, b], (depths.get(a.id) ?? 1) + (depths.get(b.id) ?? 1));
+          if (a.predicate !== predicate || b.predicate !== predicate || !a.object || !b.object || a.object.id !== b.subject.id || scope(a) !== scope(b)) continue;
+          if (a.subject.id === b.object.id) continue;
+          add(a, predicate, a.subject, b.object, rule, [a, b], (depths.get(a.id) ?? 1) + (depths.get(b.id) ?? 1));
         }
       } else if (rule.ruleId === 'R-INVERSE-DECLARED') {
         for (const a of active) {

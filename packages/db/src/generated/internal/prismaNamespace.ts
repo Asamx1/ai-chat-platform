@@ -426,7 +426,8 @@ export const ModelName = {
   VaultAssertion: 'VaultAssertion',
   VaultEvidence: 'VaultEvidence',
   VaultRelease: 'VaultRelease',
-  VaultEntityCandidate: 'VaultEntityCandidate'
+  VaultEntityCandidate: 'VaultEntityCandidate',
+  VaultInferredAssertion: 'VaultInferredAssertion'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -442,7 +443,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "provider" | "modelRegistry" | "conversation" | "participant" | "message" | "orchestrationRun" | "runParticipantSnapshot" | "runCheckpoint" | "runEvent" | "providerCall" | "usageLog" | "apiKey" | "shareLink" | "session" | "account" | "verification" | "modelUsageDaily" | "knowledgeBase" | "document" | "chunk" | "conversationKnowledgeBase" | "userModelQuota" | "sourceVersion" | "indexGeneration" | "compileJob" | "compileOutbox" | "compileCostLedger" | "summaryFact" | "entity" | "entityAlias" | "entityMention" | "entityRelation" | "relationEvidence" | "derivedFact" | "ontologyConfig" | "vaultSource" | "vaultSourceFamily" | "vaultPage" | "vaultAssertion" | "vaultEvidence" | "vaultRelease" | "vaultEntityCandidate"
+    modelProps: "user" | "provider" | "modelRegistry" | "conversation" | "participant" | "message" | "orchestrationRun" | "runParticipantSnapshot" | "runCheckpoint" | "runEvent" | "providerCall" | "usageLog" | "apiKey" | "shareLink" | "session" | "account" | "verification" | "modelUsageDaily" | "knowledgeBase" | "document" | "chunk" | "conversationKnowledgeBase" | "userModelQuota" | "sourceVersion" | "indexGeneration" | "compileJob" | "compileOutbox" | "compileCostLedger" | "summaryFact" | "entity" | "entityAlias" | "entityMention" | "entityRelation" | "relationEvidence" | "derivedFact" | "ontologyConfig" | "vaultSource" | "vaultSourceFamily" | "vaultPage" | "vaultAssertion" | "vaultEvidence" | "vaultRelease" | "vaultEntityCandidate" | "vaultInferredAssertion"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3612,6 +3613,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    VaultInferredAssertion: {
+      payload: Prisma.$VaultInferredAssertionPayload<ExtArgs>
+      fields: Prisma.VaultInferredAssertionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VaultInferredAssertionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VaultInferredAssertionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload>
+        }
+        findFirst: {
+          args: Prisma.VaultInferredAssertionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VaultInferredAssertionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload>
+        }
+        findMany: {
+          args: Prisma.VaultInferredAssertionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload>[]
+        }
+        create: {
+          args: Prisma.VaultInferredAssertionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload>
+        }
+        createMany: {
+          args: Prisma.VaultInferredAssertionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VaultInferredAssertionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload>[]
+        }
+        delete: {
+          args: Prisma.VaultInferredAssertionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload>
+        }
+        update: {
+          args: Prisma.VaultInferredAssertionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload>
+        }
+        deleteMany: {
+          args: Prisma.VaultInferredAssertionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VaultInferredAssertionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VaultInferredAssertionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload>[]
+        }
+        upsert: {
+          args: Prisma.VaultInferredAssertionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VaultInferredAssertionPayload>
+        }
+        aggregate: {
+          args: Prisma.VaultInferredAssertionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVaultInferredAssertion>
+        }
+        groupBy: {
+          args: Prisma.VaultInferredAssertionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultInferredAssertionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VaultInferredAssertionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VaultInferredAssertionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4297,6 +4372,26 @@ export const VaultEntityCandidateScalarFieldEnum = {
 export type VaultEntityCandidateScalarFieldEnum = (typeof VaultEntityCandidateScalarFieldEnum)[keyof typeof VaultEntityCandidateScalarFieldEnum]
 
 
+export const VaultInferredAssertionScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  subjectId: 'subjectId',
+  predicate: 'predicate',
+  objectId: 'objectId',
+  value: 'value',
+  polarity: 'polarity',
+  conditions: 'conditions',
+  derivedFromJson: 'derivedFromJson',
+  ruleVersion: 'ruleVersion',
+  ontologyVersion: 'ontologyVersion',
+  revision: 'revision',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type VaultInferredAssertionScalarFieldEnum = (typeof VaultInferredAssertionScalarFieldEnum)[keyof typeof VaultInferredAssertionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -4675,6 +4770,7 @@ export type GlobalOmitConfig = {
   vaultEvidence?: Prisma.VaultEvidenceOmit
   vaultRelease?: Prisma.VaultReleaseOmit
   vaultEntityCandidate?: Prisma.VaultEntityCandidateOmit
+  vaultInferredAssertion?: Prisma.VaultInferredAssertionOmit
 }
 
 /* Types for Logging */

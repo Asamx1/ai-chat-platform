@@ -14,7 +14,7 @@ export interface Constraints {
   objectOrValue: 'exactlyOne'; origins: ['sourced', 'inferred'];
   endpointTypes: true; forbidSubclassCycles: true; evidenceTargetsAssertion: true;
 }
-export type RuleId = 'R-SUBCLASS-TRANS' | 'R-INVERSE-DECLARED';
+export type RuleId = 'R-SUBCLASS-TRANS' | 'R-INVERSE-DECLARED' | 'R-SUPERSEDES-TRANS';
 export interface InferenceRule { ruleId: RuleId; ruleVersion: string; description: string; premises: string[]; approved: true }
 export interface InferenceRules { version: string; maxDepth: number; rules: InferenceRule[]; forbidden: string[] }
 export interface Endpoint { id: string; type: string }

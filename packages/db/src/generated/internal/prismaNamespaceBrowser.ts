@@ -93,7 +93,8 @@ export const ModelName = {
   VaultAssertion: 'VaultAssertion',
   VaultEvidence: 'VaultEvidence',
   VaultRelease: 'VaultRelease',
-  VaultEntityCandidate: 'VaultEntityCandidate'
+  VaultEntityCandidate: 'VaultEntityCandidate',
+  VaultInferredAssertion: 'VaultInferredAssertion'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -756,6 +757,26 @@ export const VaultEntityCandidateScalarFieldEnum = {
 } as const
 
 export type VaultEntityCandidateScalarFieldEnum = (typeof VaultEntityCandidateScalarFieldEnum)[keyof typeof VaultEntityCandidateScalarFieldEnum]
+
+
+export const VaultInferredAssertionScalarFieldEnum = {
+  id: 'id',
+  vaultId: 'vaultId',
+  subjectId: 'subjectId',
+  predicate: 'predicate',
+  objectId: 'objectId',
+  value: 'value',
+  polarity: 'polarity',
+  conditions: 'conditions',
+  derivedFromJson: 'derivedFromJson',
+  ruleVersion: 'ruleVersion',
+  ontologyVersion: 'ontologyVersion',
+  revision: 'revision',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type VaultInferredAssertionScalarFieldEnum = (typeof VaultInferredAssertionScalarFieldEnum)[keyof typeof VaultInferredAssertionScalarFieldEnum]
 
 
 export const SortOrder = {

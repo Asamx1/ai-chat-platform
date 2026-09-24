@@ -799,3 +799,23 @@ model VaultEntityCandidate {
   @@unique([vaultId, canonicalName, type])
   @@index([vaultId, status])
 }
+
+// Machine-generated conclusions are kept separate from sourced assertions.
+model VaultInferredAssertion {
+  id String @id @default(cuid())
+  vaultId String @default("default") @map("vault_id")
+  subjectId String @map("subject_id")
+  predicate String
+  objectId String? @map("object_id")
+  value String?
+  polarity Boolean
+  conditions String?
+  derivedFromJson Json @map("derived_from_json") // string[] of sourced assertion IDs
+  ruleVersion String @map("rule_version")
+  ontologyVersion String @map("ontology_version")
+  revision String
+  status String @default("machine")
+  createdAt DateTime @default(now()) @map("created_at")
+  @@unique([vaultId, subjectId, predicate, objectId], map: "VaultInferredAssertion_edge_key")
+  @@index([vaultId])
+}

@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { PrismaClient } from '@aichat/db';
 import { answerStrict, answerWithInference, loadVaultContext, retrieveEvidence } from '../src/query.js';
+import { inferAssertions, persistInferred } from '../src/infer.js';
 import { registerSource, sha256 } from '../src/scan.js';
 import type { Llm } from '../src/extract.js';
 
@@ -24,7 +25,7 @@ describe.skipIf(!testUrl)('strict query with real PostgreSQL', () => {
       await connection.query('BEGIN');
       await connection.query(`CREATE SCHEMA "${schema}"`);
       await connection.query(`SET LOCAL search_path TO "${schema}"`);
-      for (const migration of ['20260925000000_vault_tables', '20260925010000_entity_candidate_type']) {
+      for (const migration of ['20260925000000_vault_tables', '20260925010000_entity_candidate_type', '20260926000000_vault_inferred']) {
         await connection.query(await readFile(new URL(`../../db/prisma/migrations/${migration}/migration.sql`, import.meta.url), 'utf8'));
       }
       await connection.query('COMMIT');
@@ -124,6 +125,34 @@ describe.skipIf(!testUrl)('strict query with real PostgreSQL', () => {
     expect(set.evidence.map(e => e.assertionId)).toContain(f.assertions[0]!.id);
     await db.vaultRelease.deleteMany({ where: { vaultId: f.vaultId } });
     expect((await retrieveEvidence('Alpha', f.vaultId, db, { vaultPath: f.root })).evidence).toEqual([]);
+  });
+  it('injects inferred assertions by default, penetrates source evidence and supports opt-out', async () => {
+    const f = await fixture();
+    const inferred = await inferAssertions(f.vaultId, db, { vaultPath: f.root });
+    expect(await persistInferred(f.vaultId, db, inferred)).toEqual({ created: 1, updated: 0 });
+    expect(await persistInferred(f.vaultId, db, inferred)).toEqual({ created: 0, updated: 1 });
+    expect(await db.vaultInferredAssertion.findMany({ where: { vaultId: f.vaultId } })).toEqual([
+      expect.objectContaining({ status: 'machine', derivedFromJson: f.assertions.map(a => a.id) }),
+    ]);
+    const embedding = { embed: async (): Promise<number[][]> => { throw new Error('offline'); } };
+    const plain = await retrieveEvidence('Alpha', f.vaultId, db, { vaultPath: f.root, includeInferred: false, embedding });
+    expect(plain.assertions.every(a => a.origin === 'sourced')).toBe(true);
+    const llm: Llm = async request => {
+      const payload = JSON.parse(request.system.slice(request.system.lastIndexOf('\n') + 1));
+      const derived = payload.assertions.find((a: { origin: string }) => a.origin === 'inferred');
+      expect(derived.derivedFrom).toEqual(f.assertions.map(a => a.id));
+      return { answer: `Alpha is a subclass of Gamma. [${derived.id}]`, usedAssertionIds: [derived.id] };
+    };
+    const result = await answerStrict('Alpha', f.vaultId, f.root, db, { llm, embedding });
+    expect(result.kind).toBe('inferred');
+    expect(result.citations.map(c => c.sourceAssertionId)).toEqual(f.assertions.map(a => a.id));
+    expect(result.citations.map(c => c.locator)).toEqual([{ kind: 'page', page: 1 }, { kind: 'page', page: 2 }]);
+    expect(result.citations.map(c => c.quote)).toEqual(['Alpha is a subclass of Beta.', 'Beta is a subclass of Gamma.']);
+    await answerStrict('Alpha', f.vaultId, f.root, db, { embedding, includeInferred: false, llm: async request => {
+      const payload = JSON.parse(request.system.slice(request.system.lastIndexOf('\n') + 1));
+      expect(payload.assertions.every((a: { origin: string }) => a.origin === 'sourced')).toBe(true);
+      return { answer: '', usedAssertionIds: [] };
+    } });
   });
   it('marks inferred citations with premises and separates inferred answer lines', async () => {
     const f = await fixture();

@@ -33,7 +33,7 @@ export const constraintsSchema = z.strictObject({ version,
   endpointTypes: z.literal(true), forbidSubclassCycles: z.literal(true), evidenceTargetsAssertion: z.literal(true),
 });
 export const inferenceRulesSchema = z.strictObject({ version, maxDepth: z.number().int().min(1).max(100),
-  rules: z.array(z.strictObject({ ruleId: z.enum(['R-SUBCLASS-TRANS', 'R-INVERSE-DECLARED']), ruleVersion: version,
+  rules: z.array(z.strictObject({ ruleId: z.enum(['R-SUBCLASS-TRANS', 'R-INVERSE-DECLARED', 'R-SUPERSEDES-TRANS']), ruleVersion: version,
     description: text, premises: z.array(text).min(1), approved: z.literal(true) }))
     .refine(r => new Set(r.map(x => x.ruleId)).size === r.length, 'Duplicate rule ID'),
   forbidden: z.array(text).min(1),
@@ -47,7 +47,7 @@ export const assertionSchema = z.object({
   evidence: z.array(z.object({ sourceId: text, sourceVersion: text, locator: text, excerpt: text, relation: z.enum(['supports', 'contradicts']) })),
   origin: z.enum(['sourced', 'inferred']), ruleVersion: version, revision: z.number().int().positive(),
   unit: text.optional(), dataset: text.optional(), testSettings: z.record(z.string(), z.unknown()).optional(), metric: text.optional(),
-  ruleId: z.enum(['R-SUBCLASS-TRANS', 'R-INVERSE-DECLARED']).optional(),
+  ruleId: z.enum(['R-SUBCLASS-TRANS', 'R-INVERSE-DECLARED', 'R-SUPERSEDES-TRANS']).optional(),
   premiseAssertionIds: z.array(text).min(1).optional(), depth: z.number().int().positive().optional(), withdrawn: z.boolean().optional(),
 }).superRefine((a, ctx) => {
   if ((a.object === undefined) === (a.value === undefined)) ctx.addIssue({ code: 'custom', message: 'Exactly one of object or value is required' });

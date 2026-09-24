@@ -11,6 +11,11 @@ rules:
     approved: true
     description: 仅当本体中关系双方显式声明 inverseOf 时生成反向边；默认无互逆对。
     premises: ["A r B", "ontology.r.inverseOf = s", "ontology.s.inverseOf = r"]
+  - ruleId: R-SUPERSEDES-TRANS
+    ruleVersion: "1.0.0"
+    approved: true
+    description: 仅在相同适用条件及有效时间内沿肯定且 supported 的 supersedes 链传播替代关系，不传播其他属性。
+    premises: ["A supersedes B", "B supersedes C"]
 forbidden:
   - 相关→因果
   - broader_than 当子类传递

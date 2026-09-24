@@ -232,3 +232,8 @@ export type VaultRelease = Prisma.VaultReleaseModel
  * 
  */
 export type VaultEntityCandidate = Prisma.VaultEntityCandidateModel
+/**
+ * Model VaultInferredAssertion
+ * 
+ */
+export type VaultInferredAssertion = Prisma.VaultInferredAssertionModel
