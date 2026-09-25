@@ -192,6 +192,8 @@ async function upsertAssistantMessage(
       conversationId,
       content: state.accumulated,
       status: 'COMPLETE',
+      // 消息列表 API 以 citations 数组(含空数组)判定 assistant 角色。
+      citations: [],
     },
   });
   return msg.id;
@@ -305,6 +307,8 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
                 conversationId: run.conversationId,
                 content: state.accumulated,
                 status: 'STREAMING',
+                // 消息列表 API 以 citations 数组(含空数组)判定 assistant 角色。
+                citations: [],
               },
             });
             state.assistantMessageId = msg.id;

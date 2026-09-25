@@ -211,6 +211,8 @@ export async function processCollabRun(
         conversationId: run.conversationId,
         content: finalOutput,
         status: 'COMPLETE',
+        // 消息列表 API 以 citations 数组(含空数组)判定 assistant 角色,缺省会被渲染成用户消息。
+        citations: [],
       },
     });
     await appendEvent(runId, 'run.succeeded', { messageId: assistant.id });

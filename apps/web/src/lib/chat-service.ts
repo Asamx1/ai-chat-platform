@@ -289,7 +289,8 @@ async function executeRunInline(
       });
       await tx.usageLog.create({ data: { userId, runId, callId: call.id, tokens: tokensIn + tokensOut, costMicros: 0n } });
       }
-      await tx.message.create({ data: { conversationId, content: text, status: 'COMPLETE', citations: prompt.citations } });
+      // citations 缺省补 []:消息列表 API 以 citations 数组判定 assistant 角色,undefined 会被错判为用户消息
+      await tx.message.create({ data: { conversationId, content: text, status: 'COMPLETE', citations: prompt.citations ?? [] } });
       await tx.orchestrationRun.update({
         where: { id: runId },
         data: { status: 'SUCCEEDED', ...(degradationReasons.size ? {

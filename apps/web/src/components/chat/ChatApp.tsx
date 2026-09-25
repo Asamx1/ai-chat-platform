@@ -87,6 +87,25 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
     };
   }, [activeId]);
 
+  /** 协作 run 结束后重拉消息列表:最终答案由 worker 落库,不刷新看不到。 */
+  const reloadMessages = useCallback((convId: string) => {
+    fetch(`/api/conversations/${convId}/messages?limit=100`, { credentials: 'include' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data?.items) return;
+        setMessages(
+          data.items.map((m: { id: string; role: 'user' | 'assistant'; content: string; status?: string; citations?: unknown }) => ({
+            id: m.id,
+            role: m.role,
+            content: m.content,
+            citations: parseCitations(m.citations),
+            status: (m.status?.toLowerCase() ?? 'succeeded') as MessageStatus,
+          })),
+        );
+      })
+      .catch(() => {});
+  }, []);
+
   // 组件卸载时关流
   useEffect(() => () => { esRef.current?.close(); abortRef.current?.abort(); }, []);
 
@@ -290,7 +309,13 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
       {collabRunId && (
         <div className="collab-side">
           <button type="button" className="btn" onClick={() => setCollabRunId(null)}>关闭协作进度</button>
-          <OrchestrationProgress key={collabRunId} runId={collabRunId} />
+          <OrchestrationProgress
+            key={collabRunId}
+            runId={collabRunId}
+            onSettled={() => {
+              if (activeId) reloadMessages(activeId);
+            }}
+          />
           <SeatOpinions runId={collabRunId} />
           <RunTimeline runId={collabRunId} collapsed />
         </div>
