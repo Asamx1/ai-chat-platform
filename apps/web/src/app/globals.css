@@ -1225,3 +1225,4 @@ button:disabled, .input:disabled { opacity: .55; cursor: not-allowed; }
 .btn-accent:active { transform: translateY(1px); }
 .row-accent { background: var(--accent-soft); border-left: 2px solid var(--accent); }
 .badge-accent { background: var(--accent-soft); color: var(--accent); }
+.page-shell-qa { max-width: 720px; }

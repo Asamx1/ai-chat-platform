@@ -76,14 +76,10 @@ export default function StrictQa() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] px-5 py-8 text-zinc-100 sm:px-8">
-      <div className="mx-auto max-w-3xl">
-        <nav aria-label="知识问答导航" className="mb-12 flex gap-5 text-sm text-zinc-400">
-          <Link href="/" className="hover:text-[#A855F7]">返回聊天</Link>
-          <Link href="/kb" className="hover:text-[#A855F7]">知识库</Link>
-        </nav>
+    <main className="page-shell page-shell-qa">
+        <a className="btn page-back" href="/">← 返回聊天</a>
         <header className="mb-8">
-          <p className="mb-3 text-xs tracking-widest text-[#A855F7]">严格知识问答</p>
+          <p className="mb-3 text-xs tracking-widest" style={{ color: 'var(--accent)' }}>严格知识问答</p>
           <h1 className="text-3xl font-semibold">让每个回答有据可查</h1>
           <p id="qa-help" className="mt-4 text-sm leading-6 text-zinc-400">仅依据知识库证据回答，明确区分原文与推导。每次提问独立，不保留多轮上下文。</p>
         </header>
@@ -93,9 +89,9 @@ export default function StrictQa() {
             <input id="qa-question" value={question} onChange={event => setQuestion(event.target.value)}
               onKeyDown={event => { if (event.key === 'Enter' && event.nativeEvent.isComposing) event.preventDefault(); }}
               aria-describedby="qa-help" placeholder="输入想从知识库了解的问题…" required disabled={loading}
-              className="min-w-0 flex-1 rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-base outline-none focus:border-[#A855F7] focus:ring-1 focus:ring-[#A855F7] disabled:opacity-60" />
+              className="input input-focus min-w-0 flex-1" />
             <button type="submit" disabled={loading || !question.trim()}
-              className="rounded-lg bg-[#A855F7] px-6 py-3 font-medium text-black focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-[#A855F7] disabled:cursor-not-allowed disabled:opacity-50">
+              className="btn btn-accent">
               {loading ? '查询中…' : '提问'}
             </button>
           </div>
@@ -103,7 +99,7 @@ export default function StrictQa() {
         {error && <div role="alert" className="mb-6 rounded-lg border border-red-900 bg-red-950/30 p-4 text-sm text-red-300">{error} <Link href="/login" className="underline">前往登录</Link></div>}
         <section aria-label="问答结果" aria-live="polite" aria-busy={loading}>
           {loading && <p role="status" className="text-sm text-zinc-400">正在检索证据并生成回答…</p>}
-          {result && <article className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-5 sm:p-6">
+          {result && <article className="settings-card anim-fade-up">
             <span className={`inline-flex rounded-full border px-3 py-1 text-xs ${badges[result.kind].color}`}>{badges[result.kind].label} · {result.kind}</span>
             <p className="mt-5 whitespace-pre-wrap break-words leading-7">{result.answer}</p>
             {result.inferredParts.length > 0 && <section aria-label="推导部分" className="mt-6 border-t border-zinc-800 pt-5">
@@ -126,7 +122,6 @@ export default function StrictQa() {
             </details>}
           </article>}
         </section>
-      </div>
-    </div>
+    </main>
   );
 }
