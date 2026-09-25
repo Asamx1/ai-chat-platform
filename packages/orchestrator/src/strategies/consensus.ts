@@ -58,7 +58,10 @@ export const consensusStrategy: Strategy = {
       c.content !== null,
     );
     if (candidateList.length === 0) {
-      throw new Error('all candidate seats failed');
+      throw new Error(
+        'all candidate seats failed'
+        + (reasons.length > 0 ? `; seat errors: ${reasons.join(' | ')}` : ''),
+      );
     }
 
     // Anonymize: candidates are numbered, with no model key or seat identity.

@@ -59,7 +59,8 @@ export const groupStrategy: Strategy = {
     const assistantMessageContent = finalSeat ? outputs.get(finalSeat.seatId) : undefined;
     if (assistantMessageContent === undefined) {
       throw new Error(
-        `no seat produced output (final seat ${finalSeat?.seatId ?? 'none'} failed)`,
+        `no seat produced output (final seat ${finalSeat?.seatId ?? 'none'} failed)`
+        + (reasons.length > 0 ? `; seat errors: ${reasons.join(' | ')}` : ''),
       );
     }
 

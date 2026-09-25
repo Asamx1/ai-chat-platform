@@ -100,7 +100,10 @@ export const debateStrategy: Strategy = {
     }
 
     if (transcript.length === 0) {
-      throw new Error('all pro/con seats failed; nothing to judge');
+      throw new Error(
+        'all pro/con seats failed; nothing to judge'
+        + (reasons.length > 0 ? `; seat errors: ${reasons.join(' | ')}` : ''),
+      );
     }
 
     // Anonymized transcript for the judge: stance labels only, no modelKey/seatId.

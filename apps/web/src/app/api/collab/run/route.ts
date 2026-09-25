@@ -56,6 +56,25 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'conversation not found' }, { status: 404 });
   }
 
+  // 席位模型校验：modelId 必须命中 ModelRegistry（按 id 或 modelKey，与 resolver 同规则），
+  // 否则 run 必在执行期失败（"no seat produced output"）——提前 400 并给出具体模型名。
+  const requestedModelIds = [...new Set(input.seats.map((seat) => seat.modelId))];
+  const registered = await prisma.modelRegistry.findMany({
+    where: {
+      OR: [{ id: { in: requestedModelIds } }, { modelKey: { in: requestedModelIds } }],
+      provider: { enabled: true },
+    },
+    select: { id: true, modelKey: true },
+  });
+  const known = new Set(registered.flatMap((row) => [row.id, row.modelKey]));
+  const unknown = requestedModelIds.filter((modelId) => !known.has(modelId));
+  if (unknown.length > 0) {
+    return NextResponse.json(
+      { error: "所选模型不存在或不可用，请重新选择模型: " + unknown.join(", ") },
+      { status: 400 },
+    );
+  }
+
   // 先写 user Message（content 非空时），run 的 configSnapshot 引用其 id。
   let userMessageId: string | null = null;
   let effectiveContent = input.content ?? '';

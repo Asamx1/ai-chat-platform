@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react';
 
 export const STORAGE_KEY = 'chat:modelKey';
-// 本地 Ollama 模型：仅作为 /api/models 不可用时的兜底选项（CollabLauncher 也复用）
-export const MODEL_OPTIONS = ['qwen3:0.6b', 'qwen3.6:latest'];
+// 本地 Ollama 模型：仅作为 /api/models 不可用时的兜底选项（CollabLauncher 也复用）。
+// 必须是 ModelRegistry 中已注册（且为默认本地模型）的 modelKey，否则后端会直接拒绝/执行失败。
+export const MODEL_OPTIONS = ['qwen3:8b'];
 
 export function getStoredModel(): string {
   if (typeof window === 'undefined') return MODEL_OPTIONS[0]!;
