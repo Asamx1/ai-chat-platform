@@ -8,8 +8,8 @@
   --text: #f5f5f5;
   --text-2: #a1a1aa;
   --text-3: #52525b; /* decorative only; readable secondary copy uses --text-2 */
-  --primary: #f5f5f5;
-  --on-primary: #0a0a0b;
+  --primary: #A855F7;
+  --on-primary: #ffffff;
   --radius: 8px;
   --radius-card: 12px;
   --dur: 150ms;
@@ -491,6 +491,7 @@ body {
 }
 
 .settings-card {
+  animation: fade-up 200ms ease-out both;
   width: 100%;
   padding: 32px;
   border: 1px solid var(--border);
@@ -1115,7 +1116,7 @@ button:disabled, .input:disabled { opacity: .55; cursor: not-allowed; }
   font: inherit;
   transition: border-color var(--dur-fast) ease-out;
 }
-.input:focus, .composer textarea:focus { border-color: var(--primary); }
+.input:focus, .composer textarea:focus { border-color: var(--accent-ring); box-shadow: 0 0 0 3px var(--accent-soft); outline: none; }
 .input::placeholder { color: var(--text-2); opacity: 1; }
 .login-field .input { width: 100%; }
 .login-submit { width: 100%; min-height: 44px; font-weight: 600; }
