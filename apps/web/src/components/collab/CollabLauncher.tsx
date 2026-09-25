@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { MODEL_OPTIONS } from '@/components/chat/ModelPicker';
+import { useEffect, useState } from 'react';
+import { MODEL_OPTIONS, fetchModelOptions } from '@/components/chat/ModelPicker';
 
 type CollabMode = 'GROUP' | 'CONSENSUS' | 'DEBATE';
 
@@ -81,7 +81,7 @@ function loadStoredConfig(): { mode: CollabMode; seats: SeatDraft[]; tokenBudget
       const seat = (s ?? {}) as Partial<SeatDraft>;
       return {
         seatId: seatId(i + 1),
-        modelId: MODEL_OPTIONS.includes(seat.modelId as never) ? (seat.modelId as string) : MODEL_OPTIONS[i % MODEL_OPTIONS.length]!,
+        modelId: typeof seat.modelId === 'string' && seat.modelId ? seat.modelId : MODEL_OPTIONS[i % MODEL_OPTIONS.length]!,
         role: ROLES.includes(seat.role as never) ? (seat.role as SeatRole) : ('candidate' as SeatRole),
         systemPrompt: typeof seat.systemPrompt === 'string' ? seat.systemPrompt.slice(0, 80) : '',
       };
@@ -114,8 +114,29 @@ export default function CollabLauncher({
   );
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [topic, setTopic] = useState('');
+  const [modelOptions, setModelOptions] = useState<string[]>(MODEL_OPTIONS);
 
   const disabled = !conversationId;
+
+  /** 席位默认模型：以注册表拉取结果为准（含云端模型） */
+  const pickModel = (i: number) => modelOptions[i % modelOptions.length] ?? MODEL_OPTIONS[0]!;
+
+  // 挂载后拉取 /api/models（30s 缓存）：席位下拉改为注册表全量模型;
+  // 已选模型不在注册表(未注册/已下线)时自动切到第一个可用模型。
+  useEffect(() => {
+    let cancelled = false;
+    fetchModelOptions().then((models) => {
+      if (cancelled || models.length === 0) return;
+      setModelOptions(models);
+      setSeats((prev) =>
+        prev.map((s) => (models.includes(s.modelId) ? s : { ...s, modelId: models[0]! })),
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const patchSeat = (idx: number, patch: Partial<SeatDraft>) =>
     setSeats((prev) => prev.map((s, i) => (i === idx ? { ...s, ...patch } : s)));
@@ -127,7 +148,7 @@ export default function CollabLauncher({
     setSeats(
       Array.from({ length: preset.count }, (_, i) => ({
         seatId: seatId(i + 1),
-        modelId: MODEL_OPTIONS[i % MODEL_OPTIONS.length]!,
+        modelId: pickModel(i),
         role: (preset.roles[i] ?? 'candidate') as SeatRole,
         systemPrompt: '',
       })),
@@ -156,7 +177,7 @@ export default function CollabLauncher({
             systemPrompt,
           })),
           tokenBudget,
-          content: '',
+          content: topic.trim(),
           idempotencyKey: crypto.randomUUID(),
         }),
       });
@@ -170,6 +191,7 @@ export default function CollabLauncher({
       } catch {
         /* 存储不可用时静默降级为不记忆 */
       }
+      setTopic('');
       setOpen(false);
       onLaunched(runId);
     } catch (e) {
@@ -192,6 +214,19 @@ export default function CollabLauncher({
       </button>
       {open && !disabled && (
         <div className="collab-panel">
+          {/* 议题输入:留空则回退为会话内最新一条用户消息 */}
+          <div className="collab-field">
+            <span className="collab-label">议题</span>
+            <textarea
+              className="input input-focus collab-topic-input"
+              rows={3}
+              placeholder="输入本次协作要讨论的问题;留空则取会话内最新一条消息"
+              value={topic}
+              aria-label="议题"
+              onChange={(e) => setTopic(e.target.value)}
+            />
+          </div>
+
           {/* 模式选择：DEBATE 已解锁（决议①前置） */}
           <div className="collab-field">
             <span className="collab-label">模式</span>
@@ -235,7 +270,7 @@ export default function CollabLauncher({
                   aria-label={`${s.seatId} 模型`}
                   onChange={(e) => patchSeat(i, { modelId: e.target.value })}
                 >
-                  {MODEL_OPTIONS.map((m) => (
+                  {(modelOptions.includes(s.modelId) ? modelOptions : [s.modelId, ...modelOptions]).map((m) => (
                     <option key={m} value={m}>
                       {m}
                     </option>
@@ -284,7 +319,7 @@ export default function CollabLauncher({
                     ...prev,
                     {
                       seatId: seatId(prev.length + 1),
-                      modelId: MODEL_OPTIONS[prev.length % MODEL_OPTIONS.length]!,
+                      modelId: pickModel(prev.length),
                       role: 'candidate' as SeatRole,
                       systemPrompt: '',
                     },
