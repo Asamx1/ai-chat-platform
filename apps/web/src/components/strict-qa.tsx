@@ -101,7 +101,7 @@ export default function StrictQa() {
           {loading && <p role="status" className="text-sm text-zinc-400">正在检索证据并生成回答…</p>}
           {result && <article className="settings-card anim-fade-up">
             <span className={`inline-flex rounded-full border px-3 py-1 text-xs ${badges[result.kind].color}`}>{badges[result.kind].label} · {result.kind}</span>
-            <p className="mt-5 whitespace-pre-wrap break-words leading-7">{result.answer}</p>
+            <p className="mt-5 whitespace-pre-wrap break-words leading-7">{result.answer.replace(/\s*\[asr_[^\]]*\]/g, '')}</p>
             {result.inferredParts.length > 0 && <section aria-label="推导部分" className="mt-6 border-t border-zinc-800 pt-5">
               <h2 className="text-sm font-medium text-[#A855F7]">推导部分</h2>
               {result.inferredParts.map((part, index) => <div key={index} className="mt-4">
