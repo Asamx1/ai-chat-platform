@@ -11,7 +11,7 @@ import ModelPicker, { getStoredModel } from '@/components/chat/ModelPicker';
 import CollabLauncher from '@/components/collab/CollabLauncher';
 import KbMountPicker from '@/components/kb/KbMountPicker';
 import OrchestrationProgress from '@/components/collab/OrchestrationProgress';
-import RunTimeline from '@/components/runs/RunTimeline';
+import RunTimeline, { SeatOpinions } from '@/components/runs/RunTimeline';
 import { parseCitations } from '@/lib/citation-metadata';
 import type { ChatMessage, MessageStatus } from '@/components/chat/types';
 
@@ -291,6 +291,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
         <div className="collab-side">
           <button type="button" className="btn" onClick={() => setCollabRunId(null)}>关闭协作进度</button>
           <OrchestrationProgress key={collabRunId} runId={collabRunId} />
+          <SeatOpinions runId={collabRunId} />
           <RunTimeline runId={collabRunId} collapsed />
         </div>
       )}

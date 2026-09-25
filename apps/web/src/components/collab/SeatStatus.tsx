@@ -130,6 +130,14 @@ export default function SeatStatus({
         </button>
       </div>
 
+      {rounds.length > 0 && (
+        <div className="round-progress" aria-label="轮次进度">
+          {rounds.map((r) => (
+            <span key={r} className="round-dot is-done" title={`Round ${r} 完成`} />
+          ))}
+        </div>
+      )}
+
       <div className="seat-status-body">
         {seatList.length === 0 && <div className="seat-empty">等待席位事件…</div>}
         {seatList.map((s) => (
@@ -143,8 +151,16 @@ export default function SeatStatus({
             </div>
             {(s.state === 'speaking' || s.state === 'done') && (
               <div className="seat-card-meta">
-                {s.state === 'speaking' ? '发言中…' : null}
-                {s.state === 'done' && s.durationMs != null ? `耗时 ${formatDuration(s.durationMs)}` : null}
+                {s.state === 'speaking' ? (
+                  <span className="seat-speaker-dots" aria-label="发言中">
+                    <span />
+                    <span />
+                    <span />
+                  </span>
+                ) : null}
+                {s.state === 'done' && s.durationMs != null ? (
+                  <span className="seat-duration-badge">耗时 {formatDuration(s.durationMs)}</span>
+                ) : null}
               </div>
             )}
           </div>

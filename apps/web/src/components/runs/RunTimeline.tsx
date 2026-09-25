@@ -47,6 +47,20 @@ function isCompact(type: string): boolean {
   return type === 'provider.delta';
 }
 
+/** 事件类型中文名（决议②延伸）：徽章显示中文，title 保留原文 */
+const TYPE_ZH: Record<string, string> = {
+  'run.succeeded': '运行成功',
+  'run.failed': '运行失败',
+  'run.cancelled': '已取消',
+  'collab.seat.started': '席位开讲',
+  'collab.seat.completed': '席位完成',
+  'round.completed': '轮次完成',
+};
+
+function typeZh(type: string): string {
+  return TYPE_ZH[type] ?? type;
+}
+
 function formatDuration(ms: number): string {
   return ms >= 1000 ? `${(ms / 1000).toFixed(1)}s` : `${ms}ms`;
 }
@@ -194,12 +208,87 @@ export default function RunTimeline({ runId, collapsed = false }: { runId: strin
           .map((ev) => (
             <div key={ev.seq} className={`tl-row${ev.type === 'collab.seat.substituted' ? ' tl-row-subst' : ''}`}>
               <span className="tl-seq">#{ev.seq}</span>
-              <span className={`tl-badge ${typeClass(ev.type)}`}>{ev.type}</span>
+              <span className={`tl-badge ${typeClass(ev.type)}`} title={ev.type}>{typeZh(ev.type)}</span>
               <span className="tl-summary">{payloadSummary(ev)}</span>
               <span className="tl-time">{ev.time.slice(11, 19)}</span>
             </div>
           ))}
       </div>
+    </div>
+  );
+}
+
+/** SeatOpinions 里 role → 中文（与 CollabLauncher ROLE_META 对齐） */
+const OPINION_ROLE_ZH: Record<string, string> = {
+  candidate: '候选作答',
+  reviewer: '审校把关',
+  summarizer: '要点提炼',
+  synthesizer: '综合成稿',
+};
+
+/**
+ * 席位观点折叠对比（决议⑥）：拉取 events?format=json，
+ * 将 collab.seat.completed 的文本按席位聚合为 <details> 折叠列表。
+ */
+export function SeatOpinions({ runId, finalAnswer }: { runId: string; finalAnswer?: string }) {
+  const [opinions, setOpinions] = useState<{ seatId: string; role?: string; text: string }[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/runs/${runId}/events?after=0&format=json`, { credentials: 'include' });
+        if (!res.ok) throw new Error(`events HTTP ${res.status}`);
+        const body = (await res.json()) as { events: TimelineEvent[] };
+        if (cancelled) return;
+        const bySeat = new Map<string, { seatId: string; role?: string; text: string }>();
+        for (const ev of body.events) {
+          if (ev.type !== 'collab.seat.completed') continue;
+          const seatId = ev.payload.seatId;
+          if (!seatId) continue;
+          const text =
+            (typeof ev.payload.delta === 'string' && ev.payload.delta) ||
+            (typeof ev.payload.output === 'string' && ev.payload.output) ||
+            (typeof ev.payload.text === 'string' && ev.payload.text) ||
+            null;
+          if (!text) continue; // payload 无文本字段则跳过
+          const role = typeof ev.payload.role === 'string' ? ev.payload.role : undefined;
+          const prev = bySeat.get(seatId);
+          const mergedRole = role ?? prev?.role;
+          bySeat.set(seatId, { seatId, ...(mergedRole != null ? { role: mergedRole } : {}), text: prev ? `${prev.text}\n${text}` : text });
+        }
+        setOpinions(
+          [...bySeat.values()].sort((a, b) => a.seatId.localeCompare(b.seatId, undefined, { numeric: true })),
+        );
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : '加载失败');
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [runId]);
+
+  if (error) return <div className="tl-error">{error}</div>;
+  if (opinions.length === 0) return null;
+
+  return (
+    <div className="seat-opinions">
+      {finalAnswer != null && finalAnswer !== '' && (
+        <div className="final-answer-card">
+          <div className="final-answer-title">最终答案</div>
+          <div className="final-answer-body">{finalAnswer}</div>
+        </div>
+      )}
+      {opinions.map((o) => (
+        <details key={o.seatId} className="seat-opinion">
+          <summary>
+            {o.seatId} · {o.role != null ? (OPINION_ROLE_ZH[o.role] ?? o.role) : '观点'}
+          </summary>
+          <div className="seat-opinion-body">{o.text}</div>
+        </details>
+      ))}
     </div>
   );
 }
