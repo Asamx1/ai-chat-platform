@@ -1,10 +1,11 @@
 export const STAGES = ['PLANNING', 'ROUND', 'JUDGING', 'SYNTHESIZING'] as const;
 export type Stage = typeof STAGES[number];
-export interface ProgressEvent { seq?: number; type: string; payload?: Record<string, unknown> }
-export interface Participant { seatId: string; status: 'running' | 'completed' | 'waiting' | 'ended'; degraded?: string; replacement?: string; round?: number }
+export interface ProgressEvent { seq?: number; type: string; time?: string; payload?: Record<string, unknown> }
+export interface Participant { seatId: string; status: 'running' | 'completed' | 'waiting' | 'ended'; degraded?: string; replacement?: string; round?: number; lastStartedAt?: number }
 export interface ProgressState {
   maxSeq: number; stage?: Stage; round?: number; visited: Stage[];
   participants: Record<string, Participant>; ended: boolean; outcome?: string; failed: boolean;
+  startedAt?: string; endedAt?: string;
 }
 export const initialProgress: ProgressState = { maxSeq: 0, visited: [], participants: {}, ended: false, failed: false };
 export function reduceProgress(state: ProgressState, event: ProgressEvent): ProgressState {
@@ -15,6 +16,7 @@ export function reduceProgress(state: ProgressState, event: ProgressEvent): Prog
   const type = event.type.replace(/^collab\./, '');
   const seatId = typeof p.seatId === 'string' ? p.seatId : undefined;
   const participant = (id: string) => ({ ...(next.participants[id] ?? { seatId: id, status: 'waiting' as const }) });
+  if (event.type === 'run.started' && !next.startedAt) next.startedAt = event.time ?? new Date().toISOString();
   if (type === 'stage.changed' && STAGES.includes(p.stage as Stage)) {
     next.stage = p.stage as Stage;
     if (typeof p.round === 'number') next.round = p.round;
@@ -23,7 +25,10 @@ export function reduceProgress(state: ProgressState, event: ProgressEvent): Prog
   }
   if (seatId) {
     const seat = participant(seatId);
-    if (type === 'seat.started') seat.status = 'running';
+    if (type === 'seat.started') {
+      seat.status = 'running';
+      seat.lastStartedAt = event.time ? Date.parse(event.time) : Date.now();
+    }
     if (type === 'seat.completed') seat.status = 'completed';
     if (type.includes('degraded') || p.degraded === true) seat.degraded = typeof p.reason === 'string' ? p.reason : '异常 / 降级';
     if (typeof p.round === 'number') seat.round = p.round;
@@ -40,6 +45,7 @@ export function reduceProgress(state: ProgressState, event: ProgressEvent): Prog
   if (event.type === 'run.failed') next.failed = true;
   if (event.type === 'run.succeeded' || event.type === 'run.cancelled' || event.type === 'stream.end') {
     next.ended = true;
+    next.endedAt = event.time ?? new Date().toISOString();
     next.outcome = event.type === 'run.succeeded' ? '已完成' : event.type === 'run.cancelled' ? '已取消' : next.failed ? '运行失败' : '已结束、详情缺失';
     for (const [id, seat] of Object.entries(next.participants)) {
       if (seat.status === 'running' || seat.status === 'waiting') next.participants[id] = { ...seat, status: 'ended' };
