@@ -104,7 +104,7 @@ export function createResolver(
   function result(row: RegistryModel, apiKey = '', keySource: ResolvedModel['keySource'] = null): ResolvedModel {
     return {
       modelId: row.id, model: row.modelKey, provider: row.providerId,
-      adapter: row.adapter ?? row.provider.kind, kind: row.kind,
+      adapter: row.adapter ?? (row.provider.kind === 'ollama' ? 'ollama' : 'openai-compatible'), kind: row.kind,
       baseUrl: row.baseUrl ?? row.provider.baseUrl, apiKey, keySource,
     };
   }

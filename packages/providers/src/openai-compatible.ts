@@ -68,7 +68,7 @@ export class OpenAICompatibleProvider implements ProviderAdapter {
    * Tools, images and hidden reasoning are not supported by this bound.
    */
   inputTokenUpperBound(messages: ChatMessage[]): number | undefined {
-    if (this.model !== 'deepseek-chat') return undefined;
+    if (!this.model.startsWith('deepseek')) return undefined;
     return 256 + messages.reduce((sum, message) =>
       sum + Buffer.byteLength(message.content, 'utf8') + Buffer.byteLength(message.role, 'utf8') + 256, 0);
   }
