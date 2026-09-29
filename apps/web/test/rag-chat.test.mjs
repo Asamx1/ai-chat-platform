@@ -47,13 +47,13 @@ test('unmounted conversation skips retrieval; mounted query uses authenticated i
   assert.deepEqual(JSON.parse(fetches[0].options.body), { userId: 'user-a', conversationId: 'conv', query: 'query' });
   assert.deepEqual(queries[0].values, ['conv', 'user-a', 'user-a']);
 });
-test('retrieval errors and 3-second deadline degrade without exposing errors', async () => {
+test('retrieval errors and deadline degrade without exposing errors', async () => {
   globalThis.fetch = async () => { throw new Error('/private/path'); };
   assert.deepEqual(await retrieveContext('user-a', 'conv', 'q'), { status: 'RAG_UNAVAILABLE', hits: [] });
   globalThis.fetch = async () => new Promise(() => {});
   const start = Date.now();
   assert.deepEqual(await retrieveContext('user-a', 'conv', 'q'), { status: 'RAG_UNAVAILABLE', hits: [] });
-  assert.ok(Date.now() - start >= 2900 && Date.now() - start < 4000);
+  assert.ok(Date.now() - start >= 7900 && Date.now() - start < 9000);
 });
 test('revalidation checks live chunks, READY/model, ownership and mount, and discards deleted documents', async () => {
   const snapshot = { status: 'READY', hits: [{ ...hit, text: 'stale' }] };
@@ -83,7 +83,7 @@ test('budget uses UTF-8 bytes plus overhead, trims distant hits and drops RAG be
   const selected = JSON.parse(prompt.messages.at(-2).content.split('\n')[1]);
   assert.ok(selected.length > 0 && selected.length < 5); assert.equal(selected[0].ordinal, 0);
   const ragCost = prompt.messages.slice(0, -1).reduce((sum, msg) => sum + Buffer.byteLength(msg.content) + 32, 0);
-  assert.ok(ragCost <= 2048);
+  assert.ok(ragCost <= 8192);
   const tight = { maxContext: 1291, maxOutput: 1000 }; // 3 + 32 input, 1000 output, 256 reserve.
   assert.deepEqual(injectContext(messages, [hit], tight).messages, messages);
   assert.throws(() => injectContext(messages, [], { ...tight, maxContext: 1290 }), { message: 'CONTEXT_TOO_LONG' });

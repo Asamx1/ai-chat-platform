@@ -49,7 +49,8 @@ export function injectContext(messages: ChatMessage[], hits: RagHit[], capabilit
     const injected = [...messages.filter(message => message.role === 'system'), instruction,
       ...messages.filter(message => message.role !== 'system').slice(0, -1), context,
       ...messages.filter(message => message.role !== 'system').slice(-1)];
-    if (cost([instruction, context]) <= 2048 && cost(injected) <= budget) return { messages: injected, maxTokens, citations: selected.map(toCitation) };
+    const ragBudget = Math.max(2048, Math.floor(capabilities.maxContext / 4));
+    if (cost([instruction, context]) <= ragBudget && cost(injected) <= budget) return { messages: injected, maxTokens, citations: selected.map(toCitation) };
     selected.pop();
   }
   return { messages: [...messages], maxTokens, citations: [] as Citation[] };
