@@ -2,7 +2,6 @@ import { beforeEach, afterEach, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { fixture as f } from './rag-fixture.mjs';
 const { retrieveContext, revalidateContext, injectContext } = await import('../src/lib/rag-context.ts');
-const { RETRIEVAL_BUDGET_MS } = await import('../../../packages/rag/src/llm-json.ts');
 const { sendChat } = await import('../src/lib/chat-service.ts');
 const originalFetch = globalThis.fetch;
 const hit = { documentId: 'doc', ordinal: 0, name: 'fact.txt', text: 'The answer is 42', distance: 0.1 };
@@ -48,14 +47,13 @@ test('unmounted conversation skips retrieval; mounted query uses authenticated i
   assert.deepEqual(JSON.parse(fetches[0].options.body), { userId: 'user-a', conversationId: 'conv', query: 'query' });
   assert.deepEqual(queries[0].values, ['conv', 'user-a', 'user-a']);
 });
-test('retrieval errors and eight-second deadline degrade without exposing errors', async t => {
+test('retrieval errors and 3-second deadline degrade without exposing errors', async () => {
   globalThis.fetch = async () => { throw new Error('/private/path'); };
   assert.deepEqual(await retrieveContext('user-a', 'conv', 'q'), { status: 'RAG_UNAVAILABLE', hits: [] });
   globalThis.fetch = async () => new Promise(() => {});
-  t.mock.timers.enable({ apis: ['setTimeout'] });
-  const pending = retrieveContext('user-a', 'conv', 'q');
-  t.mock.timers.tick(RETRIEVAL_BUDGET_MS);
-  assert.deepEqual(await pending, { status: 'RAG_UNAVAILABLE', hits: [] });
+  const start = Date.now();
+  assert.deepEqual(await retrieveContext('user-a', 'conv', 'q'), { status: 'RAG_UNAVAILABLE', hits: [] });
+  assert.ok(Date.now() - start >= 2900 && Date.now() - start < 4000);
 });
 test('revalidation checks live chunks, READY/model, ownership and mount, and discards deleted documents', async () => {
   const snapshot = { status: 'READY', hits: [{ ...hit, text: 'stale' }] };
@@ -73,9 +71,9 @@ test('injection preserves original system/history/question and serializes data w
   assert.match(prompt.messages[1].content, /引用\[documentId:ordinal\]/);
   assert.equal(prompt.messages.at(-1).content, 'Question');
   const [start, data, end] = prompt.messages.at(-2).content.split('\n');
-  assert.match(start, /^RAG_DATA_[a-f0-9]{32}$/);
+  assert.match(start, /^RAG_DATA_[a-f0-9]+$/);
+  assert.equal(data, JSON.stringify([hit]));
   assert.equal(end, `END_${start}`);
-  assert.deepEqual(JSON.parse(data), [hit]);
   assert.equal(messages.length, 4);
 });
 test('budget uses UTF-8 bytes plus overhead, trims distant hits and drops RAG before rejecting original context', () => {

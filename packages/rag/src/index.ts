@@ -6,3 +6,5 @@ export * from './parse';
 export * from './embed';
 export * from './store';
 export * from './retrieve';
+export { injectContext } from './inject';
+export type { RagHit, RagSnapshot } from './inject';

@@ -12,7 +12,8 @@ const sources = {
     export const prisma = f.prisma;
     export const createConversation = async () => ({ id: 'conv' });
     export const createMessage = async (_db, conversationId, content) => prisma.message.create({ data: { conversationId, content } });`,
-  '@aichat/rag': `export async function retrieve(userId, conversationId, query) {
+  '@aichat/rag': `export { injectContext } from '${new URL('../../../packages/rag/src/inject.ts', import.meta.url).href}';
+  export async function retrieve(userId, conversationId, query) {
     const response = await fetch('http://rag.test/retrieve', { method: 'POST', body: JSON.stringify({userId, conversationId, query}) });
     if (!response.ok) throw new Error('internal path');
     return response.json();
