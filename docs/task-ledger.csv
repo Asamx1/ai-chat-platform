@@ -1,0 +1,12 @@
+role,model,task,baseline,evidence,status,remaining
+fix,a1,ragfix-a1,pre-rag-quota-fix,docs/ops-brief-ragfix-a1.md,accepted,
+fix,a2,ragfix-a2,pre-rag-quota-fix,docs/ops-brief-ragfix-a2.md,accepted,
+fix,a3,ragfix-a3,pre-rag-quota-fix,docs/ops-brief-ragfix-a3.md,accepted,
+fix,a4,ragfix-a4,pre-rag-quota-fix,docs/ops-brief-ragfix-a4.md,accepted,
+fix,a5,ragfix-a5,pre-rag-quota-fix,docs/ops-brief-ragfix-a5.md,accepted,
+fix,a6,ragfix-a6,pre-rag-quota-fix,docs/ops-brief-ragfix-a6.md,accepted,
+review,a7-codex,full-review,pre-rag-quota-fix,evidence/ragfix/a7-review.md,accepted,1 major(worker-replay)入backlog
+review,a8-claude,adversarial,pre-rag-quota-fix,evidence/ragfix/a8-adversarial.md,accepted,7 minor入backlog
+e2e,a9-hermes,three-links,pre-rag-quota-fix,docs/milestones/ragfix-report.md,accepted,
+docs,a10-hermes,report+ledger,pre-rag-quota-fix,docs/milestones/ragfix-report.md,accepted,
+fix,a11-hermes,inject-ragBudget,pre-rag-quota-fix,e26d898,accepted,根因⑤编排方直修
