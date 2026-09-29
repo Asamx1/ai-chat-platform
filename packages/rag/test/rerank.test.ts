@@ -47,8 +47,8 @@ it('aborts within budget and falls back even when fetch ignores abort', async ()
   vi.useFakeTimers();
   const fetchMock = vi.fn().mockImplementation(() => new Promise(() => {}));
   vi.stubGlobal('fetch', fetchMock);
-  const pending = rerank('question', hits);
-  await vi.advanceTimersByTimeAsync(2_900);
+  const pending = rerank('question', hits, 6_000);
+  await vi.advanceTimersByTimeAsync(6_000);
   expect(await pending).toBe(hits);
   expect(fetchMock.mock.calls[0]?.[1].signal.aborted).toBe(true);
   expect(fetchMock).toHaveBeenCalledTimes(1);

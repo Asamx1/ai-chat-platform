@@ -1,3 +1,5 @@
+// Import the dependency-free budget directly to preserve lazy loading of @aichat/rag.
+import { RETRIEVAL_BUDGET_MS } from '../../../../packages/rag/src/llm-json';
 import { prisma } from '@aichat/db';
 import { parseHeadingPath, type Citation } from './citation-metadata';
 import type { ChatMessage, ProviderCapabilities } from '@aichat/providers';
@@ -9,7 +11,7 @@ async function deadline<T>(work: () => Promise<T>): Promise<T> {
   let timer: ReturnType<typeof setTimeout> | undefined;
   try {
     return await Promise.race([work(), new Promise<never>((_, reject) => {
-      timer = setTimeout(() => reject(new Error('RAG_UNAVAILABLE')), 3000);
+      timer = setTimeout(() => reject(new Error('RAG_UNAVAILABLE')), RETRIEVAL_BUDGET_MS);
     })]);
   } finally { clearTimeout(timer); }
 }

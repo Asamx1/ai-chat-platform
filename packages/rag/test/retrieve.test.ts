@@ -4,7 +4,7 @@ vi.mock('@aichat/db', () => ({ prisma: { $queryRawUnsafe: query, knowledgeBase: 
 vi.mock('../src/embed', async importOriginal => ({
   ...await importOriginal<typeof import('../src/embed')>(), embed: vi.fn(async () => [embedding]),
 }));
-import { maximalMarginalRelevance, reciprocalRankFusion, retrieve } from '../src/retrieve';
+import { maximalMarginalRelevance, reciprocalRankFusion, retrieve, RETRIEVAL_BUDGET_MS } from '../src/retrieve';
 import * as rerankModule from '../src/rerank';
 import * as rewriteModule from '../src/rewrite';
 import { embed } from '../src/embed';
@@ -124,7 +124,7 @@ it('returns the vector baseline when lexical search times out', async () => {
   vi.stubEnv('RAG_HYBRID', '1');
   query.mockResolvedValueOnce([candidate('child')]).mockImplementationOnce(() => new Promise(() => {}));
   const pending = retrieve('owner', 'conversation', 'query');
-  await vi.advanceTimersByTimeAsync(2800);
+  await vi.advanceTimersByTimeAsync(RETRIEVAL_BUDGET_MS - 200);
   expect(await pending).toEqual([publicHit('child')]);
 });
 
@@ -180,9 +180,9 @@ it('skips rerank with less than one second remaining', async () => {
   vi.useFakeTimers();
   vi.stubEnv('RAG_RERANK', '1');
   const spy = vi.spyOn(rerankModule, 'rerank');
-  query.mockImplementationOnce(() => new Promise(resolve => setTimeout(() => resolve([candidate('a')]), 2_100)));
+  query.mockImplementationOnce(() => new Promise(resolve => setTimeout(() => resolve([candidate('a')]), RETRIEVAL_BUDGET_MS - 900)));
   const pending = retrieve('owner', 'conversation', 'query');
-  await vi.advanceTimersByTimeAsync(2_100);
+  await vi.advanceTimersByTimeAsync(RETRIEVAL_BUDGET_MS - 900);
   expect(await pending).toEqual([publicHit('a')]);
   expect(spy).not.toHaveBeenCalled();
 });
@@ -217,4 +217,20 @@ it('retains the captured generation on the pure-vector error fallback', async ()
   expect(await retrieve('owner', 'conversation', 'query')).toEqual([publicHit('old chunk')]);
   expect(query.mock.calls[0]![5]).toBe(query.mock.calls[1]![5]);
   expect(query.mock.calls[1]![0]).toContain('snapshot."activeGenerationId" IS NULL');
+});
+
+
+it('exports the shared eight-second budget and bounds a stalled embedding', async () => {
+  vi.useFakeTimers();
+  expect(RETRIEVAL_BUDGET_MS).toBe(8_000);
+  vi.mocked(embed).mockImplementationOnce(() => new Promise(() => {}));
+  const pending = retrieve('owner', 'conversation', 'query');
+  const rejected = expect(pending).rejects.toThrow('RAG_TIMEOUT');
+  let settled = false;
+  void pending.then(() => { settled = true; }, () => { settled = true; });
+  await vi.advanceTimersByTimeAsync(RETRIEVAL_BUDGET_MS - 1);
+  expect(settled).toBe(false);
+  await vi.advanceTimersByTimeAsync(1);
+  await rejected;
+  expect(query).not.toHaveBeenCalled();
 });

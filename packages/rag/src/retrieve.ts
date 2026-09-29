@@ -1,3 +1,5 @@
+import { RETRIEVAL_BUDGET_MS } from './llm-json';
+export { RETRIEVAL_BUDGET_MS } from './llm-json';
 import { prisma } from '@aichat/db';
 import { embed, embeddingModel, validateVector } from './embed';
 import { rerank } from './rerank';
@@ -156,7 +158,7 @@ async function sourceEvidence(hits: Hit[], userId: string, conversationId: strin
 }
 
 export async function retrieve(userId: string, conversationId: string, query: string, options?: RetrieveOptions): Promise<RetrievedHits> {
-  const deadline = Date.now() + 3_000;
+  const deadline = Date.now() + RETRIEVAL_BUDGET_MS;
   const generations = await beforeDeadline(prisma.knowledgeBase.findMany({
     where: { userId, conversations: { some: { conversationId, conversation: { ownerId: userId } } } },
     select: { id: true, activeGenerationId: true },

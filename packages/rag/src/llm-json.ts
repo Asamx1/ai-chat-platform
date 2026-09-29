@@ -1,5 +1,8 @@
+// Shared without loading the retrieval pipeline or its model/parser dependencies.
+export const RETRIEVAL_BUDGET_MS = 8_000;
+
 /** One bounded Ollama request, including response-body parsing. No retries. */
-export async function llmJsonArray(prompt: string, budgetMs = 2_900): Promise<unknown[]> {
+export async function llmJsonArray(prompt: string, budgetMs = 6_000): Promise<unknown[]> {
   if (!Number.isFinite(budgetMs) || budgetMs <= 0) throw new Error('RAG_TIMEOUT');
   const controller = new AbortController();
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -8,7 +11,7 @@ export async function llmJsonArray(prompt: string, budgetMs = 2_900): Promise<un
       timer = setTimeout(() => {
         controller.abort();
         reject(new Error('RAG_TIMEOUT'));
-      }, Math.min(2_900, budgetMs));
+      }, Math.min(6_000, budgetMs));
     });
     const request = async (): Promise<unknown[]> => {
       const base = (process.env.OLLAMA_BASE_URL || 'http://127.0.0.1:11434').replace(/\/+$/, '');
