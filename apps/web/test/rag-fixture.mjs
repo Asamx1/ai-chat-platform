@@ -28,6 +28,8 @@ const sources = {
       async getObject(bucket, key) { const res = await fetch('http://storage.test/' + bucket + '/' + key); return Readable.from([Buffer.from(await res.arrayBuffer())]); }
       listObjectsV2(bucket, prefix, recursive) { globalThis.__ragFixture.listArgs = { bucket, prefix, recursive }; return Readable.from([{ name: prefix + 'doc', lastModified: new Date('2026-09-01') }]); }
     }`,
+  '@aichat/providers/quota-provider': `import { OllamaProvider } from '@aichat/providers';
+    export const quotaProvider = () => new OllamaProvider();`,
   '@aichat/providers': `const f = globalThis.__ragFixture;
     export const createResolver = () => ({ resolve: async () => ({ adapter: 'ollama', baseUrl: 'http://provider.test', model: 'test' }) });
     export class OllamaProvider {
