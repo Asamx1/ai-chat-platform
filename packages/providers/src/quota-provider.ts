@@ -35,7 +35,7 @@ export function quotaProvider(db: ResolverStore & QuotaStore, input: {
       let maxTokens = Math.min(opts?.maxTokens ?? provider.capabilities().maxOutput, provider.capabilities().maxOutput);
       if (!Number.isInteger(maxTokens) || maxTokens <= 0) throw new Error('INVALID_MAX_TOKENS');
       // An arbitrary OpenAI-compatible endpoint does not imply a supported tokenizer.
-      const bound = resolved.adapter === 'openai-compatible' && resolved.provider === 'deepseek'
+      const bound = resolved.kind === 'cloud' && resolved.provider === 'deepseek'
         ? provider.inputTokenUpperBound?.(messages) : undefined;
       if (resolved.kind === 'cloud' && bound === undefined) {
         resolved = await resolver.fallback(input.modelId, 'QUOTA_EXCEEDED');

@@ -2,6 +2,17 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { OpenAICompatibleProvider } from '../src/openai-compatible';
 
 afterEach(() => vi.unstubAllGlobals());
+it.each(['deepseek-chat', 'deepseek-reasoner', 'deepseek-future'])('bounds UTF-8 input tokens for %s', model => {
+  const adapter = new OpenAICompatibleProvider({ baseUrl: '', apiKey: '', model });
+  expect(adapter.inputTokenUpperBound([{ role: 'user', content: '你好' }])).toBe(256 + 256 + 4 + 6);
+  expect(adapter.inputTokenUpperBound([])).toBe(256);
+});
+
+it('leaves unsupported tokenizers without an input bound', () => {
+  const adapter = new OpenAICompatibleProvider({ baseUrl: '', apiKey: '', model: 'other-model' });
+  expect(adapter.inputTokenUpperBound([{ role: 'user', content: 'hello' }])).toBeUndefined();
+});
+
 it('injects the DeepSeek URL, key, model and accounting identifier', async () => {
   const fetchMock = vi.fn(async () => new Response('data: {"usage":{"prompt_tokens":2,"completion_tokens":3}}\n\ndata: [DONE]\n'));
   vi.stubGlobal('fetch', fetchMock);

@@ -27,6 +27,18 @@ function setup(env: Record<string, string> = {}) {
 }
 
 describe('provider resolver', () => {
+  it.each(['deepseek', 'openai-compatible', 'other-cloud'])('normalizes an unset adapter for provider kind %s', async kind => {
+    const { db, resolver } = setup({ DEEPSEEK_API_KEY: 'key' });
+    db.modelRegistry.findUnique.mockResolvedValue({ ...cloud, adapter: null, provider: { ...cloud.provider, kind } });
+    expect(await resolver.resolve('u', cloud.id)).toMatchObject({ adapter: 'openai-compatible', provider: 'deepseek', kind: 'cloud' });
+  });
+
+  it('preserves an explicit adapter', async () => {
+    const { db, resolver } = setup({ DEEPSEEK_API_KEY: 'key' });
+    db.modelRegistry.findUnique.mockResolvedValue({ ...cloud, adapter: 'custom-adapter', provider: { ...cloud.provider, kind: 'deepseek' } });
+    expect((await resolver.resolve('u', cloud.id)).adapter).toBe('custom-adapter');
+  });
+
   it('treats whitespace env keys as unavailable, matching the model list', async () => {
     const { resolver } = setup({ DEEPSEEK_API_KEY: '  ' });
     expect(await resolver.resolve('u', cloud.id)).toMatchObject({ degraded: { reason: 'NO_KEY' } });
