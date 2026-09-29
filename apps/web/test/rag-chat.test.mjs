@@ -70,7 +70,10 @@ test('injection preserves original system/history/question and serializes data w
   assert.equal(prompt.maxTokens, 1000); assert.equal(prompt.messages[0].content, 'Original');
   assert.match(prompt.messages[1].content, /引用\[documentId:ordinal\]/);
   assert.equal(prompt.messages.at(-1).content, 'Question');
-  assert.equal(prompt.messages.at(-2).content, `RAG_DATA\n${JSON.stringify([hit])}\nEND_RAG_DATA`);
+  const [start, data, end] = prompt.messages.at(-2).content.split('\n');
+  assert.match(start, /^RAG_DATA_[a-f0-9]+$/);
+  assert.equal(data, JSON.stringify([hit]));
+  assert.equal(end, `END_${start}`);
   assert.equal(messages.length, 4);
 });
 test('budget uses UTF-8 bytes plus overhead, trims distant hits and drops RAG before rejecting original context', () => {

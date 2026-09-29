@@ -36,6 +36,8 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
   const [runId, setRunId] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [listRefresh, setListRefresh] = useState(0);
+  const [ragUnavailable, setRagUnavailable] = useState(false);
+  const warningRunRef = useRef<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   // 协作运行侧栏：进度视图与事件详情
   const [collabRunId, setCollabRunId] = useState<string | null>(null);
@@ -53,8 +55,28 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
     }
   }, []);
 
+  const readDegradation = useCallback((event: { payload?: unknown }) => {
+    const payload = event.payload as { reason?: string; degradationReasons?: string[]; reasons?: string[]; degraded?: { reason?: string } } | undefined;
+    if (payload?.reason === 'RAG_UNAVAILABLE' || payload?.degraded?.reason === 'RAG_UNAVAILABLE' ||
+      payload?.degradationReasons?.includes('RAG_UNAVAILABLE') || payload?.reasons?.includes('RAG_UNAVAILABLE')) setRagUnavailable(true);
+  }, []);
+
+  // The compact POST stream omits run.degraded; read persisted events at completion.
+  const loadDegradation = useCallback(async (rid: string) => {
+    try {
+      const response = await fetch(`/api/runs/${rid}/events?format=json`, { credentials: 'include' });
+      if (!response.ok) return;
+      const data = await response.json() as { events?: { payload?: unknown }[] };
+      if (warningRunRef.current === rid) data.events?.forEach(readDegradation);
+    } catch { /* Keep the completed answer available if event loading fails. */ }
+  }, [readDegradation]);
+
   // 切换会话：先显示本地缓存，再拉服务端历史覆盖（M1.5 已接历史接口）
   useEffect(() => {
+    if (newConversationRef.current !== activeId) {
+      setRagUnavailable(false);
+      warningRunRef.current = null;
+    }
     if (!activeId) {
       setMessages([]);
       return;
@@ -123,6 +145,8 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
       let convId = activeId;
       setSending(true);
       setNotice(null);
+      setRagUnavailable(false);
+      warningRunRef.current = null;
       try {
         const controller = new AbortController();
         abortRef.current = controller;
@@ -157,6 +181,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
           persist(conversationId, next);
           return next;
         });
+        warningRunRef.current = rid;
         setRunId(rid);
         return assistantId;
 
@@ -181,6 +206,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
                   if (convId) persist(convId, next);
                   return next;
                 });
+                if (event.type === 'done') void loadDegradation(event.runId);
                 if (event.type === 'done' || event.type === 'error') completed = true;
               }
             }
@@ -210,6 +236,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
           } catch {
             return;
           }
+          readDegradation(evt);
           setMessages((prev) => {
             const next = prev.map((m) => {
               if (m.id !== assistantId) return m;
@@ -237,7 +264,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
         if (!(e instanceof Error && e.name === 'AbortError')) setNotice(e instanceof Error ? e.message : '发送失败');
       }
     },
-    [activeId, modelKey, persist, closeStream],
+    [activeId, modelKey, persist, closeStream, readDegradation, loadDegradation],
   );
 
   const handleSend = useCallback(
@@ -297,6 +324,7 @@ export default function ChatApp({ isAdmin = false }: { isAdmin?: boolean }) {
           </div>
         </div>
         {notice && <div role="alert" className="msg-status failed chat-notice">{notice}</div>}
+        {ragUnavailable && <div role="status" className="progress-warning msg-status chat-notice" style={{ background: '#fef9c3', color: '#854d0e' }}>⚠️ 知识库检索超时，本次回答未参考知识库</div>}
         <MessageStream messages={messages} onRetry={handleRetry} />
         <Composer
           disabled={sending}

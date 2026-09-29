@@ -12,7 +12,8 @@ const sources = {
     export const prisma = f.prisma;
     export const createConversation = async () => ({ id: 'conv' });
     export const createMessage = async (_db, conversationId, content) => prisma.message.create({ data: { conversationId, content } });`,
-  '@aichat/rag': `export async function retrieve(userId, conversationId, query) {
+  '@aichat/rag': `export { injectContext } from '${new URL('../../../packages/rag/src/inject.ts', import.meta.url).href}';
+  export async function retrieve(userId, conversationId, query) {
     const response = await fetch('http://rag.test/retrieve', { method: 'POST', body: JSON.stringify({userId, conversationId, query}) });
     if (!response.ok) throw new Error('internal path');
     return response.json();
@@ -28,6 +29,8 @@ const sources = {
       async getObject(bucket, key) { const res = await fetch('http://storage.test/' + bucket + '/' + key); return Readable.from([Buffer.from(await res.arrayBuffer())]); }
       listObjectsV2(bucket, prefix, recursive) { globalThis.__ragFixture.listArgs = { bucket, prefix, recursive }; return Readable.from([{ name: prefix + 'doc', lastModified: new Date('2026-09-01') }]); }
     }`,
+  '@aichat/providers/quota-provider': `import { OllamaProvider } from '@aichat/providers';
+    export const quotaProvider = () => new OllamaProvider();`,
   '@aichat/providers': `const f = globalThis.__ragFixture;
     export const createResolver = () => ({ resolve: async () => ({ adapter: 'ollama', baseUrl: 'http://provider.test', model: 'test' }) });
     export class OllamaProvider {

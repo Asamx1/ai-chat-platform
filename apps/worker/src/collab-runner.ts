@@ -1,3 +1,4 @@
+import { injectContext } from '@aichat/rag';
 import { prisma } from '@aichat/db';
 import type { Prisma } from '@aichat/db';
 import {
@@ -17,6 +18,7 @@ import {
   recordUsage,
   resolveRunProvider,
   loadPrompt,
+  retrieveRunContext,
 } from './runner';
 import type { RunnerDeps } from './runner';
 
@@ -108,15 +110,21 @@ export async function processCollabRun(
     systemPrompt: row.systemPrompt,
   }));
 
+  let evidenceMessages: ChatMessage[] = [];
   const invocations = new Map<string, number>();
 
   const callModel: CallModel = async (seat, messages, callOpts) => {
     // Orchestrator strategies pass a full messages array; seat system prompts may
     // already be embedded as the leading system message — dedupe defensively.
-    const chatMessages: ChatMessage[] =
+    let chatMessages: ChatMessage[] =
       messages.length > 0 ? messages : seat.systemPrompt
         ? [{ role: 'system', content: seat.systemPrompt }, { role: 'user', content: '' }]
         : [{ role: 'user', content: '' }];
+    // Fresh arrays on every call; never add a second evidence envelope on replay.
+    if (evidenceMessages.length && !chatMessages.some(message => /^RAG_DATA_/.test(message.content))) {
+      chatMessages = [...chatMessages.filter(message => message.role === 'system'),
+        ...evidenceMessages, ...chatMessages.filter(message => message.role !== 'system')];
+    }
     const prompt = chatMessages.filter((m) => m.role !== 'system').map((m) => m.content).join('\n');
 
     let text = '';
@@ -161,7 +169,7 @@ export async function processCollabRun(
   const callModelWithSubstitution: CollabCallModel = async (seat, prompt, signal) => {
     // collab 策略仍走 (seat, prompt:string, signal) 旧边界(CollabCallModel),
     // 这里适配到新 CallModel 消息数组边界,消除类型双轨与潜在的 string-as-messages 运行隐患
-    const toMessages = [{ role: 'user' as const, content: prompt }];
+    const toMessages: ChatMessage[] = [...(seat.systemPrompt ? [{ role: 'system' as const, content: seat.systemPrompt }] : []), { role: 'user', content: prompt }];
     const opts = signal ? { signal } : undefined;
     try {
       return await callModel(seat, toMessages, opts);
@@ -172,12 +180,19 @@ export async function processCollabRun(
       );
       if (!backup) throw err;
       await appendEvent(runId, 'collab.seat.substituted', { from: seat.seatId, to: backup.seatId });
-      return callModel(backup, toMessages, opts);
+      const backupMessages: ChatMessage[] = [...(backup.systemPrompt ? [{ role: 'system' as const, content: backup.systemPrompt }] : []), { role: 'user', content: prompt }];
+      return callModel(backup, backupMessages, opts);
     }
   };
 
   try {
     const content = await loadPrompt(run.conversationId, snapshot);
+    const rag = await retrieveRunContext(run.ownerId, run.conversationId, content);
+    if (rag.hits.length) {
+      // Build once so all seats/rounds share the same selected evidence and nonce.
+      evidenceMessages = injectContext([{ role: 'user', content: '' }], rag.hits,
+        { maxContext: Number.MAX_SAFE_INTEGER, maxOutput: 2048 }).messages.slice(0, -1);
+    }
     await appendEvent(runId, 'run.started', { mode: snapshot.mode, seats: seats.length });
 
     let finalOutput = '';

@@ -1,3 +1,4 @@
+import { injectContext, retrieve, type RagHit } from '@aichat/rag';
 import { createHash, randomUUID } from 'node:crypto';
 import { quotaProvider } from '@aichat/providers/quota-provider';
 import { prisma } from '@aichat/db';
@@ -34,8 +35,10 @@ export async function resolveRunProvider(userId: string, modelId: string, execut
     provider: quotaProvider(prisma, { ...execution, userId, modelId, onResolved: async model => {
       if (model.degraded) {
         await appendEvent(execution.runId, 'run.degraded', { seatId: execution.seatId, degraded: model.degraded });
+        const current = await prisma.orchestrationRun.findUnique({ where: { id: execution.runId }, select: { degradationReasons: true } });
+        const reasons = Array.isArray(current?.degradationReasons) ? current.degradationReasons.filter((reason): reason is string => typeof reason === 'string') : [];
         await prisma.orchestrationRun.update({ where: { id: execution.runId }, data: {
-          degraded: true, degradationReasons: [model.degraded.reason],
+          degraded: true, degradationReasons: [...new Set([...reasons, model.degraded.reason])],
         } });
       }
     } }), modelKey: modelId, degraded: undefined,
@@ -61,6 +64,19 @@ export async function loadPrompt(conversationId: string, snapshot: {
     if (message?.content.trim()) return message.content;
   }
   throw new Error('EMPTY_PROMPT');
+}
+
+/** The worker bounds retrieval even when an adapter fails to settle. */
+export async function retrieveRunContext(userId: string, conversationId: string, content: string): Promise<{ hits: RagHit[]; unavailable: boolean }> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    const hits = await Promise.race([
+      retrieve(userId, conversationId, content),
+      new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('RAG_UNAVAILABLE')), 10_000); }),
+    ]);
+    return { hits, unavailable: false };
+  } catch { return { hits: [], unavailable: true }; }
+  finally { clearTimeout(timer); }
 }
 
 const RENEW_INTERVAL_MS = 10_000;
@@ -179,11 +195,12 @@ export async function recordUsage(opts: {
 async function upsertAssistantMessage(
   conversationId: string,
   state: RunState,
+  citations: Prisma.InputJsonValue,
 ): Promise<string> {
   if (state.assistantMessageId) {
     await prisma.message.update({
       where: { id: state.assistantMessageId },
-      data: { content: state.accumulated, status: 'COMPLETE' },
+      data: { content: state.accumulated, status: 'COMPLETE', citations },
     });
     return state.assistantMessageId;
   }
@@ -193,7 +210,7 @@ async function upsertAssistantMessage(
       content: state.accumulated,
       status: 'COMPLETE',
       // 消息列表 API 以 citations 数组(含空数组)判定 assistant 角色。
-      citations: [],
+      citations,
     },
   });
   return msg.id;
@@ -217,7 +234,7 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
   const run = await prisma.orchestrationRun.findUnique({ where: { id: runId } });
   if (!run) return;
 
-  const snapshot = (run.configSnapshot ?? {}) as { content?: string; modelKey?: string; userMessageId?: string };
+  const snapshot = (run.configSnapshot ?? {}) as { content?: string; modelKey?: string; userMessageId?: string; rag?: { status: string; hits: RagHit[] } };
   const modelKey = snapshot.modelKey ?? '';
   if (!modelKey) {
     await appendEvent(runId, 'run.failed', { error: 'configSnapshot missing modelKey' });
@@ -279,6 +296,16 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
         degraded: true, degradationReasons: [resolved.degraded.reason],
       } });
     }
+    const rag = snapshot.rag?.status === 'READY' && snapshot.rag.hits.length
+      ? await retrieveRunContext(run.ownerId, run.conversationId, content)
+      : { hits: [], unavailable: snapshot.rag?.status === 'RAG_UNAVAILABLE' };
+    if (rag.unavailable) {
+      await appendEvent(runId, 'run.degraded', { reason: 'RAG_UNAVAILABLE' });
+      await prisma.orchestrationRun.update({ where: { id: runId }, data: {
+        degraded: true, degradationReasons: [...new Set([...(Array.isArray(run.degradationReasons) ? run.degradationReasons.filter((reason): reason is string => typeof reason === 'string') : []), 'RAG_UNAVAILABLE'])],
+      } });
+    }
+    const prompt = injectContext([{ role: 'user', content }], rag.hits, provider.capabilities());
     let tokens = 0;
     let usageJson: Prisma.InputJsonValue | null = null;
     let deltasSinceCheckpoint = 0;
@@ -287,8 +314,8 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
     // The shared entry replays a completed response in full; replace a partial checkpoint.
     if (!deps.providerFactory) state.accumulated = '';
     for await (const ev of provider.streamChat(
-      [{ role: 'user', content }],
-      { signal: abort.signal },
+      prompt.messages,
+      { signal: abort.signal, maxTokens: prompt.maxTokens },
     )) {
       if (await cancelRequested()) throw new CancelledError();
 
@@ -333,7 +360,7 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
       throw new Error('aborted');
     }
 
-    state.assistantMessageId = await upsertAssistantMessage(run.conversationId, state);
+    state.assistantMessageId = await upsertAssistantMessage(run.conversationId, state, prompt.citations ?? []);
     version = await saveCheckpoint(runId, state, version);
     if (deps.providerFactory) await recordUsage({
       runId,
@@ -344,7 +371,7 @@ export async function processRun(runId: string, workerId: string, deps: RunnerDe
       tokens,
       usage: usageJson,
     });
-    state.seq = await appendEvent(runId, 'run.succeeded', {});
+    state.seq = await appendEvent(runId, 'run.succeeded', { citations: prompt.citations ?? [] });
     await prisma.orchestrationRun.update({ where: { id: runId }, data: { status: 'SUCCEEDED' } });
   } catch (err) {
     if (lostLease) return;
